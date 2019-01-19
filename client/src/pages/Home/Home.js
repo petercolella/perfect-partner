@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid"
 import Profile from '../../components/Profile/Profile'
 import Calendar from '../../components/Calendar/Calendar'
@@ -40,12 +40,12 @@ class Books extends Component {
     return (
       <Container fluid>
         <Row>
-          <Col size="md-7">
+          <Col size="md-6">
             <Profile/>
             <Properites/>
             <Articles/>
           </Col>
-          <Col size="md-5">
+          <Col size="md-6">
             <Calendar/>
             <UpcomingEvents/>
           </Col>
