@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles.css"
+import Google from "../Signin"
 
 const Nav = () => (
   <nav className="navbar navbar-expand-sm nav-pp navbar-dark">
@@ -16,7 +17,11 @@ const Nav = () => (
           <li className="nav-item">
               <a className="nav-link" href="#">Support</a>
           </li>
+          <li>
+              <Google/>
+          </li>
       </ul>
+
   </nav>
 );
 
