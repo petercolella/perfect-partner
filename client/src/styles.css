@@ -1,7 +1,10 @@
 .nav-pp {
     background-color:#ca0a04;
 }
-
+.logoIcon {
+    height: 50px;
+    width: auto;
+}
 .widget {
     margin-top: 12px;
     background-color:#e0e0e0;
