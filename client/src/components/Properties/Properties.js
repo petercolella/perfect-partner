@@ -1,9 +1,12 @@
 import React from "react";
+import NudgeDB from "../Nudgedb"
 
-const Properites = () => (
+const Properties = () => (
     <div className="widget">
        <h6>Properties</h6>
+    
+    <NudgeDB/>
     </div>
 );
 
-export default Properites;
+export default Properties;
