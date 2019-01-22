@@ -1,7 +1,7 @@
 # Perfect Partner
 
- Herkou link coming soon.
- <!-- https://perfect-partner.herokuapp.com/ -->
+Herkou link:
+https://perfect-partner.herokuapp.com/
 
 
  ### Google Authorization Modal screenshot
