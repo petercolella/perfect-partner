@@ -13,7 +13,7 @@ router
   .put(booksController.update)
   .delete(booksController.remove);
 
-router.post('/grid/updateData', function(req,res){
+router.post('/text', function(req,res){
 textbelt('4042745674', 'hi man, how are you??' /*, callback */);
 });
 
