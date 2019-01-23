@@ -1,6 +1,6 @@
 # Perfect Partner
 
-Herkou link:
+Heroku link:
 https://perfect-partner.herokuapp.com/
 
 
