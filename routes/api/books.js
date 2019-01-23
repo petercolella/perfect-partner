@@ -13,8 +13,5 @@ router
   .put(booksController.update)
   .delete(booksController.remove);
 
-router.post('/text', function(req,res){
-textbelt('4042745674', 'hi man, how are you??' /*, callback */);
-});
 
 module.exports = router;
