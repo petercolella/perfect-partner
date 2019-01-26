@@ -5,6 +5,9 @@
     height: 50px;
     width: auto;
 }
+.header-title {
+    text-align:center;
+}
 .widget {
     margin-top: 12px;
     background-color:#e0e0e0;
@@ -53,4 +56,18 @@
     display: block;
     text-align: center;
     height: 250px;
+}
+
+.profile-widget {
+    background-color: #C5C9B8;
+    width: 100%;
+    color: #333333;
+    height: 150px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: space-around;
+    display: flex;
+    float: none;
 }
