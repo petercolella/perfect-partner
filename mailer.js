@@ -14,14 +14,14 @@ async function main(){
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: 'matt_fazio@outlook.com', // generated ethereal user
-      pass: 'W0bbeG0ng89' // generated ethereal password
+      user: 'perfect_partner1@outlook.com', // generated ethereal user
+      pass: 'b00tc@mp123' // generated ethereal password
     }
   });
 
   // setup email data with unicode symbols
   let mailOptions = {
-    from: '"Matt Fazio" <matt_fazio@outlook.com>', // sender address
+    from: '"Perfect Partner" <perfect_partner1@outlook.com>', // sender address
     to: "4042745674@textmagic.com", // list of receivers
     subject: "Hello ✔", // Subject line
     text: "Hello world?", // plain text body
