@@ -7,12 +7,12 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp');
 
 const userSeed = [
   {
-    name: 'Rodney Stephenson',
-    phone: '4047985220',
-    nudgeFrequency: 5000,
-    partnerName: 'Kelly',
-    anniversaryDate: 'November 9, 2013',
-    birthDate: 'October 14, 1973'
+    name: "John Doe",
+  phone: "4047985220",
+  nudgeFrequency: 5000,
+  partnerName: "Jane",
+  anniversaryDate: "November 9, 2013",
+  birthDate: "February 14, 1983"
   },
   {
     name: 'Peter Colella',
