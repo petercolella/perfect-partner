@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const db = require("../models");
 
-// This file empties the Books collection and inserts the books below
+// This file empties the users collection and the nudge collection and inserts the respective info below
 
 mongoose.connect(
   process.env.MONGODB_URI ||
@@ -12,7 +12,6 @@ const userSeed = [
   {
   name: "John Doe",
   phone: "4047985220",
-  nudgeFrequency: 5000,
   partnerName: "Jane",
   anniversaryDate: "November 9, 2013",
   birthDate: "February 14, 1983"
@@ -20,11 +19,33 @@ const userSeed = [
   
 ];
 
+const nudgeSeed = [
+  {
+  name: "Romantic Text",
+  nudgeFrequency: 5000,
+  textMessage: "I'm thinking about you!"
+  }
+  
+];
+
 db.User.deleteMany({})
   .then(() => db.User.collection.insertMany(userSeed))
   .then(data => {
-    console.log(data.result.n + " records inserted!");
+    console.log(data.result.n + " user records inserted!");
     process.exit(0);
+  })
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+
+
+  db.Nudge.deleteMany({})
+  .then(() => db.Nudge.collection.insertMany(nudgeSeed))
+  .then(data => {
+    console.log(data.result.n + " nudge records inserted!");
+    process.exit(0);
+
   })
   .catch(err => {
     console.error(err);
