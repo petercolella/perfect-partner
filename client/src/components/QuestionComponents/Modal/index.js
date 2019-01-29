@@ -11,10 +11,12 @@ class Modal extends Component {
     $('#exampleModalCenter').modal('show');
   }
 
+  componentWillUnmount() {
+    this.hideModal();
+  }
+
   hideModal() {
-    // setTimeout(function() {
     $('#exampleModalCenter').modal('hide');
-    // }, 50);
   }
 
   render() {
@@ -61,7 +63,8 @@ class Modal extends Component {
                     type="button"
                     className="btn btn-secondary"
                     // data-dismiss="modal"
-                    onClick={this.hideModal()}>
+                    // onClick={this.hideModal()}
+                  >
                     Next Question
                   </button>
                 </Link>
