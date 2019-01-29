@@ -9,7 +9,7 @@ class Partner extends Component {
     title: 'Partner Name',
     question: "What is your partner's name?",
     userField: 'partnerName',
-    nextQuestionLink: '/anniversay'
+    nextQuestionLink: '/anniversary'
   };
 
   componentDidMount() {

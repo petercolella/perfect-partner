@@ -51,10 +51,7 @@ class Modal extends Component {
                   Submit
                 </button>
                 <Link to={this.props.link}>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal">
+                  <button type="button" className="btn btn-secondary">
                     Next Question
                   </button>
                 </Link>

@@ -7,9 +7,9 @@ class Nudges extends Component {
     users: [],
     User: {},
     title: 'Nudges',
-    question: "What is your partner's name?",
+    question: 'Please select your nudges.',
     userField: 'nudges',
-    nextQuestionLink: '/dashboard'
+    nextQuestionLink: '/'
   };
 
   componentDidMount() {
