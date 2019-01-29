@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 
-class Birthday extends Component {
+class Phone extends Component {
   state = {
-    question: "What is your partner's birthday?",
-    userField: User.birthDate,
-    nextQuestionLink: '/nudges'
+    question: 'What is your phone number?',
+    userField: User.phone,
+    nextQuestionLink: '/partner'
   };
 
   render() {
@@ -19,4 +19,4 @@ class Birthday extends Component {
   }
 }
 
-export default Birthday;
+export default Phone;
