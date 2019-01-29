@@ -27,6 +27,7 @@ class Phone extends Component {
         question={this.state.question}
         userField={this.state.userField}
         link={this.state.nextQuestionLink}
+        title={this.state.title}
       />
     );
   }

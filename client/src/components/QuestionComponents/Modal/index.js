@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 const $ = window.$;
 
 class Modal extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.showModal();
   }
@@ -39,7 +35,7 @@ class Modal extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalCenterTitle">
-                  Modal title
+                  {this.props.title}
                 </h5>
                 <button
                   type="button"
@@ -49,17 +45,19 @@ class Modal extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="modal-body">...</div>
+              <div className="modal-body">{this.props.question}</div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary">
                   Submit
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal">
-                  <Link to={this.props.link}>Next Question</Link>
-                </button>
+                <Link to={this.props.link}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal">
+                    Next Question
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
