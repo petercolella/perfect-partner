@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 
-class Anniversary extends Component {
+class Birthday extends Component {
   state = {
-    question: 'What is your annivesary date?',
-    userField: User.anniversayDate,
-    nextQuestionLink: '/birthday'
+    question: "What is your partner's birthday?",
+    userField: User.birthDate,
+    nextQuestionLink: '/dashboard'
   };
 
   render() {
@@ -19,4 +19,4 @@ class Anniversary extends Component {
   }
 }
 
-export default Anniversary;
+export default Birthday;
