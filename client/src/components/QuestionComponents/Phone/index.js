@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
+import API from '../../../utils/API';
 
 class Phone extends Component {
   state = {
+    users: [],
+    User: {},
+    title: 'Phone Number',
     question: 'What is your phone number?',
-    userField: User.phone,
+    userField: 'phone',
     nextQuestionLink: '/partner'
+  };
+
+  componentDidMount() {
+    this.loadUserInfo();
+  }
+  loadUserInfo = () => {
+    API.getUsers().then(res =>
+      this.setState({ users: res.data, User: res.data[0] })
+    );
   };
 
   render() {

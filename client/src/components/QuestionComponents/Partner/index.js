@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
+import API from '../../../utils/API';
 
 class Partner extends Component {
   state = {
+    users: [],
+    User: {},
+    title: 'Partner Name',
     question: "What is your partner's name?",
-    userField: User.partnerName,
+    userField: 'partnerName',
     nextQuestionLink: '/anniversay'
+  };
+
+  componentDidMount() {
+    this.loadUserInfo();
+  }
+  loadUserInfo = () => {
+    API.getUsers().then(res =>
+      this.setState({ users: res.data, User: res.data[0] })
+    );
   };
 
   render() {
