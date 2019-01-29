@@ -14,6 +14,7 @@ import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';
 import Phone from './components/QuestionComponents/Phone';
 import Anniversary from './components/QuestionComponents/Anniversary';
+import NudgeDB from './components/MainBody/Nudgedb';
 
 //CSS
 import './styles.css';
@@ -34,6 +35,7 @@ class App extends Component {
           <Route exact path="/partner" component={Partner} />
           <Route exact path="/phone" component={Phone} />
           <Route exact path="/anniversary" component={Anniversary} />
+          <Route exact path="/nudgedb" component={NudgeDB} />
         </div>
       </BrowserRouter>
     );
