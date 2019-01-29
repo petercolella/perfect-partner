@@ -24,9 +24,9 @@ class MainBody extends Component {
 
     render(){
         return(
-            <Dashboard
-                users = {this.state.users}
-            />
+            <div>
+                <Dashboard users = {this.state.users}/>
+            </div>
         )
     }
 }

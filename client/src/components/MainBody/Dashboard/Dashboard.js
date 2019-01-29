@@ -1,19 +1,35 @@
 import React from 'react'
+import TestTextButton from '../../TestTextButton';
 
-
-const Dashboard = (props)=> (
-       <div className="container-fluid">
-           {props.users.map(user => (
-               <li key={user._id}>
-                   <p>Name: {user.name}</p>
-                   <p>Phone: {user.phone}</p>
-                   <p>Nudge Frequency: {user.nudgeFrequency}</p>
-                   <p>Partner Name: {user.partnerName}</p>
-                   <p>Anniversary Date: {user.anniversaryDate}</p>
-                   <p>Birth Date: {user.birthDate}</p>
-               </li>
-           ))}
-       </div>
-);
+const Dashboard = (props)=> {
+       return (<table className="table table-striped">
+              <thead>
+                     <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Birth Date</th>
+                            <th>Anniversary Date</th>
+                            <th>Nudge Frequency</th>
+                            <th>Partner Name</th>
+                            <th>Test</th>
+                     </tr>
+              </thead>
+              <tbody>
+                     {props.users.map(user =>{
+                            return (
+                                <tr>
+                                       <td>{user.name}</td>
+                                       <td>{user.phone}</td>
+                                       <td>{user.birthDate}</td>
+                                       <td>{user.anniversaryDate}</td>
+                                       <td>{user.nudgeFrequency}</td>
+                                       <td>{user.partnerName}</td>
+                                       <td><TestTextButton/></td>
+                                </tr>
+                            )
+                     })}
+              </tbody>
+       </table>)
+};
 
 export default Dashboard
