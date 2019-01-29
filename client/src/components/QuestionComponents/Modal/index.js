@@ -11,17 +11,23 @@ class Modal extends Component {
     $('#exampleModalCenter').modal('show');
   }
 
+  hideModal() {
+    // setTimeout(function() {
+    $('#exampleModalCenter').modal('hide');
+    // }, 50);
+  }
+
   render() {
     return (
       <div>
         {/* <!-- Button trigger modal --> */}
-        <button
+        {/* <button
           type="button"
           className="btn btn-primary"
           data-toggle="modal"
           data-target="#exampleModalCenter">
           Launch demo modal
-        </button>
+        </button> */}
 
         {/* <!-- Modal --> */}
         <div
@@ -51,7 +57,11 @@ class Modal extends Component {
                   Submit
                 </button>
                 <Link to={this.props.link}>
-                  <button type="button" className="btn btn-secondary">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    // data-dismiss="modal"
+                    onClick={this.hideModal()}>
                     Next Question
                   </button>
                 </Link>
