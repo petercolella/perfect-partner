@@ -7,6 +7,11 @@ class MainBody extends Component {
         users: [],
         name: "",
         phone: "",
+        nudges: [
+            {name:"Romantic Text", frequency: 7},
+            {name:"Buy Flowers", frequency: 4},
+            {name:"Dinner Reservations", frequency: 3}
+        ],
         nudgeFrequency: "",
         partnerName: "",
         anniversaryDate: "",
@@ -25,7 +30,7 @@ class MainBody extends Component {
     render(){
         return(
             <div>
-                <Dashboard users = {this.state.users}/>
+                <Dashboard users = {this.state.users} nudges = {this.state.nudges}/>
             </div>
         )
     }

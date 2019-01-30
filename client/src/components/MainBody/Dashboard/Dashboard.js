@@ -17,13 +17,24 @@ const Dashboard = (props)=> {
               <tbody>
                      {props.users.map(user =>{
                             return (
-                                <tr>
+                                <tr key={user._id}>
                                        <td>{user.name}</td>
                                        <td>{user.phone}</td>
                                        <td>{user.birthDate}</td>
                                        <td>{user.anniversaryDate}</td>
                                        <td>{user.nudgeFrequency}</td>
                                        <td>{user.partnerName}</td>
+                                       <td><TestTextButton/></td>
+                                </tr>
+                            )
+                     })}
+              </tbody>
+              <tbody>
+                     {props.nudges.map(nudge =>{
+                            return (
+                                <tr key={nudge.name}>
+                                       <td>{nudge.name}</td>
+                                       <td>{nudge.frequency}</td>
                                        <td><TestTextButton/></td>
                                 </tr>
                             )
