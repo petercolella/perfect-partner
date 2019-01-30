@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 //components
 import About from './components/MainBody/About/About';
+import Landing from './components/MainBody/Landing';
 import Nav from './components/Header/Nav';
 import MainBody from './components/MainBody/MainBody';
 import RegistrationWizard from './components/MainBody/RegistrationWizard/RegistrationWizard';
@@ -26,6 +27,7 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <Nav />
+          <Route exact path="/landing" component={Landing} />
           <Route exact path="/" component={MainBody} />
           <Route exact path="/about" component={About} />
           <Route exact path="/registration" component={RegistrationWizard} />
