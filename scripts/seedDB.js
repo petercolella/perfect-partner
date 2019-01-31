@@ -14,18 +14,25 @@ const userSeed = [
   phone: "4047985220",
   partnerName: "Jane",
   anniversaryDate: "November 9, 2013",
-  birthDate: "February 14, 1983"
-  }
-  
-];
-
-const nudgeSeed = [
-  {
-  name: "Romantic Text",
-  nudgeFrequency: 5000,
-  textMessage: "I'm thinking about you!"
-  }
-  
+  birthDate: "February 14, 1983",
+  nudges: [
+    {
+      name:  "Romantic Text",
+      nudgeFrequency: 5000,
+      textMessage: "I'm thinking of you."
+    },
+    {
+      name:  "Send Flowers",
+      nudgeFrequency: 5000,
+      textMessage: "Send some flowers."
+    },
+    {
+      name:  "Dinner Reservation",
+      nudgeFrequency: 5000,
+      textMessage: "Make a dinner reservation."
+    }
+  ]
+ }
 ];
 
 db.User.deleteMany({})
@@ -33,19 +40,6 @@ db.User.deleteMany({})
   .then(data => {
     console.log(data.result.n + " user records inserted!");
     process.exit(0);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-
-
-  db.Nudge.deleteMany({})
-  .then(() => db.Nudge.collection.insertMany(nudgeSeed))
-  .then(data => {
-    console.log(data.result.n + " nudge records inserted!");
-    process.exit(0);
-
   })
   .catch(err => {
     console.error(err);

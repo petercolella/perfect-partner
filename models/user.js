@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
-  partnerName: { type: String, required: true },
-  anniversaryDate: { type: String, required: true },
-  birthDate: { type: String, required: true },
+  partnerName: { type: String },
+  anniversaryDate: { type: String },
+  birthDate: { type: String },
   nudges: [
     {
       // Store ObjectIds in the array

@@ -3,12 +3,12 @@ import {render} from 'react-dom'
 import { BrowserRouter , Route, } from "react-router-dom";
 
 //components
-import About from './components/MainBody/About/About'
-import Nav from "./components/Header/Nav";
-import MainBody from "./components/MainBody/MainBody";
-import RegistrationWizard from "./components/MainBody/RegistrationWizard/RegistrationWizard";
-import Profile from "./components/MainBody/Profile";
-import Dashboard from "./components/MainBody/Dashboard/Dashboard";
+import About from './components/QuestionComponents/MainBody/About/About';
+import Nav from "./components/QuestionComponents/Header/Nav";
+import MainBody from "./components/QuestionComponents/MainBody/MainBody";
+import RegistrationWizard from "./components/QuestionComponents/MainBody/RegistrationWizard/RegistrationWizard";
+import Profile from "./components/QuestionComponents/MainBody/Profile";
+import Dashboard from "./components/QuestionComponents/MainBody/Dashboard/Dashboard";
 
 //CSS
 import "./styles.css";
