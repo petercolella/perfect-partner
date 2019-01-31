@@ -1,12 +1,46 @@
-import React,{Component} from 'react'
+import React from 'react'
+import TestTextButton from '../../TestTextButton';
 
-class Dashboard extends Component {
-    state = {};
-    render() {
-        return(
-            <div className="container-fluid">Dashboard</div>
-        )
-    }
-}
+const Dashboard = (props)=> {
+       return (<table className="table table-striped">
+              <thead>
+                     <tr>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Birth Date</th>
+                            <th>Anniversary Date</th>
+                            <th>Nudge Frequency</th>
+                            <th>Partner Name</th>
+                            <th>Test</th>
+                     </tr>
+              </thead>
+              <tbody>
+                     {props.users.map(user =>{
+                            return (
+                                <tr key={user._id}>
+                                       <td>{user.name}</td>
+                                       <td>{user.phone}</td>
+                                       <td>{user.birthDate}</td>
+                                       <td>{user.anniversaryDate}</td>
+                                       <td>{user.nudgeFrequency}</td>
+                                       <td>{user.partnerName}</td>
+                                       <td><TestTextButton/></td>
+                                </tr>
+                            )
+                     })}
+              </tbody>
+              <tbody>
+                     {props.nudges.map(nudge =>{
+                            return (
+                                <tr key={nudge.name}>
+                                       <td>{nudge.name}</td>
+                                       <td>{nudge.frequency}</td>
+                                       <td><TestTextButton/></td>
+                                </tr>
+                            )
+                     })}
+              </tbody>
+       </table>)
+};
 
 export default Dashboard
