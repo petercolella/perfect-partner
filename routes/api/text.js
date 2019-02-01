@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
       res.json({
         msg: 'Fail'
       });
-      return console.log(error);
+      return console.log(err);
     } else {
       console.log('Message sent: %s', data.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));
