@@ -9,7 +9,7 @@ import Nav from './components/Header/Nav';
 import MainBody from './components/MainBody/MainBody';
 import RegistrationWizard from './components/MainBody/RegistrationWizard/RegistrationWizard';
 import Profile from './components/MainBody/Profile';
-import Dashboard from './components/MainBody/Dashboard/Dashboard';
+// import Dashboard from './components/MainBody/Dashboard/Dashboard';
 import Birthday from './components/QuestionComponents/Birthday';
 import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';

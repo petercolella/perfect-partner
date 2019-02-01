@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import Modal from '../Modal';
-import API from '../../../utils/API';
+import React, { Component } from "react";
+import Modal from "../Modal";
+import API from "../../../utils/API";
 
 class Phone extends Component {
   state = {
     users: [],
     User: {},
-    title: 'Phone Number',
-    question: 'What is your phone number?',
-    userField: 'phone',
-    nextQuestionLink: '/partner'
+    title: "Phone Number",
+    question: "What is your phone number?",
+    userField: "",
+    nextQuestionLink: "/partner"
   };
 
   componentDidMount() {
@@ -20,10 +20,25 @@ class Phone extends Component {
       this.setState({ users: res.data, User: res.data[0] })
     );
   };
-
+  handleFormSubmit = event => {
+    event.preventDefault();
+    alert(`userField: ${this.state.userField}`);
+    API.updateUser(/*id here*/{
+      phone: this.state.userField
+      })
+   };
+  handleInputChange = event => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [name]: value
+    });
+  };
   render() {
     return (
       <Modal
+        handleFormSubmit={this.handleFormSubmit}
+        handleInputChange={this.handleInputChange}
         question={this.state.question}
         userField={this.state.userField}
         link={this.state.nextQuestionLink}

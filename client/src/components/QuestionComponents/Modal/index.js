@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 const $ = window.$;
 
 class Modal extends Component {
@@ -8,7 +8,7 @@ class Modal extends Component {
   }
 
   showModal() {
-    $('#exampleModalCenter').modal('show');
+    $("#exampleModalCenter").modal("show");
   }
 
   componentWillUnmount() {
@@ -16,7 +16,7 @@ class Modal extends Component {
   }
 
   hideModal() {
-    $('#exampleModalCenter').modal('hide');
+    $("#exampleModalCenter").modal("hide");
   }
 
   render() {
@@ -38,7 +38,8 @@ class Modal extends Component {
           tabIndex="-1"
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true">
+          aria-hidden="true"
+        >
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
@@ -49,13 +50,25 @@ class Modal extends Component {
                   type="button"
                   className="close"
                   data-dismiss="modal"
-                  aria-label="Close">
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="modal-body">{this.props.question}</div>
+              <form>
+                <div className="form-group">
+                  <input
+                    onChange={this.props.handleInputChange}
+                    value={this.props.userField}
+                    name="userField"
+                    placeholder="placeholder"
+                    type="text"
+                  />
+                </div>
+              </form>
               <div className="modal-footer">
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={this.props.handleFormSubmit}>
                   Submit
                 </button>
                 <Link to={this.props.link}>
