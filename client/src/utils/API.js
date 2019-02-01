@@ -34,5 +34,8 @@ export default {
   },
   sendText: function(data) {
     return axios.post('/api/send', data);
+  },
+  updateUser: function(id) {
+    return axios.put('/api/users/' + id);
   }
 };
