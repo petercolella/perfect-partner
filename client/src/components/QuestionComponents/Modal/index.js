@@ -68,7 +68,7 @@ class Modal extends Component {
                 </div>
               </form>
               <div className="modal-footer">
-                <button type="button" className="btn btn-primary">
+                <button type="button" className="btn btn-primary" onClick={this.props.handleFormSubmit}>
                   Submit
                 </button>
                 <Link to={this.props.link}>

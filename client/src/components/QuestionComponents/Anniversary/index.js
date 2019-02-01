@@ -20,6 +20,14 @@ class Anniversary extends Component {
       this.setState({ users: res.data, User: res.data[0] })
     );
   };
+  handleFormSubmit = event => {
+    event.preventDefault();
+    alert(`userField: ${this.state.userField}`);
+    API.updateUser(/*id here*/ {
+      anniversaryDate: this.state.userField
+      })
+   };
+
   handleInputChange = event => {
     const name = event.target.name;
     const value = event.target.value;
@@ -30,7 +38,8 @@ class Anniversary extends Component {
   render() {
     return (
       <Modal
-        handleInputChange={this.state.handleInputChange}
+        handleFormSubmit={this.handleFormSubmit}
+        handleInputChange={this.handleInputChange}
         question={this.state.question}
         userField={this.state.userField}
         link={this.state.nextQuestionLink}
