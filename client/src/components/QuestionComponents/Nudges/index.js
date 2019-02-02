@@ -30,6 +30,7 @@ class Nudges extends Component {
     nudges: this.state.userField
       })
    };
+
   handleInputChange = event => {
     const name = event.target.name;
     const value = event.target.value;
