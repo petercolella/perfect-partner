@@ -71,3 +71,21 @@
     display: flex;
     float: none;
 }
+
+/*//colors*/
+body {
+    height : 100vh;
+}
+
+.body-bkg {
+    background: rgb(235,58,36);
+    background: linear-gradient(180deg, rgba(235,58,36,1) 21%, rgba(122,19,20,1) 81%);
+    background-size: cover;
+}
+
+.mb-2 {
+    margin-top:15px;
+}
+.d-block {
+    margin-top:15px;
+}

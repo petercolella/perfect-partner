@@ -14,8 +14,8 @@ const TestTextButton = props => {
       });
   }
   return (
-    <button className="primary" onClick={sendText}>
-      Click to Send Text
+    <button className="btn btn-primary" onClick={sendText}>
+      Send Text
     </button>
   );
 };

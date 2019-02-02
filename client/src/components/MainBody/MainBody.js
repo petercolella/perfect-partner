@@ -29,7 +29,7 @@ class MainBody extends Component {
 
     render(){
         return(
-            <div>
+            <div className="container shadow card card-body mb-2">
                 <Dashboard users = {this.state.users} nudges = {this.state.nudges}/>
             </div>
         )

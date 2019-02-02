@@ -3,8 +3,10 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   name: { type: String, required: true },
-  phone: { type: String, required: true },
+  phone: { type: String },
   partnerName: { type: String },
+  email: { type: String, required: true, unique: true },
+  imageUrl: { type: String },
   anniversaryDate: { type: String },
   birthDate: { type: String },
   nudges: [
@@ -17,9 +19,22 @@ const userSchema = new Schema({
   ]
 });
 
-
-
-
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+
+
+// const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
+//
+// const userSchema = new Schema({
+//   name: { type: String, required: true },
+//   email: { type: String, required: true, unique: true },
+//   imageUrl: { type: String },
+//   phone: { type: String },
+//   date: { type: Date, default: Date.now }
+// });
+//
+// const User = mongoose.model('User', userSchema);
+//
+// module.exports = User;
