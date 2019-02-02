@@ -29,7 +29,6 @@ class App extends Component {
           <Route exact path="/about" component={About} />
           <Route exact path="/registration" component={RegistrationWizard} />
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/dashboard" component={MainBody} />
           <Route exact path="/birthday" component={Birthday} />
           <Route exact path="/nudges" component={Nudges} />
           <Route exact path="/partner" component={Partner} />
