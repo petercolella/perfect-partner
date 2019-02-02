@@ -6,19 +6,19 @@ router.post('/', (req, res) => {
   console.log(phone);
 
   const mail = {
-    from: '"Perfect Partner" <perfect_partner1@outlook.com>',
+    from: '"Perfect Partner" <perfect@anthonylindo.com>',
     to: `${phone}@textmagic.com`,
     subject: 'Hello ✔',
     text: 'Tell her you love her.'
   };
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp-mail.outlook.com',
-    port: 587,
-    secure: false,
+    host: 'mail.anthonylindo.com',
+    port: 465,
+    secure: true,
     auth: {
-      user: 'perfect_partner1@outlook.com',
-      pass: 'b00tc@mp123'
+      user: 'perfect@anthonylindo.com',
+      pass: 'Trigoph_9'
     }
   });
 
@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
       res.json({
         msg: 'Fail'
       });
-      return console.log(error);
+      return console.log(err);
     } else {
       console.log('Message sent: %s', data.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(data));

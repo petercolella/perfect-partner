@@ -5,7 +5,11 @@ const Dashboard = (props)=> {
        return (
 
         <div>
-               <div>{props.users.name}</div>
+            <h1>{props.user.name}</h1>
+            <p>{props.user.partnerName}</p>
+            <p>{props.user.phone}</p>
+            <p>{props.user.birthDate}</p>
+            <p>{props.user.anniversaryDate}</p>
                <table className="table table-striped">
                       <thead>
                       <tr>
@@ -23,7 +27,7 @@ const Dashboard = (props)=> {
                                               <td>{nudge.name}</td>
                                               <td>{nudge.frequency}</td>
                                               <td>{nudge.textMessage}</td>
-                                              <td><TestTextButton/></td>
+                                              <td><TestTextButton phone={props.user.phone}/></td>
                                        </tr>
                                    )
                             })}

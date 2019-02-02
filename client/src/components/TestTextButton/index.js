@@ -7,7 +7,7 @@ const TestTextButton = props => {
     const phone = props.phone;
     API.sendText({ phone })
       .then(res => {
-        alert('Text Sent!');
+        alert(`Text Sent to ${phone}`);
       })
       .catch(err => {
         console.log(err);

@@ -5,6 +5,7 @@ import Dashboard from './Dashboard/Dashboard'
 class MainBody extends Component {
     state = {
         users: [],
+        User: {},
         name: "",
         phone: "",
         nudges: [
@@ -22,15 +23,17 @@ class MainBody extends Component {
         this.loadUserInfo();
     }
     loadUserInfo = () => {
-        API.getUsers().then(res =>
-            this.setState({ users: res.data, name: "", phone: "", nudgeFrequency: "", partnerName: "", anniversaryDate: "", birthDate: "" })
-        );
+        API.getUsers().then(res => {
+            this.setState({ users: res.data, User: res.data[res.data.length - 1] });
+            console.log(res.data[res.data.length - 1]);
+            console.log(res.data[res.data.length - 1]._id);
+        });
     };
 
     render(){
         return(
             <div className="container shadow card card-body mb-2">
-                <Dashboard users = {this.state.users} nudges = {this.state.nudges}/>
+                <Dashboard user={this.state.User}  nudges = {this.state.nudges}/>
             </div>
         )
     }
