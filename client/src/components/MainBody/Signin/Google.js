@@ -68,17 +68,12 @@ class SignIn extends Component {
 
     render() {
         return (
-            <div style={styles} className="container">
-                <div className="jumbotron">
-                    <h1 className="text-center display-4">
-                        Welcome to the Landing Page!
-                    </h1>
-                    <hr />
-                    <div className="row">
-                        <div className="col-4">
-                            <p className="lead">{this.state.currentUserMessage}</p>
+            <div>
+                <div className="container">
+                    <div className="row mx-auto">
+                        <div className="avatar-center">
                             {this.state.imageUrl ? (
-                                <img src={this.state.imageUrl} alt="profile-img" />
+                                <img src={this.state.imageUrl} alt="profile-img" className="logo-avatar" />
                             ) : (
                                 <img
                                     src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
@@ -86,11 +81,8 @@ class SignIn extends Component {
                                     style={styles.imgStyle}
                                 />
                             )}
-                        </div>
-                        <div className="col-8">
-                            <p>
-                                Please click <Link to="/phone">HERE</Link> to answer a question.
-                            </p>
+                        <p className="lead">{this.state.currentUserMessage}</p>
+                         <p class="clicktext">Please click <Link to="/phone">HERE<br/></Link> to answer a question.</p>
                         </div>
                     </div>
                 </div>

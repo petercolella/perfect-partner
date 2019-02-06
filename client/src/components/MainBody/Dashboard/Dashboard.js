@@ -5,6 +5,7 @@ const Dashboard = (props)=> {
        return (
 
         <div>
+            <h1>{props.car}</h1>
             <h1>{props.user.name}</h1>
             <p>{props.user.partnerName}</p>
             <p>{props.user.phone}</p>
