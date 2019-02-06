@@ -24,7 +24,6 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "if-env": "^1.0.4",
-    "mdbreact": "^4.9.0",
     "mongoose": "^5.0.17",
     "nodemailer": "^5.1.1",
     "react-router": "^4.3.1",
