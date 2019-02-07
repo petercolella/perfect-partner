@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import Modal from "../Modal";
-import API from "../../../utils/API";
+import React, { Component } from 'react';
+import Modal from '../Modal';
+import API from '../../../utils/API';
 import Helmet from 'react-helmet';
+const $ = window.$;
 
 class Phone extends Component {
   state = {
     users: [],
     User: {},
-    title: "Phone Number",
-    question: "What is your phone number?",
-    userField: "",
-    nextQuestionLink: "/partner"
+    title: 'Phone Number',
+    question: 'What is your phone number?',
+    userField: '',
+    nextQuestionLink: '/partner'
   };
 
   componentDidMount() {
@@ -26,9 +27,10 @@ class Phone extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    alert(`userField: ${this.state.userField}`);
+    $('.toast').toast('show');
+    const phoneRegEx = this.state.userField.replace(/\D/g, '');
     API.updateUser(this.state.User._id, {
-      phone: this.state.userField
+      phone: phoneRegEx
     });
   };
 
@@ -41,18 +43,23 @@ class Phone extends Component {
   };
   render() {
     return (
-        <div className="container">
-          <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
-          <Modal
-              handleFormSubmit={this.handleFormSubmit}
-              handleInputChange={this.handleInputChange}
-              question={this.state.question}
-              userField={this.state.userField}
-              link={this.state.nextQuestionLink}
-              title={this.state.title}
-              user={this.state.User}
-          />
-        </div>
+      <div className="container">
+        <Helmet
+          bodyAttributes={{
+            style:
+              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+          }}
+        />
+        <Modal
+          handleFormSubmit={this.handleFormSubmit}
+          handleInputChange={this.handleInputChange}
+          question={this.state.question}
+          userField={this.state.userField}
+          link={this.state.nextQuestionLink}
+          title={this.state.title}
+          user={this.state.User}
+        />
+      </div>
     );
   }
 }
