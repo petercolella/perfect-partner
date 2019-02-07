@@ -64,12 +64,6 @@ class NudgeModal extends Component {
                           {nudge.name}
                         </label>
                       </div>
-                      // type="text"
-                      // className="form-control"
-                      // onChange={this.props.handleInputChange}
-                      // value={this.props.userField}
-                      // name="userField"
-                      // placeholder={this.props.placeholder}
                     ))}
                   </div>
                 </div>
