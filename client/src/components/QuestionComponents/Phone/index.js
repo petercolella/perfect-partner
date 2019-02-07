@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Modal from "../Modal";
 import API from "../../../utils/API";
+import Helmet from 'react-helmet';
 
 class Phone extends Component {
   state = {
@@ -40,15 +41,18 @@ class Phone extends Component {
   };
   render() {
     return (
-        <Modal
-            handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
-            question={this.state.question}
-            userField={this.state.userField}
-            link={this.state.nextQuestionLink}
-            title={this.state.title}
-            user={this.state.User}
-        />
+        <div className="container">
+          <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
+          <Modal
+              handleFormSubmit={this.handleFormSubmit}
+              handleInputChange={this.handleInputChange}
+              question={this.state.question}
+              userField={this.state.userField}
+              link={this.state.nextQuestionLink}
+              title={this.state.title}
+              user={this.state.User}
+          />
+        </div>
     );
   }
 }

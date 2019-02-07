@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import API from '../../../utils/API';
+import Helmet from "react-helmet";
+const $ = window.$;
 
 class Anniversary extends Component {
   state = {
@@ -14,6 +16,8 @@ class Anniversary extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
+    $('.modal-content').css('background-image','url(https://s3.amazonaws.com/bucket-tony-yellowstone/alcohol.jpg)');
+
   }
   loadUserInfo = () => {
     API.getUsers().then(res => {
@@ -40,6 +44,8 @@ class Anniversary extends Component {
   };
   render() {
     return (
+        <div>
+          <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
         <Modal
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
@@ -49,6 +55,7 @@ class Anniversary extends Component {
             title={this.state.title}
             user={this.state.User}
         />
+        </div>
     );
   }
 }

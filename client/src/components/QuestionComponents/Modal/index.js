@@ -43,6 +43,7 @@ class Modal extends Component {
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <div className="modal-bkgrd">
                 <div className="modal-body">
                   {this.props.user.name}, {this.props.question}
                 </div>
@@ -73,6 +74,7 @@ class Modal extends Component {
                     </button>
                   </Link>
                 </div>
+              </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import API from "../../../utils/API";
 import NudgeModal from "../NudgeModal";
+import Helmet from "react-helmet";
+const $ = window.$;
 
 class Nudges extends Component {
   state = {
@@ -19,6 +21,8 @@ class Nudges extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
+    $('.modal-content').css('background-image','url(https://s3.amazonaws.com/bucket-tony-yellowstone/romance.jpg)');
+
   }
   loadUserInfo = () => {
     API.getUsers().then(res => {
@@ -45,6 +49,9 @@ class Nudges extends Component {
   };
   render() {
     return (
+        <div>
+        <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
+
         <NudgeModal
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
@@ -55,6 +62,7 @@ class Nudges extends Component {
             user={this.state.User}
             nudges={this.state.nudges}
         />
+        </div>
     );
   }
 }
