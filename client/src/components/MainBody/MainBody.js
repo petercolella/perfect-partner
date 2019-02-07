@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import API from '../../utils/API'
 import Dashboard from './Dashboard/Dashboard'
-import Nav from "./Landing";
 
 class MainBody extends Component {
     state = {
