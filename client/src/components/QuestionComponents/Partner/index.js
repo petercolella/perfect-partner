@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Modal from "../Modal";
 import API from "../../../utils/API";
+import Helmet from "react-helmet";
+const $ = window.$;
+
 
 class Partner extends Component {
   state = {
@@ -14,6 +17,7 @@ class Partner extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
+    $('.modal-content').css('background-image','url(https://s3.amazonaws.com/bucket-tony-yellowstone/hearts.jpg)');
   }
   loadUserInfo = () => {
     API.getUsers().then(res => {
@@ -40,6 +44,9 @@ class Partner extends Component {
   };
   render() {
     return (
+        <div>
+          <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
+
         <Modal
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
@@ -49,6 +56,7 @@ class Partner extends Component {
             title={this.state.title}
             user={this.state.User}
         />
+        </div>
     );
   }
 }

@@ -165,6 +165,124 @@ body {
     line-height: 59px;
 }
 
+
+.custom-control-label{
+    font-size: 33px;
+    color:#ffffff;
+    font-family:"Archivo Narrow", sans-serif;
+}
+
+.custom-control-label::before {
+    top: 1rem;
+}
+
+/*dashboard*/
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(62, 199, 237, 0.26);
+}
+
+.dashbkgrd {
+    background-image: url("img/love-hearts.jpg");
+    background-size: cover;
+    background-position-y: -166px;
+    background-repeat:no-repeat;
+    min-height:391px;
+}
+
+
+.dashboard-rght {
+    background-color:#EB5160;
+    color:#fff;
+    font-family: "Archivo Narrow", sans-serif;
+}
+
+.dashboard-rght h1 {
+    text-align: left;
+    font-size: 2rem;
+    margin: 12px 0 0 -21px;
+
+}
+.dashboard-rght img {
+    border-radius: 50%;
+    width: 85%;
+    margin-top: -13px;
+}
+
+.dashboard-rght {
+    font-size: 1.5rem;
+}
+
+.dashboard-rght p {
+   margin-bottom: 0;
+}
+
+.dashboard-rght span {
+   color:#000;
+}
+
+/*modal styles*/
+
+.btn {
+    border-radius:25px;
+    width: 150px;
+    border:none;
+}
+.btn-secondary {
+    background-color:#22b5e0;
+}
+
+.btn-primary {
+    background-color:#fff;
+    border:none;
+    color: #34c2e9;
+}
+
+.close {
+    font-size:2.5rem;
+    color:#fff;
+    opacity: 1;
+}
+
+.custom-control-label::after {
+    top:1rem;
+    left: -1.5rem;
+    background-size:80% 80%;
+}
+
 .modal-content {
     background-color:#eb5160;
+    background-image: url('img/phone-img.jpg');
+    background-repeat:no-repeat;
+    border-radius:20px;
+    max-height: 599px !important;
+}
+.modal-bkgrd {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.modal-dialog-centered {
+    height:100%;
+    align-items: unset;
+}
+.modal-header {
+    padding: 0rem 1rem;
+    border-bottom:none;
+
+}
+
+.modal-footer {
+    border-top:none;
+}
+.modal-title {
+    color:#fff;
+    font-family:"Archivo Narrow", sans-serif;
+    font-size:2.5em;
+}
+.modal-body {
+    font-family:"Archivo Narrow", sans-serif;
+    color: #fff;
+    font-size: 2.0em;
+    line-height: 36px;
 }

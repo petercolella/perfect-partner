@@ -1,7 +1,7 @@
 import React from "react";
-import logo from '../../../img/logo_p.png';
 import Google from '../Signin/Google';
 import Helmet from 'react-helmet';
+import Nav from '../../Header/Nav/Nav'
 
 const Landing = () => {
 
@@ -11,7 +11,7 @@ const Landing = () => {
    <Helmet bodyAttributes={{style:'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'}}/>
 
     <div className="col-12 tobottom">
-      <img className="d-block" alt="" src={logo}/>
+      <Nav/>
         <div className="home-saying">Did you forget your Anniversary?</div>
         <div className="row bottom-xs">
             <div className="col-xs-6">
