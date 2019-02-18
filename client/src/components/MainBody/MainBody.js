@@ -4,8 +4,8 @@ import Dashboard from './Dashboard/Dashboard';
 
 class MainBody extends Component {
   state = {
-    users: [],
     User: {},
+    userEmail: '',
     name: '',
     phone: '',
     nudges: [
@@ -19,16 +19,48 @@ class MainBody extends Component {
     birthDate: ''
   };
 
-  componentDidMount() {
-    this.loadUserInfo();
-  }
-  loadUserInfo = () => {
-    API.getUsers().then(res => {
-      this.setState({ users: res.data, User: res.data[res.data.length - 1] });
-      console.log(res.data[res.data.length - 1]);
-      console.log(res.data[res.data.length - 1]._id);
+  initClient = function() {
+    const self = this;
+    window.gapi.load('auth2', function() {
+      window.gapi.auth2
+        .init({
+          client_id:
+            '773798651320-0da27e8d6k9mo9ldaijdlupeib1r56jq.apps.googleusercontent.com'
+        })
+        .then(
+          GoogleAuth => {
+            const currentUserEmail = GoogleAuth.currentUser
+              .get()
+              .getBasicProfile()
+              .getEmail();
+            self.setState(
+              {
+                userEmail: currentUserEmail
+              },
+              () => {
+                self.loadUserInfo();
+              }
+            );
+          },
+          err => {
+            console.log(err);
+          }
+        );
     });
   };
+
+  componentDidMount() {
+    this.initClient();
+  }
+
+  loadUserInfo = () => {
+    const email = this.state.userEmail;
+    API.getUserByEmail(email).then(res => {
+      const resUser = res.data.shift();
+      this.setState({ User: resUser });
+    });
+  };
+
   // shadow card card-body mb-2
   render() {
     return (
