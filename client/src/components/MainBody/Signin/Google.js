@@ -22,9 +22,13 @@ class SignIn extends Component {
       name: profile.getName(),
       email: profile.getEmail(),
       imageUrl: profile.getImageUrl()
-    }).catch(err => {
-      console.log(err);
-    });
+    })
+      .then(res => {
+        console.log(res.data._id);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   onSignIn = googleUser => {

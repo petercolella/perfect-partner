@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -10,19 +10,18 @@ const userSchema = new Schema({
   anniversaryDate: { type: String },
   birthDate: { type: String },
   nudges: [
-    {
-      // Store ObjectIds in the array
-      type: Schema.Types.ObjectId,
-      // The ObjectIds will refer to the ids in the Nudge model
-      ref: "Nudge"
-    }
+    // {
+    //   // Store ObjectIds in the array
+    //   type: Schema.Types.ObjectId,
+    //   // The ObjectIds will refer to the ids in the Nudge model
+    //   ref: "Nudge"
+    // }
   ]
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
-
 
 // const mongoose = require('mongoose');
 // const Schema = mongoose.Schema;

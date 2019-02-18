@@ -49,10 +49,8 @@ class NudgeModal extends Component {
               <form>
                 <div className="form-group">
                   <div className="col">
-                    {this.props.nudges.map(nudge => (
-                      <div
-                        key={nudge._id}
-                        className="custom-control custom-checkbox">
+                    {this.props.nudges.map((nudge, i) => (
+                      <div key={i} className="custom-control custom-checkbox">
                         <input
                           type="checkbox"
                           className="custom-control-input"

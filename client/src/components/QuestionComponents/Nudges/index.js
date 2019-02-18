@@ -6,31 +6,62 @@ const $ = window.$;
 
 class Nudges extends Component {
   state = {
-    users: [],
     User: {},
+    userEmail: '',
     title: 'Nudges',
     question: 'Please select your nudges.',
     userField: '',
     nextQuestionLink: '/dashboard',
     nudges: [
-      { name: 'Romantic Text', frequency: 7 },
-      { name: 'Buy Flowers', frequency: 4 },
-      { name: 'Dinner Reservations', frequency: 3 }
+      { name: 'Romantic Text', nudgeFrequency: 7 },
+      { name: 'Buy Flowers', nudgeFrequency: 4 },
+      { name: 'Dinner Reservations', nudgeFrequency: 3 }
     ]
   };
 
+  initClient = function() {
+    const self = this;
+    window.gapi.load('auth2', function() {
+      window.gapi.auth2
+        .init({
+          client_id:
+            '773798651320-0da27e8d6k9mo9ldaijdlupeib1r56jq.apps.googleusercontent.com'
+        })
+        .then(
+          GoogleAuth => {
+            const currentUserEmail = GoogleAuth.currentUser
+              .get()
+              .getBasicProfile()
+              .getEmail();
+            self.setState(
+              {
+                userEmail: currentUserEmail
+              },
+              () => {
+                self.loadUserInfo();
+              }
+            );
+          },
+          err => {
+            console.log(err);
+          }
+        );
+    });
+  };
+
   componentDidMount() {
-    this.loadUserInfo();
+    this.initClient();
     $('.modal-content').css(
       'background-image',
       'url(https://s3.amazonaws.com/bucket-tony-yellowstone/romance.jpg)'
     );
   }
+
   loadUserInfo = () => {
-    API.getUsers().then(res => {
-      this.setState({ users: res.data, User: res.data[res.data.length - 1] });
-      console.log(res.data[res.data.length - 1]);
-      console.log(res.data[res.data.length - 1]._id);
+    const email = this.state.userEmail;
+    API.getUserByEmail(email).then(res => {
+      const resUser = res.data.shift();
+      this.setState({ User: resUser });
     });
   };
 
@@ -38,7 +69,7 @@ class Nudges extends Component {
     event.preventDefault();
     $('.toast').toast('show');
     API.updateUser(this.state.User._id, {
-      nudges: this.state.userField
+      nudges: this.state.nudges
     });
   };
 
