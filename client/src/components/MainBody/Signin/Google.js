@@ -46,7 +46,13 @@ class SignIn extends Component {
       });
     }
 
-    this.createUser(googleUser.getBasicProfile());
+    API.getUserByEmail(profile.getEmail()).then(res => {
+      const resUser = res.data.shift();
+
+      if (!resUser) {
+        this.createUser(googleUser.getBasicProfile());
+      }
+    });
   };
 
   onSuccess(googleUser) {
