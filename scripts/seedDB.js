@@ -30,30 +30,6 @@ const userSeed = [
       }
     ]
   }
-  // {
-  //   name: 'John Doe',
-  //   phone: '4047841090',
-  //   partnerName: 'Jane',
-  //   anniversaryDate: 'November 9, 2013',
-  //   birthDate: 'February 14, 1983',
-  //   nudges: [
-  //     {
-  //       name: 'Romantic Text',
-  //       nudgeFrequency: 5000,
-  //       textMessage: "I'm thinking of you."
-  //     },
-  //     {
-  //       name: 'Send Flowers',
-  //       nudgeFrequency: 5000,
-  //       textMessage: 'Send some flowers.'
-  //     },
-  //     {
-  //       name: 'Dinner Reservation',
-  //       nudgeFrequency: 5000,
-  //       textMessage: 'Make a dinner reservation.'
-  //     }
-  //   ]
-  // }
 ];
 
 db.User.deleteMany({})
