@@ -9,8 +9,8 @@ class Phone extends Component {
     User: {},
     userEmail: '',
     title: 'Phone Number',
-    placeholder: 'Enter here (no dashes or spaces).',
     question: 'what is your phone number?',
+    placeholder: 'Enter here (no dashes or spaces).',
     userField: '',
     nextQuestionLink: '/partner'
   };
@@ -64,15 +64,18 @@ class Phone extends Component {
     API.updateUser(this.state.User._id, {
       phone: phoneRegEx
     });
+    this.setState({
+      userField: phoneRegEx
+    });
   };
 
   handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   };
+
   render() {
     return (
       <div className="container">
@@ -85,12 +88,12 @@ class Phone extends Component {
         <Modal
           handleFormSubmit={this.handleFormSubmit}
           handleInputChange={this.handleInputChange}
+          user={this.state.User}
+          title={this.state.title}
           question={this.state.question}
+          placeholder={this.state.placeholder}
           userField={this.state.userField}
           link={this.state.nextQuestionLink}
-          title={this.state.title}
-          user={this.state.User}
-          placeholder={this.state.placeholder}
         />
       </div>
     );
