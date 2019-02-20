@@ -47,6 +47,7 @@ class NudgeModal extends Component {
                 {this.props.user.name}, {this.props.question}
               </div>
               <form>
+                {this.props.createCheckboxes()}
                 <div className="form-group">
                   <div className="col">
                     {this.props.nudges.map((nudge, i) => (

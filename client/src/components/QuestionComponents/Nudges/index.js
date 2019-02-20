@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import API from '../../../utils/API';
 import NudgeModal from '../NudgeModal';
 import Helmet from 'react-helmet';
+import Checkbox from '../Checkbox';
 const $ = window.$;
+const nudgeOptions = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
 class Nudges extends Component {
   state = {
@@ -16,7 +18,14 @@ class Nudges extends Component {
       { name: 'Romantic Text', nudgeFrequency: 7 },
       { name: 'Buy Flowers', nudgeFrequency: 4 },
       { name: 'Dinner Reservations', nudgeFrequency: 3 }
-    ]
+    ],
+    checkboxes: nudgeOptions.reduce(
+      (options, option) => ({
+        ...options,
+        [option]: false
+      }),
+      {}
+    )
   };
 
   initClient = function() {
@@ -80,6 +89,18 @@ class Nudges extends Component {
       [name]: value
     });
   };
+
+  createCheckbox = option => (
+    <Checkbox
+      label={option}
+      isSelected={this.state.checkboxes[option]}
+      onCheckboxChange={this.handleCheckboxChange}
+      key={option}
+    />
+  );
+
+  createCheckboxes = () => nudgeOptions.map(this.createCheckbox);
+
   render() {
     return (
       <div>
@@ -99,6 +120,7 @@ class Nudges extends Component {
           title={this.state.title}
           user={this.state.User}
           nudges={this.state.nudges}
+          createCheckboxes={this.createCheckboxes}
         />
       </div>
     );
