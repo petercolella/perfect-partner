@@ -82,12 +82,15 @@ class Nudges extends Component {
     });
   };
 
-  handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({
-      [name]: value
-    });
+  handleCheckboxChange = event => {
+    const { name } = event.target;
+
+    this.setState(prevState => ({
+      checkboxes: {
+        ...prevState.checkboxes,
+        [name]: !prevState.checkboxes[name]
+      }
+    }));
   };
 
   createCheckbox = option => (

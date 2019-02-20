@@ -1,18 +1,15 @@
 import React from 'react';
 
 const Checkbox = ({ label, isSelected, onCheckboxChange }) => (
-  <div className="custom-control custom-checkbox">
+  <div className="form-check">
     <input
       type="checkbox"
       name={label}
       checked={isSelected}
       onChange={onCheckboxChange}
-      className="custom-control-input"
-      id="customCheck1"
+      className="form-check-input"
     />
-    <label className="custom-control-label" htmlFor="customCheck1">
-      {label}
-    </label>
+    <label className="form-label">{label}</label>
     {/* Code from previous checkbox list
     <div key={i} className="custom-control custom-checkbox">
       <input
