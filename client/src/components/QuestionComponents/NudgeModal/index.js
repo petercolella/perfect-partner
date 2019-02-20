@@ -47,24 +47,8 @@ class NudgeModal extends Component {
                 {this.props.user.name}, {this.props.question}
               </div>
               <form>
-                {this.props.createCheckboxes()}
                 <div className="form-group">
-                  <div className="col">
-                    {this.props.nudges.map((nudge, i) => (
-                      <div key={i} className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="customCheck1"
-                        />
-                        <label
-                          className="custom-control-label"
-                          htmlFor="customCheck1">
-                          {nudge.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+                  <div className="col">{this.props.createCheckboxes()}</div>
                 </div>
               </form>
               <div className="modal-footer">
