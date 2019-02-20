@@ -9,7 +9,8 @@ class Phone extends Component {
     User: {},
     userEmail: '',
     title: 'Phone Number',
-    question: 'What is your phone number?',
+    placeholder: 'Enter here (no dashes or spaces).',
+    question: 'what is your phone number?',
     userField: '',
     nextQuestionLink: '/partner'
   };
@@ -89,6 +90,7 @@ class Phone extends Component {
           link={this.state.nextQuestionLink}
           title={this.state.title}
           user={this.state.User}
+          placeholder={this.state.placeholder}
         />
       </div>
     );
