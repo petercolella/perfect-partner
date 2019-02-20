@@ -1,15 +1,18 @@
 import React from 'react';
 
-const Checkbox = ({ label, isSelected, onCheckboxChange }) => (
-  <div className="form-check">
+const Checkbox = ({ index, label, isSelected, onCheckboxChange }) => (
+  <div className="custom-control custom-checkbox">
     <input
       type="checkbox"
       name={label}
       checked={isSelected}
       onChange={onCheckboxChange}
-      className="form-check-input"
+      className="custom-control-input"
+      id={`customCheck${index}`}
     />
-    <label className="form-label">{label}</label>
+    <label className="custom-control-label" htmlFor={`customCheck${index}`}>
+      {label}
+    </label>
     {/* Code from previous checkbox list
     <div key={i} className="custom-control custom-checkbox">
       <input

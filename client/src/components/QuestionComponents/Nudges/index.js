@@ -14,11 +14,6 @@ class Nudges extends Component {
     question: 'Please select your nudges.',
     userField: '',
     nextQuestionLink: '/dashboard',
-    nudges: [
-      { name: 'Romantic Text', nudgeFrequency: 7 },
-      { name: 'Buy Flowers', nudgeFrequency: 4 },
-      { name: 'Dinner Reservations', nudgeFrequency: 3 }
-    ],
     checkboxes: nudgeOptions.reduce(
       (options, option) => ({
         ...options,
@@ -93,16 +88,18 @@ class Nudges extends Component {
     }));
   };
 
-  createCheckbox = option => (
+  createCheckbox = (option, index) => (
     <Checkbox
       label={option}
       isSelected={this.state.checkboxes[option]}
       onCheckboxChange={this.handleCheckboxChange}
       key={option}
+      index={index}
     />
   );
 
-  createCheckboxes = () => nudgeOptions.map(this.createCheckbox);
+  createCheckboxes = () =>
+    nudgeOptions.map((option, index) => this.createCheckbox(option, index));
 
   render() {
     return (
