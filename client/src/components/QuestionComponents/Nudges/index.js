@@ -13,6 +13,7 @@ class Nudges extends Component {
     title: 'Nudges',
     question: 'Please select your nudges.',
     selectedNudges: [],
+    toastNudges: '',
     nextQuestionLink: '/dashboard',
     checkboxes: nudgeOptions.reduce(
       (options, option) => ({
@@ -71,17 +72,21 @@ class Nudges extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    $('.toast').toast('show');
+    this.setState({ selectedNudges: [] });
 
     Object.keys(this.state.checkboxes)
       .filter(checkbox => this.state.checkboxes[checkbox])
       .forEach(checkbox => {
         this.state.selectedNudges.push(checkbox);
-        console.log(checkbox, 'is selected.', this.state.selectedNudges);
         API.updateUser(this.state.User._id, {
           nudges: this.state.selectedNudges
         });
       });
+
+    // const nudges = this.state.selectedNudges.join(', ');
+    this.setState({ toastNudges: this.state.selectedNudges.join(', ') });
+
+    $('.toast').toast('show');
   };
 
   handleCheckboxChange = event => {
@@ -126,7 +131,7 @@ class Nudges extends Component {
           link={this.state.nextQuestionLink}
           title={this.state.title}
           user={this.state.User}
-          nudges={this.state.nudges}
+          nudges={this.state.toastNudges}
           createCheckboxes={this.createCheckboxes}
         />
       </div>

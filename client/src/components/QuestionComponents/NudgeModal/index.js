@@ -84,7 +84,9 @@ class NudgeModal extends Component {
             aria-atomic="true"
             data-delay="2000"
             style={{ backgroundColor: '#0bb3e2', color: 'white' }}>
-            <div className="toast-body">Your nudges have been submitted.</div>
+            <div className="toast-body">
+              Your nudges: {this.props.nudges} have been submitted.
+            </div>
           </div>
         </div>
       </div>
