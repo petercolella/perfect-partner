@@ -13,7 +13,7 @@ class Nudges extends Component {
     title: 'Nudges',
     question: 'Please select your nudges.',
     selectedNudges: [],
-    toastNudges: '',
+    toastNudges: [],
     nextQuestionLink: '/dashboard',
     checkboxes: nudgeOptions.reduce(
       (options, option) => ({
@@ -84,7 +84,7 @@ class Nudges extends Component {
       });
 
     // const nudges = this.state.selectedNudges.join(', ');
-    this.setState({ toastNudges: this.state.selectedNudges.join(', ') });
+    this.setState({ toastNudges: this.state.selectedNudges });
 
     $('.toast').toast('show');
   };

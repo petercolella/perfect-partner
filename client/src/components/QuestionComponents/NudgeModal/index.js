@@ -85,7 +85,12 @@ class NudgeModal extends Component {
             data-delay="2000"
             style={{ backgroundColor: '#0bb3e2', color: 'white' }}>
             <div className="toast-body">
-              Your nudges: {this.props.nudges} have been submitted.
+              You submitted these nudges:
+              <ul>
+                {this.props.nudges.map((nudge, i) => (
+                  <li key={i}>{nudge}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
