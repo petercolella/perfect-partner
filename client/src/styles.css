@@ -253,7 +253,7 @@ body {
   background-image: url('img/phone-img.jpg');
   background-repeat: no-repeat;
   border-radius: 20px;
-  max-height: 599px !important;
+  max-height: 95vh !important;
 }
 .modal-bkgrd {
   position: absolute;
