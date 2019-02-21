@@ -12,7 +12,7 @@ class Nudges extends Component {
     userEmail: '',
     title: 'Nudges',
     question: 'Please select your nudges.',
-    userField: '',
+    selectedNudges: [],
     nextQuestionLink: '/dashboard',
     checkboxes: nudgeOptions.reduce(
       (options, option) => ({
@@ -72,9 +72,16 @@ class Nudges extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     $('.toast').toast('show');
-    API.updateUser(this.state.User._id, {
-      nudges: this.state.nudges
-    });
+
+    Object.keys(this.state.checkboxes)
+      .filter(checkbox => this.state.checkboxes[checkbox])
+      .forEach(checkbox => {
+        this.state.selectedNudges.push(checkbox);
+        console.log(checkbox, 'is selected.', this.state.selectedNudges);
+        API.updateUser(this.state.User._id, {
+          nudges: this.state.selectedNudges
+        });
+      });
   };
 
   handleCheckboxChange = event => {
