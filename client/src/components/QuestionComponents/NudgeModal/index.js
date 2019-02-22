@@ -54,6 +54,18 @@ class NudgeModal extends Component {
               <div className="modal-footer">
                 <button
                   type="button"
+                  className="btn btn-secondary mr-2"
+                  onClick={this.props.selectAll}>
+                  &#10003; All
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary mr-2"
+                  onClick={this.props.deselectAll}>
+                  &#10003; None
+                </button>
+                <button
+                  type="button"
                   className="btn btn-primary"
                   onClick={this.props.handleFormSubmit}>
                   Submit

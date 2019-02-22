@@ -83,11 +83,25 @@ class Nudges extends Component {
         });
       });
 
-    // const nudges = this.state.selectedNudges.join(', ');
     this.setState({ toastNudges: this.state.selectedNudges });
 
     $('.toast').toast('show');
   };
+
+  selectAllCheckboxes = isSelected => {
+    Object.keys(this.state.checkboxes).forEach(checkbox => {
+      this.setState(prevState => ({
+        checkboxes: {
+          ...prevState.checkboxes,
+          [checkbox]: isSelected
+        }
+      }));
+    });
+  };
+
+  selectAll = () => this.selectAllCheckboxes(true);
+
+  deselectAll = () => this.selectAllCheckboxes(false);
 
   handleCheckboxChange = event => {
     const { name } = event.target;
@@ -133,6 +147,8 @@ class Nudges extends Component {
           user={this.state.User}
           nudges={this.state.toastNudges}
           createCheckboxes={this.createCheckboxes}
+          selectAll={this.selectAll}
+          deselectAll={this.deselectAll}
         />
       </div>
     );
