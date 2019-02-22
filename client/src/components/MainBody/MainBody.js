@@ -4,7 +4,10 @@ import Dashboard from './Dashboard/Dashboard';
 
 class MainBody extends Component {
   state = {
-    User: {},
+    User: {
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+    },
     userEmail: '',
     name: '',
     phone: '',
@@ -57,7 +60,9 @@ class MainBody extends Component {
     const email = this.state.userEmail;
     API.getUserByEmail(email).then(res => {
       const resUser = res.data.shift();
-      this.setState({ User: resUser });
+      if (resUser) {
+        this.setState({ User: resUser });
+      }
     });
   };
 
@@ -88,7 +93,9 @@ class MainBody extends Component {
               color: 'white'
             }}>
             <div className="toast-body">
-              Text Sent to {this.state.User.phone}.
+              {this.state.User.phone
+                ? `Text Sent to ${this.state.User.phone}.`
+                : `Please log in to send a text.`}
             </div>
           </div>
         </div>
