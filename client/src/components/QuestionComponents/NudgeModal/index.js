@@ -54,13 +54,13 @@ class NudgeModal extends Component {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary mr-2"
+                  className="btn btn-secondary"
                   onClick={this.props.selectAll}>
                   &#10003; All
                 </button>
                 <button
                   type="button"
-                  className="btn btn-secondary mr-2"
+                  className="btn btn-secondary mr-5"
                   onClick={this.props.deselectAll}>
                   &#10003; None
                 </button>
