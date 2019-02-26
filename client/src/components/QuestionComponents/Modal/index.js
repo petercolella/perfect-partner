@@ -80,10 +80,22 @@ class Modal extends Component {
                 <div className="modal-bkgrd" style={{ top: 0, marginTop: 395 }}>
                   <div className="modal-body">
                     <p>
-                      Please click <Link to="/">HERE</Link> to sign in.
+                      Please click{' '}
+                      <Link to="/" style={{ color: '#22b5e0' }}>
+                        here
+                      </Link>{' '}
+                      to sign in before continuing.
                     </p>
                   </div>
-                  <div className="modal-footer" />
+                  <div
+                    className="modal-footer"
+                    style={{ bottom: 0, position: 'absolute', right: 0 }}>
+                    <Link to={this.props.link}>
+                      <button type="button" className="btn btn-secondary">
+                        Next
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
@@ -105,7 +117,7 @@ class Modal extends Component {
             aria-live="assertive"
             aria-atomic="true"
             data-delay="2000"
-            style={{ backgroundColor: '#0bb3e2', color: 'white' }}>
+            style={{ backgroundColor: '#22b5e0', color: 'white' }}>
             <div className="toast-body">
               {this.props.title}: {this.props.userField} has been submitted.
             </div>
