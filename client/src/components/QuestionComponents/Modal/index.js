@@ -77,9 +77,11 @@ class Modal extends Component {
                   </div>
                 </div>
               ) : (
-                <div className="modal-bkgrd">
+                <div className="modal-bkgrd" style={{ top: 0, marginTop: 395 }}>
                   <div className="modal-body">
-                    <h4>Please sign in</h4>
+                    <p>
+                      Please click <Link to="/">HERE</Link> to sign in.
+                    </p>
                   </div>
                   <div className="modal-footer" />
                 </div>
