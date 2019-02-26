@@ -25,18 +25,18 @@ class Phone extends Component {
         })
         .then(
           GoogleAuth => {
-            const currentUserEmail = GoogleAuth.currentUser
-              .get()
-              .getBasicProfile()
-              .getEmail();
-            self.setState(
-              {
-                userEmail: currentUserEmail
-              },
-              () => {
-                self.loadUserInfo();
-              }
-            );
+            const userProfile = GoogleAuth.currentUser.get().getBasicProfile();
+            if (userProfile) {
+              const currentUserEmail = userProfile.getEmail();
+              self.setState(
+                {
+                  userEmail: currentUserEmail
+                },
+                () => {
+                  self.loadUserInfo();
+                }
+              );
+            }
           },
           err => {
             console.log(err);
