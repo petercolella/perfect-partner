@@ -43,38 +43,47 @@ class Modal extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="modal-bkgrd">
-                <div className="modal-body">
-                  {this.props.user.name}, {this.props.question}
-                </div>
-                <form>
-                  <div className="form-group">
-                    <div className="col">
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={this.props.handleInputChange}
-                        value={this.props.userField}
-                        name="userField"
-                        placeholder={this.props.placeholder}
-                      />
-                    </div>
+              {this.props.user.name ? (
+                <div className="modal-bkgrd">
+                  <div className="modal-body">
+                    {this.props.user.name}, {this.props.question}
                   </div>
-                </form>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={this.props.handleFormSubmit}>
-                    Submit
-                  </button>
-                  <Link to={this.props.link}>
-                    <button type="button" className="btn btn-secondary">
-                      Next
+                  <form>
+                    <div className="form-group">
+                      <div className="col">
+                        <input
+                          type="text"
+                          className="form-control"
+                          onChange={this.props.handleInputChange}
+                          value={this.props.userField}
+                          name="userField"
+                          placeholder={this.props.placeholder}
+                        />
+                      </div>
+                    </div>
+                  </form>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.props.handleFormSubmit}>
+                      Submit
                     </button>
-                  </Link>
+                    <Link to={this.props.link}>
+                      <button type="button" className="btn btn-secondary">
+                        Next
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="modal-bkgrd">
+                  <div className="modal-body">
+                    <h4>Please sign in</h4>
+                  </div>
+                  <div className="modal-footer" />
+                </div>
+              )}
             </div>
           </div>
         </div>
