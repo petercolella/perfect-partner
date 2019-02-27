@@ -27,18 +27,18 @@ export default {
         console.log(err);
       });
   },
+  tokenSignIn: function(token_id) {
+    return axios.post('/api/tokensignin', token_id);
+  },
   getNudges: function() {
     return axios.get('/api/nudges');
   },
-  // Gets the user with the given id
   getNudge: function(id) {
     return axios.get('/api/nudges/' + id);
   },
-  // Deletes the user with the given id
   deleteNudge: function(id) {
     return axios.delete('/api/nudges/' + id);
   },
-  // Saves a user to the database
   saveNudge: function(nudgesData) {
     return axios.post('/api/nudges', nudgesData);
   },
