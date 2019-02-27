@@ -27,8 +27,14 @@ export default {
         console.log(err);
       });
   },
-  tokenSignIn: function(token_id) {
-    return axios.post('/api/tokensignin', token_id);
+  tokenSignIn: function(id_token) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'api/tokensignin');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      console.log('Signed in as: ' + xhr.responseText);
+    };
+    xhr.send('idtoken=' + id_token);
   },
   getNudges: function() {
     return axios.get('/api/nudges');

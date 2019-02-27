@@ -55,6 +55,8 @@ class SignIn extends Component {
         this.createUser(googleUser.getBasicProfile());
       }
     });
+
+    API.tokenSignIn(id_token);
   };
 
   onSuccess(googleUser) {
