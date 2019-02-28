@@ -6,11 +6,21 @@ const client = new OAuth2Client(CLIENT_ID);
 
 router.route('/').post(function(req, res) {
   const token_id = req.body.idtoken;
-  //   console.log(req.body);
-  //   console.log('Backend route recieved token_id: ', token_id);
-  //   res.sendStatus(200);
-  console.log(CLIENT_ID);
-  res.send('New User');
+
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+      idToken: token_id,
+      audience: CLIENT_ID
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+
+    console.log(userid);
+    console.log(payload);
+    res.send(payload['name']);
+  }
+
+  verify().catch(console.error);
 });
 
 module.exports = router;
