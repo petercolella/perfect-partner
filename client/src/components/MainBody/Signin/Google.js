@@ -22,18 +22,12 @@ class SignIn extends Component {
       name: profile.getName(),
       email: profile.getEmail(),
       imageUrl: profile.getImageUrl()
-    })
-      .then(res => {
-        console.log(res.data._id);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    });
   }
 
   onSignIn = googleUser => {
-    var profile = googleUser.getBasicProfile();
-    var id_token = googleUser.getAuthResponse().id_token;
+    const profile = googleUser.getBasicProfile();
+    const id_token = googleUser.getAuthResponse().id_token;
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
@@ -51,7 +45,7 @@ class SignIn extends Component {
       const resUser = res.data.shift();
 
       if (!resUser) {
-        this.createUser(googleUser.getBasicProfile());
+        this.createUser(profile);
       }
     });
 
@@ -62,7 +56,9 @@ class SignIn extends Component {
     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 
     // ******* NEED REDIRECT CODE TO SEND TO PAGE FOR SIGN UP *************
+    this.onSignIn(googleUser);
   }
+
   onFailure(error) {
     console.log(error);
   }
@@ -74,7 +70,7 @@ class SignIn extends Component {
       height: 50,
       longtitle: true,
       theme: 'dark',
-      onsuccess: this.onSignIn,
+      onsuccess: this.onSuccess,
       onfailure: this.onFailure
     });
   }

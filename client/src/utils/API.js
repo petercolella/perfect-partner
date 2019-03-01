@@ -21,7 +21,7 @@ export default {
     return axios
       .post('/api/users', userData)
       .then(function(res) {
-        return res;
+        console.log(res.data._id);
       })
       .catch(function(err) {
         console.log(err);
