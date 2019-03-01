@@ -36,6 +36,18 @@ export default {
     };
     xhr.send('idtoken=' + id_token);
   },
+  tokenSignInAxios: function(id_token) {
+    const tokenStr = 'idtoken=' + id_token;
+    return axios
+      .post('api/tokensignin', tokenStr)
+      .then(function(res) {
+        console.log(res);
+        console.log('Signed in as: ', res.responseText);
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  },
   getNudges: function() {
     return axios.get('/api/nudges');
   },
