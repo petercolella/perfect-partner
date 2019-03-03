@@ -52,12 +52,12 @@ class SignIn extends Component {
     API.tokenSignInAxios(id_token);
   };
 
-  onSuccess(googleUser) {
+  onSuccess = googleUser => {
     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 
     // ******* NEED REDIRECT CODE TO SEND TO PAGE FOR SIGN UP *************
     this.onSignIn(googleUser);
-  }
+  };
 
   onFailure(error) {
     console.log(error);
