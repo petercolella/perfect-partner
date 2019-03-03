@@ -3,6 +3,7 @@ const { OAuth2Client } = require('google-auth-library');
 const config = require('../../config/config.json');
 const CLIENT_ID = config.development.CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
+const db = require('../../models');
 
 router.route('/').post(function(req, res) {
   const token_id = req.body.idtoken;
@@ -12,6 +13,7 @@ router.route('/').post(function(req, res) {
       idToken: token_id,
       audience: CLIENT_ID
     });
+
     const payload = ticket.getPayload();
 
     const googleId = payload['sub'];
@@ -30,6 +32,8 @@ router.route('/').post(function(req, res) {
     console.log(newUser);
     console.log(CLIENT_ID === payload['aud']);
     res.send(payload['name']);
+
+    db.User.create(newUser);
   }
 
   verify().catch(console.error);

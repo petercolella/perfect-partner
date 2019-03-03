@@ -41,13 +41,13 @@ class SignIn extends Component {
       });
     }
 
-    API.getUserByEmail(profile.getEmail()).then(res => {
-      const resUser = res.data.shift();
+    // API.getUserByEmail(profile.getEmail()).then(res => {
+    //   const resUser = res.data.shift();
 
-      if (!resUser) {
-        this.createUser(profile);
-      }
-    });
+    //   if (!resUser) {
+    //     this.createUser(profile);
+    //   }
+    // });
 
     API.tokenSignInAxios(id_token);
   };
