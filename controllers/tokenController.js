@@ -34,7 +34,10 @@ module.exports = {
       res.send(payload['name']);
 
       if (CLIENT_ID === payload['aud']) {
-        db.User.create(newUser);
+        // db.User.create(newUser);
+        db.User.find({ googleId: payload['sub'] }, (err, docs) =>
+          console.log(docs)
+        );
       }
     }
 
