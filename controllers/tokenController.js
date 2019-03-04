@@ -29,16 +29,11 @@ module.exports = {
       };
 
       console.log(payload);
-      console.log(newUser);
-      console.log(CLIENT_ID === payload['aud']);
-      res.send(payload['name']);
 
       if (CLIENT_ID === payload['aud']) {
-        db.User.find({ googleId: payload['sub'] }, (err, docs) => {
-          console.log(docs);
-
+        db.User.find({ googleId }, (err, docs) => {
           if (err) {
-            return console.log(err);
+            console.error(err);
           }
 
           if (docs.length === 0) {
@@ -46,6 +41,8 @@ module.exports = {
           }
         });
       }
+
+      res.send(payload['name']);
     }
 
     verify().catch(console.error);
