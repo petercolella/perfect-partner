@@ -33,7 +33,9 @@ module.exports = {
       console.log(CLIENT_ID === payload['aud']);
       res.send(payload['name']);
 
-      db.User.create(newUser);
+      if (CLIENT_ID === payload['aud']) {
+        db.User.create(newUser);
+      }
     }
 
     verify().catch(console.error);
