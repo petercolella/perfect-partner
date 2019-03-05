@@ -36,13 +36,16 @@ module.exports = {
             console.error(err);
           }
 
+          console.log('docs: ', docs);
+
           if (docs.length === 0) {
-            db.User.create(newUser);
+            db.User.create(newUser).then(dbModel =>
+              console.log('dbModel: ', dbModel)
+            );
           }
+          res.send(docs || dbModel);
         });
       }
-
-      res.send(payload['name']);
     }
 
     verify().catch(console.error);

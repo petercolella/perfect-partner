@@ -41,7 +41,7 @@ export default {
     return axios
       .post('api/tokensignin', tokenStr)
       .then(function(res) {
-        console.log('Signed in as: ', res.data);
+        return res.data;
       })
       .catch(function(err) {
         console.log(err);

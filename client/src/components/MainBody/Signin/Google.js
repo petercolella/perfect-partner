@@ -49,7 +49,7 @@ class SignIn extends Component {
     //   }
     // });
 
-    API.tokenSignInAxios(id_token);
+    API.tokenSignInAxios(id_token).then(res => console.log(res));
   };
 
   onSuccess = googleUser => {
