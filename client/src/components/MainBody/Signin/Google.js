@@ -12,6 +12,7 @@ const styles = {
 
 class SignIn extends Component {
   state = {
+    currentUserId: '',
     currentUser: '',
     currentUserMessage: 'Please Sign In.',
     imageUrl: ''
@@ -49,7 +50,11 @@ class SignIn extends Component {
     //   }
     // });
 
-    API.tokenSignInAxios(id_token).then(res => console.log(res));
+    API.tokenSignInAxios(id_token).then(res => {
+      console.log(res);
+      this.setState({ currentUserId: res });
+      sessionStorage.setItem('currentUserId', res);
+    });
   };
 
   onSuccess = googleUser => {

@@ -39,11 +39,11 @@ module.exports = {
           if (!docs) {
             db.User.create(newUser).then(dbModel => {
               console.log('dbModel: ', dbModel);
-              res.send(dbModel);
+              res.send(dbModel._id);
             });
           } else {
             console.log('docs: ', docs);
-            res.send(docs);
+            res.send(docs._id);
           }
         });
       }
