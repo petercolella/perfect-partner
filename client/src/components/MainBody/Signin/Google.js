@@ -18,21 +18,11 @@ class SignIn extends Component {
     imageUrl: ''
   };
 
-  createUser(profile) {
-    API.saveUser({
-      name: profile.getName(),
-      email: profile.getEmail(),
-      imageUrl: profile.getImageUrl()
-    });
-  }
-
   onSignIn = googleUser => {
     const profile = googleUser.getBasicProfile();
     const id_token = googleUser.getAuthResponse().id_token;
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    console.log('ID: ' + profile.getId());
+    console.log('Email: ' + profile.getEmail());
 
     if (profile.getName()) {
       this.setState({
@@ -42,25 +32,15 @@ class SignIn extends Component {
       });
     }
 
-    // API.getUserByEmail(profile.getEmail()).then(res => {
-    //   const resUser = res.data.shift();
-
-    //   if (!resUser) {
-    //     this.createUser(profile);
-    //   }
-    // });
-
-    API.tokenSignInAxios(id_token).then(res => {
-      console.log(res);
-      this.setState({ currentUserId: res });
-      sessionStorage.setItem('currentUserId', res);
+    API.tokenSignInAxios(id_token).then(id => {
+      console.log('currentUserId', id);
+      this.setState({ currentUserId: id });
+      sessionStorage.setItem('currentUserId', id);
     });
   };
 
   onSuccess = googleUser => {
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-
-    // ******* NEED REDIRECT CODE TO SEND TO PAGE FOR SIGN UP *************
+    console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
     this.onSignIn(googleUser);
   };
 
