@@ -31,19 +31,20 @@ module.exports = {
       console.log(payload);
 
       if (CLIENT_ID === payload['aud']) {
-        db.User.find({ googleId }, (err, docs) => {
+        db.User.findOne({ googleId }, (err, docs) => {
           if (err) {
             console.error(err);
           }
 
-          console.log('docs: ', docs);
-
-          if (docs.length === 0) {
-            db.User.create(newUser).then(dbModel =>
-              console.log('dbModel: ', dbModel)
-            );
+          if (!docs) {
+            db.User.create(newUser).then(dbModel => {
+              console.log('dbModel: ', dbModel);
+              res.send(dbModel);
+            });
+          } else {
+            console.log('docs: ', docs);
+            res.send(docs);
           }
-          res.send(docs || dbModel);
         });
       }
     }
