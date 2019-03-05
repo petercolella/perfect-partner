@@ -7,45 +7,14 @@ const $ = window.$;
 class Partner extends Component {
   state = {
     User: {},
-    userEmail: '',
     title: 'Partner Name',
     question: "What is your partner's name?",
     userField: '',
     nextQuestionLink: '/birthday'
   };
 
-  initClient = function() {
-    const self = this;
-    window.gapi.load('auth2', function() {
-      window.gapi.auth2
-        .init({
-          client_id:
-            '773798651320-0da27e8d6k9mo9ldaijdlupeib1r56jq.apps.googleusercontent.com'
-        })
-        .then(
-          GoogleAuth => {
-            const userProfile = GoogleAuth.currentUser.get().getBasicProfile();
-            if (userProfile) {
-              const currentUserEmail = userProfile.getEmail();
-              self.setState(
-                {
-                  userEmail: currentUserEmail
-                },
-                () => {
-                  self.loadUserInfo();
-                }
-              );
-            }
-          },
-          err => {
-            console.log(err);
-          }
-        );
-    });
-  };
-
   componentDidMount() {
-    this.initClient();
+    this.loadUserInfo();
     $('.modal-content').css(
       'background-image',
       'url(https://s3.amazonaws.com/bucket-tony-yellowstone/hearts.jpg)'
@@ -53,11 +22,8 @@ class Partner extends Component {
   }
 
   loadUserInfo = () => {
-    const email = this.state.userEmail;
-    API.getUserByEmail(email).then(res => {
-      const resUser = res.data.shift();
-      this.setState({ User: resUser });
-    });
+    const id = sessionStorage.getItem('currentUserId');
+    API.getUser(id).then(res => this.setState({ User: res.data }));
   };
 
   handleFormSubmit = event => {
