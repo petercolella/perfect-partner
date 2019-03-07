@@ -38,18 +38,26 @@ class Nudges extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.setState({ selectedNudges: [] });
+    this.setState({ selectedNudges: [] }, function() {
+      console.log('1. selectedNudges: ', this.state.selectedNudges);
+    });
 
     Object.keys(this.state.checkboxes)
       .filter(checkbox => this.state.checkboxes[checkbox])
       .forEach(checkbox => {
+        console.log('checkbox: ', checkbox);
         this.state.selectedNudges.push(checkbox);
-        API.updateUser(this.state.User._id, {
-          nudges: this.state.selectedNudges
-        });
+        const newNudge = {
+          userId: this.state.User._id,
+          nudge: {
+            name: checkbox
+          }
+        };
+        API.saveNudge(newNudge);
       });
 
     this.setState({ toastNudges: this.state.selectedNudges });
+    console.log('2. selectedNudges: ', this.state.selectedNudges);
 
     $('.toast').toast('show');
   };
