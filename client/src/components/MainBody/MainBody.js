@@ -8,61 +8,18 @@ class MainBody extends Component {
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
     },
-    userEmail: '',
-    name: '',
-    phone: '',
-    nudges: [
-      { name: 'Romantic Text', frequency: 7 },
-      { name: 'Buy Flowers', frequency: 4 },
-      { name: 'Dinner Reservations', frequency: 3 }
-    ],
-    nudgeFrequency: '',
-    partnerName: '',
-    anniversaryDate: '',
-    birthDate: ''
-  };
-
-  initClient = function() {
-    const self = this;
-    window.gapi.load('auth2', function() {
-      window.gapi.auth2
-        .init({
-          client_id:
-            '773798651320-0da27e8d6k9mo9ldaijdlupeib1r56jq.apps.googleusercontent.com'
-        })
-        .then(
-          GoogleAuth => {
-            const currentUserEmail = GoogleAuth.currentUser
-              .get()
-              .getBasicProfile()
-              .getEmail();
-            self.setState(
-              {
-                userEmail: currentUserEmail
-              },
-              () => {
-                self.loadUserInfo();
-              }
-            );
-          },
-          err => {
-            console.log(err);
-          }
-        );
-    });
+    nudges: []
   };
 
   componentDidMount() {
-    this.initClient();
+    this.loadUserInfo();
   }
 
   loadUserInfo = () => {
-    const email = this.state.userEmail;
-    API.getUserByEmail(email).then(res => {
-      const resUser = res.data.shift();
-      if (resUser) {
-        this.setState({ User: resUser });
-      }
+    const id = sessionStorage.getItem('currentUserId');
+    API.getUser(id).then(res => {
+      this.setState({ User: res.data, nudges: res.data.nudges });
+      console.log('User: ', this.state.User.nudges);
     });
   };
 
