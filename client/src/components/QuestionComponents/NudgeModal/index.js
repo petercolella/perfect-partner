@@ -43,39 +43,68 @@ class NudgeModal extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="modal-body">
-                {this.props.user.name}, {this.props.question}
-              </div>
-              <form>
-                <div className="form-group">
-                  <div className="col">{this.props.createCheckboxes()}</div>
+              {this.props.user.name ? (
+                <div className="modal-bkgrd">
+                  <div className="modal-body" style={{ padding: '0 0 0 1rem' }}>
+                    {this.props.user.name}, {this.props.question}
+                  </div>
+                  <form>
+                    <div className="form-group" style={{ marginBottom: 0 }}>
+                      <div className="col">
+                        <div className="col">
+                          {this.props.createCheckboxes()}
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={this.props.selectAll}>
+                      &#10003; All
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={this.props.deselectAll}>
+                      &#10003; None
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.props.handleFormSubmit}>
+                      Submit
+                    </button>
+                    <Link to={this.props.link}>
+                      <button type="button" className="btn btn-secondary">
+                        Next
+                      </button>
+                    </Link>
+                  </div>
                 </div>
-              </form>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={this.props.selectAll}>
-                  &#10003; All
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary mr-5"
-                  onClick={this.props.deselectAll}>
-                  &#10003; None
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={this.props.handleFormSubmit}>
-                  Submit
-                </button>
-                <Link to={this.props.link}>
-                  <button type="button" className="btn btn-secondary">
-                    Next
-                  </button>
-                </Link>
-              </div>
+              ) : (
+                <div className="modal-bkgrd" style={{ top: 0, marginTop: 395 }}>
+                  <div className="modal-body">
+                    <p>
+                      Please click{' '}
+                      <Link to="/" style={{ color: '#22b5e0' }}>
+                        here
+                      </Link>{' '}
+                      to sign in before continuing.
+                    </p>
+                  </div>
+                  <div
+                    className="modal-footer"
+                    style={{ bottom: 0, position: 'absolute', right: 0 }}>
+                    <Link to={this.props.link}>
+                      <button type="button" className="btn btn-secondary">
+                        Next
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
