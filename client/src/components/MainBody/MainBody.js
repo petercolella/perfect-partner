@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from './Dashboard/Dashboard';
 
@@ -19,7 +20,6 @@ class MainBody extends Component {
     const id = sessionStorage.getItem('currentUserId');
     API.getUser(id).then(res => {
       this.setState({ User: res.data, nudges: res.data.nudges });
-      console.log('User: ', this.state.User.nudges);
     });
   };
 
@@ -67,18 +67,31 @@ class MainBody extends Component {
                 <h1>{this.state.User.name}</h1>
               </div>
             </div>
-            <p>
-              <span>Partners Name:</span> {this.state.User.partnerName}
-            </p>
-            <p>
-              <span>Phone Number:</span> {this.state.User.phone}
-            </p>
-            <p>
-              <span>Patners Birthday:</span> {this.state.User.birthDate}
-            </p>
-            <p>
-              <span>Your Anniversary:</span> {this.state.User.anniversaryDate}
-            </p>
+            {this.state.User.name ? (
+              <div>
+                <p>
+                  <span>Partners Name:</span> {this.state.User.partnerName}
+                </p>
+                <p>
+                  <span>Phone Number:</span> {this.state.User.phone}
+                </p>
+                <p>
+                  <span>Patners Birthday:</span> {this.state.User.birthDate}
+                </p>
+                <p>
+                  <span>Your Anniversary:</span>{' '}
+                  {this.state.User.anniversaryDate}
+                </p>
+              </div>
+            ) : (
+              <p>
+                Please click{' '}
+                <Link to="/" style={{ color: '#22b5e0' }}>
+                  here
+                </Link>{' '}
+                to sign in before continuing.
+              </p>
+            )}
           </div>
           <div className="col-md-8">
             <Dashboard user={this.state.User} nudges={this.state.nudges} />
