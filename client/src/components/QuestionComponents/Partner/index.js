@@ -23,7 +23,9 @@ class Partner extends Component {
 
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
-    API.getUser(id).then(res => this.setState({ User: res.data }));
+    if (id) {
+      API.getUser(id).then(res => this.setState({ User: res.data }));
+    }
   };
 
   handleFormSubmit = event => {
