@@ -17,7 +17,7 @@ const Dashboard = props => {
             return (
               <tr key={nudge.name}>
                 <td>{nudge.name}</td>
-                <td>{nudge.frequency}</td>
+                <td>{nudge.nudgeFrequency}</td>
                 <td>
                   <TestTextButton phone={props.user.phone} />
                 </td>
