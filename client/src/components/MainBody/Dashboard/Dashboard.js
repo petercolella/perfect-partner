@@ -2,6 +2,8 @@ import React from 'react';
 import TestTextButton from '../../TestTextButton';
 
 const Dashboard = props => {
+  let nudgeFrequencyUnit = 'Days';
+
   return (
     <div>
       <table className="table table-striped">
@@ -9,7 +11,8 @@ const Dashboard = props => {
           <tr>
             <th>Nudges</th>
             <th>Frequency</th>
-            <th>Send</th>
+            <th>Frequency Unit</th>
+            <th>Test Button</th>
           </tr>
         </thead>
         <tbody>
@@ -18,6 +21,7 @@ const Dashboard = props => {
               <tr key={nudge.name}>
                 <td>{nudge.name}</td>
                 <td>{nudge.nudgeFrequency}</td>
+                <td>{nudgeFrequencyUnit}</td>
                 <td>
                   <TestTextButton phone={props.user.phone} />
                 </td>
