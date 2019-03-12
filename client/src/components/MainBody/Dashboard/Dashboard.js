@@ -1,5 +1,6 @@
 import React from 'react';
 import TestTextButton from '../../TestTextButton';
+import NudgeUpdate from '../NudgeUpdate';
 
 const Dashboard = props => {
   //   let nudgeFrequencyUnit = 'Days';
@@ -35,11 +36,15 @@ const Dashboard = props => {
                 <td>
                   <TestTextButton phone={props.user.phone} />
                 </td>
+                <td>
+                  <button onClick={props.launchUpdateComp}>Edit Nudge</button>
+                </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <NudgeUpdate />
     </div>
   );
 };

@@ -23,6 +23,10 @@ class MainBody extends Component {
     });
   };
 
+  launchUpdateComp = () => {
+    alert('Update Nudge!');
+  };
+
   // shadow card card-body mb-2
   render() {
     return (
@@ -94,7 +98,11 @@ class MainBody extends Component {
             )}
           </div>
           <div className="col-md-8">
-            <Dashboard user={this.state.User} nudges={this.state.nudges} />
+            <Dashboard
+              user={this.state.User}
+              nudges={this.state.nudges}
+              launchUpdateComp={this.launchUpdateComp}
+            />
           </div>
         </div>
       </div>
