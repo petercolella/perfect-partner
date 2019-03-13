@@ -37,7 +37,11 @@ const Dashboard = props => {
                   <TestTextButton phone={props.user.phone} />
                 </td>
                 <td>
-                  <button onClick={props.launchUpdateComp}>Edit Nudge</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={props.launchUpdateComp}>
+                    Edit Nudge
+                  </button>
                 </td>
               </tr>
             );

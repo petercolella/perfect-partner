@@ -80,7 +80,7 @@ class MainBody extends Component {
                   <span>Phone Number:</span> {this.state.User.phone}
                 </p>
                 <p>
-                  <span>Patners Birthday:</span> {this.state.User.birthDate}
+                  <span>Partners Birthday:</span> {this.state.User.birthDate}
                 </p>
                 <p>
                   <span>Your Anniversary:</span>{' '}
