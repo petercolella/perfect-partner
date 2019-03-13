@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from './Dashboard/Dashboard';
+const $ = window.$;
 
 class MainBody extends Component {
   state = {
@@ -24,8 +25,20 @@ class MainBody extends Component {
   };
 
   launchUpdateComp = () => {
-    alert('Update Nudge!');
+    this.showModal();
   };
+
+  showModal() {
+    $('#exampleModalCenter').modal('show');
+  }
+
+  closeUpdateComp = () => {
+    this.hideModal();
+  };
+
+  hideModal() {
+    $('#exampleModalCenter').modal('hide');
+  }
 
   // shadow card card-body mb-2
   render() {
@@ -102,6 +115,7 @@ class MainBody extends Component {
               user={this.state.User}
               nudges={this.state.nudges}
               launchUpdateComp={this.launchUpdateComp}
+              closeUpdateComp={this.closeUpdateComp}
             />
           </div>
         </div>

@@ -48,7 +48,7 @@ const Dashboard = props => {
           })}
         </tbody>
       </table>
-      <NudgeUpdate />
+      <NudgeUpdate closeUpdateComp={props.closeUpdateComp} />
     </div>
   );
 };
