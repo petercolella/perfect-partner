@@ -52,7 +52,6 @@ class MainBody extends Component {
             position: 'absolute',
             minHeight: 200,
             minWidth: '100vw',
-            zIndex: 1051,
             paddingTop: 328
           }}>
           <div

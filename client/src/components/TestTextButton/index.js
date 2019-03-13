@@ -9,7 +9,9 @@ const TestTextButton = props => {
     $('.toast').toast('show');
     API.sendText({ phone })
       .then(res => {
-        $('.toast').toast('show');
+        $('.toast').on('show.bs.toast', function() {
+          $('.toast').css('zIndex', 1051);
+        });
       })
       .catch(err => {
         console.log(err);
