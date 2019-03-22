@@ -17,7 +17,7 @@ const Dashboard = props => {
           </tr>
         </thead>
         <tbody>
-          {props.nudges.map(nudge => {
+          {props.nudges.map((nudge, i) => {
             return (
               <tr key={nudge.name}>
                 <td>{nudge.name}</td>
@@ -39,7 +39,7 @@ const Dashboard = props => {
                 <td>
                   <button
                     className="btn btn-primary"
-                    onClick={props.launchUpdateComp}>
+                    onClick={() => props.launchUpdateComp(i)}>
                     Edit Nudge
                   </button>
                 </td>
@@ -48,7 +48,7 @@ const Dashboard = props => {
           })}
         </tbody>
       </table>
-      <NudgeUpdate closeUpdateComp={props.closeUpdateComp} />
+      <NudgeUpdate closeUpdateComp={props.closeUpdateComp} id={props.id} />
     </div>
   );
 };

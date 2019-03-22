@@ -10,7 +10,8 @@ class MainBody extends Component {
       imageUrl:
         'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
     },
-    nudges: []
+    nudges: [],
+    nudgeId: ''
   };
 
   componentDidMount() {
@@ -24,7 +25,8 @@ class MainBody extends Component {
     });
   };
 
-  launchUpdateComp = () => {
+  launchUpdateComp = i => {
+    console.log(i);
     this.showModal();
   };
 
