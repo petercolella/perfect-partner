@@ -11,7 +11,7 @@ class MainBody extends Component {
         'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
     },
     nudges: [],
-    nudgeId: ''
+    nudge: {}
   };
 
   componentDidMount() {
@@ -25,8 +25,9 @@ class MainBody extends Component {
     });
   };
 
-  launchUpdateComp = i => {
-    console.log(i);
+  launchUpdateComp = nudge => {
+    console.log('launchUpdateComp: ', nudge);
+    this.setState({ nudge });
     this.showModal();
   };
 
@@ -41,6 +42,18 @@ class MainBody extends Component {
   hideModal() {
     $('#exampleModalCenter').modal('hide');
   }
+
+  handleInputChange = event => {
+    console.log('event.target: ', event.target);
+    // console.log('event.target.nudge: ', event.target.nudge);
+    console.log('nudge: ', this.state.nudge);
+    const { name, value } = event.target;
+    this.setState({
+      nudge: {
+        [name]: value
+      }
+    });
+  };
 
   // shadow card card-body mb-2
   render() {
@@ -115,8 +128,10 @@ class MainBody extends Component {
             <Dashboard
               user={this.state.User}
               nudges={this.state.nudges}
+              nudge={this.state.nudge}
               launchUpdateComp={this.launchUpdateComp}
               closeUpdateComp={this.closeUpdateComp}
+              handleInputChange={this.handleInputChange}
             />
           </div>
         </div>

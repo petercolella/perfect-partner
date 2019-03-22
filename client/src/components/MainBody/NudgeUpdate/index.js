@@ -18,9 +18,8 @@ const NudgeUpdate = props => (
                   type="text"
                   className="form-control"
                   onChange={props.handleInputChange}
-                  value={props.name}
                   name="name"
-                  placeholder={props.name}
+                  value={props.nudge.name}
                 />
                 <input
                   type="text"

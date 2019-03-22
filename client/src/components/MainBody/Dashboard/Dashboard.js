@@ -39,16 +39,23 @@ const Dashboard = props => {
                 <td>
                   <button
                     className="btn btn-primary"
-                    onClick={() => props.launchUpdateComp(i)}>
+                    onClick={() => props.launchUpdateComp(nudge)}>
                     Edit Nudge
                   </button>
+                  <NudgeUpdate
+                    closeUpdateComp={props.closeUpdateComp}
+                    handleInputChange={props.handleInputChange}
+                    name={nudge.name}
+                    nudgeFrequency={nudge.nudgeFrequency}
+                    textMessage={nudge.textMessage}
+                    nudge={props.nudge}
+                  />
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <NudgeUpdate closeUpdateComp={props.closeUpdateComp} id={props.id} />
     </div>
   );
 };
