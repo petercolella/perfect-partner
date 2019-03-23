@@ -44,15 +44,14 @@ class MainBody extends Component {
   }
 
   handleInputChange = event => {
-    console.log('event.target: ', event.target);
-    // console.log('event.target.nudge: ', event.target.nudge);
-    console.log('nudge: ', this.state.nudge);
     const { name, value } = event.target;
     this.setState({
       nudge: {
+        ...this.state.nudge,
         [name]: value
       }
     });
+    console.log('nudge: ', this.state.nudge);
   };
 
   // shadow card card-body mb-2

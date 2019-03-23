@@ -18,24 +18,22 @@ const NudgeUpdate = props => (
                   type="text"
                   className="form-control"
                   onChange={props.handleInputChange}
-                  name="name"
                   value={props.nudge.name}
+                  name="name"
                 />
                 <input
                   type="text"
                   className="form-control"
                   onChange={props.handleInputChange}
-                  value={props.nudgeFrequency}
+                  value={props.nudge.nudgeFrequency}
                   name="nudgeFrequency"
-                  placeholder={props.nudgeFrequency}
                 />
                 <input
                   type="text"
                   className="form-control"
                   onChange={props.handleInputChange}
-                  value={props.textMessage}
+                  value={props.nudge.textMessage}
                   name="textMessage"
-                  placeholder={props.textMessage}
                 />
               </div>
             </div>

@@ -45,9 +45,6 @@ const Dashboard = props => {
                   <NudgeUpdate
                     closeUpdateComp={props.closeUpdateComp}
                     handleInputChange={props.handleInputChange}
-                    name={nudge.name}
-                    nudgeFrequency={nudge.nudgeFrequency}
-                    textMessage={nudge.textMessage}
                     nudge={props.nudge}
                   />
                 </td>
