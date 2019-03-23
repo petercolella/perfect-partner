@@ -58,7 +58,14 @@ class MainBody extends Component {
     console.log('nudge: ', this.state.nudge);
   };
 
-  // shadow card card-body mb-2
+  handleFormSubmit = event => {
+    event.preventDefault();
+    // $('.toast').toast('show');
+    API.updateNudge(this.state.nudge._id, {
+      ...this.state.nudge
+    });
+  };
+
   render() {
     return (
       <div className="container-fluid">
@@ -135,6 +142,7 @@ class MainBody extends Component {
               launchUpdateComp={this.launchUpdateComp}
               closeUpdateComp={this.closeUpdateComp}
               handleInputChange={this.handleInputChange}
+              handleFormSubmit={this.handleFormSubmit}
             />
           </div>
         </div>

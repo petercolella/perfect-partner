@@ -27,6 +27,10 @@ export default {
         console.log(err);
       });
   },
+  updateUser: function(id, userData) {
+    console.log(userData);
+    return axios.put('/api/users/' + id, userData);
+  },
   tokenSignInXhr: function(id_token) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'api/tokensignin');
@@ -59,11 +63,10 @@ export default {
   saveNudge: function(nudgesData) {
     return axios.post('/api/nudges', nudgesData);
   },
+  updateNudge: function(id, nudgeData) {
+    return axios.put('/api/nudges/' + id, nudgeData);
+  },
   sendText: function(data) {
     return axios.post('/api/send', data);
-  },
-  updateUser: function(id, userData) {
-    console.log(userData);
-    return axios.put('/api/users/' + id, userData);
   }
 };

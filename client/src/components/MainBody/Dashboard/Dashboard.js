@@ -45,6 +45,7 @@ const Dashboard = props => {
                   <NudgeUpdate
                     closeUpdateComp={props.closeUpdateComp}
                     handleInputChange={props.handleInputChange}
+                    handleFormSubmit={props.handleFormSubmit}
                     nudge={props.nudge}
                   />
                 </td>
