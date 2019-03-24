@@ -6,12 +6,10 @@ const TestTextButton = props => {
   function sendText(e) {
     e.preventDefault();
     const phone = props.phone;
-    $('.toast').toast('show');
+    $('#phone-toast').toast('show');
     API.sendText({ phone })
       .then(res => {
-        $('.toast').on('show.bs.toast', function() {
-          $('.toast').css('zIndex', 1051);
-        });
+        console.log(res.data);
       })
       .catch(err => {
         console.log(err);

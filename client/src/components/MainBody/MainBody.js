@@ -60,7 +60,13 @@ class MainBody extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    // $('.toast').toast('show');
+    $('#nudge-toast').toast('show');
+    $('#nudge-toast').on('shown.bs.toast', function() {
+      $('#nudge-toast').css({ zIndex: 1051 });
+    });
+    $('#nudge-toast').on('hidden.bs.toast', function() {
+      $('#nudge-toast').css({ zIndex: 1050 });
+    });
     API.updateNudge(this.state.nudge._id, {
       ...this.state.nudge
     });
@@ -81,6 +87,7 @@ class MainBody extends Component {
           }}>
           <div
             className="toast "
+            id="phone-toast"
             role="alert"
             aria-live="assertive"
             aria-atomic="true"
@@ -94,6 +101,35 @@ class MainBody extends Component {
               {this.state.User.phone
                 ? `Text Sent to ${this.state.User.phone}.`
                 : `Please log in to send a text.`}
+            </div>
+          </div>
+        </div>
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="d-flex justify-content-center align-items-center"
+          style={{
+            position: 'absolute',
+            minHeight: '5vh',
+            minWidth: '100vw'
+            // zIndex: 1051
+          }}>
+          <div
+            className="toast"
+            id="nudge-toast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            data-delay="2000"
+            style={{
+              backgroundColor: '#22b5e0',
+              color: 'white',
+              position: 'absolute',
+              top: '15vh'
+              //   right: 0
+            }}>
+            <div className="toast-body" style={{ top: '25vh' }}>
+              {this.state.nudge.name} has been successfully updated.
             </div>
           </div>
         </div>
