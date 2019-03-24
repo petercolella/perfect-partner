@@ -55,6 +55,28 @@ const NudgeUpdate = props => (
         </div>
       </div>
     </div>
+    <div
+      aria-live="polite"
+      aria-atomic="true"
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        position: 'relative',
+        minHeight: 200,
+        zIndex: 1051,
+        paddingTop: 200
+      }}>
+      <div
+        className="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        data-delay="2000"
+        style={{ backgroundColor: '#22b5e0', color: 'white' }}>
+        <div className="toast-body">
+          {props.nudge.name} has been successfully updated.
+        </div>
+      </div>
+    </div>
   </div>
 );
 

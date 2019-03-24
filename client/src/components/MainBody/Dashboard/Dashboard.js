@@ -42,18 +42,18 @@ const Dashboard = props => {
                     onClick={() => props.launchUpdateComp(nudge)}>
                     Edit Nudge
                   </button>
-                  <NudgeUpdate
-                    closeUpdateComp={props.closeUpdateComp}
-                    handleInputChange={props.handleInputChange}
-                    handleFormSubmit={props.handleFormSubmit}
-                    nudge={props.nudge}
-                  />
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      <NudgeUpdate
+        closeUpdateComp={props.closeUpdateComp}
+        handleInputChange={props.handleInputChange}
+        handleFormSubmit={props.handleFormSubmit}
+        nudge={props.nudge}
+      />
     </div>
   );
 };
