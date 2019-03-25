@@ -10,7 +10,7 @@ const NudgeUpdate = props => (
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
-        <div className="modal-content">
+        <div className="modal-content" style={{ background: '#eb5160' }}>
           <form>
             <div className="form-group">
               <div className="col">
