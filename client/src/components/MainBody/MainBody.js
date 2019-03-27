@@ -131,7 +131,6 @@ class MainBody extends Component {
             </div>
           </div>
         </div>
-        <div className="row dashbkgrd" />
         <div className="row">
           <div className="col-md-4 dashboard-rght">
             <div className="row">
@@ -168,7 +167,10 @@ class MainBody extends Component {
               </p>
             )}
           </div>
-          <div className="col-md-8">
+          <div className="col-md-8 dashbkgrd" />
+        </div>
+        <div className="row">
+          <div className="col-md-12">
             <Dashboard
               user={this.state.User}
               nudges={this.state.nudges}
