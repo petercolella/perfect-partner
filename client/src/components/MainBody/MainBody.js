@@ -30,7 +30,6 @@ class MainBody extends Component {
   };
 
   launchUpdateComp = nudge => {
-    console.log('launchUpdateComp: ', nudge);
     this.setState({ nudge });
     this.showModal();
   };
@@ -55,7 +54,6 @@ class MainBody extends Component {
         [name]: value
       }
     });
-    console.log('nudge: ', this.state.nudge);
   };
 
   handleFormSubmit = event => {

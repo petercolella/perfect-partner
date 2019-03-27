@@ -4,7 +4,6 @@ const $ = window.$;
 
 const TestTextButton = props => {
   function sendText(e) {
-    console.log(props);
     e.preventDefault();
     const phone = props.user.phone;
     const textMessage = props.nudge.textMessage;

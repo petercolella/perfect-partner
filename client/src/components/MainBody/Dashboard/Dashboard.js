@@ -3,8 +3,6 @@ import TestTextButton from '../../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 
 const Dashboard = props => {
-  //   let nudgeFrequencyUnit = 'Days';
-
   return (
     <div>
       <table className="table table-striped">
