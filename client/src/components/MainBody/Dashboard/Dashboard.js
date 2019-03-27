@@ -13,6 +13,7 @@ const Dashboard = props => {
             <th>Frequency</th>
             <th>Frequency Unit</th>
             <th>Test Button</th>
+            <th>Customize</th>
           </tr>
         </thead>
         <tbody>

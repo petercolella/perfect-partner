@@ -185,10 +185,10 @@ body {
 
 .dashbkgrd {
   background-image: url('img/love-hearts.jpg');
-  background-size: cover;
-  background-position-y: -166px;
+  background-size: contain;
+  /* background-position-y: -166px; */
   background-repeat: no-repeat;
-  min-height: 391px;
+  /* min-height: 391px; */
 }
 
 .dashboard-rght {

@@ -133,7 +133,7 @@ class MainBody extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 dashboard-rght">
+          <div className="col-md-6 dashboard-rght">
             <div className="row">
               <div className="col-md-4  avatar-center dash">
                 <img alt="" src={this.state.User.imageUrl} />
@@ -168,7 +168,7 @@ class MainBody extends Component {
               </p>
             )}
           </div>
-          <div className="col-md-8 dashbkgrd" />
+          <div className="col-md-6 dashbkgrd" />
         </div>
         <div className="row">
           <div className="col-md-12">
