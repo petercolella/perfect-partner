@@ -8,7 +8,8 @@ const Dashboard = props => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Nudges</th>
+            <th>Nudge Name</th>
+            <th>Text Body</th>
             <th>Frequency</th>
             <th>Frequency Unit</th>
             <th>Test Button</th>
@@ -17,8 +18,9 @@ const Dashboard = props => {
         <tbody>
           {props.nudges.map((nudge, i) => {
             return (
-              <tr key={nudge.name}>
+              <tr key={nudge._id}>
                 <td>{nudge.name}</td>
+                <td>{nudge.textMessage}</td>
                 <td>{nudge.nudgeFrequency}</td>
                 <td>
                   <select className="custom-select" id="nudgeFrequencyUnit">

@@ -68,6 +68,7 @@ class MainBody extends Component {
     API.updateNudge(this.state.nudge._id, {
       ...this.state.nudge
     });
+    this.loadUserInfo();
   };
 
   render() {
