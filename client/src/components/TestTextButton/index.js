@@ -4,10 +4,12 @@ const $ = window.$;
 
 const TestTextButton = props => {
   function sendText(e) {
+    console.log(props);
     e.preventDefault();
-    const phone = props.phone;
+    const phone = props.user.phone;
+    const textMessage = props.nudge.textMessage;
     $('#phone-toast').toast('show');
-    API.sendText({ phone })
+    API.sendText({ phone, textMessage })
       .then(res => {
         console.log(res.data);
       })

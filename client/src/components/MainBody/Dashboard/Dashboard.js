@@ -34,7 +34,7 @@ const Dashboard = props => {
                   </select>
                 </td>
                 <td>
-                  <TestTextButton phone={props.user.phone} />
+                  <TestTextButton {...props} />
                 </td>
                 <td>
                   <button

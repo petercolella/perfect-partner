@@ -3,13 +3,14 @@ const nodemailer = require('nodemailer');
 
 router.post('/', (req, res) => {
   const phone = req.body.phone;
+  const textMessage = req.body.textMessage;
   console.log(phone);
 
   const mail = {
     from: '"Perfect Partner" <perfect@anthonylindo.com>',
     to: `${phone}@textmagic.com`,
     subject: 'Hello ✔',
-    text: 'Tell her you love her.'
+    text: `${textMessage}`
   };
 
   const transporter = nodemailer.createTransport({
