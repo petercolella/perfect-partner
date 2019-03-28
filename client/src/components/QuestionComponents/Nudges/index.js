@@ -14,13 +14,14 @@ class Nudges extends Component {
     selectedNudges: [],
     toastNudges: [],
     nextQuestionLink: '/dashboard',
-    checkboxes: nudgeOptions.reduce(
-      (options, option) => ({
+    checkboxes: nudgeOptions.reduce((options, option) => {
+      console.log('options: ', options);
+      console.log('option: ', option);
+      return {
         ...options,
         [option]: false
-      }),
-      {}
-    )
+      };
+    }, {})
   };
 
   componentDidMount() {
