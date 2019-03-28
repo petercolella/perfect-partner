@@ -187,7 +187,7 @@ body {
   background-image: url('img/love-hearts.jpg');
   background-size: contain;
   /* background-position-y: -166px; */
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   /* min-height: 391px; */
 }
 
@@ -202,10 +202,16 @@ body {
   font-size: 2rem;
   /* margin: 12px 0 0 -21px; */
 }
-.dashboard-rght img {
+
+#avatar-image {
   border-radius: 50%;
   width: 85%;
   margin-top: -13px;
+}
+
+.dashboard-rght img {
+  max-width: 100%;
+  height: auto;
 }
 
 .dashboard-rght {

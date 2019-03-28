@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from './Dashboard/Dashboard';
+import loveHearts from '../../img/love-hearts.jpg';
 const $ = window.$;
 
 class MainBody extends Component {
@@ -133,17 +134,18 @@ class MainBody extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6 dashboard-rght">
+          <div className="col-md-12 dashboard-rght">
             <div className="row" style={{ padding: '1em' }}>
-              <div className="col-md-3  avatar-center dash">
+              <div className="col-md-2  avatar-center dash">
                 <h1>{this.state.User.name}</h1>
                 <img
+                  id="avatar-image"
                   alt="User"
                   src={this.state.User.imageUrl}
                   style={{ marginTop: '0.5em' }}
                 />
               </div>
-              <div className="col-md-9" style={{ margin: 'auto' }}>
+              <div className="col-md-5" style={{ margin: 'auto' }}>
                 {this.state.User.name ? (
                   <div>
                     <p>
@@ -171,9 +173,11 @@ class MainBody extends Component {
                   </p>
                 )}
               </div>
+              <div className="col-md-5">
+                <img alt="love-hearts" src={loveHearts} />
+              </div>
             </div>
           </div>
-          <div className="col-md-6 dashbkgrd" />
         </div>
         <div className="row">
           <div className="col-md-12">
