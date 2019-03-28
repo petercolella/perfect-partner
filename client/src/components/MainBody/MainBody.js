@@ -134,39 +134,44 @@ class MainBody extends Component {
         </div>
         <div className="row">
           <div className="col-md-6 dashboard-rght">
-            <div className="row">
-              <div className="col-md-4  avatar-center dash">
-                <img alt="" src={this.state.User.imageUrl} />
-              </div>
-              <div className="col-md-8">
+            <div className="row" style={{ padding: '1em' }}>
+              <div className="col-md-3  avatar-center dash">
                 <h1>{this.state.User.name}</h1>
+                <img
+                  alt="User"
+                  src={this.state.User.imageUrl}
+                  style={{ marginTop: '0.5em' }}
+                />
+              </div>
+              <div className="col-md-9" style={{ margin: 'auto' }}>
+                {this.state.User.name ? (
+                  <div>
+                    <p>
+                      <span>Partners Name:</span> {this.state.User.partnerName}
+                    </p>
+                    <p>
+                      <span>Phone Number:</span> {this.state.User.phone}
+                    </p>
+                    <p>
+                      <span>Partners Birthday:</span>{' '}
+                      {this.state.User.birthDate}
+                    </p>
+                    <p>
+                      <span>Your Anniversary:</span>{' '}
+                      {this.state.User.anniversaryDate}
+                    </p>
+                  </div>
+                ) : (
+                  <p>
+                    Please click{' '}
+                    <Link to="/" style={{ color: '#22b5e0' }}>
+                      here
+                    </Link>{' '}
+                    to sign in before continuing.
+                  </p>
+                )}
               </div>
             </div>
-            {this.state.User.name ? (
-              <div>
-                <p>
-                  <span>Partners Name:</span> {this.state.User.partnerName}
-                </p>
-                <p>
-                  <span>Phone Number:</span> {this.state.User.phone}
-                </p>
-                <p>
-                  <span>Partners Birthday:</span> {this.state.User.birthDate}
-                </p>
-                <p>
-                  <span>Your Anniversary:</span>{' '}
-                  {this.state.User.anniversaryDate}
-                </p>
-              </div>
-            ) : (
-              <p>
-                Please click{' '}
-                <Link to="/" style={{ color: '#22b5e0' }}>
-                  here
-                </Link>{' '}
-                to sign in before continuing.
-              </p>
-            )}
           </div>
           <div className="col-md-6 dashbkgrd" />
         </div>

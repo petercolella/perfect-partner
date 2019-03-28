@@ -124,7 +124,7 @@ body {
   text-align: center;
   font-family: 'Archivo Narrow', sans-serif;
   color: #fff;
-  margin-top: 22px;
+  /* margin-top: 22px; */
 }
 
 .lead {
@@ -198,9 +198,9 @@ body {
 }
 
 .dashboard-rght h1 {
-  text-align: left;
+  text-align: center;
   font-size: 2rem;
-  margin: 12px 0 0 -21px;
+  /* margin: 12px 0 0 -21px; */
 }
 .dashboard-rght img {
   border-radius: 50%;
