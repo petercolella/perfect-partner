@@ -173,7 +173,7 @@ class MainBody extends Component {
                   </p>
                 )}
               </div>
-              <div className="col-md-5">
+              <div className="col ml-2 md-5">
                 <img alt="love-hearts" src={loveHearts} />
               </div>
             </div>
