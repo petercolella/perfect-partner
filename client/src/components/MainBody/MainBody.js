@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from './Dashboard/Dashboard';
-import loveHearts from '../../img/love-hearts.jpg';
 const $ = window.$;
 
 class MainBody extends Component {
@@ -174,7 +173,8 @@ class MainBody extends Component {
                 )}
               </div>
               <div className="col ml-2 md-5">
-                <img alt="love-hearts" src={loveHearts} />
+                <span className="helper" />
+                <img alt="love-hearts" src="/img/love-hearts.jpg" />
               </div>
             </div>
           </div>

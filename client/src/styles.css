@@ -209,9 +209,16 @@ body {
   margin-top: -13px;
 }
 
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
 .dashboard-rght img {
   max-width: 100%;
   height: auto;
+  vertical-align: middle;
 }
 
 .dashboard-rght {
