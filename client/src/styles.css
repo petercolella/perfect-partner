@@ -184,7 +184,7 @@ body {
 }
 
 .dashbkgrd {
-  background-image: url('img/love-hearts.jpg');
+  background-image: url('/img/love-hearts.jpg');
   background-size: contain;
   /* background-position-y: -166px; */
   /* background-repeat: no-repeat; */
@@ -264,7 +264,7 @@ body {
 
 .modal-content {
   background-color: #eb5160;
-  background-image: url('img/phone-img.jpg');
+  background-image: url('/img/phone-img.jpg');
   background-repeat: no-repeat;
   border-radius: 20px;
   max-height: 95vh !important;
