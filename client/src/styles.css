@@ -250,7 +250,7 @@ body {
   color: #34c2e9;
 }
 
-.close {
+.close-tony {
   font-size: 2.5rem;
   color: #fff;
   opacity: 1;
@@ -262,7 +262,7 @@ body {
   background-size: 80% 80%;
 }
 
-.modal-content {
+.modal-content-tony {
   background-color: #eb5160;
   background-image: url('/img/phone-img.jpg');
   background-repeat: no-repeat;
@@ -274,24 +274,24 @@ body {
   bottom: 0;
   width: 100%;
 }
-.modal-dialog-centered {
+.modal-dialog-centered-tony {
   height: 100%;
   align-items: unset;
 }
-.modal-header {
+.modal-header-tony {
   padding: 0rem 1rem;
   border-bottom: none;
 }
 
-.modal-footer {
+.modal-footer-tony {
   border-top: none;
 }
-.modal-title {
+.modal-title-tony {
   color: #fff;
   font-family: 'Archivo Narrow', sans-serif;
   font-size: 2.5em;
 }
-.modal-body {
+.modal-body-tony {
   font-family: 'Archivo Narrow', sans-serif;
   color: #fff;
   font-size: 2em;

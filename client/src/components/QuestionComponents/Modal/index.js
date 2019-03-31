@@ -29,15 +29,19 @@ class Modal extends Component {
           role="dialog"
           aria-labelledby="exampleModalCenterTitle"
           aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalCenterTitle">
+          <div
+            className="modal-dialog modal-dialog-centered modal-dialog-centered-tony"
+            role="document">
+            <div className="modal-content modal-content-tony">
+              <div className="modal-header modal-header-tony">
+                <h5
+                  className="modal-title modal-title-tony"
+                  id="exampleModalCenterTitle">
                   {this.props.title}
                 </h5>
                 <button
                   type="button"
-                  className="close"
+                  className="close close-tony"
                   data-dismiss="modal"
                   aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -45,7 +49,7 @@ class Modal extends Component {
               </div>
               {this.props.user.name ? (
                 <div className="modal-bkgrd">
-                  <div className="modal-body">
+                  <div className="modal-body modal-body-tony">
                     {this.props.user.name}, {this.props.question}
                   </div>
                   <form>
@@ -62,7 +66,7 @@ class Modal extends Component {
                       </div>
                     </div>
                   </form>
-                  <div className="modal-footer">
+                  <div className="modal-footer modal-footer-tony">
                     <button
                       type="button"
                       className="btn btn-primary"
@@ -78,7 +82,7 @@ class Modal extends Component {
                 </div>
               ) : (
                 <div className="modal-bkgrd" style={{ top: 0, marginTop: 395 }}>
-                  <div className="modal-body">
+                  <div className="modal-body modal-body-tony">
                     <p>
                       Please click{' '}
                       <Link to="/" style={{ color: '#22b5e0' }}>
