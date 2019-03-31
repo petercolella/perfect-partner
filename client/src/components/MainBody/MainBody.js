@@ -35,7 +35,7 @@ class MainBody extends Component {
   };
 
   showModal() {
-    $('#exampleModalCenter').modal('show');
+    $('#editNudgeModalCenter').modal('show');
   }
 
   closeUpdateComp = () => {
@@ -43,7 +43,7 @@ class MainBody extends Component {
   };
 
   hideModal() {
-    $('#exampleModalCenter').modal('hide');
+    $('#editNudgeModalCenter').modal('hide');
   }
 
   handleInputChange = event => {
