@@ -14,8 +14,10 @@ class MainBody extends Component {
     nudge: {
       name: '',
       nudgeFrequency: '',
+      nudgeFrequencyUnit: '',
       textMessage: ''
-    }
+    },
+    nudgeFrequencyUnit: ''
   };
 
   componentDidMount() {
@@ -25,7 +27,11 @@ class MainBody extends Component {
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     API.getUser(id).then(res => {
-      this.setState({ User: res.data, nudges: res.data.nudges });
+      this.setState(
+        res.data
+          ? { User: res.data, nudges: res.data.nudges }
+          : { state: this.prevState }
+      );
     });
   };
 
