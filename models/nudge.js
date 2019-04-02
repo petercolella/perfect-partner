@@ -3,7 +3,13 @@ const Schema = mongoose.Schema;
 
 const nudgeSchema = new Schema({
   name: { type: String, required: true },
-  nudgeFrequency: { type: Number, required: true, default: 5000 },
+  nudgeFrequency: { type: Number, required: true, default: 7 },
+  nudgeFrequencyUnit: {
+    type: String,
+    required: true,
+    default: 'days',
+    enum: ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years']
+  },
   textMessage: { type: String, default: 'text body' }
 });
 
