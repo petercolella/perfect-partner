@@ -18,13 +18,21 @@ const Dashboard = props => {
         </thead>
         <tbody>
           {props.nudges.map((nudge, i) => {
+            const nudgeFrequencyUnitCapitalized = `${nudge.nudgeFrequencyUnit
+              .charAt(0)
+              .toUpperCase()}${nudge.nudgeFrequencyUnit.slice(1)}`;
             return (
               <tr key={nudge._id}>
                 <td>{nudge.name}</td>
                 <td>{nudge.textMessage}</td>
-                <td>{nudge.nudgeFrequency}</td>
                 <td>
-                  <select className="custom-select" id="nudgeFrequencyUnit">
+                  Every {nudge.nudgeFrequency} {nudgeFrequencyUnitCapitalized}
+                </td>
+                <td>
+                  <select
+                    className="custom-select"
+                    name="nudgeFrequencyUnit"
+                    id="nudgeFrequencyUnit">
                     <option value="seconds">seconds</option>
                     <option value="minutes">minutes</option>
                     <option value="hours">hours</option>
