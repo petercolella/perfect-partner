@@ -11,7 +11,6 @@ const Dashboard = props => {
             <th>Nudge Name</th>
             <th>Text Body</th>
             <th>Frequency</th>
-            <th>Frequency Unit</th>
             <th>Test Button</th>
             <th>Customize</th>
           </tr>
@@ -27,20 +26,6 @@ const Dashboard = props => {
                 <td>{nudge.textMessage}</td>
                 <td>
                   Every {nudge.nudgeFrequency} {nudgeFrequencyUnitCapitalized}
-                </td>
-                <td>
-                  <select
-                    className="custom-select"
-                    name="nudgeFrequencyUnit"
-                    id="nudgeFrequencyUnit">
-                    <option value="seconds">seconds</option>
-                    <option value="minutes">minutes</option>
-                    <option value="hours">hours</option>
-                    <option value="days">days</option>
-                    <option value="weeks">weeks</option>
-                    <option value="months">months</option>
-                    <option value="years">years</option>
-                  </select>
                 </td>
                 <td>
                   <TestTextButton {...props} />

@@ -48,6 +48,24 @@ const NudgeUpdate = props => (
                     value={props.nudge.nudgeFrequency}
                     name="nudgeFrequency"
                   />
+                  <label htmlFor="nudgeFrequencyUnitInput">
+                    Frequency Unit
+                  </label>
+                  <select
+                    type="text"
+                    className="form-control"
+                    id="nudgeFrequencyUnitInput"
+                    onChange={props.handleInputChange}
+                    value={props.nudge.nudgeFrequencyUnit}
+                    name="nudgeFrequencyUnit">
+                    <option value="seconds">seconds</option>
+                    <option value="minutes">minutes</option>
+                    <option value="hours">hours</option>
+                    <option value="days">days</option>
+                    <option value="weeks">weeks</option>
+                    <option value="months">months</option>
+                    <option value="years">years</option>
+                  </select>
                   <label htmlFor="nudgeTextInput">Text Body</label>
                   <input
                     type="text"
