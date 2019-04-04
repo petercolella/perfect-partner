@@ -5,5 +5,8 @@ export default {
     const last4 = num.slice(6);
 
     return `(${first3}) ${second3}-${last4}`;
+  },
+  capitalizeFirstLetter: function(str) {
+    return `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
   }
 };
