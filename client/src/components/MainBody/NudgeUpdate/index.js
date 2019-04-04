@@ -11,9 +11,7 @@ const NudgeUpdate = props => (
       aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
-          <div
-            className="modal-header"
-            style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div className="modal-header">
             <h5
               className="modal-title"
               id="editNudgeModalCenterTitle"

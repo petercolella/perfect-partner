@@ -71,6 +71,14 @@ class MainBody extends Component {
     this.loadUserInfo();
   };
 
+  formatPhoneNumber = num => {
+    const first3 = num.slice(0, 3);
+    const second3 = num.slice(3, 6);
+    const last4 = num.slice(6);
+
+    return `(${first3}) ${second3}-${last4}`;
+  };
+
   render() {
     return (
       <div className="container-fluid">
@@ -103,38 +111,6 @@ class MainBody extends Component {
             </div>
           </div>
         </div>
-        {/* <div
-          aria-live="polite"
-          aria-atomic="true"
-          //   className="d-flex justify-content-center align-items-center"
-          style={{
-            position: 'relative'
-            // minHeight: '5vh'
-            // minWidth: '100vw'
-            // zIndex: 1051
-          }}>
-          <div
-            className="toast"
-            id="nudge-toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            data-delay="2000"
-            style={{
-              backgroundColor: '#22b5e0',
-              color: 'white',
-              position: 'absolute',
-              top: 0,
-              right: 0
-            }}>
-            <div
-              className="toast-body"
-              // style={{ top: '25vh' }}
-            >
-              {this.state.nudge.name} has been successfully updated.
-            </div>
-          </div>
-        </div> */}
         <div className="row">
           <div className="col-md-12 dashboard-rght">
             <div className="row" style={{ padding: '1em' }}>
@@ -151,13 +127,14 @@ class MainBody extends Component {
                 {this.state.User.name ? (
                   <div>
                     <p>
-                      <span>Partners Name:</span> {this.state.User.partnerName}
+                      <span>Phone Number:</span>{' '}
+                      {this.formatPhoneNumber(this.state.User.phone)}
                     </p>
                     <p>
-                      <span>Phone Number:</span> {this.state.User.phone}
+                      <span>Partner's Name:</span> {this.state.User.partnerName}
                     </p>
                     <p>
-                      <span>Partners Birthday:</span>{' '}
+                      <span>Partner's Birthday:</span>{' '}
                       {this.state.User.birthDate}
                     </p>
                     <p>
