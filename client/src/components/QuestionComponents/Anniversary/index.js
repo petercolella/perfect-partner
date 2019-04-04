@@ -8,7 +8,7 @@ class Anniversary extends Component {
   state = {
     User: {},
     title: 'Anniversary',
-    question: 'What is your anniversary date?',
+    question: 'what is your anniversary date?',
     userField: '',
     nextQuestionLink: '/nudges'
   };

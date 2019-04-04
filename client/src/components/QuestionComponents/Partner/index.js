@@ -8,7 +8,7 @@ class Partner extends Component {
   state = {
     User: {},
     title: 'Partner Name',
-    question: "What is your partner's name?",
+    question: "what is your partner's name?",
     userField: '',
     nextQuestionLink: '/birthday'
   };

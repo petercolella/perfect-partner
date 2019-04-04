@@ -10,7 +10,7 @@ class Nudges extends Component {
   state = {
     User: {},
     title: 'Nudges',
-    question: 'Please select your nudges.',
+    question: 'please select your nudges.',
     selectedNudges: [],
     toastNudges: [],
     nextQuestionLink: '/dashboard',
