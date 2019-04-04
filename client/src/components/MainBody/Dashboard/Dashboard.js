@@ -1,16 +1,9 @@
 import React from 'react';
 import TestTextButton from '../../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
+import fn from '../../../utils/fn';
 
 const Dashboard = props => {
-  function formatPhoneNumber(num) {
-    const first3 = num.slice(0, 3);
-    const second3 = num.slice(3, 6);
-    const last4 = num.slice(6);
-
-    return `(${first3}) ${second3}-${last4}`;
-  }
-
   return (
     <div>
       <table className="table table-striped">
@@ -65,7 +58,7 @@ const Dashboard = props => {
           }}>
           <div className="toast-body">
             {props.user.phone
-              ? `Text Sent to ${formatPhoneNumber(props.user.phone)}.`
+              ? `Text Sent to ${fn.formatPhoneNumber(props.user.phone)}.`
               : `Please log in to send a text.`}
           </div>
         </div>

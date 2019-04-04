@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from './Dashboard/Dashboard';
+import fn from '../../utils/fn';
 const $ = window.$;
 
 class MainBody extends Component {
@@ -71,14 +72,6 @@ class MainBody extends Component {
     this.loadUserInfo();
   };
 
-  formatPhoneNumber = num => {
-    const first3 = num.slice(0, 3);
-    const second3 = num.slice(3, 6);
-    const last4 = num.slice(6);
-
-    return `(${first3}) ${second3}-${last4}`;
-  };
-
   render() {
     return (
       <div className="container-fluid">
@@ -99,7 +92,7 @@ class MainBody extends Component {
                   <div>
                     <p>
                       <span>Phone Number:</span>{' '}
-                      {this.formatPhoneNumber(this.state.User.phone)}
+                      {fn.formatPhoneNumber(this.state.User.phone)}
                     </p>
                     <p>
                       <span>Partner's Name:</span> {this.state.User.partnerName}
