@@ -65,12 +65,6 @@ class MainBody extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     $('#nudge-toast').toast('show');
-    $('#nudge-toast').on('shown.bs.toast', function() {
-      $('#nudge-toast').css({ zIndex: 1051 });
-    });
-    $('#nudge-toast').on('hidden.bs.toast', function() {
-      $('#nudge-toast').css({ zIndex: 1050 });
-    });
     API.updateNudge(this.state.nudge._id, {
       ...this.state.nudge
     });
@@ -109,14 +103,14 @@ class MainBody extends Component {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           aria-live="polite"
           aria-atomic="true"
-          className="d-flex justify-content-center align-items-center"
+          //   className="d-flex justify-content-center align-items-center"
           style={{
-            position: 'absolute',
-            minHeight: '5vh',
-            minWidth: '100vw'
+            position: 'relative'
+            // minHeight: '5vh'
+            // minWidth: '100vw'
             // zIndex: 1051
           }}>
           <div
@@ -130,14 +124,17 @@ class MainBody extends Component {
               backgroundColor: '#22b5e0',
               color: 'white',
               position: 'absolute',
-              top: '15vh'
-              //   right: 0
+              top: 0,
+              right: 0
             }}>
-            <div className="toast-body" style={{ top: '25vh' }}>
+            <div
+              className="toast-body"
+              // style={{ top: '25vh' }}
+            >
               {this.state.nudge.name} has been successfully updated.
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="row">
           <div className="col-md-12 dashboard-rght">
             <div className="row" style={{ padding: '1em' }}>

@@ -10,14 +10,39 @@ const NudgeUpdate = props => (
       aria-labelledby="editNudgeModalCenterTitle"
       aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
-        <div
-          className="modal-content"
-          // style={{ background: '#eb5160' }}
-        >
+        <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="editNudgeModalCenterTitle">
               Edit Nudge
             </h5>
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              style={
+                {
+                  // minHeight: '5vh'
+                  // minWidth: '100vw'
+                }
+              }>
+              <div
+                className="toast"
+                id="nudge-toast"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                data-delay="2000"
+                style={{
+                  backgroundColor: '#22b5e0',
+                  color: 'white'
+                }}>
+                <div
+                  className="toast-body"
+                  // style={{ top: '25vh' }}
+                >
+                  {props.nudge.name} has been successfully updated.
+                </div>
+              </div>
+            </div>
             <button
               type="button"
               className="close"
