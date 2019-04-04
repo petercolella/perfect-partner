@@ -82,35 +82,6 @@ class MainBody extends Component {
   render() {
     return (
       <div className="container-fluid">
-        <div
-          aria-live="polite"
-          aria-atomic="true"
-          className="d-flex justify-content-center align-items-center"
-          style={{
-            position: 'absolute',
-            minHeight: 200,
-            minWidth: '100vw',
-            paddingTop: 328
-          }}>
-          <div
-            className="toast "
-            id="phone-toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            data-delay="2000"
-            style={{
-              position: 'realative',
-              backgroundColor: '#0bb3e2',
-              color: 'white'
-            }}>
-            <div className="toast-body">
-              {this.state.User.phone
-                ? `Text Sent to ${this.state.User.phone}.`
-                : `Please log in to send a text.`}
-            </div>
-          </div>
-        </div>
         <div className="row">
           <div className="col-md-12 dashboard-rght">
             <div className="row" style={{ padding: '1em' }}>
