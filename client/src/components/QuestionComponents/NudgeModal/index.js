@@ -52,7 +52,7 @@ class NudgeModal extends Component {
                   <div
                     className="modal-body modal-body-tony"
                     style={{ padding: '0 0 0 1rem' }}>
-                    {this.props.user.name}, {this.props.question}
+                    {this.props.user.firstName}, {this.props.question}
                   </div>
                   <form>
                     <div className="form-group" style={{ marginBottom: 0 }}>

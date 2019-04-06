@@ -50,7 +50,7 @@ class Modal extends Component {
               {this.props.user.name ? (
                 <div className="modal-bkgrd">
                   <div className="modal-body modal-body-tony">
-                    {this.props.user.name}, {this.props.question}
+                    {this.props.user.firstName}, {this.props.question}
                   </div>
                   <form>
                     <div className="form-group">
