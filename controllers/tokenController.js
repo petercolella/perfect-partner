@@ -20,12 +20,16 @@ module.exports = {
       const name = payload['name'];
       const email = payload['email'];
       const imageUrl = payload['picture'];
+      const firstName = payload['given_name'];
+      const lastName = payload['family_name'];
 
       const newUser = {
         googleId,
         name,
         email,
-        imageUrl
+        imageUrl,
+        firstName,
+        lastName
       };
 
       console.log(payload);
