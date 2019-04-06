@@ -6,9 +6,9 @@ import fn from '../../../utils/fn';
 const Dashboard = props => {
   return (
     <div>
-      <table className="table table-striped">
+      <table className="table table-striped" style={{ textAlign: 'center' }}>
         <thead>
-          <tr style={{ textAlign: 'center' }}>
+          <tr>
             <th>Nudge Name</th>
             <th>Text Body</th>
             <th>Frequency</th>

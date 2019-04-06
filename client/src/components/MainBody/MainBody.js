@@ -84,10 +84,12 @@ class MainBody extends Component {
                   id="avatar-image"
                   alt="User"
                   src={this.state.User.imageUrl}
-                  style={{ marginTop: '0.5em' }}
+                  //   style={{ marginTop: '0.5em' }}
                 />
               </div>
-              <div className="col-md-5" style={{ margin: 'auto' }}>
+              <div
+                className="col-md-5 d-flex align-items-center justify-content-center"
+                style={{ border: 'white solid 0.25rem' }}>
                 {this.state.User.name ? (
                   <div>
                     <p>
@@ -116,7 +118,7 @@ class MainBody extends Component {
                   </p>
                 )}
               </div>
-              <div className="col ml-2 md-5">
+              <div className="col-md-5">
                 <span className="helper" />
                 <img alt="love-hearts" src="/img/love-hearts.jpg" />
               </div>

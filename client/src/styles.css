@@ -124,7 +124,7 @@ body {
   text-align: center;
   font-family: 'Archivo Narrow', sans-serif;
   color: #fff;
-  /* margin-top: 22px; */
+  margin: auto;
 }
 
 .lead {
@@ -206,7 +206,7 @@ body {
 #avatar-image {
   border-radius: 50%;
   width: 85%;
-  margin-top: -13px;
+  /* margin-top: -13px; */
 }
 
 .helper {
