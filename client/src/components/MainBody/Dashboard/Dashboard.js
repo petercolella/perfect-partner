@@ -34,7 +34,7 @@ const Dashboard = props => {
                   </button>
                 </td>
                 <td>
-                  <TestTextButton {...props} />
+                  <TestTextButton {...props} nudge={nudge} />
                 </td>
               </tr>
             );
