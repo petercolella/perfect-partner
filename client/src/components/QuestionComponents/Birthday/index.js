@@ -17,7 +17,7 @@ class Birthday extends Component {
     this.loadUserInfo();
     $('.modal-content').css(
       'background-image',
-      'url(https://s3.amazonaws.com/bucket-tony-yellowstone/birthday-history-600x319.jpg)'
+      'url(./img/birthday-history-600x319.jpg)'
     );
   }
 
@@ -49,8 +49,7 @@ class Birthday extends Component {
       <div>
         <Helmet
           bodyAttributes={{
-            style:
-              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+            style: 'background-image: url("./img/bedroom.jpg");'
           }}
         />
         <Modal

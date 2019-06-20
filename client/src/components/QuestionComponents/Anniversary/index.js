@@ -15,10 +15,7 @@ class Anniversary extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
-    $('.modal-content').css(
-      'background-image',
-      'url(https://s3.amazonaws.com/bucket-tony-yellowstone/alcohol.jpg)'
-    );
+    $('.modal-content').css('background-image', 'url(./img/alcohol.jpg)');
   }
 
   loadUserInfo = () => {
@@ -48,8 +45,7 @@ class Anniversary extends Component {
       <div>
         <Helmet
           bodyAttributes={{
-            style:
-              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+            style: 'background-image: url("/img/bedroom.jpg");'
           }}
         />
         <Modal

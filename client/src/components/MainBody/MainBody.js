@@ -120,7 +120,7 @@ class MainBody extends Component {
               </div>
               <div className="col-md-5">
                 <span className="helper" />
-                <img alt="love-hearts" src="/img/love-hearts.jpg" />
+                <img alt="love-hearts" src="./img/love-hearts.jpg" />
               </div>
             </div>
           </div>

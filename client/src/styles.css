@@ -264,7 +264,6 @@ body {
 
 .modal-content-tony {
   background-color: #616161;
-  background-image: url('/img/phone-img.jpg');
   background-repeat: no-repeat;
   border-radius: 20px;
   max-height: 95vh !important;

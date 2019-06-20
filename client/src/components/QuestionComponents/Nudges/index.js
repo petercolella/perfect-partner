@@ -26,10 +26,7 @@ class Nudges extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
-    $('.modal-content').css(
-      'background-image',
-      'url(https://s3.amazonaws.com/bucket-tony-yellowstone/romance.jpg)'
-    );
+    $('.modal-content').css('background-image', 'url(./img/romance.jpg)');
   }
 
   loadUserInfo = () => {
@@ -109,8 +106,7 @@ class Nudges extends Component {
       <div>
         <Helmet
           bodyAttributes={{
-            style:
-              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+            style: 'background-image: url("./img/bedroom.jpg");'
           }}
         />
 

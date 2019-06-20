@@ -15,10 +15,7 @@ class Partner extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
-    $('.modal-content').css(
-      'background-image',
-      'url(https://s3.amazonaws.com/bucket-tony-yellowstone/hearts.jpg)'
-    );
+    $('.modal-content').css('background-image', 'url(./img/hearts.jpg)');
   }
 
   loadUserInfo = () => {
@@ -48,8 +45,7 @@ class Partner extends Component {
       <div>
         <Helmet
           bodyAttributes={{
-            style:
-              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+            style: 'background-image: url("./img/bedroom.jpg");'
           }}
         />
 

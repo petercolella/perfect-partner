@@ -16,6 +16,7 @@ class Phone extends Component {
 
   componentDidMount() {
     this.loadUserInfo();
+    $('.modal-content').css('background-image', 'url(./img/phone-img.jpg)');
   }
 
   loadUserInfo = () => {
@@ -49,8 +50,7 @@ class Phone extends Component {
       <div className="container">
         <Helmet
           bodyAttributes={{
-            style:
-              'background-image: url("https://s3.amazonaws.com/bucket-tony-yellowstone/bedroom.jpg");'
+            style: 'background-image: url("./img/bedroom.jpg");'
           }}
         />
         <Modal
