@@ -28,7 +28,7 @@
     "google-auth-library": "^3.1.0",
     "helmet": "^3.15.0",
     "if-env": "^1.0.4",
-    "mongoose": "^5.0.17",
+    "mongoose": "^5.6.0",
     "nodemailer": "^5.1.1",
     "react-helmet": "^5.2.0",
     "react-router": "^4.3.1",
