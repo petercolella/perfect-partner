@@ -4,7 +4,7 @@ initClient = function() {
     window.gapi.auth2
       .init({
         client_id:
-          '773798651320-0da27e8d6k9mo9ldaijdlupeib1r56jq.apps.googleusercontent.com'
+          '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
       })
       .then(
         GoogleAuth => {
