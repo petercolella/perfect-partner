@@ -1,7 +1,7 @@
+require('dotenv').config();
 const db = require('../models');
 const { OAuth2Client } = require('google-auth-library');
-const config = require('../config/config.json');
-const CLIENT_ID = config.development.CLIENT_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
 module.exports = {
