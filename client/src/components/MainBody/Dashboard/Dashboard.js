@@ -23,7 +23,7 @@ const Dashboard = props => {
                 <td>{nudge.name}</td>
                 <td>{nudge.textMessage}</td>
                 <td>
-                  Every {nudge.nudgeFrequency}{' '}
+                  Once Every {nudge.nudgeFrequency}{' '}
                   {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
                 </td>
                 <td>
