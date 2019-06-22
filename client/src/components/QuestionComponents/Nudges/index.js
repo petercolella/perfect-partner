@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import API from '../../../utils/API';
 import NudgeModal from '../NudgeModal';
-import Helmet from 'react-helmet';
 import Checkbox from '../Checkbox';
 const $ = window.$;
 const nudgeOptions = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
@@ -103,13 +102,7 @@ class Nudges extends Component {
 
   render() {
     return (
-      <div>
-        <Helmet
-          bodyAttributes={{
-            style: 'background-image: url("./img/bedroom.jpg");'
-          }}
-        />
-
+      <div className="bkgd-image">
         <NudgeModal
           handleFormSubmit={this.handleFormSubmit}
           handleInputChange={this.handleInputChange}

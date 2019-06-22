@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import API from '../../../utils/API';
-import Helmet from 'react-helmet';
 const $ = window.$;
 
 class Phone extends Component {
@@ -47,12 +46,7 @@ class Phone extends Component {
 
   render() {
     return (
-      <div className="container">
-        <Helmet
-          bodyAttributes={{
-            style: 'background-image: url("./img/bedroom.jpg");'
-          }}
-        />
+      <div className="bkgd-image">
         <Modal
           handleFormSubmit={this.handleFormSubmit}
           handleInputChange={this.handleInputChange}

@@ -18,12 +18,12 @@ const App = () => {
     <BrowserRouter>
       <div>
         <Route exact path="/" component={Landing} />
-        <Route exact path="/dashboard" component={MainBody} />
         <Route exact path="/birthday" component={Birthday} />
         <Route exact path="/nudges" component={Nudges} />
         <Route exact path="/partner" component={Partner} />
         <Route exact path="/phone" component={Phone} />
         <Route exact path="/anniversary" component={Anniversary} />
+        <Route exact path="/dashboard" component={MainBody} />
       </div>
     </BrowserRouter>
   );

@@ -9,13 +9,13 @@ Perfect Partner helps add spontaneity and creativity to a relationship.
 
 - ReactJS
 - Bootstrap
-- Helmet
 - Node Mailer
 - Express
 - Mongoose
 - Axios
+- Twilio
 
-### Group Members
+### Original Group Members
 
 - Matt Fazio
 - Tony Lindo

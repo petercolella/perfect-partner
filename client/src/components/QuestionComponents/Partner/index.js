@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import API from '../../../utils/API';
-import Helmet from 'react-helmet';
 const $ = window.$;
 
 class Partner extends Component {
@@ -42,13 +41,7 @@ class Partner extends Component {
   };
   render() {
     return (
-      <div>
-        <Helmet
-          bodyAttributes={{
-            style: 'background-image: url("./img/bedroom.jpg");'
-          }}
-        />
-
+      <div className="bkgd-image">
         <Modal
           handleFormSubmit={this.handleFormSubmit}
           handleInputChange={this.handleInputChange}
