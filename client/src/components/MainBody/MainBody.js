@@ -84,7 +84,6 @@ class MainBody extends Component {
                   id="avatar-image"
                   alt="User"
                   src={this.state.User.imageUrl}
-                  //   style={{ marginTop: '0.5em' }}
                 />
               </div>
               <div

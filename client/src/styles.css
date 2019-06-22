@@ -1,119 +1,29 @@
-.nav-pp {
-  background-color: #ca0a04;
-}
-.logoIcon {
-  height: 50px;
-  width: auto;
-}
-.header-title {
-  text-align: center;
-}
-.widget {
-  margin-top: 12px;
-  background-color: #e0e0e0;
-  border: none;
-  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  position: relative;
-  padding: 20px;
-  display: block;
-  text-align: center;
-}
-
-.widget-events-cal {
-  margin-top: 12px;
-  background-color: #e0e0e0;
-  border: none;
-  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  position: relative;
-  padding: 20px;
-  display: block;
-  text-align: center;
-  height: 200px;
-}
-
-.widget-articles {
-  margin-top: 12px;
-  background-color: #e0e0e0;
-  border: none;
-  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  position: relative;
-  padding: 20px;
-  display: block;
-  text-align: center;
-  height: 250px;
-}
-
-.profile-widget {
-  background-color: #c5c9b8;
-  width: 100%;
-  color: #333333;
-  height: 150px;
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 10px 0;
-  align-items: center;
-  justify-content: space-around;
-  display: flex;
-  float: none;
-}
-
-/*//colors*/
 body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bkgd-image {
   height: 100vh;
-  background-size: cover;
-  background-position: top center;
-  background-size: cover;
+  background-image: url('./bedroom.jpg');
+  background-position: center;
   background-repeat: no-repeat;
-}
-
-.body-bkg {
-  background: rgb(235, 58, 36);
-  background: linear-gradient(
-    180deg,
-    rgba(235, 58, 36, 1) 21%,
-    rgba(122, 19, 20, 1) 81%
-  );
   background-size: cover;
-}
-
-.mb-2 {
-  margin-top: 15px;
-}
-.d-block {
-  margin-top: 15px;
-}
-.box2 {
-  display: -webkit-flex; /* Safari */
-  flex-flow: row-reverse wrap;
-  -webkit-flex-flow: row-reverse wrap; /* Safari 6.1+ */
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-end;
 }
 
 .box {
   margin-top: 120px;
   background-color: #eb5160;
-  border-radius: 25px 25px 0 0;
+  border-radius: 25px;
   height: 309px;
   position: absolute;
-  bottom: 0;
+  bottom: 1em;
   flex-grow: 1;
+  padding: 1em;
 }
 
 .logo-avatar {
@@ -131,11 +41,6 @@ body {
   font-size: 2rem;
 }
 
-.abcRioButton {
-  margin: auto;
-  border-radius: 78px;
-}
-
 .avatar-center .clicktext {
   color: #000;
   font-size: 21px;
@@ -146,10 +51,6 @@ body {
   text-decoration: underline black !important;
 }
 
-.abcRioButtonBlue {
-  border-radius: 34px !important;
-}
-
 .shadow {
   box-shadow: 0.5rem 0rem 1rem rgba(0, 0, 0, 0.55) !important;
 }
@@ -157,6 +58,7 @@ body {
 .tobottom {
   height: 100vh;
 }
+
 .home-saying {
   float: right;
   font-family: 'Archivo', sans-serif;
@@ -186,9 +88,6 @@ body {
 .dashbkgrd {
   background-image: url('/img/love-hearts.jpg');
   background-size: contain;
-  /* background-position-y: -166px; */
-  /* background-repeat: no-repeat; */
-  /* min-height: 391px; */
 }
 
 .dashboard-rght {
@@ -233,13 +132,12 @@ body {
   color: #000;
 }
 
-/*modal styles*/
-
 .btn {
   border-radius: 25px;
   width: 150px;
   border: none;
 }
+
 .btn-secondary {
   background-color: #22b5e0;
 }
@@ -268,15 +166,18 @@ body {
   border-radius: 20px;
   max-height: 95vh !important;
 }
+
 .modal-bkgrd {
   position: absolute;
   bottom: 0;
   width: 100%;
 }
+
 .modal-dialog-centered-tony {
   height: 100%;
   align-items: unset;
 }
+
 .modal-header-tony {
   padding: 0rem 1rem;
   border-bottom: none;
@@ -285,11 +186,13 @@ body {
 .modal-footer-tony {
   border-top: none;
 }
+
 .modal-title-tony {
   color: #fff;
   font-family: 'Archivo Narrow', sans-serif;
   font-size: 2.5em;
 }
+
 .modal-body-tony {
   font-family: 'Archivo Narrow', sans-serif;
   color: #fff;
