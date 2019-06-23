@@ -17,7 +17,7 @@ body {
 
 .box {
   margin-top: 120px;
-  background-color: #eb5160;
+  background-color: #ef5350;
   border-radius: 25px;
   height: 309px;
   position: absolute;
@@ -91,7 +91,7 @@ body {
 }
 
 .dashboard-rght {
-  background-color: #eb5160;
+  background-color: #ef5350;
   color: #fff;
   font-family: 'Archivo Narrow', sans-serif;
 }
@@ -139,13 +139,23 @@ body {
 }
 
 .btn-secondary {
-  background-color: #22b5e0;
+  background-color: #00b9bd;
+}
+
+.btn-secondary:hover {
+  background-color: #fff;
+  border: none;
+  color: #00b9bd;
 }
 
 .btn-primary {
   background-color: #fff;
   border: none;
-  color: #34c2e9;
+  color: #00b9bd;
+}
+
+.btn-primary:hover {
+  background-color: #00b9bd;
 }
 
 .close-tony {
@@ -161,7 +171,7 @@ body {
 }
 
 .modal-content-tony {
-  background-color: #616161;
+  background-color: #b61827;
   background-repeat: no-repeat;
   border-radius: 20px;
   max-height: 95vh !important;
