@@ -1,4 +1,5 @@
 import React from 'react';
+import ActivateNudgeButton from '../../ActivateNudgeButton';
 import TestTextButton from '../../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../../utils/fn';
@@ -13,7 +14,8 @@ const Dashboard = props => {
             <th>Text Body</th>
             <th>Frequency</th>
             <th>Customize</th>
-            <th>Test Button</th>
+            <th>Test</th>
+            <th>Activate</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +37,9 @@ const Dashboard = props => {
                 </td>
                 <td>
                   <TestTextButton {...props} nudge={nudge} />
+                </td>
+                <td>
+                  <ActivateNudgeButton {...props} nudge={nudge} />
                 </td>
               </tr>
             );

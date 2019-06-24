@@ -9,6 +9,10 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 module.exports = {
+  activate: function(req, res) {
+    console.log(req.body);
+    res.json({ msg: 'Avtivated' });
+  },
   send: function(req, res) {
     const phone = req.body.phone;
     const textMessage = req.body.textMessage;
