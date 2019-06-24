@@ -68,8 +68,9 @@ class MainBody extends Component {
     $('#nudge-toast').toast('show');
     API.updateNudge(this.state.nudge._id, {
       ...this.state.nudge
+    }).then(() => {
+      this.loadUserInfo();
     });
-    this.loadUserInfo();
   };
 
   render() {

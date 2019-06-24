@@ -15,10 +15,49 @@ function sendText(body, to) {
   });
 }
 
+function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
+  switch (nudgeFrequencyUnit) {
+    case 'seconds':
+      return nudgeFrequency * 1000;
+      break;
+    case 'minutes':
+      return nudgeFrequency * 60 * 1000;
+      break;
+    case 'hours':
+      return nudgeFrequency * 3600 * 1000;
+      break;
+    case 'days':
+      return nudgeFrequency * 86400 * 1000;
+      break;
+    case 'weeks':
+      return nudgeFrequency * 604800 * 1000;
+      break;
+    case 'months':
+      return nudgeFrequency * 2419200 * 1000;
+      break;
+    case 'years':
+      return nudgeFrequency * 31449600 * 1000;
+      break;
+    default:
+      return nudgeFrequency * 60480 * 1000;
+  }
+}
+
 module.exports = {
   activate: function(req, res) {
     console.log(req.body);
-    res.json({ msg: 'Nudge Text Avtivated' });
+    const nudgeFrequency = req.body.nudge.nudgeFrequency;
+    const nudgeFrequencyUnit = req.body.nudge.nudgeFrequencyUnit;
+    const textMessage = req.body.nudge.textMessage;
+    const phone = req.body.user.phone;
+    const milliseconds = frequencyToMilliseconds(
+      nudgeFrequency,
+      nudgeFrequencyUnit
+    );
+    const nudgeInterval = setInterval(() => {
+      sendText(textMessage, phone);
+    }, milliseconds);
+    res.json({ msg: 'Nudge Text Avtivated', milliseconds });
   },
   send: function(req, res) {
     const phone = req.body.phone;

@@ -6,21 +6,16 @@ const ActivateNudgeButton = props => {
   function activateNudge(e) {
     e.preventDefault();
     const user = props.user;
-    const phone = props.user.phone;
+    // const phone = props.user.phone;
     const nudge = props.nudge;
-    const name = props.nudge.name;
-    const nudgeFrequency = props.nudge.nudgeFrequency;
-    const nudgeFrequencyUnit = props.nudge.nudgeFrequencyUnit;
-    const textMessage = props.nudge.textMessage;
+    // const name = props.nudge.name;
+    // const nudgeFrequency = props.nudge.nudgeFrequency;
+    // const nudgeFrequencyUnit = props.nudge.nudgeFrequencyUnit;
+    // const textMessage = props.nudge.textMessage;
     // $('#phone-toast').toast('show');
     API.activateNudge({
       user,
-      phone,
-      nudge,
-      name,
-      nudgeFrequency,
-      nudgeFrequencyUnit,
-      textMessage
+      nudge
     })
       .then(res => {
         console.log(res.data);
