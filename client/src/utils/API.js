@@ -33,7 +33,7 @@ export default {
   },
   tokenSignInXhr: function(id_token) {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'api/tokensignin');
+    xhr.open('POST', 'api/token');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       console.log('Signed in as: ' + xhr.responseText);
@@ -43,7 +43,7 @@ export default {
   tokenSignInAxios: function(id_token) {
     const tokenStr = 'idtoken=' + id_token;
     return axios
-      .post('api/tokensignin', tokenStr)
+      .post('api/token', tokenStr)
       .then(function(res) {
         return res.data;
       })
