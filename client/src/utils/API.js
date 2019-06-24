@@ -66,7 +66,10 @@ export default {
   updateNudge: function(id, nudgeData) {
     return axios.put('/api/nudges/' + id, nudgeData);
   },
+  activateNudge: function(data) {
+    return axios.post('/api/text/activate', data);
+  },
   sendText: function(data) {
-    return axios.post('/api/send', data);
+    return axios.post('/api/text/send', data);
   }
 };

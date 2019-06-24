@@ -6,7 +6,7 @@ const tokenRoutes = require('./tokensignin');
 
 router.use('/users', userRoutes);
 router.use('/nudges', nudgeRoutes);
-router.use('/send', textRoutes);
+router.use('/text', textRoutes);
 router.use('/tokensignin', tokenRoutes);
 
 module.exports = router;

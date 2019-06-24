@@ -9,7 +9,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-router.post('/', (req, res) => {
+router.post('/send', (req, res) => {
   const phone = req.body.phone;
   const textMessage = req.body.textMessage;
 
