@@ -10,7 +10,12 @@ const nudgeSchema = new Schema({
     default: 'days',
     enum: ['seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years']
   },
-  textMessage: { type: String, default: 'text body' }
+  textMessage: { type: String, default: 'text body' },
+  activated: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
 });
 
 const Nudge = mongoose.model('Nudge', nudgeSchema);

@@ -16,7 +16,8 @@ class MainBody extends Component {
       name: '',
       nudgeFrequency: '',
       nudgeFrequencyUnit: '',
-      textMessage: ''
+      textMessage: '',
+      activated: false
     },
     nudgeFrequencyUnit: ''
   };
@@ -70,6 +71,15 @@ class MainBody extends Component {
       ...this.state.nudge
     }).then(() => {
       this.loadUserInfo();
+    });
+  };
+
+  toggleNudgeActivatedState = () => {
+    this.setState({
+      nudge: {
+        ...this.state.nudge,
+        activated: !this.state.activated
+      }
     });
   };
 
@@ -135,6 +145,7 @@ class MainBody extends Component {
               closeUpdateComp={this.closeUpdateComp}
               handleInputChange={this.handleInputChange}
               handleFormSubmit={this.handleFormSubmit}
+              toggleNudgeActivatedState={this.toggleNudgeActivatedState}
             />
           </div>
         </div>

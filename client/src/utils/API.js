@@ -69,6 +69,9 @@ export default {
   activateNudge: function(data) {
     return axios.post('/api/text/activate', data);
   },
+  toggleNudgeActivatedState: function(data) {
+    return axios.post('api/text/toggle');
+  },
   sendText: function(data) {
     return axios.post('/api/text/send', data);
   }
