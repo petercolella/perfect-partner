@@ -45,6 +45,7 @@ function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
 
 module.exports = {
   toggle: function(req, res) {
+    console.log('req.body', req.body);
     const response = req.body;
     res.json(response);
   },

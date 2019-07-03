@@ -74,7 +74,8 @@ class MainBody extends Component {
     });
   };
 
-  toggleNudgeActivatedState = () => {
+  toggleNudgeActivatedState = id => {
+    console.log('id', id);
     this.setState({
       nudge: {
         ...this.state.nudge,
