@@ -74,16 +74,6 @@ class MainBody extends Component {
     });
   };
 
-  toggleNudgeActivatedState = id => {
-    console.log('id', id);
-    this.setState({
-      nudge: {
-        ...this.state.nudge,
-        activated: !this.state.activated
-      }
-    });
-  };
-
   render() {
     return (
       <div className="container-fluid">
@@ -142,11 +132,11 @@ class MainBody extends Component {
               user={this.state.User}
               nudges={this.state.nudges}
               nudge={this.state.nudge}
+              loadUserInfo={this.loadUserInfo}
               launchUpdateComp={this.launchUpdateComp}
               closeUpdateComp={this.closeUpdateComp}
               handleInputChange={this.handleInputChange}
               handleFormSubmit={this.handleFormSubmit}
-              toggleNudgeActivatedState={this.toggleNudgeActivatedState}
             />
           </div>
         </div>
