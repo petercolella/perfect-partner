@@ -1,4 +1,5 @@
 require('dotenv').config();
+const db = require('../models');
 
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Your Account Sid and Auth Token from twilio.com/console
@@ -46,8 +47,11 @@ function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
 module.exports = {
   toggle: function(req, res) {
     console.log('req.body', req.body);
-    const response = req.body;
-    res.json(response);
+    // const response = req.body;
+    db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+    // res.json(response);
   },
   activate: function(req, res) {
     console.log(req.body);

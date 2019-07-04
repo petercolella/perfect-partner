@@ -2,18 +2,18 @@ import React from 'react';
 import API from '../../utils/API';
 
 const ActivateNudgeButton = props => {
-  console.log('activateNudgeButtonProps:', props);
+  //   console.log('activateNudgeButtonProps:', props);
   function activateNudge(e) {
     e.preventDefault();
-    // const user = props.user;
     const nudge = props.nudge;
-    console.log('nudge', nudge);
-    API.toggleNudgeActivatedState({
-      nudge
+    nudge.activated = !nudge.activated;
+    console.log('activatedNudgeButton nudge', nudge);
+
+    API.toggleNudgeActivatedState(props.nudge._id, {
+      ...props.nudge
     })
       .then(res => {
-        console.log(res.data);
-        props.toggleNudgeActivatedState(nudge._id);
+        console.log('res.data', res.data);
       })
       .catch(err => {
         console.log(err);
@@ -22,7 +22,7 @@ const ActivateNudgeButton = props => {
   return (
     <div>
       <button className="btn btn-primary" onClick={activateNudge}>
-        Activate Nudge
+        {props.nudge.activated ? 'Deactivate Nudge' : 'Activate Nudge'}
       </button>
     </div>
   );
