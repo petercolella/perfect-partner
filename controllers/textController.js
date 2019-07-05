@@ -7,6 +7,7 @@ const db = require('../models');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+const intervals = {};
 
 function sendText(body, to) {
   return client.messages.create({
@@ -54,19 +55,30 @@ module.exports = {
     // res.json(response);
   },
   activate: function(req, res) {
-    console.log(req.body);
-    const nudgeFrequency = req.body.nudge.nudgeFrequency;
-    const nudgeFrequencyUnit = req.body.nudge.nudgeFrequencyUnit;
-    const textMessage = req.body.nudge.textMessage;
+    console.log('req.body', req.body);
+    const nudge = req.body.nudge;
+    console.log('nudge', nudge);
+    const nudgeFrequency = nudge.nudgeFrequency;
+    const nudgeFrequencyUnit = nudge.nudgeFrequencyUnit;
+    const textMessage = nudge.textMessage;
     const phone = req.body.user.phone;
     const milliseconds = frequencyToMilliseconds(
       nudgeFrequency,
       nudgeFrequencyUnit
     );
-    const nudgeInterval = setInterval(() => {
-      sendText(textMessage, phone);
+    intervals[nudge._id] = setInterval(() => {
+      console.log('send text');
+      //   sendText(textMessage, phone);
     }, milliseconds);
-    res.json({ msg: 'Nudge Text Avtivated', milliseconds });
+
+    console.log('nudgeInterval', intervals[nudge._id]);
+    // nudge.timerId = nudgeInterval;
+    db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
+      .then(dbModel =>
+        res.json({ msg: 'Nudge Text Avtivated', milliseconds, dbModel })
+      )
+      .catch(err => res.status(422).json(err));
+    // res.json({ msg: 'Nudge Text Avtivated', milliseconds, dbModel });
   },
   send: function(req, res) {
     const phone = req.body.phone;

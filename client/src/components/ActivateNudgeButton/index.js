@@ -5,11 +5,13 @@ const ActivateNudgeButton = props => {
   function activateNudge() {
     const nudge = props.nudge;
     nudge.activated = !nudge.activated;
+    console.log('nudge', nudge);
 
-    API.toggleNudgeActivatedState(props.nudge._id, {
-      ...props.nudge
+    API.activateNudge(props.nudge._id, {
+      ...props
     })
       .then(res => {
+        console.log(res.data);
         props.loadUserInfo();
       })
       .catch(err => {
