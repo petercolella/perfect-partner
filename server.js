@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
+const textController = require('./controllers/textController');
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,4 +27,5 @@ mongoose.set('useCreateIndex', true);
 // Start the API server
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+  textController.runActivatedNudges();
 });

@@ -88,9 +88,28 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
+  runActivatedNudges: function() {
+    db.Nudge.find({}, (err, nudges) => {
+      if (err) {
+        console.log({ error: err.message });
+      }
+      nudges.forEach(nudge => {
+        const { nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+        const milliseconds = frequencyToMilliseconds(
+          nudgeFrequency,
+          nudgeFrequencyUnit
+        );
+        if (nudge.activated) {
+          intervals[nudge._id] = setInterval(() => {
+            console.log(textMessage);
+            //   sendText(textMessage, phone);
+          }, milliseconds);
+        }
+      });
+    });
+  },
   send: function(req, res) {
-    const phone = req.body.phone;
-    const textMessage = req.body.textMessage;
+    const { phone, textMessage } = req.body;
 
     sendText(textMessage, phone).then(message => {
       console.log(message.sid);
