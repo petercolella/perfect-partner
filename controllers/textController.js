@@ -9,6 +9,18 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
+function activateMessage(nudge, to) {
+  return client.messages.create({
+    body: `You have activated your ${
+      nudge.name
+    } Nudge. A reminder text will be sent once every ${nudge.nudgeFrequency} ${
+      nudge.nudgeFrequencyUnit
+    } that will read "${nudge.textMessage}".`,
+    from: process.env.TWILIO_PHONE_NUMBER,
+    to: `+1${to}`
+  });
+}
+
 function sendText(body, to) {
   return client.messages.create({
     body: `${body}`,
@@ -63,6 +75,7 @@ module.exports = {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
       .then(dbModel => {
         if (nudge.activated) {
+          activateMessage(nudge, phone);
           intervals[nudge._id] = setInterval(() => {
             console.log(textMessage);
             //   sendText(textMessage, phone);
