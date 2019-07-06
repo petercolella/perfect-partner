@@ -57,7 +57,6 @@ module.exports = {
   activate: function(req, res) {
     console.log('req.body', req.body);
     const nudge = req.body.nudge;
-    console.log('nudge', nudge);
     const nudgeFrequency = nudge.nudgeFrequency;
     const nudgeFrequencyUnit = nudge.nudgeFrequencyUnit;
     const textMessage = nudge.textMessage;
@@ -71,14 +70,11 @@ module.exports = {
       //   sendText(textMessage, phone);
     }, milliseconds);
 
-    console.log('nudgeInterval', intervals[nudge._id]);
-    // nudge.timerId = nudgeInterval;
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
       .then(dbModel =>
         res.json({ msg: 'Nudge Text Avtivated', milliseconds, dbModel })
       )
       .catch(err => res.status(422).json(err));
-    // res.json({ msg: 'Nudge Text Avtivated', milliseconds, dbModel });
   },
   send: function(req, res) {
     const phone = req.body.phone;

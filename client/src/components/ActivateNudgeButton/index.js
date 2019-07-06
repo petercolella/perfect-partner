@@ -5,10 +5,10 @@ const ActivateNudgeButton = props => {
   function activateNudge() {
     const nudge = props.nudge;
     nudge.activated = !nudge.activated;
-    console.log('nudge', nudge);
+    const { nudges, ...userAndNudge } = props;
 
     API.activateNudge(props.nudge._id, {
-      ...props
+      ...userAndNudge
     })
       .then(res => {
         console.log(res.data);
