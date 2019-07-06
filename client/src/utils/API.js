@@ -67,7 +67,7 @@ export default {
     return axios.put('/api/nudges/' + id, nudgeData);
   },
   activateNudge: function(id, data) {
-    console.log('API id, data', id, data);
+    return axios.post('/api/text/activate/' + id, data);
   },
   toggleNudgeActivatedState: function(id, data) {
     return axios.post('/api/text/toggle/' + id, data);

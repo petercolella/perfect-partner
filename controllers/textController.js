@@ -47,33 +47,32 @@ function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
 
 module.exports = {
   toggle: function(req, res) {
-    console.log('req.body', req.body);
-    // const response = req.body;
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-    // res.json(response);
   },
   activate: function(req, res) {
-    console.log('req.body', req.body);
     const nudge = req.body.nudge;
-    const nudgeFrequency = nudge.nudgeFrequency;
-    const nudgeFrequencyUnit = nudge.nudgeFrequencyUnit;
-    const textMessage = nudge.textMessage;
-    const phone = req.body.user.phone;
+    const { nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+    const { phone } = req.body.user;
     const milliseconds = frequencyToMilliseconds(
       nudgeFrequency,
       nudgeFrequencyUnit
     );
-    intervals[nudge._id] = setInterval(() => {
-      console.log('send text');
-      //   sendText(textMessage, phone);
-    }, milliseconds);
 
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
-      .then(dbModel =>
-        res.json({ msg: 'Nudge Text Avtivated', milliseconds, dbModel })
-      )
+      .then(dbModel => {
+        if (nudge.activated) {
+          intervals[nudge._id] = setInterval(() => {
+            console.log(textMessage);
+            //   sendText(textMessage, phone);
+          }, milliseconds);
+          res.json({ msg: `${nudge.name} Activated`, milliseconds, dbModel });
+        } else {
+          clearInterval(intervals[nudge._id]);
+          res.json({ msg: `${nudge.name} Deactivated`, dbModel });
+        }
+      })
       .catch(err => res.status(422).json(err));
   },
   send: function(req, res) {
