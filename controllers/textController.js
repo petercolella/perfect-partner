@@ -57,6 +57,20 @@ function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
   }
 }
 
+function textRecursiveTimeout(nudge, milliseconds) {
+  const randomFrequency = Math.floor(Math.random() * nudge.nudgeFrequency) + 1;
+  console.log('randomFrequency', randomFrequency);
+  const randomMilliseconds =
+    (milliseconds * randomFrequency) / nudge.nudgeFrequency;
+  console.log('randomMilliseconds', randomMilliseconds);
+  intervals[nudge._id] = setTimeout(() => {
+    console.log(nudge.textMessage);
+    //   sendText(textMessage, phone);
+    clearTimeout(intervals[nudge._id]);
+    textRecursiveTimeout(nudge, milliseconds);
+  }, randomMilliseconds);
+}
+
 module.exports = {
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
@@ -72,14 +86,17 @@ module.exports = {
       nudgeFrequencyUnit
     );
 
+    console.log('req', req);
+
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
       .then(dbModel => {
         if (nudge.activated) {
           activateMessage(nudge, phone);
-          intervals[nudge._id] = setInterval(() => {
-            console.log(textMessage);
-            //   sendText(textMessage, phone);
-          }, milliseconds);
+          //   intervals[nudge._id] = setInterval(() => {
+          //     console.log(textMessage);
+          //     //   sendText(textMessage, phone);
+          //   }, milliseconds);
+          textRecursiveTimeout(nudge, milliseconds);
           res.json({ msg: `${nudge.name} Activated`, milliseconds, dbModel });
         } else {
           clearInterval(intervals[nudge._id]);
@@ -100,10 +117,11 @@ module.exports = {
           nudgeFrequencyUnit
         );
         if (nudge.activated) {
-          intervals[nudge._id] = setInterval(() => {
-            console.log(textMessage);
-            //   sendText(textMessage, phone);
-          }, milliseconds);
+          //   intervals[nudge._id] = setInterval(() => {
+          //     console.log(textMessage);
+          //     //   sendText(textMessage, phone);
+          //   }, milliseconds);
+          textRecursiveTimeout(nudge, milliseconds);
         }
       });
     });
