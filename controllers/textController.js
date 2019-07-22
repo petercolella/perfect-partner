@@ -10,12 +10,9 @@ const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
 function activateMessage(nudge, to) {
+  const { name, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
   return client.messages.create({
-    body: `You have activated your ${
-      nudge.name
-    } Nudge. A reminder text will be sent once every ${nudge.nudgeFrequency} ${
-      nudge.nudgeFrequencyUnit
-    } that will read "${nudge.textMessage}".`,
+    body: `You have activated your ${name} Nudge. A reminder text will be sent randomly every ${nudgeFrequency} ${nudgeFrequencyUnit} that will read "${textMessage}".`,
     from: process.env.TWILIO_PHONE_NUMBER,
     to: `+1${to}`
   });
@@ -57,17 +54,16 @@ function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
   }
 }
 
-function textRecursiveTimeout(nudge, milliseconds) {
-  const randomFrequency = Math.floor(Math.random() * nudge.nudgeFrequency) + 1;
+function textRecursiveTimeout(nudge, milliseconds, phone) {
+  const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+  const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
   console.log('randomFrequency', randomFrequency);
-  const randomMilliseconds =
-    (milliseconds * randomFrequency) / nudge.nudgeFrequency;
-  console.log('randomMilliseconds', randomMilliseconds);
+  const randomMilliseconds = (milliseconds * randomFrequency) / nudgeFrequency;
   intervals[nudge._id] = setTimeout(() => {
-    console.log(nudge.textMessage);
+    console.log(textMessage);
     //   sendText(textMessage, phone);
-    clearTimeout(intervals[nudge._id]);
-    textRecursiveTimeout(nudge, milliseconds);
+    clearTimeout(intervals[_id]);
+    textRecursiveTimeout(nudge, milliseconds, phone);
   }, randomMilliseconds);
 }
 
@@ -79,28 +75,28 @@ module.exports = {
   },
   activate: function(req, res) {
     const nudge = req.body.nudge;
-    const { nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+    const {
+      _id,
+      name,
+      nudgeFrequency,
+      nudgeFrequencyUnit,
+      textMessage
+    } = nudge;
     const { phone } = req.body.user;
     const milliseconds = frequencyToMilliseconds(
       nudgeFrequency,
       nudgeFrequencyUnit
     );
 
-    console.log('req', req);
-
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
       .then(dbModel => {
         if (nudge.activated) {
           activateMessage(nudge, phone);
-          //   intervals[nudge._id] = setInterval(() => {
-          //     console.log(textMessage);
-          //     //   sendText(textMessage, phone);
-          //   }, milliseconds);
-          textRecursiveTimeout(nudge, milliseconds);
-          res.json({ msg: `${nudge.name} Activated`, milliseconds, dbModel });
+          textRecursiveTimeout(nudge, milliseconds, phone);
+          res.json({ msg: `${name} Activated`, milliseconds, dbModel });
         } else {
-          clearInterval(intervals[nudge._id]);
-          res.json({ msg: `${nudge.name} Deactivated`, dbModel });
+          clearInterval(intervals[_id]);
+          res.json({ msg: `${name} Deactivated`, dbModel });
         }
       })
       .catch(err => res.status(422).json(err));
@@ -111,16 +107,17 @@ module.exports = {
         console.log({ error: err.message });
       }
       nudges.forEach(nudge => {
-        const { nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
-        const milliseconds = frequencyToMilliseconds(
+        const {
           nudgeFrequency,
-          nudgeFrequencyUnit
-        );
-        if (nudge.activated) {
-          //   intervals[nudge._id] = setInterval(() => {
-          //     console.log(textMessage);
-          //     //   sendText(textMessage, phone);
-          //   }, milliseconds);
+          nudgeFrequencyUnit,
+          textMessage,
+          activated
+        } = nudge;
+        if (activated) {
+          const milliseconds = frequencyToMilliseconds(
+            nudgeFrequency,
+            nudgeFrequencyUnit
+          );
           textRecursiveTimeout(nudge, milliseconds);
         }
       });
