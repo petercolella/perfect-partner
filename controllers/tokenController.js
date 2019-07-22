@@ -32,8 +32,6 @@ module.exports = {
         lastName
       };
 
-      console.log(payload);
-
       if (CLIENT_ID === payload['aud']) {
         db.User.findOne({ googleId }, (err, docs) => {
           if (err) {
