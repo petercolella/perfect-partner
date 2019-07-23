@@ -59,9 +59,9 @@ function textRecursiveTimeout(nudge, milliseconds, phone) {
   const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
   console.log('randomFrequency', randomFrequency);
   const randomMilliseconds = (milliseconds * randomFrequency) / nudgeFrequency;
-  intervals[nudge._id] = setTimeout(() => {
+  intervals[_id] = setTimeout(() => {
     console.log(textMessage);
-    //   sendText(textMessage, phone);
+    sendText(textMessage, phone);
     clearTimeout(intervals[_id]);
     textRecursiveTimeout(nudge, milliseconds, phone);
   }, randomMilliseconds);
@@ -80,7 +80,8 @@ module.exports = {
       name,
       nudgeFrequency,
       nudgeFrequencyUnit,
-      textMessage
+      textMessage,
+      activated
     } = nudge;
     const { phone } = req.body.user;
     const milliseconds = frequencyToMilliseconds(
@@ -88,9 +89,9 @@ module.exports = {
       nudgeFrequencyUnit
     );
 
-    db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge)
+    db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge, { new: true })
       .then(dbModel => {
-        if (nudge.activated) {
+        if (activated) {
           activateMessage(nudge, phone);
           textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, milliseconds, dbModel });
@@ -107,18 +108,20 @@ module.exports = {
         console.log({ error: err.message });
       }
       nudges.forEach(nudge => {
-        const {
-          nudgeFrequency,
-          nudgeFrequencyUnit,
-          textMessage,
-          activated
-        } = nudge;
+        const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = nudge;
         if (activated) {
           const milliseconds = frequencyToMilliseconds(
             nudgeFrequency,
             nudgeFrequencyUnit
           );
-          textRecursiveTimeout(nudge, milliseconds);
+          db.User.findOne({
+            nudges: { $in: _id }
+          })
+            .then(userModel => {
+              const { phone } = userModel;
+              textRecursiveTimeout(nudge, milliseconds, phone);
+            })
+            .catch(err => res.status(422).json(err));
         }
       });
     });
