@@ -94,10 +94,13 @@ module.exports = {
         if (activated) {
           activateMessage(nudge, phone);
           textRecursiveTimeout(nudge, milliseconds, phone);
-          res.json({ msg: `${name} Activated`, milliseconds, dbModel });
+          res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
-          res.json({ msg: `${name} Deactivated`, dbModel });
+          res.json({
+            msg: `${name} Deactivated`,
+            activated: dbModel.activated
+          });
         }
       })
       .catch(err => res.status(422).json(err));
