@@ -6,6 +6,12 @@ const routes = require('./routes');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const textController = require('./controllers/textController');
+const http = require('http');
+
+// Prevents Heroku from idling.
+setInterval(function() {
+  http.get('http://perfectpartner.herokuapp.com/');
+}, 300000);
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
