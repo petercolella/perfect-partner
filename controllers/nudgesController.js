@@ -1,4 +1,5 @@
 const db = require('../models');
+const fn = require('../scripts/fn');
 
 // Defining methods for the nudgesController
 module.exports = {
@@ -29,8 +30,24 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
+    db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+      .then(dbModel => {
+        const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = dbModel;
+        if (activated) {
+          const milliseconds = fn.frequencyToMilliseconds(
+            nudgeFrequency,
+            nudgeFrequencyUnit
+          );
+          db.User.findOne({
+            nudges: { $in: _id }
+          }).then(userModel => {
+            const { phone } = userModel;
+            fn.textRecursiveTimeout(dbModel, milliseconds, phone);
+          });
+          // .catch(err => res.status(422).json(err));
+        }
+        res.json(dbModel);
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
