@@ -1,5 +1,6 @@
 require('dotenv').config();
 const db = require('../models');
+const fn = require('../scripts/fn');
 
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Your Account Sid and Auth Token from twilio.com/console
@@ -26,43 +27,15 @@ function sendText(body, to) {
   });
 }
 
-function frequencyToMilliseconds(nudgeFrequency, nudgeFrequencyUnit) {
-  switch (nudgeFrequencyUnit) {
-    case 'seconds':
-      return nudgeFrequency * 1000;
-      break;
-    case 'minutes':
-      return nudgeFrequency * 60 * 1000;
-      break;
-    case 'hours':
-      return nudgeFrequency * 3600 * 1000;
-      break;
-    case 'days':
-      return nudgeFrequency * 86400 * 1000;
-      break;
-    case 'weeks':
-      return nudgeFrequency * 604800 * 1000;
-      break;
-    case 'months':
-      return nudgeFrequency * 2419200 * 1000;
-      break;
-    case 'years':
-      return nudgeFrequency * 31449600 * 1000;
-      break;
-    default:
-      return nudgeFrequency * 60480 * 1000;
-  }
-}
-
 function textRecursiveTimeout(nudge, milliseconds, phone) {
   const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
   const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
   console.log('randomFrequency', randomFrequency);
   const randomMilliseconds = (milliseconds * randomFrequency) / nudgeFrequency;
+  clearTimeout(intervals[_id]);
   intervals[_id] = setTimeout(() => {
     console.log(textMessage);
     sendText(textMessage, phone);
-    clearTimeout(intervals[_id]);
     textRecursiveTimeout(nudge, milliseconds, phone);
   }, randomMilliseconds);
 }
@@ -84,7 +57,7 @@ module.exports = {
       activated
     } = nudge;
     const { phone } = req.body.user;
-    const milliseconds = frequencyToMilliseconds(
+    const milliseconds = fn.frequencyToMilliseconds(
       nudgeFrequency,
       nudgeFrequencyUnit
     );
@@ -113,7 +86,7 @@ module.exports = {
       nudges.forEach(nudge => {
         const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = nudge;
         if (activated) {
-          const milliseconds = frequencyToMilliseconds(
+          const milliseconds = fn.frequencyToMilliseconds(
             nudgeFrequency,
             nudgeFrequencyUnit
           );
@@ -124,7 +97,7 @@ module.exports = {
               const { phone } = userModel;
               textRecursiveTimeout(nudge, milliseconds, phone);
             })
-            .catch(err => res.status(422).json(err));
+            .catch(err => console.log('Error: ', err.message));
         }
       });
     });
@@ -132,7 +105,7 @@ module.exports = {
   send: function(req, res) {
     const { phone, textMessage } = req.body;
 
-    sendText(textMessage, phone).then(message => {
+    fn.sendText(textMessage, phone).then(message => {
       console.log(message.sid);
       res.json({ msg: 'Test Text Successfully Sent' });
     });

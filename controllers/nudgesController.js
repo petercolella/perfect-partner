@@ -1,4 +1,5 @@
 const db = require('../models');
+const textControl = require('./textController');
 const fn = require('../scripts/fn');
 
 // Defining methods for the nudgesController
@@ -42,9 +43,8 @@ module.exports = {
             nudges: { $in: _id }
           }).then(userModel => {
             const { phone } = userModel;
-            fn.textRecursiveTimeout(dbModel, milliseconds, phone);
+            textControl.textRecursiveTimeout(dbModel, milliseconds, phone);
           });
-          // .catch(err => res.status(422).json(err));
         }
         res.json(dbModel);
       })
