@@ -27,24 +27,24 @@ function sendText(body, to) {
   });
 }
 
-function textRecursiveTimeout(nudge, milliseconds, phone) {
-  const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
-  const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
-  console.log('randomFrequency', randomFrequency);
-  const randomMilliseconds = (milliseconds * randomFrequency) / nudgeFrequency;
-  clearTimeout(intervals[_id]);
-  intervals[_id] = setTimeout(() => {
-    console.log(textMessage);
-    sendText(textMessage, phone);
-    textRecursiveTimeout(nudge, milliseconds, phone);
-  }, randomMilliseconds);
-}
-
 module.exports = {
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  textRecursiveTimeout: function(nudge, milliseconds, phone) {
+    const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+    const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
+    console.log('randomFrequency', randomFrequency);
+    const randomMilliseconds =
+      (milliseconds * randomFrequency) / nudgeFrequency;
+    clearTimeout(intervals[_id]);
+    intervals[_id] = setTimeout(() => {
+      console.log(textMessage);
+      sendText(textMessage, phone);
+      module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
+    }, randomMilliseconds);
   },
   activate: function(req, res) {
     const nudge = req.body.nudge;
@@ -66,7 +66,7 @@ module.exports = {
       .then(dbModel => {
         if (activated) {
           activateMessage(nudge, phone);
-          textRecursiveTimeout(nudge, milliseconds, phone);
+          module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
@@ -95,7 +95,7 @@ module.exports = {
           })
             .then(userModel => {
               const { phone } = userModel;
-              textRecursiveTimeout(nudge, milliseconds, phone);
+              module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
             })
             .catch(err => console.log('Error: ', err.message));
         }
