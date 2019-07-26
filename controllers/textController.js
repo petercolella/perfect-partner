@@ -13,7 +13,7 @@ const intervals = {};
 function activateMessage(nudge, to) {
   const { name, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
   return client.messages.create({
-    body: `You have activated your ${name} Nudge. A reminder text will be sent randomly every ${nudgeFrequency} ${nudgeFrequencyUnit} that will read "${textMessage}".`,
+    body: `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`,
     from: process.env.TWILIO_PHONE_NUMBER,
     to: `+1${to}`
   });
