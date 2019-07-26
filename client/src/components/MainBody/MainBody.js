@@ -95,7 +95,7 @@ class MainBody extends Component {
                   <div>
                     <p>
                       <span>Phone Number:</span>{' '}
-                      {fn.formatPhoneNumber(this.state.User.phone)}
+                      {this.state.User.phone ? fn.formatPhoneNumber(this.state.User.phone) : null}
                     </p>
                     <p>
                       <span>Partner's Name:</span> {this.state.User.partnerName}
