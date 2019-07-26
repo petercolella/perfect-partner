@@ -33,7 +33,6 @@ class SignIn extends Component {
     }
 
     API.tokenSignInAxios(id_token).then(id => {
-      console.log('currentUserId', id);
       this.setState({ currentUserId: id });
       sessionStorage.setItem('currentUserId', id);
     });

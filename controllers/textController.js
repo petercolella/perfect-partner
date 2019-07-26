@@ -105,7 +105,7 @@ module.exports = {
   send: function(req, res) {
     const { phone, textMessage } = req.body;
 
-    fn.sendText(textMessage, phone).then(message => {
+    sendText(textMessage, phone).then(message => {
       console.log(message.sid);
       res.json({ msg: 'Test Text Successfully Sent' });
     });

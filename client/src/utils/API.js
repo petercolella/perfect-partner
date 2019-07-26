@@ -18,17 +18,9 @@ export default {
   },
   // Saves a user to the database
   saveUser: function(userData) {
-    return axios
-      .post('/api/users', userData)
-      .then(function(res) {
-        console.log(res.data._id);
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    return axios.post('/api/users', userData);
   },
   updateUser: function(id, userData) {
-    console.log(userData);
     return axios.put('/api/users/' + id, userData);
   },
   tokenSignInXhr: function(id_token) {

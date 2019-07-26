@@ -14,8 +14,6 @@ class Nudges extends Component {
     toastNudges: [],
     nextQuestionLink: '/dashboard',
     checkboxes: nudgeOptions.reduce((options, option) => {
-      console.log('options: ', options);
-      console.log('option: ', option);
       return {
         ...options,
         [option]: false
@@ -37,14 +35,11 @@ class Nudges extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.setState({ selectedNudges: [] }, function() {
-      console.log('1. selectedNudges: ', this.state.selectedNudges);
-    });
+    this.setState({ selectedNudges: [] });
 
     Object.keys(this.state.checkboxes)
       .filter(checkbox => this.state.checkboxes[checkbox])
       .forEach(checkbox => {
-        console.log('checkbox: ', checkbox);
         this.state.selectedNudges.push(checkbox);
         const newNudge = {
           userId: this.state.User._id,
@@ -56,7 +51,6 @@ class Nudges extends Component {
       });
 
     this.setState({ toastNudges: this.state.selectedNudges });
-    console.log('2. selectedNudges: ', this.state.selectedNudges);
 
     $('.toast').toast('show');
   };
