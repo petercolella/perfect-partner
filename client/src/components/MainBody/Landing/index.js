@@ -1,8 +1,7 @@
 import React from 'react';
 import Google from '../Signin/Google';
-import Header from '../../Header';
 
-const Landing = () => {
+const Landing = props => {
   return (
     <div className="bkgd-image">
       <div className="contaner invisible">
@@ -22,7 +21,7 @@ const Landing = () => {
         <div className="row bottom-xs">
           <div className="col-xs-6">
             <div className="box shadow">
-              <Google />
+              <Google getPreviousPath={props.getPreviousPath} />
             </div>
           </div>
         </div>

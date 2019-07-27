@@ -14,6 +14,8 @@ class Phone extends Component {
   };
 
   componentDidMount() {
+    const path = this.props.location.pathname;
+    this.props.setPreviousPath(path);
     this.loadUserInfo();
     $('.modal-content').css('background-image', 'url(./img/phone-img.jpg)');
   }

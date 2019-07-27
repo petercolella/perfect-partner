@@ -13,6 +13,8 @@ class Anniversary extends Component {
   };
 
   componentDidMount() {
+    const path = this.props.location.pathname;
+    this.props.setPreviousPath(path);
     this.loadUserInfo();
     $('.modal-content').css('background-image', 'url(./img/alcohol.jpg)');
   }
@@ -39,6 +41,7 @@ class Anniversary extends Component {
       [name]: value
     });
   };
+
   render() {
     return (
       <div className="bkgd-image">
