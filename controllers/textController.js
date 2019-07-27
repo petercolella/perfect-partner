@@ -10,15 +10,6 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
-function activateMessage(nudge, to) {
-  const { name, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
-  return client.messages.create({
-    body: `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`,
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: `+1${to}`
-  });
-}
-
 function sendText(body, to) {
   return client.messages.create({
     body: `${body}`,
@@ -65,11 +56,14 @@ module.exports = {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge, { new: true })
       .then(dbModel => {
         if (activated) {
-          activateMessage(nudge, phone);
+          const activateBody = `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
+          sendText(activateBody, phone);
           module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
+          const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
+          sendText(deactivateBody, phone);
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
