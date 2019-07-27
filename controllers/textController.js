@@ -10,15 +10,14 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
-function sendText(body, to) {
-  return client.messages.create({
-    body: `${body}`,
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: `+1${to}`
-  });
-}
-
 module.exports = {
+  sendText: function(body, to) {
+    return client.messages.create({
+      body: `${body}`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: `+1${to}`
+    });
+  },
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
@@ -33,7 +32,7 @@ module.exports = {
     clearTimeout(intervals[_id]);
     intervals[_id] = setTimeout(() => {
       console.log(textMessage);
-      sendText(textMessage, phone);
+      module.exports.sendText(textMessage, phone);
       module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
     }, randomMilliseconds);
   },
@@ -57,13 +56,13 @@ module.exports = {
       .then(dbModel => {
         if (activated) {
           const activateBody = `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
-          sendText(activateBody, phone);
+          module.exports.sendText(activateBody, phone);
           module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
-          sendText(deactivateBody, phone);
+          module.exports.sendText(deactivateBody, phone);
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
@@ -99,7 +98,7 @@ module.exports = {
   send: function(req, res) {
     const { phone, textMessage } = req.body;
 
-    sendText(textMessage, phone).then(message => {
+    module.exports.sendText(textMessage, phone).then(message => {
       console.log(message.sid);
       res.json({ msg: 'Test Text Successfully Sent' });
     });

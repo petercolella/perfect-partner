@@ -33,19 +33,28 @@ module.exports = {
   update: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbModel => {
-        const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = dbModel;
-        if (activated) {
-          const milliseconds = fn.frequencyToMilliseconds(
-            nudgeFrequency,
-            nudgeFrequencyUnit
-          );
-          db.User.findOne({
-            nudges: { $in: _id }
-          }).then(userModel => {
-            const { phone } = userModel;
+        const {
+          _id,
+          name,
+          nudgeFrequency,
+          nudgeFrequencyUnit,
+          textMessage,
+          activated
+        } = dbModel;
+        const updateBody = `You have updated your ${name} Nudge to a frequency of once every 1 - ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
+        db.User.findOne({
+          nudges: { $in: _id }
+        }).then(userModel => {
+          const { phone } = userModel;
+          textControl.sendText(updateBody, phone);
+          if (activated) {
+            const milliseconds = fn.frequencyToMilliseconds(
+              nudgeFrequency,
+              nudgeFrequencyUnit
+            );
             textControl.textRecursiveTimeout(dbModel, milliseconds, phone);
-          });
-        }
+          }
+        });
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
