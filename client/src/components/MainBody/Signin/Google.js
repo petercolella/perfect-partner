@@ -47,7 +47,8 @@ class SignIn extends Component {
     console.log(error);
   }
 
-  componentDidMount() {
+  renderGoogleLoginButton = () => {
+    console.log('rendering google signin button');
     window.gapi.signin2.render('my-signin2', {
       scope: 'profile email',
       width: 240,
@@ -57,6 +58,10 @@ class SignIn extends Component {
       onsuccess: this.onSuccess,
       onfailure: this.onFailure
     });
+  };
+
+  componentDidMount() {
+    window.addEventListener('google-loaded', this.renderGoogleLoginButton);
   }
 
   render() {
