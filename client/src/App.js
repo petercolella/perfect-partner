@@ -9,6 +9,7 @@ import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';
 import Phone from './components/QuestionComponents/Phone';
 import Anniversary from './components/QuestionComponents/Anniversary';
+import Header from './components/Header';
 
 //CSS
 import './styles.css';
@@ -17,6 +18,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <div>
+        <Header />
         <Route exact path="/" component={Landing} />
         <Route exact path="/birthday" component={Birthday} />
         <Route exact path="/nudges" component={Nudges} />
