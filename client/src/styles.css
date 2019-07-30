@@ -120,6 +120,12 @@ body {
   /* margin-top: -13px; */
 }
 
+#avatar-image-header {
+  border-radius: 50%;
+  height: 50%;
+  margin: auto;
+}
+
 .helper {
   display: inline-block;
   height: 100%;

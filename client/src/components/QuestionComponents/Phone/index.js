@@ -52,7 +52,7 @@ class Phone extends Component {
       <>
         <Header />
         <div className="bkgd-image">
-          <div className="contaner invisible">
+          <div className="container invisible">
             <div className="row mb-3">
               <div className="col-md-4 col-sm-12">
                 <img id="header-img" alt="logo" src="/img/logo_p.png" />

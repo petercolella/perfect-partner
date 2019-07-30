@@ -79,10 +79,19 @@ class MainBody extends Component {
   render() {
     return (
       <>
-        <div className="contaner invisible">
-          <div className="row mb-3">
+        <div className="container">
+          <div className="row">
             <div className="col-md-4 col-sm-12">
               <img id="header-img" alt="logo" src="/img/logo_p.png" />
+            </div>
+            <div className="col-md-4 col-sm-12 d-block">
+              <h1 className="d-inline-block">{this.state.User.name}</h1>
+              <img
+                className="d-inline-block"
+                id="avatar-image-header"
+                alt="User"
+                src={this.state.User.imageUrl}
+              />
             </div>
           </div>
         </div>
