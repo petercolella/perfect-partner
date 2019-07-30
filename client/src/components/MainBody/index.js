@@ -78,92 +78,88 @@ class MainBody extends Component {
 
   render() {
     return (
-      <>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-4 col-sm-12">
-              <img id="header-img" alt="logo" src="/img/logo_p.png" />
-            </div>
-            <div className="col-md-4 col-sm-12 d-block">
-              <h1 className="d-inline-block">{this.state.User.name}</h1>
-              <img
-                className="d-inline-block"
-                id="avatar-image-header"
-                alt="User"
-                src={this.state.User.imageUrl}
-              />
-            </div>
+      <div className="container-fluid">
+        <div className="row ">
+          <div className="col-md-4 col-sm-12">
+            <img id="header-img" alt="logo" src="/img/logo_p.png" />
+          </div>
+          <div className="col-md-4 offset-md-4 col-sm-12 d-flex justify-content-end">
+            <h3 className="my-auto mr-2">{this.state.User.name}</h3>
+            <img
+              className="my-auto"
+              id="avatar-image-header"
+              alt="User"
+              src={this.state.User.imageUrl}
+            />
           </div>
         </div>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-12 dashboard-rght">
-              <div className="row" style={{ padding: '1em' }}>
-                <div className="col-md-2  avatar-center dash">
-                  <h1>{this.state.User.name}</h1>
-                  <img
-                    id="avatar-image"
-                    alt="User"
-                    src={this.state.User.imageUrl}
-                  />
-                </div>
-                <div
-                  className="col-md-5 d-flex align-items-center justify-content-center"
-                  style={{ border: 'white solid 0.25rem' }}>
-                  {this.state.User.name ? (
-                    <div>
-                      <p>
-                        <span>Phone Number: </span>
-                        {this.state.User.phone
-                          ? fn.formatPhoneNumber(this.state.User.phone)
-                          : null}
-                      </p>
-                      <p>
-                        <span>Partner's Name: </span>
-                        {this.state.User.partnerName}
-                      </p>
-                      <p>
-                        <span>Partner's Birthday: </span>
-                        {this.state.User.birthDate}
-                      </p>
-                      <p>
-                        <span>Your Anniversary: </span>
-                        {this.state.User.anniversaryDate}
-                      </p>
-                    </div>
-                  ) : (
+        <div className="row">
+          <div className="col-md-12 dashboard-rght">
+            <div className="row" style={{ padding: '1em' }}>
+              {/* <div className="col-md-2  avatar-center dash">
+                <h1>{this.state.User.name}</h1>
+                <img
+                  id="avatar-image"
+                  alt="User"
+                  src={this.state.User.imageUrl}
+                />
+              </div> */}
+              <div
+                className="col-md-6 col-sm-12 d-flex align-items-center justify-content-center p-1"
+                style={{ border: 'white solid 0.25rem' }}>
+                {this.state.User.name ? (
+                  <div>
                     <p>
-                      Please click{' '}
-                      <Link to="/" style={{ color: '#22b5e0' }}>
-                        here
-                      </Link>{' '}
-                      to sign in before continuing.
+                      <span>Phone Number: </span>
+                      {this.state.User.phone
+                        ? fn.formatPhoneNumber(this.state.User.phone)
+                        : null}
                     </p>
-                  )}
-                </div>
-                <div className="col-md-5">
-                  <span className="helper" />
-                  <img alt="love-hearts" src="./img/love-hearts.jpg" />
-                </div>
+                    <p>
+                      <span>Partner's Name: </span>
+                      {this.state.User.partnerName}
+                    </p>
+                    <p>
+                      <span>Partner's Birthday: </span>
+                      {this.state.User.birthDate}
+                    </p>
+                    <p>
+                      <span>Your Anniversary: </span>
+                      {this.state.User.anniversaryDate}
+                    </p>
+                  </div>
+                ) : (
+                  <p>
+                    Please click{' '}
+                    <Link to="/" style={{ color: '#22b5e0' }}>
+                      here
+                    </Link>{' '}
+                    to sign in before continuing.
+                  </p>
+                )}
+              </div>
+              <div className="col-md-6 col-sm-12 p-1">
+                <span className="helper" />
+                <img alt="love-hearts" src="./img/love-hearts.jpg" />
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-12">
-              <Dashboard
-                user={this.state.User}
-                nudges={this.state.nudges}
-                nudge={this.state.nudge}
-                loadUserInfo={this.loadUserInfo}
-                launchUpdateComp={this.launchUpdateComp}
-                closeUpdateComp={this.closeUpdateComp}
-                handleInputChange={this.handleInputChange}
-                handleFormSubmit={this.handleFormSubmit}
-              />
-            </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <Dashboard
+              user={this.state.User}
+              nudges={this.state.nudges}
+              nudge={this.state.nudge}
+              loadUserInfo={this.loadUserInfo}
+              launchUpdateComp={this.launchUpdateComp}
+              closeUpdateComp={this.closeUpdateComp}
+              handleInputChange={this.handleInputChange}
+              handleFormSubmit={this.handleFormSubmit}
+            />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
