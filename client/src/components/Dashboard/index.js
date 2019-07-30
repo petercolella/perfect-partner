@@ -1,8 +1,8 @@
 import React from 'react';
-import ActivateNudgeButton from '../../ActivateNudgeButton';
-import TestTextButton from '../../TestTextButton';
+import ActivateNudgeButton from '../ActivateNudgeButton';
+import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
-import fn from '../../../utils/fn';
+import fn from '../../utils/fn';
 
 const Dashboard = props => {
   return (

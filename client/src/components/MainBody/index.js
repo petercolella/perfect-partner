@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
-import Dashboard from './Dashboard/Dashboard';
+import Dashboard from '../Dashboard';
 import fn from '../../utils/fn';
 const $ = window.$;
 
@@ -104,21 +104,21 @@ class MainBody extends Component {
                   {this.state.User.name ? (
                     <div>
                       <p>
-                        <span>Phone Number:</span>{' '}
+                        <span>Phone Number: </span>
                         {this.state.User.phone
                           ? fn.formatPhoneNumber(this.state.User.phone)
                           : null}
                       </p>
                       <p>
-                        <span>Partner's Name:</span>{' '}
+                        <span>Partner's Name: </span>
                         {this.state.User.partnerName}
                       </p>
                       <p>
-                        <span>Partner's Birthday:</span>{' '}
+                        <span>Partner's Birthday: </span>
                         {this.state.User.birthDate}
                       </p>
                       <p>
-                        <span>Your Anniversary:</span>{' '}
+                        <span>Your Anniversary: </span>
                         {this.state.User.anniversaryDate}
                       </p>
                     </div>
@@ -158,4 +158,5 @@ class MainBody extends Component {
     );
   }
 }
+
 export default MainBody;
