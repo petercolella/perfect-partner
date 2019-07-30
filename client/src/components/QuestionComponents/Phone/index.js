@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import API from '../../../utils/API';
+import Header from '../../Header';
 const $ = window.$;
 
 class Phone extends Component {
@@ -48,18 +49,28 @@ class Phone extends Component {
 
   render() {
     return (
-      <div className="bkgd-image">
-        <Modal
-          handleFormSubmit={this.handleFormSubmit}
-          handleInputChange={this.handleInputChange}
-          user={this.state.User}
-          title={this.state.title}
-          question={this.state.question}
-          placeholder={this.state.placeholder}
-          userField={this.state.userField}
-          link={this.state.nextQuestionLink}
-        />
-      </div>
+      <>
+        <Header />
+        <div className="bkgd-image">
+          <div className="contaner invisible">
+            <div className="row mb-3">
+              <div className="col-md-4 col-sm-12">
+                <img id="header-img" alt="logo" src="/img/logo_p.png" />
+              </div>
+            </div>
+          </div>
+          <Modal
+            handleFormSubmit={this.handleFormSubmit}
+            handleInputChange={this.handleInputChange}
+            user={this.state.User}
+            title={this.state.title}
+            question={this.state.question}
+            placeholder={this.state.placeholder}
+            userField={this.state.userField}
+            link={this.state.nextQuestionLink}
+          />
+        </div>
+      </>
     );
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import API from '../../../utils/API';
+import Header from '../../Header';
 const $ = window.$;
 
 class Birthday extends Component {
@@ -47,17 +48,27 @@ class Birthday extends Component {
 
   render() {
     return (
-      <div className="bkgd-image">
-        <Modal
-          handleFormSubmit={this.handleFormSubmit}
-          handleInputChange={this.handleInputChange}
-          question={this.state.question}
-          userField={this.state.userField}
-          link={this.state.nextQuestionLink}
-          title={this.state.title}
-          user={this.state.User}
-        />
-      </div>
+      <>
+        <Header />
+        <div className="bkgd-image">
+          <div className="contaner invisible">
+            <div className="row mb-3">
+              <div className="col-md-4 col-sm-12">
+                <img id="header-img" alt="logo" src="/img/logo_p.png" />
+              </div>
+            </div>
+          </div>
+          <Modal
+            handleFormSubmit={this.handleFormSubmit}
+            handleInputChange={this.handleInputChange}
+            question={this.state.question}
+            userField={this.state.userField}
+            link={this.state.nextQuestionLink}
+            title={this.state.title}
+            user={this.state.User}
+          />
+        </div>
+      </>
     );
   }
 }

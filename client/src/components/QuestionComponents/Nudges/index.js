@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import API from '../../../utils/API';
 import NudgeModal from '../NudgeModal';
 import Checkbox from '../Checkbox';
+import Header from '../../Header';
 const $ = window.$;
 const nudgeOptions = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
@@ -98,21 +99,31 @@ class Nudges extends Component {
 
   render() {
     return (
-      <div className="bkgd-image">
-        <NudgeModal
-          handleFormSubmit={this.handleFormSubmit}
-          handleInputChange={this.handleInputChange}
-          question={this.state.question}
-          userField={this.state.userField}
-          link={this.state.nextQuestionLink}
-          title={this.state.title}
-          user={this.state.User}
-          nudges={this.state.toastNudges}
-          createCheckboxes={this.createCheckboxes}
-          selectAll={this.selectAll}
-          deselectAll={this.deselectAll}
-        />
-      </div>
+      <>
+        <Header />
+        <div className="bkgd-image">
+          <div className="contaner invisible">
+            <div className="row mb-3">
+              <div className="col-md-4 col-sm-12">
+                <img id="header-img" alt="logo" src="/img/logo_p.png" />
+              </div>
+            </div>
+          </div>
+          <NudgeModal
+            handleFormSubmit={this.handleFormSubmit}
+            handleInputChange={this.handleInputChange}
+            question={this.state.question}
+            userField={this.state.userField}
+            link={this.state.nextQuestionLink}
+            title={this.state.title}
+            user={this.state.User}
+            nudges={this.state.toastNudges}
+            createCheckboxes={this.createCheckboxes}
+            selectAll={this.selectAll}
+            deselectAll={this.deselectAll}
+          />
+        </div>
+      </>
     );
   }
 }

@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 //components
-import Landing from './components/MainBody/Landing';
-import MainBody from './components/MainBody/MainBody';
+import Landing from './components/Landing';
+import MainBody from './components/MainBody';
 import Birthday from './components/QuestionComponents/Birthday';
 import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';
 import Phone from './components/QuestionComponents/Phone';
 import Anniversary from './components/QuestionComponents/Anniversary';
-import Header from './components/Header';
 
 //CSS
 import './styles.css';
@@ -33,7 +32,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Header />
+          {/* <Header /> */}
           <Route
             exact
             path="/"
