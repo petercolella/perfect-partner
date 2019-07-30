@@ -84,7 +84,13 @@ class MainBody extends Component {
             <img id="header-img" alt="logo" src="/img/logo_p.png" />
           </div>
           <div className="col-md-4 offset-md-4 col-sm-12 d-flex justify-content-end">
-            <h3 className="my-auto mr-2">{this.state.User.name}</h3>
+            <h3 className="my-auto mr-2">
+              {this.state.User.name ? (
+                this.state.User.name
+              ) : (
+                <span>Please sign in.</span>
+              )}
+            </h3>
             <img
               className="my-auto"
               id="avatar-image-header"
