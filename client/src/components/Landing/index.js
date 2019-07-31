@@ -1,5 +1,5 @@
 import React from 'react';
-import Google from '../MainBody/Signin/Google';
+import Google from '../Signin';
 import Header from '../Header';
 
 const Landing = props => {
