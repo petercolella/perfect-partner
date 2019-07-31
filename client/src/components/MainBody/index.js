@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from '../Dashboard';
+import UserUpdate from '../UserUpdate';
 import fn from '../../utils/fn';
 const $ = window.$;
 
 class MainBody extends Component {
   state = {
     User: {
+      name: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      partnerName: '',
+      email: '',
       imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      anniversaryDate: '',
+      birthDate: ''
     },
     nudges: [],
     nudge: {
@@ -56,6 +65,23 @@ class MainBody extends Component {
     $('#editNudgeModalCenter').modal('hide');
   }
 
+  launchUserUpdateComp = User => {
+    this.setState({ User });
+    this.showUserModal();
+  };
+
+  showUserModal() {
+    $('#editUserModalCenter').modal('show');
+  }
+
+  closeUserUpdateComp = () => {
+    this.hideUserModal();
+  };
+
+  hideUserModal() {
+    $('#editUserModalCenter').modal('hide');
+  }
+
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -71,6 +97,26 @@ class MainBody extends Component {
     $('#nudge-toast').toast('show');
     API.updateNudge(this.state.nudge._id, {
       ...this.state.nudge
+    }).then(() => {
+      this.loadUserInfo();
+    });
+  };
+
+  handleUserInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      User: {
+        ...this.state.User,
+        [name]: value
+      }
+    });
+  };
+
+  handleUserFormSubmit = event => {
+    event.preventDefault();
+    $('#user-toast').toast('show');
+    API.updateUser(this.state.User._id, {
+      ...this.state.User
     }).then(() => {
       this.loadUserInfo();
     });
@@ -133,6 +179,13 @@ class MainBody extends Component {
                       <span>Your Anniversary: </span>
                       {this.state.User.anniversaryDate}
                     </p>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        this.launchUserUpdateComp(this.state.User)
+                      }>
+                      Edit Your Profile
+                    </button>
                   </div>
                 ) : (
                   <p>
@@ -165,6 +218,12 @@ class MainBody extends Component {
             />
           </div>
         </div>
+        <UserUpdate
+          closeUserUpdateComp={this.closeUserUpdateComp}
+          handleUserInputChange={this.handleUserInputChange}
+          handleUserFormSubmit={this.handleUserFormSubmit}
+          user={this.state.User}
+        />
       </div>
     );
   }
