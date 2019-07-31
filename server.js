@@ -10,7 +10,34 @@ const http = require('http');
 
 // Prevents Heroku from idling.
 setInterval(function() {
-  http.get('http://perfectpartner.herokuapp.com/');
+  http
+    .get('http://perfectpartner.herokuapp.com/', res => {
+      const { statusCode } = res;
+
+      let error;
+      if (statusCode !== 200) {
+        error = new Error('Request Failed.\n' + `Status Code: ${statusCode}`);
+      }
+      if (error) {
+        console.error(error.message);
+        // Consume response data to free up memory
+        res.resume();
+        return;
+      }
+      res.on('data', chunk => {
+        console.log(`Received ${chunk.length} bytes of data.`);
+      });
+      res.on('end', () => {
+        try {
+          console.log('Done.');
+        } catch (e) {
+          console.error(e.message);
+        }
+      });
+    })
+    .on('error', e => {
+      console.error(`Got error: ${e.message}`);
+    });
 }, 300000);
 
 // Define middleware here
