@@ -10,7 +10,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
-module.exports = {
+const self = (module.exports = {
   sendText: function(body, to) {
     return client.messages.create({
       body: `${body}`,
@@ -32,8 +32,8 @@ module.exports = {
     clearTimeout(intervals[_id]);
     intervals[_id] = setTimeout(() => {
       console.log(textMessage);
-      module.exports.sendText(textMessage, phone);
-      module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
+      self.sendText(textMessage, phone);
+      self.textRecursiveTimeout(nudge, milliseconds, phone);
     }, randomMilliseconds);
   },
   activate: function(req, res) {
@@ -56,13 +56,13 @@ module.exports = {
       .then(dbModel => {
         if (activated) {
           const activateBody = `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
-          module.exports.sendText(activateBody, phone);
-          module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
+          self.sendText(activateBody, phone);
+          self.textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
-          module.exports.sendText(deactivateBody, phone);
+          self.sendText(deactivateBody, phone);
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
@@ -88,7 +88,7 @@ module.exports = {
           })
             .then(userModel => {
               const { phone } = userModel;
-              module.exports.textRecursiveTimeout(nudge, milliseconds, phone);
+              self.textRecursiveTimeout(nudge, milliseconds, phone);
             })
             .catch(err => console.log('Error: ', err.message));
         }
@@ -98,9 +98,9 @@ module.exports = {
   send: function(req, res) {
     const { phone, textMessage } = req.body;
 
-    module.exports.sendText(textMessage, phone).then(message => {
+    self.sendText(textMessage, phone).then(message => {
       console.log(message.sid);
       res.json({ msg: 'Test Text Successfully Sent' });
     });
   }
-};
+});
