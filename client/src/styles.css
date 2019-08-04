@@ -120,9 +120,15 @@ body {
   /* margin-top: -13px; */
 }
 
+#avatar-text-header {
+  font-size: 1rem;
+  line-height: 48px;
+}
+
 #avatar-image-header {
   border-radius: 50%;
-  height: 48px;
+  width: 30px;
+  /* height: 48px; */
 }
 
 .helper {
