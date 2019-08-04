@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import API from '../../utils/API';
 import Dashboard from '../Dashboard';
 import UserUpdate from '../UserUpdate';
+import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
 const $ = window.$;
 
@@ -207,6 +208,16 @@ class MainBody extends Component {
         <div className="row">
           <div className="col-md-12">
             <Dashboard
+              user={this.state.User}
+              nudges={this.state.nudges}
+              nudge={this.state.nudge}
+              loadUserInfo={this.loadUserInfo}
+              launchUpdateComp={this.launchUpdateComp}
+              closeUpdateComp={this.closeUpdateComp}
+              handleInputChange={this.handleInputChange}
+              handleFormSubmit={this.handleFormSubmit}
+            />
+            <NudgeTable
               user={this.state.User}
               nudges={this.state.nudges}
               nudge={this.state.nudge}
