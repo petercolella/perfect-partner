@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: 650
+  },
+  button: {
+    margin: theme.spacing(1)
   }
 }));
 
@@ -51,11 +55,13 @@ const NudgeTable = props => {
                   {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
                 </TableCell>
                 <TableCell align="right">
-                  <button
-                    className="btn btn-primary"
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
                     onClick={() => props.launchUpdateComp(nudge)}>
                     Edit Nudge
-                  </button>
+                  </Button>
                 </TableCell>
                 <TableCell align="right">
                   <TestTextButton {...props} nudge={nudge} />

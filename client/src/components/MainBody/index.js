@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../utils/API';
-import Dashboard from '../Dashboard';
+// import Dashboard from '../Dashboard';
 import UserUpdate from '../UserUpdate';
 import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
@@ -207,7 +207,7 @@ class MainBody extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <Dashboard
+            {/* <Dashboard
               user={this.state.User}
               nudges={this.state.nudges}
               nudge={this.state.nudge}
@@ -216,7 +216,7 @@ class MainBody extends Component {
               closeUpdateComp={this.closeUpdateComp}
               handleInputChange={this.handleInputChange}
               handleFormSubmit={this.handleFormSubmit}
-            />
+            /> */}
             <NudgeTable
               user={this.state.User}
               nudges={this.state.nudges}
