@@ -1,16 +1,16 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
 import API from '../../utils/API';
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  }
-}));
-
 const ActivateNudgeButton = props => {
-  const classes = useStyles();
+  const [state, setState] = React.useState({
+    checked: true
+  });
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+    activateNudge();
+  };
 
   function activateNudge() {
     const nudge = props.nudge;
@@ -30,13 +30,13 @@ const ActivateNudgeButton = props => {
   }
 
   return (
-    <Button
-      variant="contained"
+    <Switch
+      checked={state.checkedB}
+      onChange={handleChange('checked')}
+      value="checked"
       color="primary"
-      className={classes.button}
-      onClick={activateNudge}>
-      {props.nudge.activated ? 'Deactivate Nudge' : 'Activate Nudge'}
-    </Button>
+      inputProps={{ 'aria-label': 'primary checkbox' }}
+    />
   );
 };
 
