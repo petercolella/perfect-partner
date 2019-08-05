@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ActivateNudgeButton from '../ActivateNudgeButton';
+import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
@@ -36,11 +36,11 @@ const NudgeTable = props => {
           <TableHead>
             <TableRow>
               <TableCell>Nudge Name</TableCell>
-              <TableCell align="right">Text Body</TableCell>
-              <TableCell align="right">Frequency</TableCell>
-              <TableCell align="right">Customize</TableCell>
-              <TableCell align="right">Test</TableCell>
-              <TableCell align="right">Activate</TableCell>
+              <TableCell align="center">Text Body</TableCell>
+              <TableCell align="center">Frequency</TableCell>
+              <TableCell align="center">Customize</TableCell>
+              <TableCell align="center">Test</TableCell>
+              <TableCell align="center">Activate</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -49,12 +49,12 @@ const NudgeTable = props => {
                 <TableCell component="th" scope="row">
                   {nudge.name}
                 </TableCell>
-                <TableCell align="right">{nudge.textMessage}</TableCell>
-                <TableCell align="right">
+                <TableCell align="center">{nudge.textMessage}</TableCell>
+                <TableCell align="center">
                   Once Every {nudge.nudgeFrequency}{' '}
                   {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <Button
                     variant="contained"
                     color="primary"
@@ -63,11 +63,11 @@ const NudgeTable = props => {
                     Edit Nudge
                   </Button>
                 </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <TestTextButton {...props} nudge={nudge} />
                 </TableCell>
-                <TableCell align="right">
-                  <ActivateNudgeButton {...props} nudge={nudge} />
+                <TableCell align="center">
+                  <ActivateNudgeSwitch {...props} nudge={nudge} />
                 </TableCell>
               </TableRow>
             ))}
