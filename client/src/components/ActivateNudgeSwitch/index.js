@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from '@material-ui/core/Switch';
 import API from '../../utils/API';
 
-const ActivateNudgeButton = props => {
-  const [state, setState] = React.useState({
-    checked: true
+const ActivateNudgeSwitch = props => {
+  const [didMount, setDidMount] = useState(false);
+  const [state, setState] = useState({
+    checked: props.nudge.activated
   });
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
-    activateNudge();
   };
 
-  function activateNudge() {
+  useEffect(() => {
+    if (didMount) activateNudge(state.checked);
+  }, [state]);
+
+  useEffect(() => setDidMount(true), []);
+
+  function activateNudge(checked) {
     const nudge = props.nudge;
-    nudge.activated = !nudge.activated;
+    nudge.activated = checked;
     const { nudges, ...userAndNudge } = props;
 
     API.activateNudge(props.nudge._id, {
@@ -31,7 +37,7 @@ const ActivateNudgeButton = props => {
 
   return (
     <Switch
-      checked={state.checkedB}
+      checked={state.checked}
       onChange={handleChange('checked')}
       value="checked"
       color="primary"
@@ -40,4 +46,4 @@ const ActivateNudgeButton = props => {
   );
 };
 
-export default ActivateNudgeButton;
+export default ActivateNudgeSwitch;
