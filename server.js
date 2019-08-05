@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const textController = require('./controllers/textController');
 const http = require('http');
+const { DateTime } = require('luxon');
 
 // Prevents Heroku from idling.
 setInterval(function() {
@@ -29,6 +30,7 @@ setInterval(function() {
       });
       res.on('end', () => {
         try {
+          console.log(DateTime.local().toLocaleString(DateTime.DATETIME_FULL));
           console.log('Done.');
         } catch (e) {
           console.error(e.message);
