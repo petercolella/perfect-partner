@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
@@ -19,7 +21,11 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'auto'
   },
   table: {
-    minWidth: 650
+    minWidth: 650,
+    paddingLeft: theme.spacing(2)
+  },
+  toolbar: {
+    paddingLeft: theme.spacing(2)
   },
   button: {
     margin: theme.spacing(1)
@@ -32,6 +38,11 @@ const NudgeTable = props => {
   return (
     <div>
       <Paper className={classes.root}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" align="left">
+            Your Nudges
+          </Typography>
+        </Toolbar>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
