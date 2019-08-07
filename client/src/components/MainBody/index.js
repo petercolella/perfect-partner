@@ -54,41 +54,36 @@ const MainBody = props => {
     nudgeFrequencyUnit: ''
   });
 
-  console.log('props', props);
-  console.log('state', state);
-
-  //   componentDidMount() {
-  //     const path = this.props.location.pathname;
-  //     this.props.setPreviousPath(path);
-  //     this.loadUserInfo();
-  //   }
+  const { location, setPreviousPath } = props;
 
   useEffect(() => {
-    const path = props.location.pathname;
-    props.setPreviousPath(path);
+    setPreviousPath(location.pathname);
+  }, [location, setPreviousPath]);
+
+  useEffect(() => {
     loadUserInfo();
   }, []);
 
   const loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
-    console.log('id', id);
     API.getUser(id).then(res => {
-      console.log('res.data', res.data);
       setState(
         res.data
           ? {
+              ...state,
               User: res.data,
-              nudges: res.data.nudges,
-              nudge: state.nudge,
-              nudgeFrequencyUnit: state.nudgeFrequencyUnit
+              nudges: res.data.nudges
             }
-          : { state: state }
+          : { ...state }
       );
     });
   };
 
   const launchUpdateComp = nudge => {
-    setState({ nudge });
+    setState({
+      ...state,
+      nudge
+    });
     showModal();
   };
 
@@ -105,7 +100,7 @@ const MainBody = props => {
   };
 
   const launchUserUpdateComp = User => {
-    setState({ User });
+    // setState({ User });
     showUserModal();
   };
 
@@ -124,6 +119,7 @@ const MainBody = props => {
   const handleInputChange = event => {
     const { name, value } = event.target;
     setState({
+      ...state,
       nudge: {
         ...state.nudge,
         [name]: value
@@ -144,6 +140,7 @@ const MainBody = props => {
   const handleUserInputChange = event => {
     const { name, value } = event.target;
     setState({
+      ...state,
       User: {
         ...state.User,
         [name]: value
@@ -229,7 +226,7 @@ const MainBody = props => {
             </CardContent>
           </Card>
         )}
-        <div className="col-md-12 dashboard-rght">
+        {/* <div className="col-md-12 dashboard-rght">
           <div className="row" style={{ padding: '1em' }}>
             <div
               className="col-md-6 col-sm-12 d-flex align-items-center justify-content-center p-1"
@@ -271,11 +268,11 @@ const MainBody = props => {
               )}
             </div>
             <div className="col-md-6 col-sm-12 p-1">
-              {/* <span className="helper" />
-                <img alt="love-hearts" src="./img/love-hearts.jpg" /> */}
+              <span className="helper" />
+                <img alt="love-hearts" src="./img/love-hearts.jpg" />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="row">
         <div className="col-md-12">
