@@ -16,11 +16,6 @@ const useStyles = makeStyles({
   card: {
     minWidth: 275
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)'
-  },
   title: {
     fontSize: 14
   },
@@ -50,8 +45,7 @@ const MainBody = props => {
       nudgeFrequencyUnit: '',
       textMessage: '',
       activated: false
-    },
-    nudgeFrequencyUnit: ''
+    }
   });
 
   const { location, setPreviousPath } = props;
@@ -99,8 +93,7 @@ const MainBody = props => {
     $('#editNudgeModalCenter').modal('hide');
   };
 
-  const launchUserUpdateComp = User => {
-    // setState({ User });
+  const launchUserUpdateComp = () => {
     showUserModal();
   };
 
@@ -205,9 +198,7 @@ const MainBody = props => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button onClick={() => launchUserUpdateComp(state.User)}>
-                Edit Your Profile
-              </Button>
+              <Button onClick={launchUserUpdateComp}>Edit Your Profile</Button>
             </CardActions>
           </Card>
         ) : (
@@ -226,53 +217,6 @@ const MainBody = props => {
             </CardContent>
           </Card>
         )}
-        {/* <div className="col-md-12 dashboard-rght">
-          <div className="row" style={{ padding: '1em' }}>
-            <div
-              className="col-md-6 col-sm-12 d-flex align-items-center justify-content-center p-1"
-              style={{ border: 'white solid 0.25rem' }}>
-              {state.User.name ? (
-                <div>
-                  <p>
-                    <span>Phone Number: </span>
-                    {state.User.phone
-                      ? fn.formatPhoneNumber(state.User.phone)
-                      : null}
-                  </p>
-                  <p>
-                    <span>Partner's Name: </span>
-                    {state.User.partnerName}
-                  </p>
-                  <p>
-                    <span>Partner's Birthday: </span>
-                    {state.User.birthDate}
-                  </p>
-                  <p>
-                    <span>Your Anniversary: </span>
-                    {state.User.anniversaryDate}
-                  </p>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => launchUserUpdateComp(state.User)}>
-                    Edit Your Profile
-                  </button>
-                </div>
-              ) : (
-                <p>
-                  Please click{' '}
-                  <Link to="/" style={{ color: '#22b5e0' }}>
-                    here
-                  </Link>{' '}
-                  to sign in before continuing.
-                </p>
-              )}
-            </div>
-            <div className="col-md-6 col-sm-12 p-1">
-              <span className="helper" />
-                <img alt="love-hearts" src="./img/love-hearts.jpg" />
-            </div>
-          </div>
-        </div> */}
       </div>
       <div className="row">
         <div className="col-md-12">
