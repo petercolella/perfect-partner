@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Switch from '@material-ui/core/Switch';
+import Tooltip from '@material-ui/core/Tooltip';
 import API from '../../utils/API';
 
 const ActivateNudgeSwitch = props => {
@@ -36,13 +37,17 @@ const ActivateNudgeSwitch = props => {
   }
 
   return (
-    <Switch
-      checked={state.checked}
-      onChange={handleChange('checked')}
-      value="checked"
-      color="primary"
-      inputProps={{ 'aria-label': 'primary checkbox' }}
-    />
+    <Tooltip title="Activate" color="primary">
+      {/* <IconButton aria-label="activate"> */}
+      <Switch
+        checked={state.checked}
+        onChange={handleChange('checked')}
+        value="checked"
+        color="primary"
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+      />
+      {/* </IconButton> */}
+    </Tooltip>
   );
 };
 
