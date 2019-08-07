@@ -1,18 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+// import { makeStyles } from '@material-ui/core/styles';
+import SendIcon from '@material-ui/icons/Send';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import API from '../../utils/API';
 const $ = window.$;
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  }
-}));
-
 const TestTextButton = props => {
-  const classes = useStyles();
-
   function sendText(e) {
     e.preventDefault();
     const phone = props.user.phone;
@@ -27,13 +21,13 @@ const TestTextButton = props => {
       });
   }
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      className={classes.button}
-      onClick={sendText}>
-      Send Text
-    </Button>
+    <>
+      <Tooltip title="Send Text" color="primary">
+        <IconButton aria-label="send text" onClick={sendText}>
+          <SendIcon />
+        </IconButton>
+      </Tooltip>
+    </>
   );
 };
 
