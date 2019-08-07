@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -10,6 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
+import EditIcon from '@material-ui/icons/Edit';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
@@ -66,13 +68,13 @@ const NudgeTable = props => {
                   {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
                 </TableCell>
                 <TableCell align="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={() => props.launchUpdateComp(nudge)}>
-                    Edit Nudge
-                  </Button>
+                  <Tooltip title="Edit Nudge" color="primary">
+                    <IconButton
+                      aria-label="edit nudge"
+                      onClick={() => props.launchUpdateComp(nudge)}>
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
                 <TableCell align="center">
                   <TestTextButton {...props} nudge={nudge} />
