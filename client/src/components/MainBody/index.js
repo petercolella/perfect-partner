@@ -37,15 +37,16 @@ const MainBody = props => {
         'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
       anniversaryDate: '',
       birthDate: ''
-    },
-    nudges: [],
-    nudge: {
-      name: '',
-      nudgeFrequency: '',
-      nudgeFrequencyUnit: '',
-      textMessage: '',
-      activated: false
     }
+  });
+
+  const [nudges, setNudges] = useState([]);
+  const [nudge, setNudge] = useState({
+    name: '',
+    nudgeFrequency: '',
+    nudgeFrequencyUnit: '',
+    textMessage: '',
+    activated: false
   });
 
   const { location, setPreviousPath } = props;
@@ -66,11 +67,11 @@ const MainBody = props => {
           res.data
             ? {
                 ...state,
-                User: res.data,
-                nudges: res.data.nudges
+                User: res.data
               }
             : { ...state }
         );
+        setNudges(nudges => (res.data ? res.data.nudges : nudges));
       });
     }
   }, []);
@@ -81,10 +82,7 @@ const MainBody = props => {
   }, [loadUserInfo]);
 
   const launchUpdateComp = nudge => {
-    setState({
-      ...state,
-      nudge
-    });
+    setNudge(nudge);
     showModal();
   };
 
@@ -118,20 +116,17 @@ const MainBody = props => {
 
   const handleInputChange = event => {
     const { name, value } = event.target;
-    setState({
-      ...state,
-      nudge: {
-        ...state.nudge,
-        [name]: value
-      }
+    setNudge({
+      ...nudge,
+      [name]: value
     });
   };
 
   const handleFormSubmit = event => {
     event.preventDefault();
     $('#nudge-toast').toast('show');
-    API.updateNudge(state.nudge._id, {
-      ...state.nudge
+    API.updateNudge(nudge._id, {
+      ...nudge
     }).then(() => {
       loadUserInfo();
     });
@@ -229,8 +224,8 @@ const MainBody = props => {
         <div className="col-md-12">
           <NudgeTable
             user={state.User}
-            nudges={state.nudges}
-            nudge={state.nudge}
+            nudges={nudges}
+            nudge={nudge}
             loadUserInfo={loadUserInfo}
             launchUpdateComp={launchUpdateComp}
             closeUpdateComp={closeUpdateComp}
