@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
@@ -54,24 +54,31 @@ const MainBody = props => {
     setPreviousPath(location.pathname);
   }, [location, setPreviousPath]);
 
-  useEffect(() => {
-    loadUserInfo();
+  const idRef = useRef();
+
+  const loadUserInfo = useCallback(() => {
+    console.log('loadUserInfo');
+    const id = sessionStorage.getItem('currentUserId');
+    idRef.current = id;
+    if (idRef.current) {
+      API.getUser(id).then(res => {
+        setState(state =>
+          res.data
+            ? {
+                ...state,
+                User: res.data,
+                nudges: res.data.nudges
+              }
+            : { ...state }
+        );
+      });
+    }
   }, []);
 
-  const loadUserInfo = () => {
-    const id = sessionStorage.getItem('currentUserId');
-    API.getUser(id).then(res => {
-      setState(
-        res.data
-          ? {
-              ...state,
-              User: res.data,
-              nudges: res.data.nudges
-            }
-          : { ...state }
-      );
-    });
-  };
+  useEffect(() => {
+    console.log('useEffect loadUserInfo');
+    loadUserInfo();
+  }, [loadUserInfo]);
 
   const launchUpdateComp = nudge => {
     setState({
