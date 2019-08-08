@@ -1,52 +1,54 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
 import API from '../../utils/API';
 
 const ActivateNudgeSwitch = props => {
   const [didMount, setDidMount] = useState(false);
-  const [state, setState] = useState({
-    checked: props.nudge.activated
-  });
+  const [checked, setChecked] = useState(props.nudge.activated);
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+  const handleChange = event => {
+    setChecked(event.target.checked);
   };
 
-  useEffect(() => {
-    if (didMount) activateNudge(state.checked);
-  }, [state]);
+  const propsRef = useRef();
+  propsRef.current = props;
 
-  useEffect(() => setDidMount(true), []);
-
-  function activateNudge(checked) {
-    const nudge = props.nudge;
+  const activateNudge = useCallback(checked => {
+    const { nudge, user } = propsRef.current;
     nudge.activated = checked;
-    const { nudges, ...userAndNudge } = props;
 
-    API.activateNudge(props.nudge._id, {
-      ...userAndNudge
+    API.activateNudge(nudge._id, {
+      nudge,
+      user
     })
       .then(res => {
         console.log(res.data);
-        props.loadUserInfo();
+        propsRef.current.loadUserInfo();
       })
       .catch(err => {
         console.log(err);
       });
-  }
+  }, []);
+
+  useEffect(() => setDidMount(true), []);
+
+  const mountRef = useRef();
+  mountRef.current = didMount;
+
+  useEffect(() => {
+    if (mountRef.current) activateNudge(checked);
+  }, [activateNudge, checked]);
 
   return (
     <Tooltip title="Activate" color="primary">
-      {/* <IconButton aria-label="activate"> */}
       <Switch
-        checked={state.checked}
-        onChange={handleChange('checked')}
+        checked={checked}
+        onChange={handleChange}
         value="checked"
         color="primary"
         inputProps={{ 'aria-label': 'primary checkbox' }}
       />
-      {/* </IconButton> */}
     </Tooltip>
   );
 };
