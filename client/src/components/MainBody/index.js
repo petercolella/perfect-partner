@@ -26,18 +26,19 @@ const useStyles = makeStyles({
 
 const MainBody = props => {
   const [user, setUser] = useState({
-    name: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    partnerName: '',
+    anniversaryDate: '',
+    birthDate: '',
     email: '',
+    firstName: '',
     imageUrl:
       'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-    anniversaryDate: '',
-    birthDate: ''
+    lastName: '',
+    name: '',
+    nudges: [],
+    partnerName: '',
+    phone: ''
   });
-  const [nudges, setNudges] = useState([]);
+
   const [nudge, setNudge] = useState({
     name: '',
     nudgeFrequency: '',
@@ -60,7 +61,6 @@ const MainBody = props => {
     if (idRef.current) {
       API.getUser(id).then(res => {
         setUser(user => (res.data ? res.data : user));
-        setNudges(nudges => (res.data ? res.data.nudges : nudges));
       });
     }
   }, []);
@@ -207,7 +207,6 @@ const MainBody = props => {
         <div className="col-md-12">
           <NudgeTable
             user={user}
-            nudges={nudges}
             nudge={nudge}
             loadUserInfo={loadUserInfo}
             launchUpdateComp={launchUpdateComp}

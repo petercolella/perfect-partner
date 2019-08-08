@@ -57,7 +57,7 @@ const NudgeTable = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.nudges.map(nudge => (
+            {props.user.nudges.map(nudge => (
               <TableRow key={nudge._id}>
                 <TableCell component="th" scope="row">
                   {nudge.name}
