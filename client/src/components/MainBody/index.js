@@ -25,21 +25,18 @@ const useStyles = makeStyles({
 });
 
 const MainBody = props => {
-  const [state, setState] = useState({
-    User: {
-      name: '',
-      firstName: '',
-      lastName: '',
-      phone: '',
-      partnerName: '',
-      email: '',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-      anniversaryDate: '',
-      birthDate: ''
-    }
+  const [user, setUser] = useState({
+    name: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    partnerName: '',
+    email: '',
+    imageUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    anniversaryDate: '',
+    birthDate: ''
   });
-
   const [nudges, setNudges] = useState([]);
   const [nudge, setNudge] = useState({
     name: '',
@@ -58,26 +55,17 @@ const MainBody = props => {
   const idRef = useRef();
 
   const loadUserInfo = useCallback(() => {
-    console.log('loadUserInfo');
     const id = sessionStorage.getItem('currentUserId');
     idRef.current = id;
     if (idRef.current) {
       API.getUser(id).then(res => {
-        setState(state =>
-          res.data
-            ? {
-                ...state,
-                User: res.data
-              }
-            : { ...state }
-        );
+        setUser(user => (res.data ? res.data : user));
         setNudges(nudges => (res.data ? res.data.nudges : nudges));
       });
     }
   }, []);
 
   useEffect(() => {
-    console.log('useEffect loadUserInfo');
     loadUserInfo();
   }, [loadUserInfo]);
 
@@ -134,20 +122,17 @@ const MainBody = props => {
 
   const handleUserInputChange = event => {
     const { name, value } = event.target;
-    setState({
-      ...state,
-      User: {
-        ...state.User,
-        [name]: value
-      }
+    setUser({
+      ...user,
+      [name]: value
     });
   };
 
   const handleUserFormSubmit = event => {
     event.preventDefault();
     $('#user-toast').toast('show');
-    API.updateUser(state.User._id, {
-      ...state.User
+    API.updateUser(user._id, {
+      ...user
     }).then(() => {
       loadUserInfo();
     });
@@ -163,18 +148,18 @@ const MainBody = props => {
         </div>
         <div className="col-md-4 offset-md-4 col-sm-12 d-flex justify-content-end">
           <h3 className="my-auto mr-2" id="avatar-text-header">
-            {state.User.name ? state.User.name : <span>Please sign in.</span>}
+            {user.name ? user.name : <span>Please sign in.</span>}
           </h3>
           <img
             className="my-auto"
             id="avatar-image-header"
             alt="User"
-            src={state.User.imageUrl}
+            src={user.imageUrl}
           />
         </div>
       </div>
       <div className="row">
-        {state.User.name ? (
+        {user.name ? (
           <Card className={classes.card}>
             <CardContent>
               <Typography
@@ -182,21 +167,19 @@ const MainBody = props => {
                 color="textSecondary"
                 gutterBottom>
                 <span>Phone Number: </span>
-                {state.User.phone
-                  ? fn.formatPhoneNumber(state.User.phone)
-                  : null}
+                {user.phone ? fn.formatPhoneNumber(user.phone) : null}
               </Typography>
               <Typography variant="h5" component="h2">
                 <span>Partner's Name: </span>
-                {state.User.partnerName}
+                {user.partnerName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 <span>Partner's Birthday: </span>
-                {state.User.birthDate}
+                {user.birthDate}
               </Typography>
               <Typography variant="body2" component="p">
                 <span>Your Anniversary: </span>
-                {state.User.anniversaryDate}
+                {user.anniversaryDate}
               </Typography>
             </CardContent>
             <CardActions>
@@ -223,7 +206,7 @@ const MainBody = props => {
       <div className="row">
         <div className="col-md-12">
           <NudgeTable
-            user={state.User}
+            user={user}
             nudges={nudges}
             nudge={nudge}
             loadUserInfo={loadUserInfo}
@@ -238,7 +221,7 @@ const MainBody = props => {
         closeUserUpdateComp={closeUserUpdateComp}
         handleUserInputChange={handleUserInputChange}
         handleUserFormSubmit={handleUserFormSubmit}
-        user={state.User}
+        user={user}
       />
     </div>
   );
