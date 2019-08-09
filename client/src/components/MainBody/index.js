@@ -162,10 +162,7 @@ const MainBody = props => {
         {user.name ? (
           <Card className={classes.card}>
             <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom>
+              <Typography variant="h5" component="h2">
                 <span>Phone Number: </span>
                 {user.phone ? fn.formatPhoneNumber(user.phone) : null}
               </Typography>
@@ -173,11 +170,11 @@ const MainBody = props => {
                 <span>Partner's Name: </span>
                 {user.partnerName}
               </Typography>
-              <Typography className={classes.pos} color="textSecondary">
+              <Typography variant="h5" component="h2">
                 <span>Partner's Birthday: </span>
                 {user.birthDate}
               </Typography>
-              <Typography variant="body2" component="p">
+              <Typography variant="h5" component="h2">
                 <span>Your Anniversary: </span>
                 {user.anniversaryDate}
               </Typography>
