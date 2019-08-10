@@ -15,6 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
+import CustomizedSnackbars from './CustomizedSnackbars';
+import DirectionSnackbar from './DirectionSnackbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -113,6 +115,8 @@ const NudgeTable = props => {
         handleFormSubmit={props.handleFormSubmit}
         nudge={props.nudge}
       />
+      <CustomizedSnackbars />
+      <DirectionSnackbar />
     </div>
   );
 };
