@@ -1,8 +1,95 @@
 import React from 'react';
+import clsx from 'clsx';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CloseIcon from '@material-ui/icons/Close';
+import { green } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles1 = makeStyles(theme => ({
+  success: {
+    backgroundColor: green[600]
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1)
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+}));
+
+function MySnackbarContentWrapper(props) {
+  const classes = useStyles1();
+  const { message, onClose, variant, ...other } = props;
+
+  return (
+    <SnackbarContent
+      className={clsx(classes[variant])}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <CheckCircleIcon
+            className={clsx(classes.icon, classes.iconVariant)}
+          />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="close"
+          color="inherit"
+          onClick={onClose}>
+          <CloseIcon className={classes.icon} />
+        </IconButton>
+      ]}
+      {...other}
+    />
+  );
+}
 
 const NudgeUpdate = props => {
+  const [open, setOpen] = React.useState(false);
+
+  function handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  }
+  const clickHandler = e => {
+    props.handleFormSubmit(e);
+    setOpen(true);
+  };
+
   return (
     <div>
+      <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}>
+          <MySnackbarContentWrapper
+            onClose={handleClose}
+            variant="success"
+            message={
+              <span>{props.nudge.name} has been successfully updated.</span>
+            }
+          />
+        </Snackbar>
+      </div>
       <div
         className="modal fade"
         id="editNudgeModalCenter"
@@ -19,24 +106,6 @@ const NudgeUpdate = props => {
                 style={{ lineHeight: '2' }}>
                 Edit Nudge
               </h5>
-              <div aria-live="polite" aria-atomic="true">
-                <div
-                  className="toast"
-                  id="nudge-toast"
-                  role="alert"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                  data-delay="2000"
-                  style={{
-                    backgroundColor: '#22b5e0',
-                    color: 'white',
-                    margin: 'auto'
-                  }}>
-                  <div className="toast-body" style={{ padding: '0.5rem' }}>
-                    {props.nudge.name} has been successfully updated.
-                  </div>
-                </div>
-              </div>
               <button
                 type="button"
                 className="close"
@@ -103,7 +172,7 @@ const NudgeUpdate = props => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={props.handleFormSubmit}>
+                onClick={e => clickHandler(e)}>
                 Submit
               </button>
               <button
