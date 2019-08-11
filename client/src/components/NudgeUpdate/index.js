@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles } from '@material-ui/core/styles';
+import Slide from '@material-ui/core/Slide';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -25,7 +26,7 @@ const useStyles1 = makeStyles(theme => ({
   }
 }));
 
-function MySnackbarContentWrapper(props) {
+const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
   const classes = useStyles1();
   const { message, onClose, variant, ...other } = props;
 
@@ -51,8 +52,13 @@ function MySnackbarContentWrapper(props) {
         </IconButton>
       ]}
       {...other}
+      ref={ref}
     />
   );
+});
+
+function TransitionDown(props) {
+  return <Slide {...props} direction="down" />;
 }
 
 const NudgeUpdate = props => {
@@ -65,6 +71,7 @@ const NudgeUpdate = props => {
 
     setOpen(false);
   }
+
   const clickHandler = e => {
     props.handleFormSubmit(e);
     setOpen(true);
@@ -79,8 +86,12 @@ const NudgeUpdate = props => {
             horizontal: 'left'
           }}
           open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}>
+          autoHideDuration={2000}
+          onClose={handleClose}
+          TransitionComponent={TransitionDown}
+          ContentProps={{
+            'aria-describedby': 'message-id'
+          }}>
           <MySnackbarContentWrapper
             onClose={handleClose}
             variant="success"
