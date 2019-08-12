@@ -47,6 +47,8 @@ const MainBody = props => {
     activated: false
   });
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const { location, setPreviousPath } = props;
 
   useEffect(() => {
@@ -75,7 +77,8 @@ const MainBody = props => {
   };
 
   const showModal = () => {
-    $('#editNudgeModalCenter').modal('show');
+    // $('#editNudgeModalCenter').modal('show');
+    handleDialogOpen();
   };
 
   const closeUpdateComp = () => {
@@ -83,8 +86,17 @@ const MainBody = props => {
   };
 
   const hideModal = () => {
-    $('#editNudgeModalCenter').modal('hide');
+    // $('#editNudgeModalCenter').modal('hide');
+    handleDialogClose();
   };
+
+  function handleDialogOpen() {
+    setDialogOpen(true);
+  }
+
+  function handleDialogClose() {
+    setDialogOpen(false);
+  }
 
   const launchUserUpdateComp = () => {
     showUserModal();
@@ -210,6 +222,7 @@ const MainBody = props => {
             closeUpdateComp={closeUpdateComp}
             handleInputChange={handleInputChange}
             handleFormSubmit={handleFormSubmit}
+            dialogOpen={dialogOpen}
           />
         </div>
       </div>

@@ -8,6 +8,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { makeStyles } from '@material-ui/core/styles';
 import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -62,19 +69,19 @@ function TransitionDown(props) {
 }
 
 const NudgeUpdate = props => {
-  const [open, setOpen] = React.useState(false);
+  const [toastOpen, setToastOpen] = React.useState(false);
 
-  function handleClose(event, reason) {
+  function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    setOpen(false);
+    setToastOpen(false);
   }
 
   const clickHandler = e => {
     props.handleFormSubmit(e);
-    setOpen(true);
+    setToastOpen(true);
   };
 
   return (
@@ -85,15 +92,15 @@ const NudgeUpdate = props => {
             vertical: 'bottom',
             horizontal: 'left'
           }}
-          open={open}
+          open={toastOpen}
           autoHideDuration={2000}
-          onClose={handleClose}
+          onClose={handleToastClose}
           TransitionComponent={TransitionDown}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
           <MySnackbarContentWrapper
-            onClose={handleClose}
+            onClose={handleToastClose}
             variant="success"
             message={
               <span>{props.nudge.name} has been successfully updated.</span>
@@ -101,6 +108,34 @@ const NudgeUpdate = props => {
           />
         </Snackbar>
       </div>
+      <Dialog
+        open={props.dialogOpen}
+        onClose={props.closeUpdateComp}
+        aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here.
+            We will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.closeUpdateComp} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={props.closeUpdateComp} color="primary">
+            Subscribe
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div
         className="modal fade"
         id="editNudgeModalCenter"

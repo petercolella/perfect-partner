@@ -112,6 +112,7 @@ const NudgeTable = props => {
         handleInputChange={props.handleInputChange}
         handleFormSubmit={props.handleFormSubmit}
         nudge={props.nudge}
+        dialogOpen={props.dialogOpen}
       />
     </div>
   );
