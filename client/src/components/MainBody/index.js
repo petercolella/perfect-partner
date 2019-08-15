@@ -114,12 +114,8 @@ const MainBody = props => {
     $('#editUserModalCenter').modal('hide');
   };
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setNudge({
-      ...nudge,
-      [name]: value
-    });
+  const handleInputChange = name => event => {
+    setNudge({ ...nudge, [name]: event.target.value });
   };
 
   const handleFormSubmit = event => {

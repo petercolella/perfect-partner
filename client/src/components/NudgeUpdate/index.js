@@ -119,20 +119,23 @@ const NudgeUpdate = props => {
             We will send updates occasionally.
           </DialogContentText>
           <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            // autoFocus
+            id="nudge-name"
+            label="Nudge Name"
+            // type="text"
             fullWidth
+            value={props.nudge.name}
+            onChange={props.handleInputChange('name')}
+            margin="normal"
+            variant="outlined"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.closeUpdateComp} color="primary">
             Cancel
           </Button>
-          <Button onClick={props.closeUpdateComp} color="primary">
-            Subscribe
+          <Button onClick={e => clickHandler(e)} color="primary">
+            Submit
           </Button>
         </DialogActions>
       </Dialog>
