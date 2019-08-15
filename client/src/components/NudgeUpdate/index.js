@@ -109,20 +109,19 @@ const NudgeUpdate = props => {
         </Snackbar>
       </div>
       <Dialog
+        fullWidth={true}
         open={props.dialogOpen}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Update the specifics of your nudge.
           </DialogContentText>
           <TextField
-            // autoFocus
             id="nudge-name"
             label="Nudge Name"
-            // type="text"
+            type="text"
             fullWidth
             value={props.nudge.name}
             onChange={props.handleInputChange('name')}
