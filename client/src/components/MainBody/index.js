@@ -126,6 +126,7 @@ const MainBody = props => {
     }).then(() => {
       loadUserInfo();
     });
+    setDialogOpen(false);
   };
 
   const handleUserInputChange = event => {
