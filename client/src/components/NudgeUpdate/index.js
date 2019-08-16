@@ -15,11 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -89,8 +85,6 @@ const NudgeUpdate = props => {
     setToastOpen(true);
   };
 
-  const inputLabel = React.useRef(null);
-
   return (
     <div>
       <div>
@@ -157,38 +151,23 @@ const NudgeUpdate = props => {
           />
           <TextField
             id="nudgeFrequencyUnit"
+            select
             label="Frequency Unit"
             type="text"
             fullWidth
             value={props.nudge.nudgeFrequencyUnit}
             onChange={props.handleInputChange('nudgeFrequencyUnit')}
+            helperText="Please select"
             margin="normal"
-            variant="outlined"
-          />
-          <FormControl variant="outlined">
-            <InputLabel ref={inputLabel} htmlFor="nudgeFrequencyUnit">
-              Frequency Unit
-            </InputLabel>
-            <Select
-              value={props.nudge.nudgeFrequencyUnit}
-              onChange={props.handleInputChange('nudgeFrequencyUnit')}
-              input={
-                <OutlinedInput
-                  //   labelWidth={labelWidth}
-                  fullWidth
-                  name="nudgeFrequencyUnit"
-                  id="nudgeFrequencyUnit"
-                />
-              }>
-              <MenuItem value="seconds">seconds</MenuItem>
-              <MenuItem value="minutes">minutes</MenuItem>
-              <MenuItem value="hours">hours</MenuItem>
-              <MenuItem value="days">days</MenuItem>
-              <MenuItem value="weeks">weeks</MenuItem>
-              <MenuItem value="months">months</MenuItem>
-              <MenuItem value="years">years</MenuItem>
-            </Select>
-          </FormControl>
+            variant="outlined">
+            <MenuItem value="seconds">seconds</MenuItem>
+            <MenuItem value="minutes">minutes</MenuItem>
+            <MenuItem value="hours">hours</MenuItem>
+            <MenuItem value="days">days</MenuItem>
+            <MenuItem value="weeks">weeks</MenuItem>
+            <MenuItem value="months">months</MenuItem>
+            <MenuItem value="years">years</MenuItem>
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.closeUpdateComp} color="primary">
