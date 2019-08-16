@@ -15,6 +15,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -84,6 +89,8 @@ const NudgeUpdate = props => {
     setToastOpen(true);
   };
 
+  const inputLabel = React.useRef(null);
+
   return (
     <div>
       <div>
@@ -119,7 +126,7 @@ const NudgeUpdate = props => {
             Update the specifics of your nudge.
           </DialogContentText>
           <TextField
-            id="nudge-name"
+            id="name"
             label="Nudge Name"
             type="text"
             fullWidth
@@ -128,6 +135,60 @@ const NudgeUpdate = props => {
             margin="normal"
             variant="outlined"
           />
+          <TextField
+            id="textMessage"
+            label="Text Body"
+            type="text"
+            fullWidth
+            value={props.nudge.textMessage}
+            onChange={props.handleInputChange('textMessage')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="nudgeFrequency"
+            label="Frequency"
+            type="text"
+            fullWidth
+            value={props.nudge.nudgeFrequency}
+            onChange={props.handleInputChange('nudgeFrequency')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="nudgeFrequencyUnit"
+            label="Frequency Unit"
+            type="text"
+            fullWidth
+            value={props.nudge.nudgeFrequencyUnit}
+            onChange={props.handleInputChange('nudgeFrequencyUnit')}
+            margin="normal"
+            variant="outlined"
+          />
+          <FormControl variant="outlined">
+            <InputLabel ref={inputLabel} htmlFor="nudgeFrequencyUnit">
+              Frequency Unit
+            </InputLabel>
+            <Select
+              value={props.nudge.nudgeFrequencyUnit}
+              onChange={props.handleInputChange('nudgeFrequencyUnit')}
+              input={
+                <OutlinedInput
+                  //   labelWidth={labelWidth}
+                  fullWidth
+                  name="nudgeFrequencyUnit"
+                  id="nudgeFrequencyUnit"
+                />
+              }>
+              <MenuItem value="seconds">seconds</MenuItem>
+              <MenuItem value="minutes">minutes</MenuItem>
+              <MenuItem value="hours">hours</MenuItem>
+              <MenuItem value="days">days</MenuItem>
+              <MenuItem value="weeks">weeks</MenuItem>
+              <MenuItem value="months">months</MenuItem>
+              <MenuItem value="years">years</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.closeUpdateComp} color="primary">
