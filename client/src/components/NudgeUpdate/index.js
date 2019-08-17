@@ -16,6 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import { ReactComponent as Pencil } from './pencil.svg';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -65,8 +66,8 @@ const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
   );
 });
 
-function TransitionDown(props) {
-  return <Slide {...props} direction="down" />;
+function TransitionUp(props) {
+  return <Slide {...props} direction="up" />;
 }
 
 const NudgeUpdate = props => {
@@ -96,7 +97,7 @@ const NudgeUpdate = props => {
           open={toastOpen}
           autoHideDuration={2000}
           onClose={handleToastClose}
-          TransitionComponent={TransitionDown}
+          TransitionComponent={TransitionUp}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
@@ -114,10 +115,14 @@ const NudgeUpdate = props => {
         open={props.dialogOpen}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Edit</DialogTitle>
+        <DialogTitle
+          id="form-dialog-title"
+          style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Pencil height="2.5em" width="2.5em" style={{ right: 0 }} />
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Update the specifics of your nudge.
+          <DialogContentText style={{ marginBottom: 8 }}>
+            Edit Your {props.nudge.name} Nudge
           </DialogContentText>
           <TextField
             id="name"
@@ -142,7 +147,7 @@ const NudgeUpdate = props => {
           <TextField
             id="nudgeFrequency"
             label="Frequency"
-            type="text"
+            type="number"
             fullWidth
             value={props.nudge.nudgeFrequency}
             onChange={props.handleInputChange('nudgeFrequency')}
@@ -157,7 +162,6 @@ const NudgeUpdate = props => {
             fullWidth
             value={props.nudge.nudgeFrequencyUnit}
             onChange={props.handleInputChange('nudgeFrequencyUnit')}
-            helperText="Please select"
             margin="normal"
             variant="outlined">
             <MenuItem value="seconds">seconds</MenuItem>
