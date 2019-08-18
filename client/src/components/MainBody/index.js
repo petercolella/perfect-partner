@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,7 +13,12 @@ import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
 const $ = window.$;
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+    overflowX: 'auto'
+  },
   card: {
     minWidth: 275
   },
@@ -22,7 +28,7 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12
   }
-});
+}));
 
 const MainBody = props => {
   const [user, setUser] = useState({
@@ -151,7 +157,7 @@ const MainBody = props => {
 
   return (
     <div className="container-fluid">
-      <div className="row ">
+      <div className="row">
         <div className="col-md-4 col-sm-12">
           <img id="header-img" alt="logo" src="/img/logo_p.png" />
         </div>
@@ -168,46 +174,52 @@ const MainBody = props => {
         </div>
       </div>
       <div className="row">
-        {user.name ? (
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                <span>Phone Number: </span>
-                {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                <span>Partner's Name: </span>
-                {user.partnerName}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                <span>Partner's Birthday: </span>
-                {user.birthDate}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                <span>Your Anniversary: </span>
-                {user.anniversaryDate}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button onClick={launchUserUpdateComp}>Edit Your Profile</Button>
-            </CardActions>
-          </Card>
-        ) : (
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography
-                className={classes.title}
-                color="textSecondary"
-                gutterBottom>
-                Please click{' '}
-                <Link to="/" style={{ color: '#22b5e0' }}>
-                  here
-                </Link>{' '}
-                to sign in before continuing.
-              </Typography>
-            </CardContent>
-          </Card>
-        )}
+        <div className="col-md-4 col-sm-12">
+          <Paper className={classes.root}>
+            {user.name ? (
+              <Card className={classes.card}>
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    <span>Phone Number: </span>
+                    {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                  </Typography>
+                  <Typography variant="h5" component="h2">
+                    <span>Partner's Name: </span>
+                    {user.partnerName}
+                  </Typography>
+                  <Typography variant="h5" component="h2">
+                    <span>Partner's Birthday: </span>
+                    {user.birthDate}
+                  </Typography>
+                  <Typography variant="h5" component="h2">
+                    <span>Your Anniversary: </span>
+                    {user.anniversaryDate}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button onClick={launchUserUpdateComp}>
+                    Edit Your Profile
+                  </Button>
+                </CardActions>
+              </Card>
+            ) : (
+              <Card className={classes.card}>
+                <CardContent>
+                  <Typography
+                    className={classes.title}
+                    color="textSecondary"
+                    gutterBottom>
+                    Please click{' '}
+                    <Link to="/" style={{ color: '#22b5e0' }}>
+                      here
+                    </Link>{' '}
+                    to sign in before continuing.
+                  </Typography>
+                </CardContent>
+              </Card>
+            )}
+          </Paper>
+        </div>
       </div>
       <div className="row">
         <div className="col-md-12">
