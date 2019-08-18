@@ -114,15 +114,16 @@ const NudgeUpdate = props => {
         fullWidth={true}
         open={props.dialogOpen}
         onClose={props.closeUpdateComp}
-        aria-labelledby="form-dialog-title">
-        <DialogTitle
-          id="form-dialog-title"
-          style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Pencil height="2.5em" width="2.5em" style={{ right: 0 }} />
+        aria-labelledby="form-dialog-title"
+        scroll={'body'}>
+        <DialogTitle id="form-dialog-title">
+          Personalize Your {props.nudge.name} Nudge
+          <Pencil height="2.5em" width="2.5em" style={{ marginLeft: 16 }} />
         </DialogTitle>
         <DialogContent>
-          <DialogContentText style={{ marginBottom: 8 }}>
-            Edit Your {props.nudge.name} Nudge
+          <DialogContentText>
+            Give it your special touch. You can make changes as often as you
+            like!
           </DialogContentText>
           <TextField
             id="name"
