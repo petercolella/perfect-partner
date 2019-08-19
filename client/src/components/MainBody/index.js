@@ -54,6 +54,7 @@ const MainBody = props => {
   });
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [userDialogOpen, setUserDialogOpen] = useState(false);
 
   const { location, setPreviousPath } = props;
 
@@ -104,12 +105,21 @@ const MainBody = props => {
     setDialogOpen(false);
   }
 
+  function handleUserDialogOpen() {
+    setUserDialogOpen(true);
+  }
+
+  function handleUserDialogClose() {
+    setUserDialogOpen(false);
+  }
+
   const launchUserUpdateComp = () => {
     showUserModal();
   };
 
   const showUserModal = () => {
-    $('#editUserModalCenter').modal('show');
+    // $('#editUserModalCenter').modal('show');
+    handleUserDialogOpen();
   };
 
   const closeUserUpdateComp = () => {
@@ -117,7 +127,8 @@ const MainBody = props => {
   };
 
   const hideUserModal = () => {
-    $('#editUserModalCenter').modal('hide');
+    // $('#editUserModalCenter').modal('hide');
+    handleUserDialogClose();
   };
 
   const handleInputChange = name => event => {
@@ -135,12 +146,8 @@ const MainBody = props => {
     setDialogOpen(false);
   };
 
-  const handleUserInputChange = event => {
-    const { name, value } = event.target;
-    setUser({
-      ...user,
-      [name]: value
-    });
+  const handleUserInputChange = name => event => {
+    setUser({ ...user, [name]: event.target.value });
   };
 
   const handleUserFormSubmit = event => {
@@ -240,6 +247,7 @@ const MainBody = props => {
         handleUserInputChange={handleUserInputChange}
         handleUserFormSubmit={handleUserFormSubmit}
         user={user}
+        userDialogOpen={userDialogOpen}
       />
     </div>
   );
