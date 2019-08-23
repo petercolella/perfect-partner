@@ -175,7 +175,7 @@ const MainBody = props => {
         </div>
       </div>
       <div className="row">
-        <div className="col-md-4 col-sm-12">
+        <div className="col-md-6 col-sm-12">
           <Paper className={classes.root}>
             {user.name ? (
               <Card className={classes.card}>
@@ -198,7 +198,10 @@ const MainBody = props => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button onClick={launchUserUpdateComp}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={launchUserUpdateComp}>
                     Edit Your Profile
                   </Button>
                 </CardActions>
