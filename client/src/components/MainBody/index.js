@@ -11,7 +11,6 @@ import API from '../../utils/API';
 import UserUpdate from '../UserUpdate';
 import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
-const $ = window.$;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -84,7 +83,6 @@ const MainBody = props => {
   };
 
   const showModal = () => {
-    // $('#editNudgeModalCenter').modal('show');
     handleDialogOpen();
   };
 
@@ -93,7 +91,6 @@ const MainBody = props => {
   };
 
   const hideModal = () => {
-    // $('#editNudgeModalCenter').modal('hide');
     handleDialogClose();
   };
 
@@ -118,7 +115,6 @@ const MainBody = props => {
   };
 
   const showUserModal = () => {
-    // $('#editUserModalCenter').modal('show');
     handleUserDialogOpen();
   };
 
@@ -127,7 +123,6 @@ const MainBody = props => {
   };
 
   const hideUserModal = () => {
-    // $('#editUserModalCenter').modal('hide');
     handleUserDialogClose();
   };
 
@@ -137,7 +132,6 @@ const MainBody = props => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    $('#nudge-toast').toast('show');
     API.updateNudge(nudge._id, {
       ...nudge
     }).then(() => {
@@ -152,7 +146,6 @@ const MainBody = props => {
 
   const handleUserFormSubmit = event => {
     event.preventDefault();
-    $('#user-toast').toast('show');
     API.updateUser(user._id, {
       ...user
     }).then(() => {
