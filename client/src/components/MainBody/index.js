@@ -180,19 +180,19 @@ const MainBody = props => {
             {user.name ? (
               <Card className={classes.card}>
                 <CardContent>
-                  <Typography variant="h5" component="h2">
+                  <Typography variant="body1">
                     <span>Phone Number: </span>
                     {user.phone ? fn.formatPhoneNumber(user.phone) : null}
                   </Typography>
-                  <Typography variant="h5" component="h2">
+                  <Typography variant="body1">
                     <span>Partner's Name: </span>
                     {user.partnerName}
                   </Typography>
-                  <Typography variant="h5" component="h2">
+                  <Typography variant="body1">
                     <span>Partner's Birthday: </span>
                     {user.birthDate}
                   </Typography>
-                  <Typography variant="h5" component="h2">
+                  <Typography variant="body1">
                     <span>Your Anniversary: </span>
                     {user.anniversaryDate}
                   </Typography>
