@@ -80,7 +80,7 @@ const UserUpdate = props => {
   }
 
   const clickHandler = e => {
-    props.handleFormSubmit(e);
+    props.handleUserFormSubmit(e);
     setToastOpen(true);
   };
 
@@ -133,6 +133,76 @@ const UserUpdate = props => {
             fullWidth
             value={props.user.name}
             onChange={props.handleUserInputChange('name')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="firstName"
+            label="First Name"
+            type="text"
+            fullWidth
+            value={props.user.firstName}
+            onChange={props.handleUserInputChange('firstName')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="lastName"
+            label="Last Name"
+            type="text"
+            fullWidth
+            value={props.user.lastName}
+            onChange={props.handleUserInputChange('lastName')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="email"
+            label="Email"
+            type="email"
+            fullWidth
+            value={props.user.email}
+            onChange={props.handleUserInputChange('email')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="phone"
+            label="Phone"
+            type="tel"
+            fullWidth
+            value={props.user.phone}
+            onChange={props.handleUserInputChange('phone')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="partnerName"
+            label="Partner's Name"
+            type="text"
+            fullWidth
+            value={props.user.partnerName}
+            onChange={props.handleUserInputChange('partnerName')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="anniversaryDate"
+            label="Anniversary Date"
+            type="date"
+            fullWidth
+            value={props.user.anniversaryDate}
+            onChange={props.handleUserInputChange('anniversaryDate')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
+            id="birthDate"
+            label="Partner's Birthday"
+            type="date"
+            fullWidth
+            value={props.user.birthDate}
+            onChange={props.handleUserInputChange('birthDate')}
             margin="normal"
             variant="outlined"
           />

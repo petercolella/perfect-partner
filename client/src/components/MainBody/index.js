@@ -158,6 +158,7 @@ const MainBody = props => {
     }).then(() => {
       loadUserInfo();
     });
+    setUserDialogOpen(false);
   };
 
   const classes = useStyles();
