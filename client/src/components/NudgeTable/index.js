@@ -104,26 +104,6 @@ const NudgeTable = props => {
           CC 3.0 BY
         </a>
       </div> */}
-      <div aria-live="polite" aria-atomic="true">
-        <div
-          className="toast "
-          id="phone-toast"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-          data-delay="2000"
-          style={{
-            float: 'right',
-            backgroundColor: '#0bb3e2',
-            color: 'white'
-          }}>
-          <div className="toast-body">
-            {props.user.phone
-              ? `Text Sent to ${fn.formatPhoneNumber(props.user.phone)}.`
-              : `Please log in to send a text.`}
-          </div>
-        </div>
-      </div>
       <NudgeUpdate
         closeUpdateComp={props.closeUpdateComp}
         handleInputChange={props.handleInputChange}
