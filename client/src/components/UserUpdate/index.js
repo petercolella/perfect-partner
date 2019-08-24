@@ -15,6 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { ReactComponent as User } from './user.svg';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -118,8 +119,8 @@ const UserUpdate = props => {
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
+          <User height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           Edit Your Profile, {props.user.firstName}.
-          {/* <Pencil height="2.5em" width="2.5em" style={{ marginLeft: 16 }} /> */}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -190,6 +191,7 @@ const UserUpdate = props => {
             id="anniversaryDate"
             label="Anniversary Date"
             type="date"
+            format="MM/dd/yyyy"
             fullWidth
             value={props.user.anniversaryDate}
             onChange={props.handleUserInputChange('anniversaryDate')}
@@ -200,6 +202,7 @@ const UserUpdate = props => {
             id="birthDate"
             label="Partner's Birthday"
             type="date"
+            format="MM/dd/yyyy"
             fullWidth
             value={props.user.birthDate}
             onChange={props.handleUserInputChange('birthDate')}
