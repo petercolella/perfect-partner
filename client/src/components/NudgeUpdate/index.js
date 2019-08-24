@@ -117,8 +117,8 @@ const NudgeUpdate = props => {
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
+          <Pencil height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           Personalize Your {props.nudge.name} Nudge
-          <Pencil height="2.5em" width="2.5em" style={{ marginLeft: 16 }} />
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
