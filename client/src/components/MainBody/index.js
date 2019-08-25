@@ -11,6 +11,7 @@ import API from '../../utils/API';
 import UserUpdate from '../UserUpdate';
 import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
+import format from 'date-fns/format';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -144,6 +145,12 @@ const MainBody = props => {
     setUser({ ...user, [name]: event.target.value });
   };
 
+  const handleUserDateInputChange = name => event => {
+    const formattedDate = format(event, 'MM/dd/yyyy');
+    console.log('formattedDate', formattedDate);
+    setUser({ ...user, [name]: formattedDate });
+  };
+
   const handleUserFormSubmit = event => {
     event.preventDefault();
     API.updateUser(user._id, {
@@ -242,6 +249,7 @@ const MainBody = props => {
       <UserUpdate
         closeUserUpdateComp={closeUserUpdateComp}
         handleUserInputChange={handleUserInputChange}
+        handleUserDateInputChange={handleUserDateInputChange}
         handleUserFormSubmit={handleUserFormSubmit}
         user={user}
         userDialogOpen={userDialogOpen}

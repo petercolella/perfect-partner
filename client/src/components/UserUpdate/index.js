@@ -16,6 +16,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { ReactComponent as User } from './user.svg';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -209,6 +215,22 @@ const UserUpdate = props => {
             margin="normal"
             variant="outlined"
           />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              id="birthDate"
+              label="Date picker dialog"
+              format="MM/dd/yyyy"
+              fullWidth
+              value={props.user.birthDate}
+              onChange={props.handleUserDateInputChange('birthDate')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              margin="normal"
+              variant="inline"
+              inputVariant="outlined"
+            />
+          </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
           <Button onClick={props.closeUserUpdateComp} color="primary">
