@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Modal from '../Modal';
 import API from '../../../utils/API';
 import Header from '../../Header';
+import DateQuestionDialog from '../DateQuestionDialog';
+import format from 'date-fns/format';
 const $ = window.$;
 
 class Birthday extends Component {
@@ -26,7 +27,9 @@ class Birthday extends Component {
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res => this.setState({ User: res.data }));
+      API.getUser(id).then(res =>
+        this.setState({ User: res.data, userField: res.data.birthDate })
+      );
     }
   };
 
@@ -46,6 +49,16 @@ class Birthday extends Component {
     });
   };
 
+  handleUserDateInputChange = name => event => {
+    const formattedDate = format(event, 'MM/dd/yyyy');
+    console.log('formattedDate', formattedDate);
+    this.setState({
+      User: {
+        [name]: formattedDate
+      }
+    });
+  };
+
   render() {
     return (
       <>
@@ -58,9 +71,18 @@ class Birthday extends Component {
               </div>
             </div>
           </div>
-          <Modal
+          {/* <Modal
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
+            question={this.state.question}
+            userField={this.state.userField}
+            link={this.state.nextQuestionLink}
+            title={this.state.title}
+            user={this.state.User}
+          /> */}
+          <DateQuestionDialog
+            handleFormSubmit={this.handleFormSubmit}
+            handleUserDateInputChange={this.handleUserDateInputChange}
             question={this.state.question}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
