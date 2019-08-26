@@ -121,6 +121,7 @@ const MainBody = props => {
 
   const closeUserUpdateComp = () => {
     hideUserModal();
+    loadUserInfo();
   };
 
   const hideUserModal = () => {
