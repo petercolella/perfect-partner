@@ -80,52 +80,20 @@ const MainBody = props => {
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
-    showModal();
-  };
-
-  const showModal = () => {
-    handleDialogOpen();
+    setDialogOpen(true);
   };
 
   const closeUpdateComp = () => {
-    hideModal();
-  };
-
-  const hideModal = () => {
-    handleDialogClose();
-  };
-
-  function handleDialogOpen() {
-    setDialogOpen(true);
-  }
-
-  function handleDialogClose() {
     setDialogOpen(false);
-  }
-
-  function handleUserDialogOpen() {
-    setUserDialogOpen(true);
-  }
-
-  function handleUserDialogClose() {
-    setUserDialogOpen(false);
-  }
+  };
 
   const launchUserUpdateComp = () => {
-    showUserModal();
-  };
-
-  const showUserModal = () => {
-    handleUserDialogOpen();
+    setUserDialogOpen(true);
   };
 
   const closeUserUpdateComp = () => {
-    hideUserModal();
+    setUserDialogOpen(false);
     loadUserInfo();
-  };
-
-  const hideUserModal = () => {
-    handleUserDialogClose();
   };
 
   const handleInputChange = name => event => {
