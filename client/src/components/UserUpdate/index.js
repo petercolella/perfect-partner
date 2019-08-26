@@ -121,7 +121,7 @@ const UserUpdate = props => {
       <Dialog
         fullWidth={true}
         open={props.userDialogOpen}
-        onClose={props.closeUpdateComp}
+        onClose={props.closeUserUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
@@ -217,6 +217,7 @@ const UserUpdate = props => {
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              autoOk
               id="birthDate"
               label="Date picker dialog"
               format="MM/dd/yyyy"
