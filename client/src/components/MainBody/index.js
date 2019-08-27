@@ -12,6 +12,14 @@ import UserUpdate from '../UserUpdate';
 import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
 import format from 'date-fns/format';
+import getTime from 'date-fns/getTime';
+
+const getUTCDate = (date = new Date()) => {
+  const dateFromString = new Date(date);
+  return new Date(
+    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
+  );
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -115,7 +123,8 @@ const MainBody = props => {
   };
 
   const handleUserDateInputChange = name => event => {
-    const formattedDate = format(event, 'MM/dd/yyyy');
+    const formattedDate = format(getUTCDate(event), 'dd MMM, yyyy HH:mm:ss');
+    console.log('event', event);
     console.log('formattedDate', formattedDate);
     setUser({ ...user, [name]: formattedDate });
   };
@@ -166,11 +175,11 @@ const MainBody = props => {
                   </Typography>
                   <Typography variant="body1">
                     <span>Partner's Birthday: </span>
-                    {user.birthDate}
+                    {format(getUTCDate(user.birthDate), 'MM/dd/yyyy')}
                   </Typography>
                   <Typography variant="body1">
                     <span>Your Anniversary: </span>
-                    {user.anniversaryDate}
+                    {format(getUTCDate(user.anniversaryDate), 'MM/dd/yyyy')}
                   </Typography>
                 </CardContent>
                 <CardActions>
