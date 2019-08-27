@@ -193,33 +193,28 @@ const UserUpdate = props => {
             margin="normal"
             variant="outlined"
           />
-          <TextField
-            id="anniversaryDate"
-            label="Anniversary Date"
-            type="date"
-            format="MM/dd/yyyy"
-            fullWidth
-            value={props.user.anniversaryDate}
-            onChange={props.handleUserInputChange('anniversaryDate')}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            id="birthDate"
-            label="Partner's Birthday"
-            type="date"
-            format="MM/dd/yyyy"
-            fullWidth
-            value={props.user.birthDate}
-            onChange={props.handleUserInputChange('birthDate')}
-            margin="normal"
-            variant="outlined"
-          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              autoOk
+              id="anniversaryDate"
+              label="Anniversary Date"
+              format="MM/dd/yyyy"
+              fullWidth
+              value={props.user.anniversaryDate}
+              onChange={props.handleUserDateInputChange('anniversaryDate')}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              margin="normal"
+              variant="inline"
+              inputVariant="outlined"
+            />
+          </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               autoOk
               id="birthDate"
-              label="Date picker dialog"
+              label="Partner's Birthday"
               format="MM/dd/yyyy"
               fullWidth
               value={props.user.birthDate}
