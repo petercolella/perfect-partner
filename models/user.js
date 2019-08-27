@@ -10,8 +10,8 @@ const userSchema = new Schema({
   partnerName: { type: String },
   email: { type: String, required: true, unique: true },
   imageUrl: { type: String },
-  anniversaryDate: { type: String },
-  birthDate: { type: String },
+  anniversaryDate: { type: Date },
+  birthDate: { type: Date },
   nudges: [
     {
       type: Schema.Types.ObjectId,
