@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
-import format from 'date-fns/format';
-const $ = window.$;
+import getTime from 'date-fns/getTime';
+
+const getUTCDate = (date = new Date()) => {
+  const dateFromString = new Date(date);
+  return new Date(
+    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
+  );
+};
 
 class Birthday extends Component {
   state = {
@@ -18,43 +24,44 @@ class Birthday extends Component {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
     this.loadUserInfo();
-    $('.modal-content').css(
-      'background-image',
-      'url(./img/birthday-history-600x319.jpg)'
-    );
   }
 
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res =>
-        this.setState({ User: res.data, userField: res.data.birthDate })
-      );
+      API.getUser(id).then(res => {
+        console.log('res.data.birthDate', res.data.birthDate);
+        this.setState(
+          {
+            User: res.data,
+            userField: res.data.birthDate
+              ? getUTCDate(res.data.birthDate)
+              : null
+          },
+          function() {
+            console.log('this.state.userField', this.state.userField);
+          }
+        );
+      });
     }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    $('.toast').toast('show');
+    console.log('User', this.state.User);
     API.updateUser(this.state.User._id, {
-      birthDate: this.state.userField
-    });
-  };
-
-  handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState({
-      [name]: value
+      birthDate: this.state.User.birthDate
     });
   };
 
   handleUserDateInputChange = name => event => {
-    const formattedDate = format(event, 'MM/dd/yyyy');
+    const formattedDate = getUTCDate(event);
+    console.log('event', event);
     console.log('formattedDate', formattedDate);
     this.setState({
       User: {
-        [name]: formattedDate
+        ...this.state.User,
+        [name]: event
       }
     });
   };
@@ -71,15 +78,6 @@ class Birthday extends Component {
               </div>
             </div>
           </div>
-          {/* <Modal
-            handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
-            question={this.state.question}
-            userField={this.state.userField}
-            link={this.state.nextQuestionLink}
-            title={this.state.title}
-            user={this.state.User}
-          /> */}
           <DateQuestionDialog
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
