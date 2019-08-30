@@ -21,6 +21,15 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import format from 'date-fns/format';
+import getTime from 'date-fns/getTime';
+
+const getUTCDate = (date = new Date()) => {
+  const dateFromString = new Date(date);
+  return new Date(
+    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
+  );
+};
 // import { ReactComponent as Pencil } from './pencil.svg';
 
 const useStyles1 = makeStyles(theme => ({
@@ -91,6 +100,11 @@ const DateQuestionDialog = props => {
     setToastOpen(true);
   };
 
+  console.log(props.userField);
+  console.log(props.user);
+  const formattedDate = getUTCDate(props.userField);
+  console.log(formattedDate);
+
   return (
     <div>
       <div>
@@ -111,7 +125,9 @@ const DateQuestionDialog = props => {
             variant="success"
             message={
               <span>
-                {props.title}: {props.userField} has been submitted.
+                {props.title}:{' '}
+                {format(getUTCDate(props.user.birthDate), 'MM/dd/yyyy')} has
+                been submitted.
               </span>
             }
           />
@@ -125,12 +141,11 @@ const DateQuestionDialog = props => {
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
           {/* <Pencil height="2.5em" width="2.5em" style={{ marginRight: 16 }} /> */}
-          {props.user.firstName}, {props.question}
+          {props.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Give it your special touch. You can make changes as often as you
-            like!
+            {props.user.firstName}, {props.question}
           </DialogContentText>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
