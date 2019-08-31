@@ -22,14 +22,6 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 import format from 'date-fns/format';
-import getTime from 'date-fns/getTime';
-
-const getUTCDate = (date = new Date()) => {
-  const dateFromString = new Date(date);
-  return new Date(
-    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
-  );
-};
 // import { ReactComponent as Pencil } from './pencil.svg';
 
 const useStyles1 = makeStyles(theme => ({
@@ -100,10 +92,11 @@ const DateQuestionDialog = props => {
     setToastOpen(true);
   };
 
-  console.log(props.userField);
-  console.log(props.user);
-  const formattedDate = getUTCDate(props.userField);
-  console.log(formattedDate);
+  console.log(`
+  DateQuestionDialog:
+
+  props.userField: ${props.userField}
+  `);
 
   return (
     <div>
@@ -125,9 +118,8 @@ const DateQuestionDialog = props => {
             variant="success"
             message={
               <span>
-                {props.title}:{' '}
-                {format(getUTCDate(props.user.birthDate), 'MM/dd/yyyy')} has
-                been submitted.
+                {props.title}: {format(props.date, 'MM/dd/yyyy')} has been
+                submitted.
               </span>
             }
           />
@@ -145,7 +137,7 @@ const DateQuestionDialog = props => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {props.user.firstName}, {props.question}
+            {props.firstName}, {props.question}
           </DialogContentText>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -154,8 +146,8 @@ const DateQuestionDialog = props => {
               label="Partner's Birthday"
               format="MM/dd/yyyy"
               fullWidth
-              value={props.user.birthDate}
-              onChange={props.handleUserDateInputChange('birthDate')}
+              value={props.userField}
+              onChange={props.handleUserDateInputChange('userField')}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
