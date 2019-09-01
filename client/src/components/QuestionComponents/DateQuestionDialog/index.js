@@ -93,9 +93,10 @@ const DateQuestionDialog = props => {
   };
 
   console.log(`
-  DateQuestionDialog:
+DateQuestionDialog:
 
-  props.userField: ${props.userField}
+props.userField:
+${props.userField}
   `);
 
   return (
@@ -141,7 +142,8 @@ const DateQuestionDialog = props => {
           </DialogContentText>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              autoOk
+              animateYearScrolling={true}
+              clearable
               id="birthDate"
               label="Partner's Birthday"
               format="MM/dd/yyyy"
@@ -152,7 +154,6 @@ const DateQuestionDialog = props => {
                 'aria-label': 'change date'
               }}
               margin="normal"
-              variant="inline"
               inputVariant="outlined"
             />
           </MuiPickersUtilsProvider>
