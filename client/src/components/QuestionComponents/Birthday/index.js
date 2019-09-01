@@ -16,7 +16,7 @@ class Birthday extends Component {
     User: {},
     title: 'Birthday',
     question: "what is your partner's birthday?",
-    userField: '',
+    userField: null,
     nextQuestionLink: '/anniversary'
   };
 
@@ -30,16 +30,30 @@ class Birthday extends Component {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        console.log('res.data.birthDate', res.data.birthDate);
+        console.log(`
+Birthday Component:
+
+res.data.birthDate:
+${res.data.birthDate}
+        `);
         this.setState(
           {
             User: res.data,
-            userField: res.data.birthDate
-              ? getUTCDate(res.data.birthDate)
-              : null
+            userField: res.data.birthDate ? res.data.birthDate : null
           },
           function() {
-            console.log('this.state.userField', this.state.userField);
+            console.log(`
+Birthday Component:
+
+this.state.userField:
+${this.state.userField}
+            `);
+            console.log(`
+Birthday Component:
+
+this.state.User.birthDate:
+${this.state.User.birthDate}
+            `);
           }
         );
       });
@@ -48,21 +62,19 @@ class Birthday extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    console.log('User', this.state.User);
     API.updateUser(this.state.User._id, {
-      birthDate: this.state.User.birthDate
-    });
+      birthDate: this.state.userField
+    }).then(this.loadUserInfo);
   };
 
   handleUserDateInputChange = name => event => {
-    const formattedDate = getUTCDate(event);
-    console.log('event', event);
-    console.log('formattedDate', formattedDate);
+    console.log(`
+    Birthday Component:
+  
+    event: ${event}
+    `);
     this.setState({
-      User: {
-        ...this.state.User,
-        [name]: event
-      }
+      [name]: event
     });
   };
 
@@ -82,10 +94,11 @@ class Birthday extends Component {
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
             question={this.state.question}
+            date={getUTCDate(this.state.User.birthDate)}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
             title={this.state.title}
-            user={this.state.User}
+            firstName={this.state.User.firstName}
           />
         </div>
       </>
