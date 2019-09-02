@@ -97,6 +97,9 @@ DateQuestionDialog:
 
 props.userField:
 ${props.userField}
+
+props.date:
+${props.date}
   `);
 
   return (
@@ -118,10 +121,16 @@ ${props.userField}
             onClose={handleToastClose}
             variant="success"
             message={
-              <span>
-                {props.title}: {format(props.date, 'MM/dd/yyyy')} has been
-                submitted.
-              </span>
+              props.userField ? (
+                <span>
+                  {props.title}: {format(props.date, 'MM/dd/yyyy')} has been
+                  submitted.
+                </span>
+              ) : (
+                <span>
+                  The {props.title} date has been cleared and set to null.
+                </span>
+              )
             }
           />
         </Snackbar>
