@@ -22,7 +22,15 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 import format from 'date-fns/format';
+import getTime from 'date-fns/getTime';
 // import { ReactComponent as Pencil } from './pencil.svg';
+
+const getUTCDate = (date = new Date()) => {
+  const dateFromString = new Date(date);
+  return new Date(
+    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
+  );
+};
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -99,7 +107,13 @@ props.userField:
 ${props.userField}
 
 props.date:
-${props.date}
+${props.date.toJSON()}
+
+new Date(props.userField):
+${new Date(props.userField)}
+
+getUTCDate(new Date(props.userField)):
+${getUTCDate(new Date(props.userField))}
   `);
 
   return (
@@ -111,7 +125,7 @@ ${props.date}
             horizontal: 'left'
           }}
           open={toastOpen}
-          autoHideDuration={2000}
+          autoHideDuration={3000}
           onClose={handleToastClose}
           TransitionComponent={TransitionUp}
           ContentProps={{
@@ -121,14 +135,16 @@ ${props.date}
             onClose={handleToastClose}
             variant="success"
             message={
-              props.userField ? (
+              new Date(props.userField).toDateString() !==
+              new Date().toDateString() ? (
                 <span>
                   {props.title}: {format(props.date, 'MM/dd/yyyy')} has been
                   submitted.
                 </span>
               ) : (
                 <span>
-                  The {props.title} date has been cleared and set to null.
+                  The {props.title} date has been cleared and set to today's
+                  date. Please enter a valid date before submitting.
                 </span>
               )
             }
@@ -153,12 +169,20 @@ ${props.date}
             <KeyboardDatePicker
               animateYearScrolling={true}
               clearable
+              //   error={props.error}
               id="birthDate"
               label="Partner's Birthday"
               format="MM/dd/yyyy"
               fullWidth
-              value={props.userField}
+              placeholder="mm/dd/yyyy"
+              value={
+                props.userField === null
+                  ? null
+                  : getUTCDate(new Date(props.userField))
+              }
+              //   value={props.selectedDate}
               onChange={props.handleUserDateInputChange('userField')}
+              //   onChange={date => props.handleDateChange(date)}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
