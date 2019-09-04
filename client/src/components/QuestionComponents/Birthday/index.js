@@ -11,13 +11,6 @@ const getUTCDate = (date = new Date()) => {
   );
 };
 
-const getLocalDate = (UTCDate = new Date()) => {
-  const dateFromString = new Date(UTCDate);
-  return new Date(
-    getTime(dateFromString) - dateFromString.getTimezoneOffset() * 60 * 1000
-  );
-};
-
 // const [selectedDate, setSelectedDate] = React.useState(new Date());
 
 // function handleDateChange(date) {
@@ -29,7 +22,7 @@ class Birthday extends Component {
     User: {},
     title: 'Birthday',
     question: "what is your partner's birthday?",
-    userField: new Date(),
+    userField: null,
     nextQuestionLink: '/anniversary'
   };
 
@@ -43,76 +36,30 @@ class Birthday extends Component {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        console.log(`
-Birthday Component (loadUserInfo => getUser):
-
-res.data.birthDate:
-${res.data.birthDate}
-        `);
-        this.setState(
-          {
-            User: res.data,
-            userField: res.data.birthDate ? res.data.birthDate : new Date()
-          },
-          function() {
-            console.log(`
-Birthday Component (loadUserInfo => setState):
-
-this.state.userField:
-${this.state.userField}
-
-this.state.User.birthDate:
-${this.state.User.birthDate}
-            `);
-          }
-        );
+        this.setState({
+          User: res.data,
+          userField: res.data.birthDate
+        });
       });
     }
   };
 
   handleFormSubmit = event => {
-    const jsonDate = this.state.userField ? this.state.userField : null;
-    const localJsonDate = jsonDate ? getLocalDate(jsonDate).toJSON() : null;
-    console.log(`
-Birthday Component (handleFormSubmit):
-
-this.state.userField: ${this.state.userField}
-
-jsonDate: ${jsonDate}
-
-localJsonDate: ${localJsonDate}
-                `);
     event.preventDefault();
     API.updateUser(this.state.User._id, {
-      birthDate:
-        new Date(this.state.userField).toDateString() !==
-        new Date().toDateString()
-          ? this.state.userField
-          : null
+      birthDate: this.state.userField
     }).then(this.loadUserInfo);
   };
 
   handleUserDateInputChange = name => event => {
-    const jsonDate = event ? event.toJSON() : null;
-    const localJsonDate = jsonDate ? getLocalDate(jsonDate).toJSON() : null;
-    // if (event === 'Invalid Date') {
-    //   console.log('inside');
-    //   error = true;
-    // } else {
-    //   error = false;
-    // }
+    const localDate = !event
+      ? null
+      : String(event) !== 'Invalid Date'
+      ? event.toLocaleDateString()
+      : null;
     this.setState({
-      [name]: localJsonDate
+      [name]: localDate
     });
-    console.log(`
-Birthday Component (handleUserDateChange):
-
-event: ${event}
-
-jsonDate: ${jsonDate}
-
-localJsonDate: ${localJsonDate}
-    `);
   };
 
   render() {
