@@ -37,14 +37,9 @@ class Birthday extends Component {
     }).then(this.loadUserInfo);
   };
 
-  handleUserDateInputChange = name => event => {
-    const localDate = !event
-      ? null
-      : String(event) === 'Invalid Date'
-      ? null
-      : event.toLocaleDateString();
+  handleUserDateInputChange = date => {
     this.setState({
-      [name]: localDate
+      userField: date
     });
   };
 

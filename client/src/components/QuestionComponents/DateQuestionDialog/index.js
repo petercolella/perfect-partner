@@ -178,7 +178,7 @@ ${new Date(props.userField).toLocaleDateString()}
               fullWidth
               placeholder="mm/dd/yyyy"
               value={props.userField}
-              onChange={props.handleUserDateInputChange('userField')}
+              onChange={props.handleUserDateInputChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
