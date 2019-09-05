@@ -11,15 +11,6 @@ import API from '../../utils/API';
 import UserUpdate from '../UserUpdate';
 import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
-import format from 'date-fns/format';
-import getTime from 'date-fns/getTime';
-
-const getUTCDate = (date = new Date()) => {
-  const dateFromString = new Date(date);
-  return new Date(
-    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
-  );
-};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -122,11 +113,9 @@ const MainBody = props => {
     setUser({ ...user, [name]: event.target.value });
   };
 
-  const handleUserDateInputChange = name => event => {
-    const formattedDate = format(getUTCDate(event), 'dd MMM, yyyy HH:mm:ss');
-    console.log('event', event);
-    console.log('formattedDate', formattedDate);
-    setUser({ ...user, [name]: formattedDate });
+  const handleUserDateInputChange = name => date => {
+    console.log('date:', date);
+    setUser({ ...user, [name]: date });
   };
 
   const handleUserFormSubmit = event => {
@@ -175,11 +164,15 @@ const MainBody = props => {
                   </Typography>
                   <Typography variant="body1">
                     <span>Partner's Birthday: </span>
-                    {format(getUTCDate(user.birthDate), 'MM/dd/yyyy')}
+                    {user.birthDate
+                      ? new Date(user.birthDate).toLocaleDateString()
+                      : ''}
                   </Typography>
                   <Typography variant="body1">
                     <span>Your Anniversary: </span>
-                    {format(getUTCDate(user.anniversaryDate), 'MM/dd/yyyy')}
+                    {user.anniversaryDate
+                      ? new Date(user.anniversaryDate).toLocaleDateString()
+                      : ''}
                   </Typography>
                 </CardContent>
                 <CardActions>
