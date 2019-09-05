@@ -2,11 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
-import { green } from '@material-ui/core/colors';
+import { amber, green } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
@@ -22,9 +25,25 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
+const variantIcon = {
+  success: CheckCircleIcon,
+  warning: WarningIcon,
+  error: ErrorIcon,
+  info: InfoIcon
+};
+
 const useStyles1 = makeStyles(theme => ({
   success: {
     backgroundColor: green[600]
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  info: {
+    backgroundColor: theme.palette.primary.main
+  },
+  warning: {
+    backgroundColor: amber[700]
   },
   icon: {
     fontSize: 20
@@ -41,7 +60,8 @@ const useStyles1 = makeStyles(theme => ({
 
 const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
   const classes = useStyles1();
-  const { message, onClose, variant, ...other } = props;
+  const { className, message, onClose, variant, ...other } = props;
+  const Icon = variantIcon[variant];
 
   return (
     <SnackbarContent
@@ -49,9 +69,7 @@ const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
       aria-describedby="client-snackbar"
       message={
         <span id="client-snackbar" className={classes.message}>
-          <CheckCircleIcon
-            className={clsx(classes.icon, classes.iconVariant)}
-          />
+          <Icon className={clsx(classes.icon, classes.iconVariant)} />
           {message}
         </span>
       }
@@ -113,24 +131,30 @@ ${new Date(props.userField).toLocaleDateString()}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          <MySnackbarContentWrapper
-            onClose={handleToastClose}
-            variant="success"
-            message={
-              props.userField ? (
+          {props.userField ? (
+            <MySnackbarContentWrapper
+              onClose={handleToastClose}
+              variant="success"
+              message={
                 <span>
                   {props.title}:{' '}
                   {new Date(props.userField).toLocaleDateString()} has been
                   submitted.
                 </span>
-              ) : (
+              }
+            />
+          ) : (
+            <MySnackbarContentWrapper
+              onClose={handleToastClose}
+              variant="warning"
+              message={
                 <span>
                   The {props.title} date has been cleared. Please enter a valid
                   date before submitting.
                 </span>
-              )
-            }
-          />
+              }
+            />
+          )}
         </Snackbar>
       </div>
       <Dialog
@@ -139,10 +163,7 @@ ${new Date(props.userField).toLocaleDateString()}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">
-          {/* <Pencil height="2.5em" width="2.5em" style={{ marginRight: 16 }} /> */}
-          {props.title}
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {props.firstName}, {props.question}
