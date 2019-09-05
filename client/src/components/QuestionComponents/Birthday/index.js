@@ -2,20 +2,6 @@ import React, { Component } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
-import getTime from 'date-fns/getTime';
-
-const getUTCDate = (date = new Date()) => {
-  const dateFromString = new Date(date);
-  return new Date(
-    getTime(dateFromString) + dateFromString.getTimezoneOffset() * 60 * 1000
-  );
-};
-
-// const [selectedDate, setSelectedDate] = React.useState(new Date());
-
-// function handleDateChange(date) {
-//   setSelectedDate(date);
-// }
 
 class Birthday extends Component {
   state = {
@@ -54,9 +40,9 @@ class Birthday extends Component {
   handleUserDateInputChange = name => event => {
     const localDate = !event
       ? null
-      : String(event) !== 'Invalid Date'
-      ? event.toLocaleDateString()
-      : null;
+      : String(event) === 'Invalid Date'
+      ? null
+      : event.toLocaleDateString();
     this.setState({
       [name]: localDate
     });
@@ -77,10 +63,7 @@ class Birthday extends Component {
           <DateQuestionDialog
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
-            // selectedDate={selectedDate}
-            // handleDateChange={handleDateChange}
             question={this.state.question}
-            date={getUTCDate(this.state.userField)}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
             title={this.state.title}
