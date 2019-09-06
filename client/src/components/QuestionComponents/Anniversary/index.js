@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Modal from '../Modal';
 import API from '../../../utils/API';
 import Header from '../../Header';
-const $ = window.$;
+import DateQuestionDialog from '../DateQuestionDialog';
+import { ReactComponent as Gift } from './gift.svg';
 
 class Anniversary extends Component {
   state = {
     User: {},
     title: 'Anniversary',
     question: 'what is your anniversary date?',
-    userField: '',
+    userField: null,
     nextQuestionLink: '/nudges'
   };
 
@@ -17,29 +17,30 @@ class Anniversary extends Component {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
     this.loadUserInfo();
-    $('.modal-content').css('background-image', 'url(./img/alcohol.jpg)');
   }
 
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res => this.setState({ User: res.data }));
+      API.getUser(id).then(res => {
+        this.setState({
+          User: res.data,
+          userField: res.data.anniversaryDate
+        });
+      });
     }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    $('.toast').toast('show');
     API.updateUser(this.state.User._id, {
       anniversaryDate: this.state.userField
-    });
+    }).then(this.loadUserInfo);
   };
 
-  handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
+  handleUserDateInputChange = date => {
     this.setState({
-      [name]: value
+      userField: date
     });
   };
 
@@ -55,14 +56,16 @@ class Anniversary extends Component {
               </div>
             </div>
           </div>
-          <Modal
+          <DateQuestionDialog
             handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
+            handleUserDateInputChange={this.handleUserDateInputChange}
+            image={Gift}
             question={this.state.question}
             userField={this.state.userField}
+            label="Anniversary"
             link={this.state.nextQuestionLink}
             title={this.state.title}
-            user={this.state.User}
+            firstName={this.state.User.firstName}
           />
         </div>
       </>
