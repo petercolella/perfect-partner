@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
+import { ReactComponent as Cake } from './cake.svg';
 
 class Birthday extends Component {
   state = {
@@ -58,9 +59,11 @@ class Birthday extends Component {
           <DateQuestionDialog
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
+            image={Cake}
             question={this.state.question}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
+            label="Partner's Birthday"
             title={this.state.title}
             firstName={this.state.User.firstName}
           />
