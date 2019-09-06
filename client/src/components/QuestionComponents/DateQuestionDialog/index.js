@@ -95,6 +95,8 @@ function TransitionUp(props) {
 const DateQuestionDialog = props => {
   const [toastOpen, setToastOpen] = React.useState(false);
 
+  const Image = props.image;
+
   function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
       return;
@@ -163,7 +165,10 @@ ${new Date(props.userField).toLocaleDateString()}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
+          {props.title}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             {props.firstName}, {props.question}
@@ -173,7 +178,7 @@ ${new Date(props.userField).toLocaleDateString()}
               animateYearScrolling={true}
               clearable
               id="birthDate"
-              label="Partner's Birthday"
+              label={props.label}
               format="MM/dd/yyyy"
               fullWidth
               placeholder="mm/dd/yyyy"
