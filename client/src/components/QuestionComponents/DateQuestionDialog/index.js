@@ -161,7 +161,7 @@ ${new Date(props.userField).toLocaleDateString()}
       </div>
       <Dialog
         fullWidth={true}
-        open={true}
+        open={props.dateQuestionDialogOpen}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
@@ -197,7 +197,9 @@ ${new Date(props.userField).toLocaleDateString()}
             Submit
           </Button>
           <Link to={props.link}>
-            <Button color="primary">Next</Button>
+            <Button onClick={props.setDateQuestionDialogClosed} color="primary">
+              Next
+            </Button>
           </Link>
         </DialogActions>
       </Dialog>

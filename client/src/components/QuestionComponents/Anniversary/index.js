@@ -10,13 +10,15 @@ class Anniversary extends Component {
     title: 'Anniversary',
     question: 'what is your anniversary date?',
     userField: null,
-    nextQuestionLink: '/nudges'
+    nextQuestionLink: '/nudges',
+    dateQuestionDialogOpen: false
   };
 
   componentDidMount() {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
     this.loadUserInfo();
+    setTimeout(() => this.setDateQuestionDialogOpen(), 500);
   }
 
   loadUserInfo = () => {
@@ -29,6 +31,18 @@ class Anniversary extends Component {
         });
       });
     }
+  };
+
+  setDateQuestionDialogOpen = () => {
+    this.setState({
+      dateQuestionDialogOpen: true
+    });
+  };
+
+  setDateQuestionDialogClosed = () => {
+    this.setState({
+      dateQuestionDialogOpen: false
+    });
   };
 
   handleFormSubmit = event => {
@@ -57,15 +71,17 @@ class Anniversary extends Component {
             </div>
           </div>
           <DateQuestionDialog
+            firstName={this.state.User.firstName}
+            title={this.state.title}
+            question={this.state.question}
+            userField={this.state.userField}
+            link={this.state.nextQuestionLink}
+            dateQuestionDialogOpen={this.state.dateQuestionDialogOpen}
+            setDateQuestionDialogClosed={this.setDateQuestionDialogClosed}
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
             image={Gift}
-            question={this.state.question}
-            userField={this.state.userField}
             label="Anniversary"
-            link={this.state.nextQuestionLink}
-            title={this.state.title}
-            firstName={this.state.User.firstName}
           />
         </div>
       </>
