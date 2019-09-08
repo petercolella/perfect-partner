@@ -17,6 +17,7 @@ const self = (module.exports = {
       from: process.env.TWILIO_PHONE_NUMBER,
       to: `+1${to}`
     });
+    console.log('Body:', body, 'To:', to);
   },
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
@@ -29,6 +30,7 @@ const self = (module.exports = {
     console.log('randomFrequency', randomFrequency);
     const randomMilliseconds =
       (milliseconds * randomFrequency) / nudgeFrequency;
+    console.log('randomMilliseconds', randomMilliseconds);
     clearTimeout(intervals[_id]);
     intervals[_id] = setTimeout(() => {
       console.log(textMessage);
@@ -55,7 +57,13 @@ const self = (module.exports = {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge, { new: true })
       .then(dbModel => {
         if (activated) {
-          const activateBody = `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
+          const activateBody =
+            nudgeFrequency > 1
+              ? `You have activated your ${name} Nudge. A reminder text will be randomly sent every one to ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}"`
+              : `You have activated your ${name} Nudge. A reminder text will be sent once every ${nudgeFrequencyUnit.substring(
+                  0,
+                  nudgeFrequencyUnit.length - 1
+                )} with the message, "${textMessage}"`;
           self.sendText(activateBody, phone);
           self.textRecursiveTimeout(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });

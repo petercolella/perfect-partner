@@ -41,7 +41,13 @@ module.exports = {
           textMessage,
           activated
         } = dbModel;
-        const updateBody = `You have updated your ${name} Nudge to a frequency of once every 1 - ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}".`;
+        const updateBody =
+          nudgeFrequency > 1
+            ? `You have updated your ${name} Nudge to a frequency of once every 1 - ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}"`
+            : `You have updated your ${name} Nudge to a frequency of once every ${nudgeFrequencyUnit.substring(
+                0,
+                nudgeFrequencyUnit.length - 1
+              )} with the message, "${textMessage}"`;
         db.User.findOne({
           nudges: { $in: _id }
         }).then(userModel => {
