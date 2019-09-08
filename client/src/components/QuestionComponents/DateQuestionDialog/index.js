@@ -24,6 +24,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Grow from '@material-ui/core/Grow';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -97,6 +98,10 @@ const DateQuestionDialog = props => {
 
   const Image = props.image;
 
+  const TransitionGrow = React.forwardRef(function Transition(props, ref) {
+    return <Grow ref={ref} {...props} />;
+  });
+
   function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
       return;
@@ -162,6 +167,7 @@ ${new Date(props.userField).toLocaleDateString()}
       <Dialog
         fullWidth={true}
         open={props.dateQuestionDialogOpen}
+        TransitionComponent={TransitionGrow}
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
