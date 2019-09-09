@@ -95,7 +95,13 @@ function TransitionUp(props) {
 
 const DateQuestionDialog = props => {
   const [toastOpen, setToastOpen] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(true);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setDialogOpen(true);
+    }, 200);
+  }, []);
 
   const Image = props.image;
 
