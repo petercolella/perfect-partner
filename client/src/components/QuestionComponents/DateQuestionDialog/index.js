@@ -95,11 +95,20 @@ function TransitionUp(props) {
 
 const DateQuestionDialog = props => {
   const [toastOpen, setToastOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(true);
 
   const Image = props.image;
 
   const TransitionGrow = React.forwardRef(function Transition(props, ref) {
-    return <Grow ref={ref} {...props} />;
+    return (
+      <Grow
+        style={{
+          transformOrigin: 'top center'
+        }}
+        ref={ref}
+        {...props}
+      />
+    );
   });
 
   function handleToastClose(event, reason) {
@@ -166,8 +175,12 @@ ${new Date(props.userField).toLocaleDateString()}
       </div>
       <Dialog
         fullWidth={true}
-        open={props.dateQuestionDialogOpen}
+        open={dialogOpen}
         TransitionComponent={TransitionGrow}
+        TransitionProps={{
+          ...(dialogOpen ? { timeout: 1000 } : {})
+        }}
+        keepMounted
         onClose={props.closeUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
@@ -203,7 +216,7 @@ ${new Date(props.userField).toLocaleDateString()}
             Submit
           </Button>
           <Link to={props.link}>
-            <Button onClick={props.setDateQuestionDialogClosed} color="primary">
+            <Button onClick={() => setDialogOpen(false)} color="primary">
               Next
             </Button>
           </Link>
