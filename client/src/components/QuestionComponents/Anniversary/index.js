@@ -10,15 +10,16 @@ class Anniversary extends Component {
     title: 'Anniversary',
     question: 'what is your anniversary date?',
     userField: null,
-    nextQuestionLink: '/nudges',
-    dateQuestionDialogOpen: false
+    nextQuestionLink: '/nudges'
   };
 
   componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  componentWillUnmount() {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
-    this.loadUserInfo();
-    setTimeout(() => this.setDateQuestionDialogOpen(), 500);
   }
 
   loadUserInfo = () => {
@@ -31,18 +32,6 @@ class Anniversary extends Component {
         });
       });
     }
-  };
-
-  setDateQuestionDialogOpen = () => {
-    this.setState({
-      dateQuestionDialogOpen: true
-    });
-  };
-
-  setDateQuestionDialogClosed = () => {
-    this.setState({
-      dateQuestionDialogOpen: false
-    });
   };
 
   handleFormSubmit = event => {
@@ -76,8 +65,6 @@ class Anniversary extends Component {
             question={this.state.question}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
-            dateQuestionDialogOpen={this.state.dateQuestionDialogOpen}
-            setDateQuestionDialogClosed={this.setDateQuestionDialogClosed}
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
             image={Gift}

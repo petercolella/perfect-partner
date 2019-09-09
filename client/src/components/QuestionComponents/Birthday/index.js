@@ -10,15 +10,16 @@ class Birthday extends Component {
     title: 'Birthday',
     question: "what is your partner's birthday?",
     userField: null,
-    nextQuestionLink: '/anniversary',
-    dateQuestionDialogOpen: false
+    nextQuestionLink: '/anniversary'
   };
 
   componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  componentWillUnmount() {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
-    this.loadUserInfo();
-    setTimeout(() => this.setDateQuestionDialogOpen(), 500);
   }
 
   loadUserInfo = () => {
@@ -31,18 +32,6 @@ class Birthday extends Component {
         });
       });
     }
-  };
-
-  setDateQuestionDialogOpen = () => {
-    this.setState({
-      dateQuestionDialogOpen: true
-    });
-  };
-
-  setDateQuestionDialogClosed = () => {
-    this.setState({
-      dateQuestionDialogOpen: false
-    });
   };
 
   handleFormSubmit = event => {
@@ -76,8 +65,6 @@ class Birthday extends Component {
             question={this.state.question}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
-            dateQuestionDialogOpen={this.state.dateQuestionDialogOpen}
-            setDateQuestionDialogClosed={this.setDateQuestionDialogClosed}
             handleFormSubmit={this.handleFormSubmit}
             handleUserDateInputChange={this.handleUserDateInputChange}
             image={Cake}
