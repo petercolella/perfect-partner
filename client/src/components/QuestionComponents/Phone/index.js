@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Modal from '../Modal';
+import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
 import Header from '../../Header';
-const $ = window.$;
 
 class Phone extends Component {
   state = {
@@ -15,35 +14,38 @@ class Phone extends Component {
   };
 
   componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  componentWillUnmount() {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
-    this.loadUserInfo();
-    $('.modal-content').css('background-image', 'url(./img/phone-img.jpg)');
   }
 
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res => this.setState({ User: res.data }));
+      API.getUser(id).then(res => {
+        this.setState({
+          User: res.data,
+          userField: res.data.phone
+        });
+      });
     }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    $('.toast').toast('show');
     const phoneRegEx = this.state.userField.replace(/\D/g, '');
     API.updateUser(this.state.User._id, {
       phone: phoneRegEx
-    });
-    this.setState({
-      userField: phoneRegEx
-    });
+    }).then(this.loadUserInfo);
   };
 
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const { value } = event.target;
     this.setState({
-      [name]: value
+      userField: value
     });
   };
 
@@ -59,15 +61,17 @@ class Phone extends Component {
               </div>
             </div>
           </div>
-          <Modal
-            handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
-            user={this.state.User}
+          <QuestionDialog
+            firstName={this.state.User.firstName}
             title={this.state.title}
             question={this.state.question}
-            placeholder={this.state.placeholder}
             userField={this.state.userField}
             link={this.state.nextQuestionLink}
+            handleFormSubmit={this.handleFormSubmit}
+            handleInputChange={this.handleInputChange}
+            label="Phone"
+            user={this.state.User}
+            placeholder={this.state.placeholder}
           />
         </div>
       </>
