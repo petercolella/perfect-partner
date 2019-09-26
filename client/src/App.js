@@ -19,9 +19,12 @@ class App extends Component {
   };
 
   setPreviousPath = path => {
-    this.setState({
-      previousPath: path
-    });
+    this.setState(
+      {
+        previousPath: path
+      },
+      () => console.log('previousPath:', this.state.previousPath)
+    );
   };
 
   getPreviousPath = () => {
