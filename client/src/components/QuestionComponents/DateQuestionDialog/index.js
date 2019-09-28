@@ -100,22 +100,22 @@ const DateQuestionDialog = props => {
   React.useEffect(() => {
     setTimeout(() => {
       setDialogOpen(true);
-    }, 200);
+    }, 250);
   }, []);
 
   const Image = props.image;
 
-  const TransitionGrow = React.forwardRef(function Transition(props, ref) {
-    return (
-      <Grow
-        style={{
-          transformOrigin: 'top center'
-        }}
-        ref={ref}
-        {...props}
-      />
-    );
-  });
+  function handleDialogClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setDialogOpen(false);
+    props.loadUserInfo();
+    setTimeout(() => {
+      setDialogOpen(true);
+    }, 250);
+  }
 
   function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
@@ -129,14 +129,6 @@ const DateQuestionDialog = props => {
     props.handleFormSubmit(e);
     setToastOpen(true);
   };
-
-  console.log(`
-props.userField:
-${props.userField}
-
-new Date(props.userField).toLocaleDateString():
-${new Date(props.userField).toLocaleDateString()}
-  `);
 
   return (
     <div>
@@ -182,12 +174,12 @@ ${new Date(props.userField).toLocaleDateString()}
       <Dialog
         fullWidth={true}
         open={dialogOpen}
-        TransitionComponent={TransitionGrow}
+        TransitionComponent={Grow}
         TransitionProps={{
           ...(dialogOpen ? { timeout: 1000 } : {})
         }}
         keepMounted
-        onClose={props.closeUpdateComp}
+        onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
@@ -202,22 +194,25 @@ ${new Date(props.userField).toLocaleDateString()}
             <KeyboardDatePicker
               animateYearScrolling={true}
               clearable
-              id="birthDate"
-              label={props.label}
-              format="MM/dd/yyyy"
               fullWidth
+              inputVariant="outlined"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="dateQuestionDialogDatePicker"
+              label={props.label}
               placeholder="mm/dd/yyyy"
               value={props.userField}
-              onChange={props.handleUserDateInputChange}
+              onChange={props.handleDateInputChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
-              margin="normal"
-              inputVariant="outlined"
             />
           </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleDialogClose} color="secondary">
+            Cancel
+          </Button>
           <Button onClick={clickHandler} color="primary">
             Submit
           </Button>
