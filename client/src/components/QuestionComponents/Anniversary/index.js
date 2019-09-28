@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
 import { ReactComponent as Gift } from './gift.svg';
-import Demo from './demo';
 
 const Anniversary = props => {
   const [state, setState] = useState({
-    User: {},
-    title: 'Anniversary',
+    nextQuestionLink: '/nudges',
     question: 'what is your anniversary date?',
-    userField: null,
-    nextQuestionLink: '/nudges'
+    title: 'Anniversary',
+    User: {},
+    userField: null
   });
-  const [dateQuestionDialogOpen, setDateQuestionDialogOpen] = useState(true);
 
   const loadUserInfo = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
@@ -28,19 +26,17 @@ const Anniversary = props => {
     }
   }, []);
 
+  const propsRef = useRef();
+  propsRef.current = props;
+
   useEffect(() => {
     loadUserInfo();
 
     return () => {
-      const path = props.location.pathname;
-      props.setPreviousPath(path);
+      const path = propsRef.current.location.pathname;
+      propsRef.current.setPreviousPath(path);
     };
-  }, [loadUserInfo, props]);
-
-  const closeDateQuestionDialog = () => {
-    setDateQuestionDialogOpen(false);
-    loadUserInfo();
-  };
+  }, [loadUserInfo]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
@@ -49,11 +45,10 @@ const Anniversary = props => {
     }).then(loadUserInfo);
   };
 
-  const handleUserDateInputChange = name => date => {
-    console.log('date:', date);
+  const handleDateInputChange = date => {
     setState({
       ...state,
-      [name]: date
+      userField: date
     });
   };
 
@@ -68,20 +63,17 @@ const Anniversary = props => {
             </div>
           </div>
         </div>
-        <Demo />
         <DateQuestionDialog
           firstName={state.User.firstName}
-          title={state.title}
-          question={state.question}
-          userField={state.userField}
-          link={state.nextQuestionLink}
-          closeDateQuestionDialog={closeDateQuestionDialog}
+          handleDateInputChange={handleDateInputChange}
           handleFormSubmit={handleFormSubmit}
-          handleUserDateInputChange={handleUserDateInputChange}
           image={Gift}
           label="Anniversary"
-          dateQuestionDialogOpen={dateQuestionDialogOpen}
-          setDateQuestionDialogOpen={setDateQuestionDialogOpen}
+          link={state.nextQuestionLink}
+          loadUserInfo={loadUserInfo}
+          question={state.question}
+          title={state.title}
+          userField={state.userField}
         />
       </div>
     </>
