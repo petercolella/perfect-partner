@@ -70,6 +70,7 @@ const Birthday = props => {
           image={Cake}
           label="Partner's Birthday"
           link={state.nextQuestionLink}
+          loadUserInfo={loadUserInfo}
           question={state.question}
           title={state.title}
           userField={state.userField}
