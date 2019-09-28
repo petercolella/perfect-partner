@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
 import Header from '../../Header';
+import { ReactComponent as Smartphone } from './smartphone.svg';
 
 class Phone extends Component {
   state = {
-    User: {},
-    title: 'Phone Number',
+    nextQuestionLink: '/partner',
+    placeholder: 'Enter with no dashes or spaces.',
     question: 'what is your phone number?',
-    placeholder: 'Enter here (no dashes or spaces).',
-    userField: '',
-    nextQuestionLink: '/partner'
+    title: 'Phone Number',
+    User: {},
+    userField: ''
   };
 
   componentDidMount() {
@@ -63,15 +64,17 @@ class Phone extends Component {
           </div>
           <QuestionDialog
             firstName={this.state.User.firstName}
-            title={this.state.title}
-            question={this.state.question}
-            userField={this.state.userField}
-            link={this.state.nextQuestionLink}
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
+            image={Smartphone}
             label="Phone"
-            user={this.state.User}
+            link={this.state.nextQuestionLink}
+            loadUserInfo={this.loadUserInfo}
             placeholder={this.state.placeholder}
+            question={this.state.question}
+            title={this.state.title}
+            user={this.state.User}
+            userField={this.state.userField}
           />
         </div>
       </>
