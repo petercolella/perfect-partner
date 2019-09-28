@@ -96,21 +96,9 @@ const QuestionDialog = props => {
     setTimeout(() => {
       setDialogOpen(true);
     }, 200);
-  }, []);
+  }, [props.userField]);
 
-  const Image = props.image;
-
-  const TransitionGrow = React.forwardRef(function Transition(props, ref) {
-    return (
-      <Grow
-        style={{
-          transformOrigin: 'top center'
-        }}
-        ref={ref}
-        {...props}
-      />
-    );
-  });
+  //   const Image = props.image;
 
   function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
@@ -162,7 +150,7 @@ const QuestionDialog = props => {
       <Dialog
         fullWidth={true}
         open={dialogOpen}
-        TransitionComponent={TransitionGrow}
+        TransitionComponent={Grow}
         TransitionProps={{
           ...(dialogOpen ? { timeout: 1000 } : {})
         }}
@@ -187,6 +175,7 @@ const QuestionDialog = props => {
             onChange={props.handleInputChange}
             margin="normal"
             variant="outlined"
+            helperText={props.placeholder}
           />
         </DialogContent>
         <DialogActions>
