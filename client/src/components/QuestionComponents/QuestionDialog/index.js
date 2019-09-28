@@ -95,10 +95,22 @@ const QuestionDialog = props => {
   React.useEffect(() => {
     setTimeout(() => {
       setDialogOpen(true);
-    }, 200);
-  }, [props.userField]);
+    }, 250);
+  }, []);
 
-  //   const Image = props.image;
+  const Image = props.image;
+
+  function handleDialogClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setDialogOpen(false);
+    props.loadUserInfo();
+    setTimeout(() => {
+      setDialogOpen(true);
+    }, 250);
+  }
 
   function handleToastClose(event, reason) {
     if (reason === 'clickaway') {
@@ -155,11 +167,11 @@ const QuestionDialog = props => {
           ...(dialogOpen ? { timeout: 1000 } : {})
         }}
         keepMounted
-        onClose={props.closeUpdateComp}
+        onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
-          {/* <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} /> */}
+          <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           {props.title}
         </DialogTitle>
         <DialogContent>
@@ -179,6 +191,9 @@ const QuestionDialog = props => {
           />
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleDialogClose} color="secondary">
+            Cancel
+          </Button>
           <Button onClick={clickHandler} color="primary">
             Submit
           </Button>
