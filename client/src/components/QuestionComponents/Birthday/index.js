@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
@@ -6,11 +6,11 @@ import { ReactComponent as Cake } from './cake.svg';
 
 const Birthday = props => {
   const [state, setState] = useState({
-    User: {},
-    title: 'Birthday',
+    nextQuestionLink: '/anniversary',
     question: "what is your partner's birthday?",
-    userField: null,
-    nextQuestionLink: '/anniversary'
+    title: 'Birthday',
+    User: {},
+    userField: null
   });
 
   const loadUserInfo = useCallback(() => {
@@ -20,24 +20,23 @@ const Birthday = props => {
         setState(state => ({
           ...state,
           User: res.data,
-          userField: res.data.anniversaryDate
+          userField: res.data.birthDate
         }));
       });
     }
   }, []);
 
+  const propsRef = useRef();
+  propsRef.current = props;
+
   useEffect(() => {
     loadUserInfo();
 
     return () => {
-      const path = props.location.pathname;
-      props.setPreviousPath(path);
+      const path = propsRef.current.location.pathname;
+      propsRef.current.setPreviousPath(path);
     };
-  }, [loadUserInfo, props]);
-
-  const closeDateQuestionDialog = () => {
-    loadUserInfo();
-  };
+  }, [loadUserInfo]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
@@ -46,11 +45,10 @@ const Birthday = props => {
     }).then(loadUserInfo);
   };
 
-  const handleUserDateInputChange = name => date => {
-    console.log('date:', date);
+  const handleDateInputChange = date => {
     setState({
       ...state,
-      [name]: date
+      userField: date
     });
   };
 
@@ -67,15 +65,14 @@ const Birthday = props => {
         </div>
         <DateQuestionDialog
           firstName={state.User.firstName}
-          title={state.title}
-          question={state.question}
-          userField={state.userField}
-          link={state.nextQuestionLink}
-          closeDateQuestionDialog={closeDateQuestionDialog}
+          handleDateInputChange={handleDateInputChange}
           handleFormSubmit={handleFormSubmit}
-          handleUserDateInputChange={handleUserDateInputChange}
           image={Cake}
           label="Partner's Birthday"
+          link={state.nextQuestionLink}
+          question={state.question}
+          title={state.title}
+          userField={state.userField}
         />
       </div>
     </>
