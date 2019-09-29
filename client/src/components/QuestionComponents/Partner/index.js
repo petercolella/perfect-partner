@@ -1,47 +1,54 @@
 import React, { Component } from 'react';
-import Modal from '../Modal';
+import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
 import Header from '../../Header';
-const $ = window.$;
+import { ReactComponent as Love } from './love.svg';
 
 class Partner extends Component {
   state = {
-    User: {},
-    title: 'Partner Name',
+    nextQuestionLink: '/birthday',
+    placeholder: "Enter your partner's name.",
     question: "what is your partner's name?",
-    userField: '',
-    nextQuestionLink: '/birthday'
+    title: 'Partner Name',
+    User: {},
+    userField: ''
   };
 
   componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  componentWillUnmount() {
     const path = this.props.location.pathname;
     this.props.setPreviousPath(path);
-    this.loadUserInfo();
-    $('.modal-content').css('background-image', 'url(./img/hearts.jpg)');
   }
 
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res => this.setState({ User: res.data }));
+      API.getUser(id).then(res => {
+        this.setState({
+          User: res.data,
+          userField: res.data.partnerName
+        });
+      });
     }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    $('.toast').toast('show');
     API.updateUser(this.state.User._id, {
       partnerName: this.state.userField
-    });
+    }).then(this.loadUserInfo);
   };
 
   handleInputChange = event => {
-    const name = event.target.name;
-    const value = event.target.value;
+    const { value } = event.target;
     this.setState({
-      [name]: value
+      userField: value
     });
   };
+
   render() {
     return (
       <>
@@ -54,14 +61,19 @@ class Partner extends Component {
               </div>
             </div>
           </div>
-          <Modal
+          <QuestionDialog
+            firstName={this.state.User.firstName}
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
-            question={this.state.question}
-            userField={this.state.userField}
+            image={Love}
+            label="Partner's Name"
             link={this.state.nextQuestionLink}
+            loadUserInfo={this.loadUserInfo}
+            placeholder={this.state.placeholder}
+            question={this.state.question}
             title={this.state.title}
             user={this.state.User}
+            userField={this.state.userField}
           />
         </div>
       </>
