@@ -3,6 +3,8 @@ import API from '../../../utils/API';
 import NudgeModal from '../NudgeModal';
 import Checkbox from '../Checkbox';
 import Header from '../../Header';
+import NudgeDialog from '../NudgeDialog';
+import { ReactComponent as Reminder } from './reminder.svg';
 const $ = window.$;
 const nudgeOptions = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
@@ -109,19 +111,35 @@ class Nudges extends Component {
               </div>
             </div>
           </div>
-          <NudgeModal
+          <NudgeDialog
+            createCheckboxes={this.createCheckboxes}
+            deselectAll={this.deselectAll}
             handleFormSubmit={this.handleFormSubmit}
             handleInputChange={this.handleInputChange}
-            question={this.state.question}
-            userField={this.state.userField}
+            image={Reminder}
             link={this.state.nextQuestionLink}
+            loadUserInfo={this.loadUserInfo}
+            nudges={this.state.toastNudges}
+            question={this.state.question}
+            selectAll={this.selectAll}
             title={this.state.title}
             user={this.state.User}
-            nudges={this.state.toastNudges}
-            createCheckboxes={this.createCheckboxes}
-            selectAll={this.selectAll}
-            deselectAll={this.deselectAll}
+            userField={this.state.userField}
           />
+          {/* <NudgeModal
+            createCheckboxes={this.createCheckboxes}
+            deselectAll={this.deselectAll}
+            handleFormSubmit={this.handleFormSubmit}
+            handleInputChange={this.handleInputChange}
+            link={this.state.nextQuestionLink}
+            loadUserInfo={this.loadUserInfo}
+            nudges={this.state.toastNudges}
+            question={this.state.question}
+            selectAll={this.selectAll}
+            title={this.state.title}
+            user={this.state.User}
+            userField={this.state.userField}
+          /> */}
         </div>
       </>
     );
