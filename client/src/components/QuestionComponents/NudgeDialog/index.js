@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,6 +13,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import API from '../../../utils/API';
+import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -25,12 +27,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const InactiveStudents = props => {
+const NudgeDialog = props => {
   const classes = useStyles();
 
-  const { assignments, courseDbId, inactiveStudents, loadUserInfo } = props;
-
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [nudgeArr, setNudgeArr] = useState([
     'Romantic Text',
     'Buy Flowers',
@@ -38,6 +38,14 @@ const InactiveStudents = props => {
   ]);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [state, setState] = useState({});
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setDialogOpen(true);
+    }, 250);
+  }, []);
+
+  const Image = props.image;
 
   const nudgeArrRef = useRef();
   nudgeArrRef.current = nudgeArr;
@@ -60,14 +68,16 @@ const InactiveStudents = props => {
     setState({ ...state, [name]: event.target.checked });
   };
 
-  function handleClickOpen() {
-    setOpen(true);
-  }
+  function handleDialogClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
 
-  function handleClose() {
-    // loadData(courseDbId);
-    loadUserInfo();
-    setOpen(false);
+    setDialogOpen(false);
+    props.loadUserInfo();
+    setTimeout(() => {
+      setDialogOpen(true);
+    }, 250);
   }
 
   function handleSubmit() {
@@ -93,17 +103,22 @@ const InactiveStudents = props => {
     <div>
       <Dialog
         fullWidth={true}
-        maxWidth={'lg'}
-        open={open}
-        onClose={handleClose}
+        open={dialogOpen}
+        TransitionComponent={Grow}
+        TransitionProps={{
+          ...(dialogOpen ? { timeout: 1000 } : {})
+        }}
+        keepMounted
+        onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
-          Select Inactive Students
+          <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
+          {props.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Selected students will not appear in the table.
+            {props.user.firstName}, {props.question}
           </DialogContentText>
           <div className={classes.root}>
             <FormControl
@@ -125,29 +140,26 @@ const InactiveStudents = props => {
                   />
                 ))}
               </FormGroup>
-              <FormHelperText>
-                *Deselected students will return to the table.
-              </FormHelperText>
+              <FormHelperText>*These can be customized later.</FormHelperText>
             </FormControl>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleDialogClose} color="secondary">
             Cancel
           </Button>
           <Button onClick={handleSubmit} color="primary">
             Submit
           </Button>
+          <Link to={props.link}>
+            <Button onClick={() => setDialogOpen(false)} color="primary">
+              Next
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
-      <Button
-        className={classes.button}
-        color="secondary"
-        onClick={handleClickOpen}>
-        View/Edit Inactive Students
-      </Button>
     </div>
   );
 };
 
-export default InactiveStudents;
+export default NudgeDialog;
