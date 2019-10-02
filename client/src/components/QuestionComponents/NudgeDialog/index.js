@@ -80,6 +80,19 @@ const NudgeDialog = props => {
     }, 250);
   }
 
+  const selectAllCheckboxes = isSelected => {
+    Object.keys(state).forEach(name => {
+      setState(prevState => ({
+        ...prevState,
+        [name]: isSelected
+      }));
+    });
+  };
+
+  const selectAll = () => selectAllCheckboxes(true);
+
+  const deselectAll = () => selectAllCheckboxes(false);
+
   function handleSubmit() {
     const newNudges = [];
 
@@ -145,6 +158,12 @@ const NudgeDialog = props => {
           </div>
         </DialogContent>
         <DialogActions>
+          <Button onClick={selectAll} color="primary">
+            &#10003; All
+          </Button>
+          <Button onClick={deselectAll} color="primary">
+            &#10003; None
+          </Button>
           <Button onClick={handleDialogClose} color="secondary">
             Cancel
           </Button>
