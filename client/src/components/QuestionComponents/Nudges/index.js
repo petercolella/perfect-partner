@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import API from '../../../utils/API';
-import NudgeModal from '../NudgeModal';
 import Checkbox from '../Checkbox';
 import Header from '../../Header';
 import NudgeDialog from '../NudgeDialog';
@@ -126,20 +125,6 @@ class Nudges extends Component {
             user={this.state.User}
             userField={this.state.userField}
           />
-          {/* <NudgeModal
-            createCheckboxes={this.createCheckboxes}
-            deselectAll={this.deselectAll}
-            handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
-            link={this.state.nextQuestionLink}
-            loadUserInfo={this.loadUserInfo}
-            nudges={this.state.toastNudges}
-            question={this.state.question}
-            selectAll={this.selectAll}
-            title={this.state.title}
-            user={this.state.User}
-            userField={this.state.userField}
-          /> */}
         </div>
       </>
     );
