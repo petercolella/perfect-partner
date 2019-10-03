@@ -174,35 +174,61 @@ const QuestionDialog = props => {
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           {props.title}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {props.firstName}, {props.question}
-          </DialogContentText>
-          <TextField
-            id="questionDialogTextField"
-            label={props.label}
-            type="text"
-            fullWidth
-            value={props.userField}
-            onChange={props.handleInputChange}
-            margin="normal"
-            variant="outlined"
-            helperText={props.placeholder}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={clickHandler} color="primary">
-            Submit
-          </Button>
-          <Link to={props.link}>
-            <Button onClick={() => setDialogOpen(false)} color="primary">
-              Next
-            </Button>
-          </Link>
-        </DialogActions>
+        {props.firstName ? (
+          <>
+            <DialogContent>
+              <DialogContentText>
+                {props.firstName}, {props.question}
+              </DialogContentText>
+              <TextField
+                id="questionDialogTextField"
+                label={props.label}
+                type="text"
+                fullWidth
+                value={props.userField}
+                onChange={props.handleInputChange}
+                margin="normal"
+                variant="outlined"
+                helperText={props.placeholder}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={clickHandler} color="primary">
+                Submit
+              </Button>
+              <Link to={props.link}>
+                <Button onClick={() => setDialogOpen(false)} color="primary">
+                  Next
+                </Button>
+              </Link>
+            </DialogActions>
+          </>
+        ) : (
+          <>
+            <DialogContent>
+              <DialogContentText>
+                Please click{' '}
+                <Link to="/" style={{ color: '#22b5e0' }}>
+                  here
+                </Link>{' '}
+                to sign in before continuing.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClose} color="secondary">
+                Cancel
+              </Button>
+              <Link to={props.link}>
+                <Button onClick={() => setDialogOpen(false)} color="primary">
+                  Next
+                </Button>
+              </Link>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </div>
   );
