@@ -29,7 +29,7 @@ class Phone extends Component {
       API.getUser(id).then(res => {
         this.setState({
           User: res.data,
-          userField: res.data.phone
+          userField: res.data.phone || ''
         });
       });
     }

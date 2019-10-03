@@ -29,7 +29,7 @@ class Partner extends Component {
       API.getUser(id).then(res => {
         this.setState({
           User: res.data,
-          userField: res.data.partnerName
+          userField: res.data.partnerName || ''
         });
       });
     }
