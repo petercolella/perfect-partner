@@ -20,7 +20,7 @@ const Anniversary = props => {
         setState(state => ({
           ...state,
           User: res.data,
-          userField: res.data.anniversaryDate
+          userField: res.data.anniversaryDate || null
         }));
       });
     }

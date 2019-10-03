@@ -20,7 +20,7 @@ const Birthday = props => {
         setState(state => ({
           ...state,
           User: res.data,
-          userField: res.data.birthDate
+          userField: res.data.birthDate || null
         }));
       });
     }
