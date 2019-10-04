@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(3)
+  },
+  lineThrough: {
+    textDecoration: 'line-through'
   }
 }));
 
@@ -273,6 +276,9 @@ const NudgeDialog = props => {
                       />
                     }
                     label={name}
+                    className={
+                      snackbarNudges.includes(name) && classes.lineThrough
+                    }
                   />
                 ))}
               </FormGroup>
