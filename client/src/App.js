@@ -15,7 +15,7 @@ import './styles.css';
 
 class App extends Component {
   state = {
-    previousPath: ''
+    previousPath: '/'
   };
 
   setPreviousPath = path => {
