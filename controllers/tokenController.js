@@ -16,6 +16,8 @@ module.exports = {
 
       const payload = ticket.getPayload();
 
+      console.log('payload:', payload);
+
       const googleId = payload['sub'];
       const name = payload['name'];
       const email = payload['email'];
@@ -33,7 +35,7 @@ module.exports = {
       };
 
       if (CLIENT_ID === payload['aud']) {
-        db.User.findOne({ googleId }, (err, docs) => {
+        db.User.findOneAndUpdate({ googleId }, newUser, (err, docs) => {
           if (err) {
             console.error(err);
           }
