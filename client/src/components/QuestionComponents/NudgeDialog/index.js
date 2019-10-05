@@ -118,7 +118,7 @@ const NudgeDialog = props => {
     'Dinner Reservations'
   ]);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
-  const [toastOpen, setToastOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [state, setState] = useState({});
 
   React.useEffect(() => {
@@ -145,6 +145,23 @@ const NudgeDialog = props => {
   useEffect(() => {
     createNudgeObject();
   }, [createNudgeObject]);
+
+  const isDiabled = useCallback(
+    name => {
+      for (let nudge of props.nudges) {
+        console.log(nudge.name);
+        if (nudge.name === name) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [props.nudges]
+  );
+
+  useEffect(() => {
+    isDiabled();
+  }, [isDiabled]);
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
@@ -179,8 +196,8 @@ const NudgeDialog = props => {
         API.saveNudge(newNudge);
       });
 
-    setSnackbarNudges(newNudges);
-    setToastOpen(true);
+    setSnackbarNudges(snackbarNudges.concat(newNudges));
+    setSnackbarOpen(true);
   }
 
   function handleDialogClose(event, reason) {
@@ -200,7 +217,7 @@ const NudgeDialog = props => {
       return;
     }
 
-    setToastOpen(false);
+    setSnackbarOpen(false);
   }
 
   return (
@@ -210,7 +227,7 @@ const NudgeDialog = props => {
           vertical: 'bottom',
           horizontal: 'left'
         }}
-        open={toastOpen}
+        open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleToastClose}
         TransitionComponent={TransitionUp}
@@ -268,17 +285,18 @@ const NudgeDialog = props => {
                 {nudgeArr.map(name => (
                   <FormControlLabel
                     key={name}
+                    className={
+                      snackbarNudges.includes(name) ? classes.lineThrough : null
+                    }
                     control={
                       <Checkbox
                         checked={state[name]}
                         onChange={handleChange(name)}
                         value={name}
+                        disabled={isDiabled(name)}
                       />
                     }
                     label={name}
-                    className={
-                      snackbarNudges.includes(name) && classes.lineThrough
-                    }
                   />
                 ))}
               </FormGroup>
