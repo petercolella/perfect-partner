@@ -146,22 +146,18 @@ const NudgeDialog = props => {
     createNudgeObject();
   }, [createNudgeObject]);
 
-  const isDiabled = useCallback(
-    name => {
-      for (let nudge of props.nudges) {
-        console.log(nudge.name);
-        if (nudge.name === name) {
-          return true;
-        }
+  const isDiabled = name => {
+    for (let nudge of props.nudges) {
+      if (nudge.name === name) {
+        return true;
       }
-      return false;
-    },
-    [props.nudges]
-  );
+    }
+    return false;
+  };
 
-  useEffect(() => {
-    isDiabled();
-  }, [isDiabled]);
+  //   useEffect(() => {
+  //     isDiabled();
+  //   }, [isDiabled]);
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
@@ -193,7 +189,10 @@ const NudgeDialog = props => {
             name: nudge
           }
         };
-        API.saveNudge(newNudge);
+        API.saveNudge(newNudge).then(() => {
+          props.loadUserInfo();
+          deselectAll();
+        });
       });
 
     setSnackbarNudges(snackbarNudges.concat(newNudges));
