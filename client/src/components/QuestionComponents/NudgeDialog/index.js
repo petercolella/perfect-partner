@@ -155,20 +155,18 @@ const NudgeDialog = props => {
     return false;
   };
 
-  //   useEffect(() => {
-  //     isDiabled();
-  //   }, [isDiabled]);
-
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
   };
 
   const selectAllCheckboxes = isSelected => {
     Object.keys(state).forEach(name => {
-      setState(prevState => ({
-        ...prevState,
-        [name]: isSelected
-      }));
+      if (!isDiabled(name)) {
+        setState(prevState => ({
+          ...prevState,
+          [name]: isSelected
+        }));
+      }
     });
   };
 
