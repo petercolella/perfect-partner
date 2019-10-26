@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import MuiLink from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import API from '../../utils/API';
 import UserUpdate from '../UserUpdate';
@@ -26,6 +27,11 @@ const useStyles = makeStyles(theme => ({
   },
   pos: {
     marginBottom: 12
+  },
+  signOut: {
+    fontSize: '1rem',
+    lineHeight: '48px',
+    marginLeft: theme.spacing(1)
   }
 }));
 
@@ -146,6 +152,15 @@ const MainBody = props => {
             alt="User"
             src={user.imageUrl}
           />
+          <MuiLink
+            component="button"
+            variant="body2"
+            onClick={() => {
+              alert("I'm a button.");
+            }}
+            className={classes.signOut}>
+            Sign Out
+          </MuiLink>
         </div>
       </div>
       <div className="row">
