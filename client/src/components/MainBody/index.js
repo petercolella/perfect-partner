@@ -134,34 +134,37 @@ const MainBody = props => {
     setUserDialogOpen(false);
   };
 
-  function init() {
+  useEffect(() => {
     window.gapi.load('auth2', function() {
       /* Ready. Make a call to gapi.auth2.init or some other API */
       window.gapi.auth2.init({
         client_id:
           '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
       });
-      console.log('window.gapi.auth2:', window.gapi.auth2);
     });
-  }
-
-  useEffect(() => {
-    init();
-  }, [init]);
+  }, []);
 
   const signOut = () => {
-    console.log('window:', window);
-    console.log('window.gapi:', window.gapi);
     const auth2 = window.gapi.auth2.getAuthInstance();
     auth2.signOut().then(function() {
       console.log('User signed out.');
     });
 
-    // this.setState({
-    //   currentUser: '',
-    //   currentUserMessage: 'Please Sign In.',
-    //   imageUrl: ''
-    // });
+    sessionStorage.setItem('currentUserId', '');
+
+    setUser({
+      anniversaryDate: '',
+      birthDate: '',
+      email: '',
+      firstName: '',
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      lastName: '',
+      name: '',
+      nudges: [],
+      partnerName: '',
+      phone: ''
+    });
   };
 
   const classes = useStyles();
