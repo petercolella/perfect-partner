@@ -16,7 +16,7 @@ import './styles.css';
 
 class App extends Component {
   state = {
-    previousPath: '/'
+    previousPath: ''
   };
 
   setPreviousPath = path => {
@@ -24,7 +24,7 @@ class App extends Component {
       {
         previousPath: path
       },
-      () => console.log('previousPath:', this.state.previousPath)
+      () => console.log('previousPathApp:', this.state.previousPath)
     );
   };
 
@@ -45,6 +45,7 @@ class App extends Component {
                 <Landing
                   {...routeProps}
                   getPreviousPath={this.getPreviousPath}
+                  setPreviousPath={this.setPreviousPath}
                 />
               )}
             />

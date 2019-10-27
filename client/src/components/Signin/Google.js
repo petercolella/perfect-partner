@@ -63,7 +63,9 @@ class SignIn extends Component {
   componentDidMount() {
     window.addEventListener('google-loaded', this.renderGoogleLoginButton);
     const previousPath = this.props.getPreviousPath();
+    console.log('previousPathGoogle:', previousPath);
     if (previousPath) {
+      console.log('previousPath:', true);
       this.renderGoogleLoginButton();
     }
   }
