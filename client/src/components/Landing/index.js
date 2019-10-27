@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Google from '../Signin';
 import Header from '../Header';
 
 const Landing = props => {
+  const propsRef = useRef();
+  propsRef.current = props;
+
+  useEffect(() => {
+    return () => {
+      const path = propsRef.current.location.pathname;
+      propsRef.current.setPreviousPath(path);
+    };
+  }, []);
+
   return (
     <>
       <Header />
