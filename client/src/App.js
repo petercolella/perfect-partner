@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 //components
@@ -14,103 +14,80 @@ import Anniversary from './components/QuestionComponents/Anniversary';
 //CSS
 import './styles.css';
 
-class App extends Component {
-  state = {
-    previousPath: ''
+const App = () => {
+  const [previousPath, setPreviousPathState] = useState('');
+
+  const setPreviousPath = path => {
+    setPreviousPathState(path);
+    console.log('previousPathApp:', previousPath);
   };
 
-  setPreviousPath = path => {
-    this.setState(
-      {
-        previousPath: path
-      },
-      () => console.log('previousPathApp:', this.state.previousPath)
-    );
+  const getPreviousPath = () => {
+    return previousPath;
   };
 
-  getPreviousPath = () => {
-    return this.state.previousPath;
-  };
-
-  render() {
-    return (
-      <div>
-        <NavBar />
-        <BrowserRouter>
-          <div>
-            <Route
-              exact
-              path="/"
-              render={routeProps => (
-                <Landing
-                  {...routeProps}
-                  getPreviousPath={this.getPreviousPath}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/birthday"
-              render={routeProps => (
-                <Birthday
-                  {...routeProps}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/nudges"
-              render={routeProps => (
-                <Nudges
-                  {...routeProps}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/partner"
-              render={routeProps => (
-                <Partner
-                  {...routeProps}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/phone"
-              render={routeProps => (
-                <Phone {...routeProps} setPreviousPath={this.setPreviousPath} />
-              )}
-            />
-            <Route
-              exact
-              path="/anniversary"
-              render={routeProps => (
-                <Anniversary
-                  {...routeProps}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/dashboard"
-              render={routeProps => (
-                <MainBody
-                  {...routeProps}
-                  setPreviousPath={this.setPreviousPath}
-                />
-              )}
-            />
-          </div>
-        </BrowserRouter>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <NavBar />
+      <BrowserRouter>
+        <div>
+          <Route
+            exact
+            path="/"
+            render={routeProps => (
+              <Landing
+                {...routeProps}
+                getPreviousPath={getPreviousPath}
+                setPreviousPath={setPreviousPath}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/birthday"
+            render={routeProps => (
+              <Birthday {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+          <Route
+            exact
+            path="/nudges"
+            render={routeProps => (
+              <Nudges {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+          <Route
+            exact
+            path="/partner"
+            render={routeProps => (
+              <Partner {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+          <Route
+            exact
+            path="/phone"
+            render={routeProps => (
+              <Phone {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+          <Route
+            exact
+            path="/anniversary"
+            render={routeProps => (
+              <Anniversary {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+          <Route
+            exact
+            path="/dashboard"
+            render={routeProps => (
+              <MainBody {...routeProps} setPreviousPath={setPreviousPath} />
+            )}
+          />
+        </div>
+      </BrowserRouter>
+    </div>
+  );
+};
 
 export default App;
