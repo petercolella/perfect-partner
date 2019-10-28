@@ -128,7 +128,7 @@ body {
 #avatar-image-header {
   border-radius: 50%;
   width: 30px;
-  /* height: 48px; */
+  margin: auto;
 }
 
 .helper {
