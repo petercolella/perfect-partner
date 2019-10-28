@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import API from './utils/API';
 
 //components
 import Landing from './components/Landing';
@@ -16,19 +17,71 @@ import './styles.css';
 
 const App = () => {
   const [previousPath, setPreviousPathState] = useState('');
+  const [user, setUser] = useState({
+    anniversaryDate: '',
+    birthDate: '',
+    email: '',
+    firstName: '',
+    imageUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    lastName: '',
+    name: '',
+    nudges: [],
+    partnerName: '',
+    phone: ''
+  });
+
+  const idRef = useRef();
+
+  const loadUserInfo = useCallback(() => {
+    const id = sessionStorage.getItem('currentUserId');
+    idRef.current = id;
+    if (idRef.current) {
+      API.getUser(id).then(res => {
+        setUser(user => (res.data ? res.data : user));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    loadUserInfo();
+  }, [loadUserInfo]);
+
+  const getPreviousPath = () => {
+    return previousPath;
+  };
 
   const setPreviousPath = path => {
     setPreviousPathState(path);
     console.log('previousPathApp:', previousPath);
   };
 
-  const getPreviousPath = () => {
-    return previousPath;
+  const signOut = () => {
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function() {
+      console.log('User signed out.');
+    });
+
+    sessionStorage.setItem('currentUserId', '');
+
+    setUser({
+      anniversaryDate: '',
+      birthDate: '',
+      email: '',
+      firstName: '',
+      imageUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      lastName: '',
+      name: '',
+      nudges: [],
+      partnerName: '',
+      phone: ''
+    });
   };
 
   return (
     <div>
-      <NavBar />
+      <NavBar signOut={signOut} user={user} />
       <BrowserRouter>
         <div>
           <Route
