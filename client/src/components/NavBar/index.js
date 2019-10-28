@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 const NavBar = props => {
   const classes = useStyles();
 
-  const { user, signOut } = props;
+  const { user, signedIn, signOut } = props;
 
   return (
     <div className={classes.root}>
@@ -60,11 +60,16 @@ const NavBar = props => {
               alt="User"
               src={user.imageUrl}
             />
-            <Typography className={classes.pushLeft} noWrap>
-              <MuiLink component="button" variant="subtitle1" onClick={signOut}>
-                Sign Out
-              </MuiLink>
-            </Typography>
+            {signedIn && (
+              <Typography className={classes.pushLeft} noWrap>
+                <MuiLink
+                  component="button"
+                  variant="subtitle1"
+                  onClick={signOut}>
+                  Sign Out
+                </MuiLink>
+              </Typography>
+            )}
           </div>
         </Toolbar>
       </AppBar>
