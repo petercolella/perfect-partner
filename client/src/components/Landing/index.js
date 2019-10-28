@@ -3,6 +3,8 @@ import Google from '../Signin';
 import Header from '../Header';
 
 const Landing = props => {
+  const { getPreviousPath, setUser } = props;
+
   const propsRef = useRef();
   propsRef.current = props;
 
@@ -34,7 +36,7 @@ const Landing = props => {
           <div className="row bottom-xs">
             <div className="col-xs-6">
               <div className="box shadow">
-                <Google getPreviousPath={props.getPreviousPath} />
+                <Google getPreviousPath={getPreviousPath} setUser={setUser} />
               </div>
             </div>
           </div>
