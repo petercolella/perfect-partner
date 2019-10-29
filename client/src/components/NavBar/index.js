@@ -40,14 +40,6 @@ const NavBar = props => {
       console.log('ID: ' + profile.getId());
       console.log('Email: ' + profile.getEmail());
 
-      // if (profile.getName()) {
-      //   this.setState({
-      //     currentUser: profile.getName(),
-      //     currentUserMessage: `Hello, ${profile.getName()}`,
-      //     imageUrl: profile.getImageUrl()
-      //   });
-      // }
-
       API.tokenSignInAxios(id_token).then(id => {
         sessionStorage.setItem('currentUserId', id);
         API.getUser(id).then(res => {
@@ -66,16 +58,18 @@ const NavBar = props => {
     };
 
     const renderGoogleLoginButton = () => {
-      console.log('rendering google signin button');
-      window.gapi.signin2.render('my-signin2', {
-        scope: 'profile email',
-        width: 240,
-        height: 50,
-        longtitle: true,
-        theme: 'dark',
-        onsuccess: onSuccess,
-        onfailure: onFailure
-      });
+      if (!signedIn) {
+        console.log('rendering google signin button');
+        window.gapi.signin2.render('my-signin2', {
+          scope: 'profile email',
+          width: 180,
+          height: 30,
+          longtitle: true,
+          theme: 'dark',
+          onsuccess: onSuccess,
+          onfailure: onFailure
+        });
+      }
     };
 
     window.addEventListener('google-loaded', renderGoogleLoginButton);
@@ -85,7 +79,7 @@ const NavBar = props => {
       console.log('previousPath:', true);
       renderGoogleLoginButton();
     }
-  }, [getPreviousPath, setUser]);
+  }, [getPreviousPath, setUser, signedIn]);
 
   return (
     <div className={classes.root}>
@@ -104,7 +98,6 @@ const NavBar = props => {
             </Grid>
           </Grid>
           <div className={classes.login}>
-            <div id="my-signin2" />
             <Typography
               className={classes.pushRight}
               variant="subtitle1"
@@ -117,7 +110,7 @@ const NavBar = props => {
               alt="User"
               src={user.imageUrl}
             />
-            {signedIn && (
+            {signedIn ? (
               <Typography className={classes.pushLeft} noWrap>
                 <MuiLink
                   component="button"
@@ -126,6 +119,8 @@ const NavBar = props => {
                   Sign Out
                 </MuiLink>
               </Typography>
+            ) : (
+              <div className={classes.pushLeft} id="my-signin2" />
             )}
           </div>
         </Toolbar>
