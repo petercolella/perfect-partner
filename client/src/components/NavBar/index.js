@@ -93,7 +93,7 @@ const NavBar = props => {
             <MenuIcon />
           </IconButton>
           <Grid container>
-            <Grid item xs={4} md={3}>
+            <Grid item xs={6} md={4} lg={3} xl={2}>
               <img id="header-img" alt="logo" src="/img/logo_p.png" />
             </Grid>
           </Grid>
