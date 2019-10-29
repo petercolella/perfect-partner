@@ -108,7 +108,13 @@ const App = () => {
 
   return (
     <div>
-      <NavBar signedIn={signedIn} signOut={signOut} user={user} />
+      <NavBar
+        getPreviousPath={getPreviousPath}
+        setUser={setUser}
+        signedIn={signedIn}
+        signOut={signOut}
+        user={user}
+      />
       <BrowserRouter>
         <div>
           <Route
