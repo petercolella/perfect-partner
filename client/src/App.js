@@ -16,7 +16,8 @@ import Anniversary from './components/QuestionComponents/Anniversary';
 import './styles.css';
 
 const App = () => {
-  const [previousPath, setPreviousPathState] = useState('');
+  const [previousPath, setPreviousPathState] = useState('/');
+  const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState({
     anniversaryDate: '',
     birthDate: '',
@@ -40,12 +41,14 @@ const App = () => {
       API.getUser(id).then(res => {
         setUser(user => (res.data ? res.data : user));
       });
+    } else {
+      setUserSignedOut();
     }
   }, []);
 
   useEffect(() => {
     loadUserInfo();
-  }, [loadUserInfo]);
+  }, [loadUserInfo, signedIn]);
 
   const getPreviousPath = () => {
     return previousPath;
@@ -56,14 +59,27 @@ const App = () => {
     console.log('previousPathApp:', previousPath);
   };
 
-  const signOut = () => {
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-      console.log('User signed out.');
-    });
+  useEffect(() => {
+    const loadGoogle = () => {
+      window.gapi.load('auth2', function() {
+        /* Ready. Make a call to gapi.auth2.init or some other API */
+        window.gapi.auth2.init({
+          client_id:
+            '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
+        });
+        const GoogleAuth = window.gapi.auth2.getAuthInstance();
 
-    sessionStorage.setItem('currentUserId', '');
+        GoogleAuth.isSignedIn.listen(setSignedIn);
+      });
+    };
+    window.addEventListener('google-loaded', loadGoogle);
+    if (previousPath) {
+      console.log('previousPath:', true);
+      loadGoogle();
+    }
+  }, [previousPath]);
 
+  const setUserSignedOut = () => {
     setUser({
       anniversaryDate: '',
       birthDate: '',
@@ -79,9 +95,20 @@ const App = () => {
     });
   };
 
+  const signOut = () => {
+    const GoogleAuth = window.gapi.auth2.getAuthInstance();
+    GoogleAuth.signOut().then(function() {
+      console.log('User signed out.');
+    });
+
+    sessionStorage.setItem('currentUserId', '');
+
+    setUserSignedOut();
+  };
+
   return (
     <div>
-      <NavBar signOut={signOut} user={user} />
+      <NavBar signedIn={signedIn} signOut={signOut} user={user} />
       <BrowserRouter>
         <div>
           <Route
@@ -92,6 +119,7 @@ const App = () => {
                 {...routeProps}
                 getPreviousPath={getPreviousPath}
                 setPreviousPath={setPreviousPath}
+                setUser={setUser}
               />
             )}
           />
