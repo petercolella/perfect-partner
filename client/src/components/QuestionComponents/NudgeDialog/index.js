@@ -108,15 +108,12 @@ function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
 }
 
+const nudgeArr = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
+
 const NudgeDialog = props => {
   const classes = useStyles();
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [nudgeArr, setNudgeArr] = useState([
-    'Romantic Text',
-    'Buy Flowers',
-    'Dinner Reservations'
-  ]);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [state, setState] = useState({});
