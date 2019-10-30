@@ -35,7 +35,6 @@ body {
   margin-top: 120px;
   background-color: #ef5350;
   border-radius: 25px;
-  height: 309px;
   position: absolute;
   bottom: 1em;
   flex-grow: 1;
@@ -58,13 +57,12 @@ body {
 }
 
 .avatar-center .clicktext {
-  color: #000;
   font-size: 21px;
   line-height: 19px;
 }
 .avatar-center a {
-  color: #000;
-  text-decoration: underline black !important;
+  color: #fff;
+  text-decoration: underline #fff !important;
 }
 
 .shadow {

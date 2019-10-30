@@ -27,20 +27,25 @@ const Avatar = props => {
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                 alt="profile-img"
+                className="logo-avatar"
                 style={styles.imgStyle}
               />
             )}
-            <p className="lead">
-              {user.name ? `Welcome, ${user.name}` : 'Please Sign In.'}
-            </p>
-            <p className="clicktext">
-              Please click{' '}
-              <Link to="/phone">
-                HERE
-                <br />
-              </Link>{' '}
-              to answer a question.
-            </p>
+            {user.name ? (
+              <div>
+                <p className="lead">{`Welcome, ${user.name}`}</p>
+                <p className="clicktext">
+                  Please click{' '}
+                  <Link to="/phone">
+                    HERE
+                    <br />
+                  </Link>{' '}
+                  to begin setting up your profile.
+                </p>
+              </div>
+            ) : (
+              <p className="lead">Please Sign In.</p>
+            )}
           </div>
         </div>
       </div>
