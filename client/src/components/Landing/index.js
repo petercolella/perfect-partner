@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '../Avatar';
-import Header from '../Header';
 
 const Landing = props => {
   const { user } = props;
@@ -17,20 +17,12 @@ const Landing = props => {
 
   return (
     <>
-      <Header />
       <div className="bkgd-image">
-        <div className="container invisible">
-          <div className="row mb-3">
-            <div className="col-md-4 col-sm-12">
-              <img id="header-img" alt="logo" src="/img/logo_p.png" />
-            </div>
-          </div>
-        </div>
+        <Toolbar />
         <div className="container">
           <div className="row justify-content-end">
             <div className="col-md-6 col-sm-12">
-              {/* <Header /> */}
-              <p className="home-saying">Did you forget your Anniversary?</p>
+              <p className="home-saying">Planned Spontaneity</p>
             </div>
           </div>
           <div className="row bottom-xs">
