@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import Google from '../Signin';
+import Avatar from '../Avatar';
 import Header from '../Header';
 
 const Landing = props => {
-  const { getPreviousPath, setUser } = props;
+  const { user } = props;
 
   const propsRef = useRef();
   propsRef.current = props;
@@ -36,7 +36,7 @@ const Landing = props => {
           <div className="row bottom-xs">
             <div className="col-xs-6">
               <div className="box shadow">
-                <Google getPreviousPath={getPreviousPath} setUser={setUser} />
+                <Avatar user={user} />
               </div>
             </div>
           </div>
