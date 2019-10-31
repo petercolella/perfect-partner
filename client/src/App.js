@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import API from './utils/API';
 
@@ -16,8 +16,8 @@ import Anniversary from './components/QuestionComponents/Anniversary';
 import './styles.css';
 
 const App = () => {
-  const [previousPath, setPreviousPathState] = useState('/');
-  const [signedIn, setSignedIn] = useState(false);
+  const [previousPath, setPreviousPathState] = useState(null);
+  const [signedIn, setSignedIn] = useState(null);
   const [user, setUser] = useState({
     anniversaryDate: '',
     birthDate: '',
@@ -38,7 +38,7 @@ const App = () => {
     const id = sessionStorage.getItem('currentUserId');
     idRef.current = id;
     if (idRef.current) {
-      API.getUser(id).then(res => {
+      API.getUser(idRef.current).then(res => {
         setUser(user => (res.data ? res.data : user));
       });
     } else {
@@ -48,7 +48,7 @@ const App = () => {
 
   useEffect(() => {
     loadUserInfo();
-  }, [loadUserInfo, signedIn]);
+  }, [loadUserInfo]);
 
   const getPreviousPath = () => {
     return previousPath;
@@ -56,28 +56,62 @@ const App = () => {
 
   const setPreviousPath = path => {
     setPreviousPathState(path);
-    console.log('previousPathApp:', previousPath);
   };
+
+  const onSuccess = googleUser => {
+    console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
+    const id_token = googleUser.getAuthResponse().id_token;
+
+    API.tokenSignInAxios(id_token).then(id => {
+      sessionStorage.setItem('currentUserId', id);
+      API.getUser(id).then(res => {
+        setUser(user => (res.data ? res.data : user));
+      });
+    });
+  };
+
+  const onFailure = error => {
+    console.log(error);
+  };
+
+  const renderGoogleLoginButton = useCallback(() => {
+    console.log('rendering google signin button');
+    window.gapi.signin2.render('my-signin2', {
+      scope: 'profile email',
+      width: 180,
+      height: 30,
+      longtitle: true,
+      theme: 'dark',
+      onsuccess: onSuccess,
+      onfailure: onFailure
+    });
+  }, []);
 
   useEffect(() => {
     const loadGoogle = () => {
+      console.log('loadGoogle');
       window.gapi.load('auth2', function() {
-        /* Ready. Make a call to gapi.auth2.init or some other API */
         window.gapi.auth2.init({
           client_id:
             '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
         });
+
         const GoogleAuth = window.gapi.auth2.getAuthInstance();
 
         GoogleAuth.isSignedIn.listen(setSignedIn);
+
+        renderGoogleLoginButton();
       });
     };
-    window.addEventListener('google-loaded', loadGoogle);
-    if (previousPath) {
-      console.log('previousPath:', true);
+
+    if (!previousPath) {
+      console.log('addEventListener');
+      window.addEventListener('google-loaded', loadGoogle);
+    } else {
+      console.log(`App:\npreviousPath: ${previousPath}`);
       loadGoogle();
     }
-  }, [previousPath]);
+  }, [previousPath, renderGoogleLoginButton]);
 
   const setUserSignedOut = () => {
     setUser({
@@ -104,6 +138,7 @@ const App = () => {
     sessionStorage.setItem('currentUserId', '');
 
     setUserSignedOut();
+    setTimeout(renderGoogleLoginButton, 250);
   };
 
   return (
@@ -126,6 +161,7 @@ const App = () => {
                 getPreviousPath={getPreviousPath}
                 setPreviousPath={setPreviousPath}
                 setUser={setUser}
+                user={user}
               />
             )}
           />
@@ -168,7 +204,13 @@ const App = () => {
             exact
             path="/dashboard"
             render={routeProps => (
-              <MainBody {...routeProps} setPreviousPath={setPreviousPath} />
+              <MainBody
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                setPreviousPath={setPreviousPath}
+                setUser={setUser}
+                user={user}
+              />
             )}
           />
         </div>
