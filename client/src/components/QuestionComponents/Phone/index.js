@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
-import Header from '../../Header';
 import { ReactComponent as Smartphone } from './smartphone.svg';
 
 class Phone extends Component {
@@ -53,15 +52,7 @@ class Phone extends Component {
   render() {
     return (
       <>
-        <Header />
         <div className="bkgd-image">
-          <div className="container invisible">
-            <div className="row mb-3">
-              <div className="col-md-4 col-sm-12">
-                <img id="header-img" alt="logo" src="/img/logo_p.png" />
-              </div>
-            </div>
-          </div>
           <QuestionDialog
             firstName={this.state.User.firstName}
             handleFormSubmit={this.handleFormSubmit}
