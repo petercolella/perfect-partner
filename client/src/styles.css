@@ -9,6 +9,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.background {
+  background-color: #22b5e0;
+  height: 100vh;
+}
+
 .bkgd-image {
   position: absolute;
   top: 0;
@@ -61,8 +66,8 @@ body {
   line-height: 19px;
 }
 .avatar-center a {
-  color: #fff;
-  text-decoration: underline #fff !important;
+  color: #22b5e0;
+  text-decoration: underline #22b5e0 !important;
 }
 
 .shadow {
