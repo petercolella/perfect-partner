@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import MuiLink from '@material-ui/core/Link';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import API from '../../utils/API';
 import UserUpdate from '../UserUpdate';
@@ -36,20 +36,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MainBody = props => {
-  const [user, setUser] = useState({
-    anniversaryDate: '',
-    birthDate: '',
-    email: '',
-    firstName: '',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-    lastName: '',
-    name: '',
-    nudges: [],
-    partnerName: '',
-    phone: ''
-  });
-
   const [nudge, setNudge] = useState({
     name: '',
     nudgeFrequency: '',
@@ -61,27 +47,11 @@ const MainBody = props => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
 
-  const { location, setPreviousPath } = props;
+  const { location, loadUserInfo, setPreviousPath, setUser, user } = props;
 
   useEffect(() => {
     setPreviousPath(location.pathname);
   }, [location, setPreviousPath]);
-
-  const idRef = useRef();
-
-  const loadUserInfo = useCallback(() => {
-    const id = sessionStorage.getItem('currentUserId');
-    idRef.current = id;
-    if (idRef.current) {
-      API.getUser(id).then(res => {
-        setUser(user => (res.data ? res.data : user));
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    loadUserInfo();
-  }, [loadUserInfo]);
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
@@ -134,66 +104,11 @@ const MainBody = props => {
     setUserDialogOpen(false);
   };
 
-  useEffect(() => {
-    window.gapi.load('auth2', function() {
-      /* Ready. Make a call to gapi.auth2.init or some other API */
-      window.gapi.auth2.init({
-        client_id:
-          '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
-      });
-    });
-  }, []);
-
-  const signOut = () => {
-    const auth2 = window.gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function() {
-      console.log('User signed out.');
-    });
-
-    sessionStorage.setItem('currentUserId', '');
-
-    setUser({
-      anniversaryDate: '',
-      birthDate: '',
-      email: '',
-      firstName: '',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-      lastName: '',
-      name: '',
-      nudges: [],
-      partnerName: '',
-      phone: ''
-    });
-  };
-
   const classes = useStyles();
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-4 col-sm-12">
-          <img id="header-img" alt="logo" src="/img/logo_p.png" />
-        </div>
-        <div className="col-md-4 offset-md-4 col-sm-12 d-flex justify-content-end">
-          <h3 className="my-auto mr-2" id="avatar-text-header">
-            {user.name ? user.name : <span>Please sign in.</span>}
-          </h3>
-          <img
-            className="my-auto"
-            id="avatar-image-header"
-            alt="User"
-            src={user.imageUrl}
-          />
-          <MuiLink
-            component="button"
-            variant="body2"
-            onClick={signOut}
-            className={classes.signOut}>
-            Sign Out
-          </MuiLink>
-        </div>
-      </div>
+    <div className="container-fluid background">
+      <Toolbar />
       <div className="row">
         <div className="col-md-6 col-sm-12">
           <Paper className={classes.root}>
