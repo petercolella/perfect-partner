@@ -26,9 +26,9 @@
 @keyframes google-hide {
   0% {
     margin-right: 32px;
-    -ms-transform: translateX(166.667%);
-    -webkit-transform: translateX(166.667%);
-    transform: translateX(166.667%);
+    -ms-transform: translateX(200%);
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
   }
   100% {
     margin-right: 16px;
@@ -47,8 +47,8 @@
   }
   100% {
     margin-right: 32px;
-    -ms-transform: translateX(166.667%);
-    -webkit-transform: translateX(166.667%);
-    transform: translateX(166.667%);
+    -ms-transform: translateX(200%);
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
   }
 }

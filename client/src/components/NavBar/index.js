@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2)
   },
   userName: {
-    minWidth: 120,
+    width: 180,
     textAlign: 'right'
   },
   userShow: {
@@ -67,7 +67,7 @@ const NavBar = props => {
             <MenuIcon />
           </IconButton>
           <Grid container>
-            <Grid item xs={6} md={4} lg={3} xl={2}>
+            <Grid item xs={6} md={4} xl={2}>
               <img id="header-img" alt="logo" src="/img/logo_p.png" />
             </Grid>
           </Grid>
@@ -84,7 +84,7 @@ const NavBar = props => {
                   className={`${classes.userName} ${classes.pushRight}`}
                   variant="subtitle1"
                   noWrap>
-                  {user.name}
+                  {signedIn ? `Hi, ${user.firstName}!` : `Bye!`}
                 </Typography>
                 <img
                   className={classes.img}
