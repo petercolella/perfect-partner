@@ -1,34 +1,54 @@
 @keyframes user-show {
   0% {
+    -ms-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
     transform: translateX(100%);
   }
   100% {
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
 }
 @keyframes user-hide {
   0% {
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
   100% {
+    -ms-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
     transform: translateX(100%);
   }
 }
 
 @keyframes google-hide {
   0% {
-    transform: translateX(100%);
+    margin-right: 32px;
+    -ms-transform: translateX(166.667%);
+    -webkit-transform: translateX(166.667%);
+    transform: translateX(166.667%);
   }
   100% {
+    margin-right: 16px;
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
 }
 
 @keyframes google-show {
   0% {
+    margin-right: 16px;
+    -ms-transform: translateX(0);
+    -webkit-transform: translateX(0);
     transform: translateX(0);
   }
   100% {
-    transform: translateX(100%);
+    margin-right: 32px;
+    -ms-transform: translateX(166.667%);
+    -webkit-transform: translateX(166.667%);
+    transform: translateX(166.667%);
   }
 }
