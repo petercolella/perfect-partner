@@ -17,10 +17,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   googleHide: {
-    animation: 'google-hide 2s ease-in-out forwards'
+    animation: 'google-hide 2s ease-in-out 0.5s forwards'
   },
   googleShow: {
-    animation: 'google-show 2s ease-in-out forwards'
+    animation: 'google-show 2s ease-in-out 0.5s forwards'
   },
   login: {
     display: 'flex'
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   userHide: {
-    animation: 'user-hide 2s ease-in-out forwards',
+    animation: 'user-hide 2s ease-in-out 0.5s forwards',
     display: 'inline-flex',
     marginLeft: theme.spacing(2)
   },
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right'
   },
   userShow: {
-    animation: 'user-show 2s ease-in-out forwards',
+    animation: 'user-show 2s ease-in-out 0.5s forwards',
     display: 'inline-flex',
     marginLeft: theme.spacing(2)
   }
@@ -72,13 +72,13 @@ const NavBar = props => {
             </Grid>
           </Grid>
           <div className={classes.login}>
-            <Fade in={!signedIn} timeout={2000}>
+            <Fade in={!signedIn} timeout={2500}>
               <div
                 className={signedIn ? classes.googleHide : classes.googleShow}
                 id="my-signin2"
               />
             </Fade>
-            <Fade in={signedIn} timeout={2000}>
+            <Fade in={signedIn} timeout={2500}>
               <div className={signedIn ? classes.userShow : classes.userHide}>
                 <Typography
                   className={`${classes.userName} ${classes.pushRight}`}
