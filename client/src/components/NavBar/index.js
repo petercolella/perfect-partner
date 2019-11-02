@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   googleHide: {
-    animation: 'google-hide 2s ease-in-out 0.5s forwards'
+    animation: 'google-hide 2.5s ease-in-out forwards'
   },
   googleShow: {
     animation: 'google-show 2s ease-in-out 0.5s forwards'
@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'right'
   },
   userShow: {
-    animation: 'user-show 2s ease-in-out 0.5s forwards',
+    animation: 'user-show 2.5s ease-in-out forwards',
     display: 'inline-flex',
     marginLeft: theme.spacing(2)
   }
