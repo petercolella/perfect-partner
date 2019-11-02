@@ -35,7 +35,7 @@ module.exports = {
       };
 
       if (CLIENT_ID === payload['aud']) {
-        db.User.findOneAndUpdate({ googleId }, newUser, (err, docs) => {
+        db.User.findOne({ googleId }, (err, docs) => {
           if (err) {
             console.error(err);
           }
