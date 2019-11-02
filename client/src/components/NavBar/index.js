@@ -90,7 +90,7 @@ const NavBar = props => {
                   className={classes.img}
                   id="avatar-image-header"
                   alt="User"
-                  src={user.imageUrl}
+                  src={signedIn ? user.imageUrl : '/img/bye.gif'}
                 />
                 <Typography className={classes.pushLeft} noWrap>
                   <MuiLink
