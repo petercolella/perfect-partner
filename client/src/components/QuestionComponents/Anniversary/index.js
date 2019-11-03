@@ -1,79 +1,58 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import Toolbar from '@material-ui/core/Toolbar';
 import API from '../../../utils/API';
-import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
 import { ReactComponent as Gift } from './gift.svg';
 
-const Anniversary = props => {
-  const [state, setState] = useState({
-    nextQuestionLink: '/nudges',
-    question: 'what is your anniversary date?',
-    title: 'Anniversary',
-    User: {},
-    userField: null
-  });
+const state = {
+  nextQuestionLink: '/nudges',
+  question: 'what is your anniversary date?',
+  title: 'Anniversary'
+};
 
-  const loadUserInfo = useCallback(() => {
+const Anniversary = props => {
+  const { loadUserInfo, user } = props;
+  const [anniversaryDate, setAnniversaryDate] = useState(null);
+
+  const loadAnniversaryDate = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setState(state => ({
-          ...state,
-          User: res.data,
-          userField: res.data.anniversaryDate || null
-        }));
+        setAnniversaryDate(res.data.anniversaryDate);
       });
     }
   }, []);
 
-  const propsRef = useRef();
-  propsRef.current = props;
-
   useEffect(() => {
-    loadUserInfo();
-
-    return () => {
-      const path = propsRef.current.location.pathname;
-      propsRef.current.setPreviousPath(path);
-    };
-  }, [loadUserInfo]);
+    loadAnniversaryDate();
+  }, [loadAnniversaryDate]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    API.updateUser(state.User._id, {
-      anniversaryDate: state.userField
+    API.updateUser(user._id, {
+      anniversaryDate
     }).then(loadUserInfo);
   };
 
   const handleDateInputChange = date => {
-    setState({
-      ...state,
-      userField: date
-    });
+    setAnniversaryDate(date);
   };
 
   return (
     <>
-      <Header />
+      <Toolbar />
       <div className="bkgd-image">
-        <div className="container invisible">
-          <div className="row mb-3">
-            <div className="col-md-4 col-sm-12">
-              <img id="header-img" alt="logo" src="/img/logo_p.png" />
-            </div>
-          </div>
-        </div>
         <DateQuestionDialog
-          firstName={state.User.firstName}
+          firstName={user.firstName}
           handleDateInputChange={handleDateInputChange}
           handleFormSubmit={handleFormSubmit}
-          image={Gift}
+          Image={Gift}
           label="Anniversary"
           link={state.nextQuestionLink}
           loadUserInfo={loadUserInfo}
           question={state.question}
           title={state.title}
-          userField={state.userField}
+          userField={anniversaryDate}
         />
       </div>
     </>
