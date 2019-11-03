@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import API from './utils/API';
 
 //components
 import Landing from './components/Landing';
-import MainBody from './components/MainBody';
+import Dashboard from './components/Dashboard';
 import Birthday from './components/QuestionComponents/Birthday';
 import NavBar from './components/NavBar';
 import Nudges from './components/QuestionComponents/Nudges';
@@ -16,8 +16,7 @@ import Anniversary from './components/QuestionComponents/Anniversary';
 import './styles.css';
 
 const App = () => {
-  const [previousPath, setPreviousPathState] = useState(null);
-  const [signedIn, setSignedIn] = useState(null);
+  const [signedIn, setSignedIn] = useState(true);
   const [user, setUser] = useState({
     anniversaryDate: '',
     birthDate: '',
@@ -32,31 +31,17 @@ const App = () => {
     phone: ''
   });
 
-  const idRef = useRef();
-
   const loadUserInfo = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
-    idRef.current = id;
-    if (idRef.current) {
-      API.getUser(idRef.current).then(res => {
+    if (id) {
+      API.getUser(id).then(res => {
         setUser(user => (res.data ? res.data : user));
       });
     } else {
+      setSignedIn(false);
       setUserSignedOut();
     }
   }, []);
-
-  useEffect(() => {
-    loadUserInfo();
-  }, [loadUserInfo]);
-
-  const getPreviousPath = () => {
-    return previousPath;
-  };
-
-  const setPreviousPath = path => {
-    setPreviousPathState(path);
-  };
 
   const onSuccess = googleUser => {
     console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
@@ -68,6 +53,8 @@ const App = () => {
         setUser(user => (res.data ? res.data : user));
       });
     });
+
+    setSignedIn(true);
   };
 
   const onFailure = error => {
@@ -98,20 +85,15 @@ const App = () => {
 
         const GoogleAuth = window.gapi.auth2.getAuthInstance();
 
-        GoogleAuth.isSignedIn.listen(setSignedIn);
-
         renderGoogleLoginButton();
+
+        GoogleAuth.isSignedIn.listen(setSignedIn);
       });
     };
+    loadUserInfo();
 
-    if (!previousPath) {
-      console.log('addEventListener');
-      window.addEventListener('google-loaded', loadGoogle);
-    } else {
-      console.log(`App:\npreviousPath: ${previousPath}`);
-      loadGoogle();
-    }
-  }, [previousPath, renderGoogleLoginButton]);
+    window.addEventListener('google-loaded', loadGoogle);
+  }, [loadUserInfo, renderGoogleLoginButton]);
 
   const setUserSignedOut = () => {
     setUser({
@@ -137,14 +119,13 @@ const App = () => {
 
     sessionStorage.setItem('currentUserId', '');
 
+    setSignedIn(false);
     setUserSignedOut();
-    setTimeout(renderGoogleLoginButton, 250);
   };
 
   return (
     <div>
       <NavBar
-        getPreviousPath={getPreviousPath}
         setUser={setUser}
         signedIn={signedIn}
         signOut={signOut}
@@ -155,60 +136,48 @@ const App = () => {
           <Route
             exact
             path="/"
+            render={routeProps => <Landing {...routeProps} user={user} />}
+          />
+          <Route
+            exact
+            path="/birthday"
+            render={routeProps => <Birthday {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/nudges"
+            render={routeProps => <Nudges {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/partner"
+            render={routeProps => <Partner {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/phone"
+            render={routeProps => <Phone {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/anniversary"
             render={routeProps => (
-              <Landing
+              <Anniversary
                 {...routeProps}
-                getPreviousPath={getPreviousPath}
-                setPreviousPath={setPreviousPath}
-                setUser={setUser}
+                loadUserInfo={loadUserInfo}
                 user={user}
               />
             )}
           />
           <Route
             exact
-            path="/birthday"
-            render={routeProps => (
-              <Birthday {...routeProps} setPreviousPath={setPreviousPath} />
-            )}
-          />
-          <Route
-            exact
-            path="/nudges"
-            render={routeProps => (
-              <Nudges {...routeProps} setPreviousPath={setPreviousPath} />
-            )}
-          />
-          <Route
-            exact
-            path="/partner"
-            render={routeProps => (
-              <Partner {...routeProps} setPreviousPath={setPreviousPath} />
-            )}
-          />
-          <Route
-            exact
-            path="/phone"
-            render={routeProps => (
-              <Phone {...routeProps} setPreviousPath={setPreviousPath} />
-            )}
-          />
-          <Route
-            exact
-            path="/anniversary"
-            render={routeProps => (
-              <Anniversary {...routeProps} setPreviousPath={setPreviousPath} />
-            )}
-          />
-          <Route
-            exact
             path="/dashboard"
             render={routeProps => (
-              <MainBody
+              <Dashboard
                 {...routeProps}
                 loadUserInfo={loadUserInfo}
-                setPreviousPath={setPreviousPath}
                 setUser={setUser}
+                signedIn={signedIn}
                 user={user}
               />
             )}
