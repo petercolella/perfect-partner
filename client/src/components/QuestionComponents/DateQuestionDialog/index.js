@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -94,16 +94,27 @@ function TransitionUp(props) {
 }
 
 const DateQuestionDialog = props => {
+  const {
+    Image,
+    firstName,
+    handleDateInputChange,
+    handleFormSubmit,
+    label,
+    link,
+    loadUserInfo,
+    question,
+    title,
+    userField
+  } = props;
+
   const [toastOpen, setToastOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       setDialogOpen(true);
     }, 250);
   }, []);
-
-  const Image = props.image;
 
   function handleDialogClose(event, reason) {
     if (reason === 'clickaway') {
@@ -111,7 +122,7 @@ const DateQuestionDialog = props => {
     }
 
     setDialogOpen(false);
-    props.loadUserInfo();
+    loadUserInfo();
     setTimeout(() => {
       setDialogOpen(true);
     }, 250);
@@ -126,7 +137,7 @@ const DateQuestionDialog = props => {
   }
 
   const clickHandler = e => {
-    props.handleFormSubmit(e);
+    handleFormSubmit(e);
     setToastOpen(true);
   };
 
@@ -145,14 +156,13 @@ const DateQuestionDialog = props => {
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          {props.userField ? (
+          {userField ? (
             <MySnackbarContentWrapper
               onClose={handleToastClose}
               variant="success"
               message={
                 <span>
-                  {props.title}:{' '}
-                  {new Date(props.userField).toLocaleDateString()} has been
+                  {title}: {new Date(userField).toLocaleDateString()} has been
                   submitted.
                 </span>
               }
@@ -163,8 +173,8 @@ const DateQuestionDialog = props => {
               variant="warning"
               message={
                 <span>
-                  The {props.title} date has been cleared. Please enter a valid
-                  date before submitting.
+                  The {title} date has been cleared. Please enter a valid date
+                  before submitting.
                 </span>
               }
             />
@@ -184,11 +194,11 @@ const DateQuestionDialog = props => {
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          {props.title}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {props.firstName}, {props.question}
+            {firstName}, {question}
           </DialogContentText>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
@@ -199,10 +209,10 @@ const DateQuestionDialog = props => {
               format="MM/dd/yyyy"
               margin="normal"
               id="dateQuestionDialogDatePicker"
-              label={props.label}
+              label={label}
               placeholder="mm/dd/yyyy"
-              value={props.userField}
-              onChange={props.handleDateInputChange}
+              value={userField}
+              onChange={handleDateInputChange}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
@@ -216,7 +226,7 @@ const DateQuestionDialog = props => {
           <Button onClick={clickHandler} color="primary">
             Submit
           </Button>
-          <Link to={props.link}>
+          <Link to={link}>
             <Button onClick={() => setDialogOpen(false)} color="primary">
               Next
             </Button>
