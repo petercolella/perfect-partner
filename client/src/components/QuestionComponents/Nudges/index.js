@@ -14,8 +14,6 @@ class Nudges extends Component {
   };
 
   componentDidMount() {
-    const path = this.props.location.pathname;
-    this.props.setPreviousPath(path);
     this.loadUserInfo();
   }
 

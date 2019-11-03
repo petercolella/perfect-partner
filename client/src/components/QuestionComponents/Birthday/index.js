@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import API from '../../../utils/API';
 import Header from '../../Header';
 import DateQuestionDialog from '../DateQuestionDialog';
@@ -26,16 +26,8 @@ const Birthday = props => {
     }
   }, []);
 
-  const propsRef = useRef();
-  propsRef.current = props;
-
   useEffect(() => {
     loadUserInfo();
-
-    return () => {
-      const path = propsRef.current.location.pathname;
-      propsRef.current.setPreviousPath(path);
-    };
   }, [loadUserInfo]);
 
   const handleFormSubmit = event => {
@@ -67,7 +59,7 @@ const Birthday = props => {
           firstName={state.User.firstName}
           handleDateInputChange={handleDateInputChange}
           handleFormSubmit={handleFormSubmit}
-          image={Cake}
+          Image={Cake}
           label="Partner's Birthday"
           link={state.nextQuestionLink}
           loadUserInfo={loadUserInfo}

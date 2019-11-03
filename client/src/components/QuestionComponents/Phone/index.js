@@ -17,11 +17,6 @@ class Phone extends Component {
     this.loadUserInfo();
   }
 
-  componentWillUnmount() {
-    const path = this.props.location.pathname;
-    this.props.setPreviousPath(path);
-  }
-
   loadUserInfo = () => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {

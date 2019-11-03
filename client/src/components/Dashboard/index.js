@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const MainBody = props => {
+const Dashboard = props => {
   const [nudge, setNudge] = useState({
     name: '',
     nudgeFrequency: '',
@@ -51,10 +51,6 @@ const MainBody = props => {
   const [userDialogOpen, setUserDialogOpen] = useState(false);
 
   const { loadUserInfo, setUser, signedIn, user } = props;
-
-  //   useEffect(() => {
-  //     setPreviousPath(location.pathname);
-  //   }, [location, setPreviousPath]);
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
@@ -184,4 +180,4 @@ const MainBody = props => {
   );
 };
 
-export default MainBody;
+export default Dashboard;

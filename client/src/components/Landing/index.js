@@ -1,19 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Avatar from '../Avatar';
 
 const Landing = props => {
   const { user } = props;
-
-  const propsRef = useRef();
-  propsRef.current = props;
-
-  useEffect(() => {
-    return () => {
-      const path = propsRef.current.location.pathname;
-      propsRef.current.setPreviousPath(path);
-    };
-  }, []);
 
   return (
     <>
