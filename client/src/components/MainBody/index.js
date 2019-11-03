@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
+
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+
 import API from '../../utils/API';
-import UserUpdate from '../UserUpdate';
-import NudgeTable from '../NudgeTable';
 import fn from '../../utils/fn';
+import NudgeTable from '../NudgeTable';
+import UserUpdate from '../UserUpdate';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,11 +50,11 @@ const MainBody = props => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
 
-  const { location, loadUserInfo, setPreviousPath, setUser, user } = props;
+  const { loadUserInfo, setUser, signedIn, user } = props;
 
-  useEffect(() => {
-    setPreviousPath(location.pathname);
-  }, [location, setPreviousPath]);
+  //   useEffect(() => {
+  //     setPreviousPath(location.pathname);
+  //   }, [location, setPreviousPath]);
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
@@ -107,12 +110,12 @@ const MainBody = props => {
   const classes = useStyles();
 
   return (
-    <div className="container-fluid background">
+    <Container className="background">
       <Toolbar />
-      <div className="row">
-        <div className="col-md-6 col-sm-12">
+      <Grid container spacing={2}>
+        <Grid item>
           <Paper className={classes.root}>
-            {user.name ? (
+            {signedIn ? (
               <Card className={classes.card}>
                 <CardContent>
                   <Typography variant="body1">
@@ -148,24 +151,15 @@ const MainBody = props => {
             ) : (
               <Card className={classes.card}>
                 <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom>
-                    Please click{' '}
-                    <Link to="/" style={{ color: '#22b5e0' }}>
-                      here
-                    </Link>{' '}
-                    to sign in before continuing.
+                  <Typography color="textSecondary" variant="body1">
+                    Please sign in to continue.
                   </Typography>
                 </CardContent>
               </Card>
             )}
           </Paper>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-md-12">
+        </Grid>
+        <Grid item>
           <NudgeTable
             user={user}
             nudge={nudge}
@@ -176,8 +170,8 @@ const MainBody = props => {
             handleFormSubmit={handleFormSubmit}
             dialogOpen={dialogOpen}
           />
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <UserUpdate
         closeUserUpdateComp={closeUserUpdateComp}
         handleUserInputChange={handleUserInputChange}
@@ -186,7 +180,7 @@ const MainBody = props => {
         user={user}
         userDialogOpen={userDialogOpen}
       />
-    </div>
+    </Container>
   );
 };
 
