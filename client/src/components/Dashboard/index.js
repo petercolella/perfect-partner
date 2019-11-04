@@ -21,6 +21,16 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     overflowX: 'auto'
   },
+  button: {
+    borderColor: '#22b5e0',
+    color: '#22b5e0'
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: 8,
+    paddingRight: 8
+  },
   card: {
     minWidth: 275
   },
@@ -160,14 +170,16 @@ const Dashboard = props => {
                         : ''}
                     </Typography>
                   </CardContent>
-                  <CardActions>
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={launchUserUpdateComp}>
-                      Edit Your Profile
-                    </Button>
-                  </CardActions>
+                  <div className={classes.buttonContainer}>
+                    <CardActions>
+                      <Button
+                        variant="outlined"
+                        className={classes.button}
+                        onClick={launchUserUpdateComp}>
+                        Edit Your Profile
+                      </Button>
+                    </CardActions>
+                  </div>
                 </Card>
               ) : (
                 <Card className={classes.card}>
