@@ -165,9 +165,6 @@ const NudgeUpdate = props => {
             onChange={props.handleInputChange('nudgeFrequencyUnit')}
             margin="normal"
             variant="outlined">
-            <MenuItem value="seconds">seconds</MenuItem>
-            <MenuItem value="minutes">minutes</MenuItem>
-            <MenuItem value="hours">hours</MenuItem>
             <MenuItem value="days">days</MenuItem>
             <MenuItem value="weeks">weeks</MenuItem>
             <MenuItem value="months">months</MenuItem>
