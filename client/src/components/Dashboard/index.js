@@ -19,14 +19,20 @@ import UserUpdate from '../UserUpdate';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing(3),
     overflowX: 'auto'
   },
   card: {
     minWidth: 275
   },
-  title: {
-    fontSize: 14
+  container: {
+    paddingLeft: 72,
+    paddingRight: 72
+  },
+  heading: {
+    border: '2px #fff solid',
+    borderRadius: 4,
+    color: '#fff',
+    padding: 16
   },
   pos: {
     marginBottom: 12
@@ -35,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '1rem',
     lineHeight: '48px',
     marginLeft: theme.spacing(1)
+  },
+  title: {
+    fontSize: 14
   }
 }));
 
@@ -106,77 +115,96 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <Container className="background">
-      <Toolbar />
-      <Grid container spacing={2}>
-        <Grid item>
-          <Paper className={classes.root}>
-            {signedIn ? (
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography variant="body1">
-                    <span>Phone Number: </span>
-                    {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Partner's Name: </span>
-                    {user.partnerName}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Partner's Birthday: </span>
-                    {user.birthDate
-                      ? new Date(user.birthDate).toLocaleDateString()
-                      : ''}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Your Anniversary: </span>
-                    {user.anniversaryDate
-                      ? new Date(user.anniversaryDate).toLocaleDateString()
-                      : ''}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={launchUserUpdateComp}>
-                    Edit Your Profile
-                  </Button>
-                </CardActions>
-              </Card>
-            ) : (
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography color="textSecondary" variant="body1">
-                    Please sign in to continue.
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
-          </Paper>
+    <div className="bkgd-image">
+      <Container className={`${classes.container} background`}>
+        <Toolbar />
+        <Toolbar />
+        <Grid
+          container
+          spacing={4}
+          direction="row"
+          justify="space-between"
+          alignItems="flex-start">
+          <Grid item>
+            <Typography
+              variant="h1"
+              align="left"
+              className={classes.heading}
+              gutterBottom>
+              Dashboard
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Paper className={classes.root}>
+              {signedIn ? (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography variant="body1">
+                      <span>Phone Number: </span>
+                      {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Partner's Name: </span>
+                      {user.partnerName}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Partner's Birthday: </span>
+                      {user.birthDate
+                        ? new Date(user.birthDate).toLocaleDateString()
+                        : ''}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Your Anniversary: </span>
+                      {user.anniversaryDate
+                        ? new Date(user.anniversaryDate).toLocaleDateString()
+                        : ''}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={launchUserUpdateComp}>
+                      Edit Your Profile
+                    </Button>
+                  </CardActions>
+                </Card>
+              ) : (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography color="textSecondary" variant="body1">
+                      Please sign in to continue.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item>
-          <NudgeTable
-            user={user}
-            nudge={nudge}
-            loadUserInfo={loadUserInfo}
-            launchUpdateComp={launchUpdateComp}
-            closeUpdateComp={closeUpdateComp}
-            handleInputChange={handleInputChange}
-            handleFormSubmit={handleFormSubmit}
-            dialogOpen={dialogOpen}
-          />
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <NudgeTable
+              user={user}
+              nudge={nudge}
+              loadUserInfo={loadUserInfo}
+              launchUpdateComp={launchUpdateComp}
+              closeUpdateComp={closeUpdateComp}
+              handleInputChange={handleInputChange}
+              handleFormSubmit={handleFormSubmit}
+              dialogOpen={dialogOpen}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <UserUpdate
-        closeUserUpdateComp={closeUserUpdateComp}
-        handleUserInputChange={handleUserInputChange}
-        handleUserDateInputChange={handleUserDateInputChange}
-        handleUserFormSubmit={handleUserFormSubmit}
-        user={user}
-        userDialogOpen={userDialogOpen}
-      />
-    </Container>
+        <UserUpdate
+          closeUserUpdateComp={closeUserUpdateComp}
+          handleUserInputChange={handleUserInputChange}
+          handleUserDateInputChange={handleUserDateInputChange}
+          handleUserFormSubmit={handleUserFormSubmit}
+          user={user}
+          userDialogOpen={userDialogOpen}
+        />
+      </Container>
+    </div>
   );
 };
 
