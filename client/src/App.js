@@ -132,7 +132,7 @@ const App = () => {
         user={user}
       />
       <BrowserRouter>
-        <div>
+        <div className="bkgd-image">
           <Route
             exact
             path="/"

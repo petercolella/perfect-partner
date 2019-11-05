@@ -46,24 +46,20 @@ class Phone extends Component {
 
   render() {
     return (
-      <>
-        <div className="bkgd-image">
-          <QuestionDialog
-            firstName={this.state.User.firstName}
-            handleFormSubmit={this.handleFormSubmit}
-            handleInputChange={this.handleInputChange}
-            image={Smartphone}
-            label="Phone"
-            link={this.state.nextQuestionLink}
-            loadUserInfo={this.loadUserInfo}
-            placeholder={this.state.placeholder}
-            question={this.state.question}
-            title={this.state.title}
-            user={this.state.User}
-            userField={this.state.userField}
-          />
-        </div>
-      </>
+      <QuestionDialog
+        firstName={this.state.User.firstName}
+        handleFormSubmit={this.handleFormSubmit}
+        handleInputChange={this.handleInputChange}
+        image={Smartphone}
+        label="Phone"
+        link={this.state.nextQuestionLink}
+        loadUserInfo={this.loadUserInfo}
+        placeholder={this.state.placeholder}
+        question={this.state.question}
+        title={this.state.title}
+        user={this.state.User}
+        userField={this.state.userField}
+      />
     );
   }
 }

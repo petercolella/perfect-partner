@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
 import API from '../../../utils/API';
 import DateQuestionDialog from '../DateQuestionDialog';
 import { ReactComponent as Gift } from './gift.svg';
@@ -39,23 +38,18 @@ const Anniversary = props => {
   };
 
   return (
-    <>
-      <Toolbar />
-      <div className="bkgd-image">
-        <DateQuestionDialog
-          firstName={user.firstName}
-          handleDateInputChange={handleDateInputChange}
-          handleFormSubmit={handleFormSubmit}
-          Image={Gift}
-          label="Anniversary"
-          link={state.nextQuestionLink}
-          loadUserInfo={loadUserInfo}
-          question={state.question}
-          title={state.title}
-          userField={anniversaryDate}
-        />
-      </div>
-    </>
+    <DateQuestionDialog
+      firstName={user.firstName}
+      handleDateInputChange={handleDateInputChange}
+      handleFormSubmit={handleFormSubmit}
+      Image={Gift}
+      label="Anniversary"
+      link={state.nextQuestionLink}
+      loadUserInfo={loadUserInfo}
+      question={state.question}
+      title={state.title}
+      userField={anniversaryDate}
+    />
   );
 };
 

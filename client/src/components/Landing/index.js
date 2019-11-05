@@ -30,44 +30,40 @@ const Landing = props => {
   const classes = useStyles();
 
   return (
-    <>
-      <div className="bkgd-image">
-        <Container className={classes.container}>
-          <Grid
-            container
-            direction="column"
-            justify="space-between"
-            className={classes.container}>
-            <Grid
-              container
-              direction="row"
-              justify="flex-end"
-              alignItems="flex-start">
-              <Grid item xs={12} md={6}>
-                <Toolbar />
-                <Typography
-                  variant="h2"
-                  align="right"
-                  className={classes.homeSaying}>
-                  Planned Spontaneity
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="flex-end">
-              <Grid item>
-                <Paper elevation={12} className={classes.paper}>
-                  <Avatar user={user} />
-                </Paper>
-              </Grid>
-            </Grid>
+    <Container className={classes.container}>
+      <Grid
+        container
+        direction="column"
+        justify="space-between"
+        className={classes.container}>
+        <Grid
+          container
+          direction="row"
+          justify="flex-end"
+          alignItems="flex-start">
+          <Grid item xs={12} md={6}>
+            <Toolbar />
+            <Typography
+              variant="h2"
+              align="right"
+              className={classes.homeSaying}>
+              Planned Spontaneity
+            </Typography>
           </Grid>
-        </Container>
-      </div>
-    </>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-end">
+          <Grid item>
+            <Paper elevation={12} className={classes.paper}>
+              <Avatar user={user} />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
