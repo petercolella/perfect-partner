@@ -9,7 +9,7 @@ import Avatar from '../Avatar';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    height: '100%'
+    minHeight: '100vh'
   },
   homeSaying: {
     color: '#fff',

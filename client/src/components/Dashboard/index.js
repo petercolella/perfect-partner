@@ -35,8 +35,9 @@ const useStyles = makeStyles(theme => ({
     minWidth: 275
   },
   container: {
-    paddingLeft: 72,
-    paddingRight: 72
+    backgroundColor: '#22b5e0',
+    minHeight: '100vh',
+    padding: theme.spacing(4, 9, 8)
   },
   heading: {
     border: '2px #fff solid',
@@ -125,96 +126,98 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <Container className={`${classes.container} background`}>
-      <Toolbar />
-      <Toolbar />
-      <Grid
-        container
-        spacing={4}
-        direction="row"
-        justify="space-between"
-        alignItems="flex-start">
-        <Grid item>
-          <Typography
-            variant="h1"
-            align="left"
-            className={classes.heading}
-            gutterBottom>
-            Dashboard
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Paper className={classes.root}>
-            {signedIn ? (
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography variant="body1">
-                    <span>Phone Number: </span>
-                    {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Partner's Name: </span>
-                    {user.partnerName}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Partner's Birthday: </span>
-                    {user.birthDate
-                      ? new Date(user.birthDate).toLocaleDateString()
-                      : ''}
-                  </Typography>
-                  <Typography variant="body1">
-                    <span>Your Anniversary: </span>
-                    {user.anniversaryDate
-                      ? new Date(user.anniversaryDate).toLocaleDateString()
-                      : ''}
-                  </Typography>
-                </CardContent>
-                <div className={classes.buttonContainer}>
-                  <CardActions>
-                    <Button
-                      variant="outlined"
-                      className={classes.button}
-                      onClick={launchUserUpdateComp}>
-                      Edit Your Profile
-                    </Button>
-                  </CardActions>
-                </div>
-              </Card>
-            ) : (
-              <Card className={classes.card}>
-                <CardContent>
-                  <Typography color="textSecondary" variant="body1">
-                    Please sign in to continue.
-                  </Typography>
-                </CardContent>
-              </Card>
-            )}
-          </Paper>
-        </Grid>
-      </Grid>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <NudgeTable
+    <>
+      <Container className={`${classes.container} background`}>
+        <Toolbar />
+        <Grid container spacing={4}>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="flex-start">
+            <Grid item>
+              <Typography
+                variant="h1"
+                align="left"
+                className={classes.heading}
+                gutterBottom>
+                Dashboard
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Paper className={classes.root}>
+                {signedIn ? (
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography variant="body1">
+                        <span>Phone Number: </span>
+                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Partner's Name: </span>
+                        {user.partnerName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Partner's Birthday: </span>
+                        {user.birthDate
+                          ? new Date(user.birthDate).toLocaleDateString()
+                          : ''}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Your Anniversary: </span>
+                        {user.anniversaryDate
+                          ? new Date(user.anniversaryDate).toLocaleDateString()
+                          : ''}
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.buttonContainer}>
+                      <CardActions>
+                        <Button
+                          variant="outlined"
+                          className={classes.button}
+                          onClick={launchUserUpdateComp}>
+                          Edit Your Profile
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </Card>
+                ) : (
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography color="textSecondary" variant="body1">
+                        Please sign in to continue.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                )}
+              </Paper>
+            </Grid>
+          </Grid>
+          <Grid container>
+            <Grid item xs={12}>
+              <NudgeTable
+                user={user}
+                nudge={nudge}
+                loadUserInfo={loadUserInfo}
+                launchUpdateComp={launchUpdateComp}
+                closeUpdateComp={closeUpdateComp}
+                handleInputChange={handleInputChange}
+                handleFormSubmit={handleFormSubmit}
+                dialogOpen={dialogOpen}
+              />
+            </Grid>
+          </Grid>
+          <UserUpdate
+            closeUserUpdateComp={closeUserUpdateComp}
+            handleUserInputChange={handleUserInputChange}
+            handleUserDateInputChange={handleUserDateInputChange}
+            handleUserFormSubmit={handleUserFormSubmit}
             user={user}
-            nudge={nudge}
-            loadUserInfo={loadUserInfo}
-            launchUpdateComp={launchUpdateComp}
-            closeUpdateComp={closeUpdateComp}
-            handleInputChange={handleInputChange}
-            handleFormSubmit={handleFormSubmit}
-            dialogOpen={dialogOpen}
+            userDialogOpen={userDialogOpen}
           />
         </Grid>
-      </Grid>
-      <UserUpdate
-        closeUserUpdateComp={closeUserUpdateComp}
-        handleUserInputChange={handleUserInputChange}
-        handleUserDateInputChange={handleUserDateInputChange}
-        handleUserFormSubmit={handleUserFormSubmit}
-        user={user}
-        userDialogOpen={userDialogOpen}
-      />
-    </Container>
+      </Container>
+    </>
   );
 };
 

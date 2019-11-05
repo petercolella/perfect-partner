@@ -38,7 +38,7 @@ const NudgeTable = props => {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <Paper className={classes.root}>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6" align="left">
@@ -86,6 +86,13 @@ const NudgeTable = props => {
             ))}
           </TableBody>
         </Table>
+        <NudgeUpdate
+          closeUpdateComp={props.closeUpdateComp}
+          handleInputChange={props.handleInputChange}
+          handleFormSubmit={props.handleFormSubmit}
+          nudge={props.nudge}
+          dialogOpen={props.dialogOpen}
+        />
       </Paper>
       {/* <div>
         Icons made by{' '}
@@ -104,14 +111,7 @@ const NudgeTable = props => {
           CC 3.0 BY
         </a>
       </div> */}
-      <NudgeUpdate
-        closeUpdateComp={props.closeUpdateComp}
-        handleInputChange={props.handleInputChange}
-        handleFormSubmit={props.handleFormSubmit}
-        nudge={props.nudge}
-        dialogOpen={props.dialogOpen}
-      />
-    </div>
+    </>
   );
 };
 
