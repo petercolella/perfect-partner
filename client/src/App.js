@@ -124,7 +124,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <>
       <NavBar
         setUser={setUser}
         signedIn={signedIn}
@@ -132,7 +132,7 @@ const App = () => {
         user={user}
       />
       <BrowserRouter>
-        <div className="bkgd-image">
+        <>
           <Route
             exact
             path="/"
@@ -182,9 +182,9 @@ const App = () => {
               />
             )}
           />
-        </div>
+        </>
       </BrowserRouter>
-    </div>
+    </>
   );
 };
 
