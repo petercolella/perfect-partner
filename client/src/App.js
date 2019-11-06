@@ -151,7 +151,13 @@ const App = () => {
           <Route
             exact
             path="/partner"
-            render={routeProps => <Partner {...routeProps} />}
+            render={routeProps => (
+              <Partner
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                user={user}
+              />
+            )}
           />
           <Route
             exact

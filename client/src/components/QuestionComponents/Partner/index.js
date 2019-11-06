@@ -1,66 +1,60 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
 import { ReactComponent as Love } from './love.svg';
 
-class Partner extends Component {
-  state = {
-    nextQuestionLink: '/birthday',
-    placeholder: "Enter your partner's name.",
-    question: "what is your partner's name?",
-    title: 'Partner Name',
-    User: {},
-    userField: ''
-  };
+const state = {
+  label: "Partner's Name",
+  nextQuestionLink: '/birthday',
+  placeholder: "Enter your partner's name.",
+  question: "what is your partner's name?",
+  title: 'Partner Name'
+};
 
-  componentDidMount() {
-    this.loadUserInfo();
-  }
+const Partner = props => {
+  const { loadUserInfo, user } = props;
+  const [partnerName, setPartnerName] = useState(null);
 
-  loadUserInfo = () => {
+  const loadPartner = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        this.setState({
-          User: res.data,
-          userField: res.data.partnerName || ''
-        });
+        setPartnerName(res.data.partnerName);
       });
     }
-  };
+  }, []);
 
-  handleFormSubmit = event => {
+  useEffect(() => {
+    loadPartner();
+  }, [loadPartner]);
+
+  const handleFormSubmit = event => {
     event.preventDefault();
-    API.updateUser(this.state.User._id, {
-      partnerName: this.state.userField
-    }).then(this.loadUserInfo);
+    API.updateUser(user._id, {
+      partnerName
+    }).then(loadUserInfo);
   };
 
-  handleInputChange = event => {
+  const handleInputChange = event => {
     const { value } = event.target;
-    this.setState({
-      userField: value
-    });
+    setPartnerName(value);
   };
 
-  render() {
-    return (
-      <QuestionDialog
-        firstName={this.state.User.firstName}
-        handleFormSubmit={this.handleFormSubmit}
-        handleInputChange={this.handleInputChange}
-        image={Love}
-        label="Partner's Name"
-        link={this.state.nextQuestionLink}
-        loadUserInfo={this.loadUserInfo}
-        placeholder={this.state.placeholder}
-        question={this.state.question}
-        title={this.state.title}
-        user={this.state.User}
-        userField={this.state.userField}
-      />
-    );
-  }
-}
+  return (
+    <QuestionDialog
+      firstName={user.firstName}
+      handleFormSubmit={handleFormSubmit}
+      handleInputChange={handleInputChange}
+      image={Love}
+      label={state.label}
+      link={state.nextQuestionLink}
+      loadUserInfo={loadUserInfo}
+      placeholder={state.placeholder}
+      question={state.question}
+      title={state.title}
+      userField={partnerName}
+    />
+  );
+};
 
 export default Partner;
