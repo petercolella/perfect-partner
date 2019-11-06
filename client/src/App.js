@@ -141,7 +141,13 @@ const App = () => {
           <Route
             exact
             path="/birthday"
-            render={routeProps => <Birthday {...routeProps} />}
+            render={routeProps => (
+              <Birthday
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                user={user}
+              />
+            )}
           />
           <Route
             exact

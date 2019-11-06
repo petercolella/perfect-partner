@@ -1,60 +1,55 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import API from '../../../utils/API';
 import DateQuestionDialog from '../DateQuestionDialog';
+import API from '../../../utils/API';
 import { ReactComponent as Cake } from './cake.svg';
 
-const Birthday = props => {
-  const [state, setState] = useState({
-    nextQuestionLink: '/anniversary',
-    question: "what is your partner's birthday?",
-    title: 'Birthday',
-    User: {},
-    userField: null
-  });
+const state = {
+  label: "Partner's Birthday",
+  nextQuestionLink: '/anniversary',
+  question: "what is your partner's birthday?",
+  title: 'Birthday'
+};
 
-  const loadUserInfo = useCallback(() => {
+const Birthday = props => {
+  const { loadUserInfo, user } = props;
+  const [birthDate, setBirthDate] = useState(null);
+
+  const loadBirthDate = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setState(state => ({
-          ...state,
-          User: res.data,
-          userField: res.data.birthDate || null
-        }));
+        setBirthDate(res.data.birthDate);
       });
     }
   }, []);
 
   useEffect(() => {
-    loadUserInfo();
-  }, [loadUserInfo]);
+    loadBirthDate();
+  }, [loadBirthDate]);
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    API.updateUser(state.User._id, {
-      birthDate: state.userField
+    API.updateUser(user._id, {
+      birthDate
     }).then(loadUserInfo);
   };
 
   const handleDateInputChange = date => {
-    setState({
-      ...state,
-      userField: date
-    });
+    setBirthDate(date);
   };
 
   return (
     <DateQuestionDialog
-      firstName={state.User.firstName}
+      firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
       Image={Cake}
-      label="Partner's Birthday"
+      label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
       title={state.title}
-      userField={state.userField}
+      userField={birthDate}
     />
   );
 };
