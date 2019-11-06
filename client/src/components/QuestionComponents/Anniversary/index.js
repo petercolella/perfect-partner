@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import API from '../../../utils/API';
 import DateQuestionDialog from '../DateQuestionDialog';
+import API from '../../../utils/API';
 import { ReactComponent as Gift } from './gift.svg';
 
 const state = {
+  label: 'Anniversary',
   nextQuestionLink: '/nudges',
   question: 'what is your anniversary date?',
   title: 'Anniversary'
@@ -43,7 +44,7 @@ const Anniversary = props => {
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
       Image={Gift}
-      label="Anniversary"
+      label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
