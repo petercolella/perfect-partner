@@ -1,67 +1,61 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import QuestionDialog from '../QuestionDialog';
 import API from '../../../utils/API';
 import { ReactComponent as Smartphone } from './smartphone.svg';
 
-class Phone extends Component {
-  state = {
-    nextQuestionLink: '/partner',
-    placeholder: 'Enter with no dashes or spaces.',
-    question: 'what is your phone number?',
-    title: 'Phone Number',
-    User: {},
-    userField: ''
-  };
+const state = {
+  label: 'Phone',
+  nextQuestionLink: '/partner',
+  placeholder: 'Enter with no dashes or spaces.',
+  question: 'what is your phone number?',
+  title: 'Phone Number'
+};
 
-  componentDidMount() {
-    this.loadUserInfo();
-  }
+const Phone = props => {
+  const { loadUserInfo, user } = props;
+  const [phone, setPhone] = useState(null);
 
-  loadUserInfo = () => {
+  const loadPhone = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        this.setState({
-          User: res.data,
-          userField: res.data.phone || ''
-        });
+        setPhone(res.data.phone);
       });
     }
-  };
+  }, []);
 
-  handleFormSubmit = event => {
+  useEffect(() => {
+    loadPhone();
+  }, [loadPhone]);
+
+  const handleFormSubmit = event => {
     event.preventDefault();
-    const phoneRegEx = this.state.userField.replace(/\D/g, '');
-    API.updateUser(this.state.User._id, {
+    const phoneRegEx = phone.replace(/\D/g, '');
+    API.updateUser(user._id, {
       phone: phoneRegEx
-    }).then(this.loadUserInfo);
+    }).then(loadUserInfo);
   };
 
-  handleInputChange = event => {
+  const handleInputChange = event => {
     const { value } = event.target;
-    this.setState({
-      userField: value
-    });
+    setPhone(value);
   };
 
-  render() {
-    return (
-      <QuestionDialog
-        firstName={this.state.User.firstName}
-        handleFormSubmit={this.handleFormSubmit}
-        handleInputChange={this.handleInputChange}
-        image={Smartphone}
-        label="Phone"
-        link={this.state.nextQuestionLink}
-        loadUserInfo={this.loadUserInfo}
-        placeholder={this.state.placeholder}
-        question={this.state.question}
-        title={this.state.title}
-        user={this.state.User}
-        userField={this.state.userField}
-      />
-    );
-  }
-}
+  return (
+    <QuestionDialog
+      firstName={user.firstName}
+      handleFormSubmit={handleFormSubmit}
+      handleInputChange={handleInputChange}
+      image={Smartphone}
+      label={state.label}
+      link={state.nextQuestionLink}
+      loadUserInfo={loadUserInfo}
+      placeholder={state.placeholder}
+      question={state.question}
+      title={state.title}
+      userField={phone}
+    />
+  );
+};
 
 export default Phone;

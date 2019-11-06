@@ -156,7 +156,9 @@ const App = () => {
           <Route
             exact
             path="/phone"
-            render={routeProps => <Phone {...routeProps} />}
+            render={routeProps => (
+              <Phone {...routeProps} loadUserInfo={loadUserInfo} user={user} />
+            )}
           />
           <Route
             exact
