@@ -152,7 +152,9 @@ const App = () => {
           <Route
             exact
             path="/nudges"
-            render={routeProps => <Nudges {...routeProps} />}
+            render={routeProps => (
+              <Nudges {...routeProps} loadUserInfo={loadUserInfo} user={user} />
+            )}
           />
           <Route
             exact
