@@ -11,7 +11,7 @@ const state = {
 
 const Nudges = props => {
   const { loadUserInfo, user } = props;
-  const [nudges, setNudges] = useState(null);
+  const [nudges, setNudges] = useState([]);
 
   const loadNudges = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
