@@ -6,6 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -126,7 +127,7 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <>
+    <Fade in={true} timeout={1000}>
       <Container className={`${classes.container} background`}>
         <Toolbar />
         <Grid container spacing={4}>
@@ -217,7 +218,7 @@ const Dashboard = props => {
           />
         </Grid>
       </Container>
-    </>
+    </Fade>
   );
 };
 
