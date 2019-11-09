@@ -136,7 +136,9 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={routeProps => <Landing {...routeProps} user={user} />}
+            render={routeProps => (
+              <Landing {...routeProps} signedIn={signedIn} user={user} />
+            )}
           />
           <Route
             exact
