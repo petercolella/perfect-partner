@@ -22,8 +22,16 @@ const useStyles = makeStyles(theme => ({
   googleShow: {
     animation: 'google-show 2s ease-in-out 0.5s forwards'
   },
+  img: {
+    borderRadius: '50%',
+    height: 30,
+    margin: 'auto'
+  },
   login: {
     display: 'flex'
+  },
+  logo: {
+    maxWidth: '100%'
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -68,7 +76,7 @@ const NavBar = props => {
           </IconButton>
           <Grid container>
             <Grid item xs={6} md={4} xl={2}>
-              <img id="header-img" alt="logo" src="/img/logo_p.png" />
+              <img className={classes.logo} alt="logo" src="/img/logo_p.png" />
             </Grid>
           </Grid>
           <div className={classes.login}>
@@ -88,7 +96,6 @@ const NavBar = props => {
                 </Typography>
                 <img
                   className={classes.img}
-                  id="avatar-image-header"
                   alt="User"
                   src={signedIn ? user.imageUrl : '/img/bye.gif'}
                 />
