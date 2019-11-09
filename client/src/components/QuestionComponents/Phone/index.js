@@ -48,7 +48,7 @@ const Phone = props => {
       firstName={user.firstName}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
-      image={Smartphone}
+      Image={Smartphone}
       label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}

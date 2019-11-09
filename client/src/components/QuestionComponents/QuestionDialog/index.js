@@ -89,6 +89,20 @@ function TransitionUp(props) {
 }
 
 const QuestionDialog = props => {
+  const {
+    firstName,
+    handleFormSubmit,
+    handleInputChange,
+    Image,
+    label,
+    link,
+    loadUserInfo,
+    placeholder,
+    question,
+    title,
+    userField
+  } = props;
+
   const [toastOpen, setToastOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
@@ -98,15 +112,13 @@ const QuestionDialog = props => {
     }, 250);
   }, []);
 
-  const Image = props.image;
-
   function handleDialogClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
     setDialogOpen(false);
-    props.loadUserInfo();
+    loadUserInfo();
     setTimeout(() => {
       setDialogOpen(true);
     }, 250);
@@ -121,7 +133,7 @@ const QuestionDialog = props => {
   }
 
   const clickHandler = e => {
-    props.handleFormSubmit(e);
+    handleFormSubmit(e);
     setToastOpen(true);
   };
 
@@ -140,13 +152,13 @@ const QuestionDialog = props => {
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          {props.userField ? (
+          {userField ? (
             <MySnackbarContentWrapper
               onClose={handleToastClose}
               variant="success"
               message={
                 <span>
-                  {props.title}: {props.userField} has been submitted.
+                  {title}: {userField} has been submitted.
                 </span>
               }
             />
@@ -172,24 +184,24 @@ const QuestionDialog = props => {
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          {props.title}
+          {title}
         </DialogTitle>
-        {props.firstName ? (
+        {firstName ? (
           <>
             <DialogContent>
               <DialogContentText>
-                {props.firstName}, {props.question}
+                {firstName}, {question}
               </DialogContentText>
               <TextField
                 id="questionDialogTextField"
-                label={props.label}
+                label={label}
                 type="text"
                 fullWidth
-                value={props.userField}
-                onChange={props.handleInputChange}
+                value={userField}
+                onChange={handleInputChange}
                 margin="normal"
                 variant="outlined"
-                helperText={props.placeholder}
+                helperText={placeholder}
               />
             </DialogContent>
             <DialogActions>
@@ -199,7 +211,7 @@ const QuestionDialog = props => {
               <Button onClick={clickHandler} color="primary">
                 Submit
               </Button>
-              <Link to={props.link}>
+              <Link to={link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>
@@ -221,7 +233,7 @@ const QuestionDialog = props => {
               <Button onClick={handleDialogClose} color="secondary">
                 Cancel
               </Button>
-              <Link to={props.link}>
+              <Link to={link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>

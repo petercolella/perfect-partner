@@ -47,7 +47,7 @@ const Partner = props => {
       firstName={user.firstName}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
-      image={Love}
+      Image={Love}
       label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
