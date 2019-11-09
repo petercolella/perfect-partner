@@ -113,6 +113,17 @@ const nudgeArr = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 const NudgeDialog = props => {
   const classes = useStyles();
 
+  const {
+    Image,
+    link,
+    loadNudges,
+    loadUserInfo,
+    nudges,
+    question,
+    title,
+    user
+  } = props;
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -123,8 +134,6 @@ const NudgeDialog = props => {
       setDialogOpen(true);
     }, 250);
   }, []);
-
-  const Image = props.image;
 
   const nudgeArrRef = useRef();
   nudgeArrRef.current = nudgeArr;
@@ -144,7 +153,7 @@ const NudgeDialog = props => {
   }, [createNudgeObject]);
 
   const isDiabled = name => {
-    for (let nudge of props.nudges) {
+    for (let nudge of nudges) {
       if (nudge.name === name) {
         return true;
       }
@@ -179,13 +188,14 @@ const NudgeDialog = props => {
       .forEach(nudge => {
         newNudges.push(nudge);
         const newNudge = {
-          userId: props.user._id,
+          userId: user._id,
           nudge: {
             name: nudge
           }
         };
         API.saveNudge(newNudge).then(() => {
-          props.loadUserInfo();
+          loadNudges();
+          loadUserInfo();
           deselectAll();
         });
       });
@@ -200,7 +210,7 @@ const NudgeDialog = props => {
     }
 
     setDialogOpen(false);
-    props.loadUserInfo();
+    loadUserInfo();
     setTimeout(() => {
       setDialogOpen(true);
     }, 250);
@@ -264,11 +274,11 @@ const NudgeDialog = props => {
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          {props.title}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {props.user.firstName}, {props.question}
+            {user.firstName}, {question}
           </DialogContentText>
           <div className={classes.root}>
             <FormControl
@@ -311,7 +321,7 @@ const NudgeDialog = props => {
           <Button onClick={handleSubmit} color="primary">
             Submit
           </Button>
-          <Link to={props.link}>
+          <Link to={link}>
             <Button onClick={() => setDialogOpen(false)} color="primary">
               Next
             </Button>
