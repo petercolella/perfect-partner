@@ -13,13 +13,15 @@ const state = {
 
 const Partner = props => {
   const { loadUserInfo, user } = props;
-  const [partnerName, setPartnerName] = useState(null);
+  const [partnerName, setPartnerName] = useState('');
 
   const loadPartner = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setPartnerName(res.data.partnerName);
+        if (res.data.partnerName) {
+          setPartnerName(res.data.partnerName);
+        }
       });
     }
   }, []);

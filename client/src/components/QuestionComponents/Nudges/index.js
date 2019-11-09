@@ -28,8 +28,9 @@ const Nudges = props => {
 
   return (
     <NudgeDialog
-      image={Reminder}
+      Image={Reminder}
       link={state.nextQuestionLink}
+      loadNudges={loadNudges}
       loadUserInfo={loadUserInfo}
       nudges={nudges}
       question={state.question}

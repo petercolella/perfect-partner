@@ -13,13 +13,15 @@ const state = {
 
 const Phone = props => {
   const { loadUserInfo, user } = props;
-  const [phone, setPhone] = useState(null);
+  const [phone, setPhone] = useState('');
 
   const loadPhone = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setPhone(res.data.phone);
+        if (res.data.phone) {
+          setPhone(res.data.phone);
+        }
       });
     }
   }, []);

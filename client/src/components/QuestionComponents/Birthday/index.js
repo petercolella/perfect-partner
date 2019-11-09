@@ -18,7 +18,9 @@ const Birthday = props => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setBirthDate(res.data.birthDate);
+        if (res.data.birthDate) {
+          setBirthDate(res.data.birthDate);
+        }
       });
     }
   }, []);

@@ -18,7 +18,9 @@ const Anniversary = props => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
-        setAnniversaryDate(res.data.anniversaryDate);
+        if (res.data.anniversaryDate) {
+          setAnniversaryDate(res.data.anniversaryDate);
+        }
       });
     }
   }, []);
