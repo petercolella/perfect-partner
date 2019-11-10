@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import API from './utils/API';
 
 //components
@@ -124,7 +125,8 @@ const App = () => {
   };
 
   return (
-    <>
+    <React.Fragment>
+      <CssBaseline />
       <NavBar
         setUser={setUser}
         signedIn={signedIn}
@@ -202,7 +204,7 @@ const App = () => {
           />
         </>
       </BrowserRouter>
-    </>
+    </React.Fragment>
   );
 };
 
