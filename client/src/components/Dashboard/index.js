@@ -136,16 +136,16 @@ const Dashboard = props => {
             direction="row"
             justify="space-between"
             alignItems="flex-start">
-            <Grid item>
+            <Grid item xs={12} sm={5}>
               <Typography
-                variant="h1"
+                variant="h3"
                 align="left"
                 className={classes.heading}
                 gutterBottom>
                 Dashboard
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid item xs={12} sm={5}>
               <Paper className={classes.root}>
                 {signedIn ? (
                   <Card className={classes.card}>
