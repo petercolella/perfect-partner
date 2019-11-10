@@ -127,14 +127,14 @@ const App = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <NavBar
-        setUser={setUser}
-        signedIn={signedIn}
-        signOut={signOut}
-        user={user}
-      />
       <BrowserRouter>
         <>
+          <NavBar
+            setUser={setUser}
+            signedIn={signedIn}
+            signOut={signOut}
+            user={user}
+          />
           <Route
             exact
             path="/"

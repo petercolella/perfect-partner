@@ -128,7 +128,7 @@ const Dashboard = props => {
 
   return (
     <Fade in={true} timeout={1000}>
-      <Container className={`${classes.container} background`}>
+      <Container className={classes.container}>
         <Toolbar />
         <Grid container spacing={4}>
           <Grid
