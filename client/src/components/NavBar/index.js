@@ -118,7 +118,7 @@ const NavBar = props => {
         </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <NavMenu />
+        <NavMenu setDrawerOpen={setDrawerOpen} />
       </Drawer>
     </div>
   );
