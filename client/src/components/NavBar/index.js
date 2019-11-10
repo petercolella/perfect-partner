@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import NavMenu from '../NavMenu';
 
 import AppBar from '@material-ui/core/AppBar';
+import Drawer from '@material-ui/core/Drawer';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import MuiLink from '@material-ui/core/Link';
@@ -63,6 +65,8 @@ const NavBar = props => {
 
   const { user, signedIn, signOut } = props;
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <div className={classes.root}>
       <AppBar color="default" position="fixed">
@@ -71,7 +75,8 @@ const NavBar = props => {
             edge="start"
             className={classes.menuButton}
             color="inherit"
-            aria-label="menu">
+            aria-label="menu"
+            onClick={() => setDrawerOpen(true)}>
             <MenuIcon />
           </IconButton>
           <Grid container>
@@ -112,6 +117,9 @@ const NavBar = props => {
           </div>
         </Toolbar>
       </AppBar>
+      <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <NavMenu />
+      </Drawer>
     </div>
   );
 };
