@@ -30,13 +30,20 @@ const useStyles = makeStyles(theme => ({
     margin: 'auto'
   },
   login: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'flex-end',
+    maxWidth: '100%'
   },
   logo: {
     maxWidth: '100%'
   },
   menuButton: {
     marginRight: theme.spacing(2)
+  },
+  noWidth: {
+    display: 'none',
+    margin: 0,
+    width: 0
   },
   pushLeft: {
     marginLeft: theme.spacing(2)
@@ -60,6 +67,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const winWidth = window.innerWidth;
+
 const NavBar = props => {
   const classes = useStyles();
 
@@ -79,42 +88,56 @@ const NavBar = props => {
             onClick={() => setDrawerOpen(true)}>
             <MenuIcon />
           </IconButton>
-          <Grid container>
-            <Grid item xs={6} md={4} xl={2}>
-              <img className={classes.logo} alt="logo" src="/img/logo_p.png" />
+          <Grid container alignItems="center" justify="space-between">
+            <Grid item xs={12} sm={4} xl={2} id="logo-grid">
+              <img
+                className={classes.logo}
+                id="logo"
+                alt="logo"
+                src="/img/logo_p.png"
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} xl={10} id="login-grid">
+              <div className={classes.login} id="login">
+                <Fade in={!signedIn} timeout={2500}>
+                  <div
+                    className={`${
+                      signedIn ? classes.googleHide : classes.googleShow
+                    } ${winWidth < 600 && signedIn && classes.noWidth}`}
+                    id="my-signin2"
+                  />
+                </Fade>
+                <Fade in={signedIn} timeout={2500}>
+                  <div
+                    className={`${
+                      signedIn ? classes.userShow : classes.userHide
+                    } ${winWidth < 600 && !signedIn && classes.noWidth}`}
+                    id="user">
+                    <Typography
+                      className={`${classes.userName} ${classes.pushRight}`}
+                      id="user-name"
+                      variant="subtitle1"
+                      noWrap>
+                      {signedIn ? `Hi, ${user.firstName}!` : `Bye!`}
+                    </Typography>
+                    <img
+                      className={classes.img}
+                      alt="User"
+                      src={signedIn ? user.imageUrl : '/img/bye.gif'}
+                    />
+                    <Typography className={classes.pushLeft} noWrap>
+                      <MuiLink
+                        component="button"
+                        variant="subtitle1"
+                        onClick={signOut}>
+                        Sign Out
+                      </MuiLink>
+                    </Typography>
+                  </div>
+                </Fade>
+              </div>
             </Grid>
           </Grid>
-          <div className={classes.login}>
-            <Fade in={!signedIn} timeout={2500}>
-              <div
-                className={signedIn ? classes.googleHide : classes.googleShow}
-                id="my-signin2"
-              />
-            </Fade>
-            <Fade in={signedIn} timeout={2500}>
-              <div className={signedIn ? classes.userShow : classes.userHide}>
-                <Typography
-                  className={`${classes.userName} ${classes.pushRight}`}
-                  variant="subtitle1"
-                  noWrap>
-                  {signedIn ? `Hi, ${user.firstName}!` : `Bye!`}
-                </Typography>
-                <img
-                  className={classes.img}
-                  alt="User"
-                  src={signedIn ? user.imageUrl : '/img/bye.gif'}
-                />
-                <Typography className={classes.pushLeft} noWrap>
-                  <MuiLink
-                    component="button"
-                    variant="subtitle1"
-                    onClick={signOut}>
-                    Sign Out
-                  </MuiLink>
-                </Typography>
-              </div>
-            </Fade>
-          </div>
         </Toolbar>
       </AppBar>
       <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>

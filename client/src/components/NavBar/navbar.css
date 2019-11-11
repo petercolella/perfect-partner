@@ -52,3 +52,33 @@
     transform: translateX(200%);
   }
 }
+
+@media only screen and (max-width: 599px) {
+  #login,
+  #logo {
+    height: 30px;
+    margin: 8px 0;
+  }
+
+  #logo {
+    margin-right: -20px;
+  }
+
+  #login-grid,
+  #logo-grid {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  #user {
+    margin: 0;
+  }
+
+  #user-name {
+    width: auto;
+  }
+
+  @keyframes google-show {
+  }
+}
