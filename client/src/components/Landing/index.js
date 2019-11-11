@@ -37,11 +37,11 @@ const Landing = props => {
           direction="row"
           justify="flex-end"
           alignItems="flex-start">
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6}>
             <Toolbar />
             <Typography
               variant="h2"
-              align="right"
+              align="left"
               className={classes.homeSaying}>
               Planned Spontaneity
             </Typography>
