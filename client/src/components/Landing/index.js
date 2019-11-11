@@ -13,7 +13,10 @@ const useStyles = makeStyles(theme => ({
   homeSaying: {
     color: '#fff',
     padding: theme.spacing(4),
-    textShadow: '2px 2px #848484'
+    textShadow: '2px 2px #848484',
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 46
+    }
   }
 }));
 

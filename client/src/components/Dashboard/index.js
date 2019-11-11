@@ -44,7 +44,10 @@ const useStyles = makeStyles(theme => ({
     border: '2px #fff solid',
     borderRadius: 4,
     color: '#fff',
-    padding: 16
+    padding: 16,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 46
+    }
   },
   pos: {
     marginBottom: 12
