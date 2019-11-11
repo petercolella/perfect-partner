@@ -22,7 +22,10 @@ const useStyles = makeStyles(theme => ({
     animation: 'google-hide 2.5s ease-in-out forwards'
   },
   googleShow: {
-    animation: 'google-show 2s ease-in-out 0.5s forwards'
+    animation: 'none',
+    [theme.breakpoints.up('sm')]: {
+      animation: 'google-show 2s ease-in-out 0.5s forwards'
+    }
   },
   img: {
     borderRadius: '50%',
