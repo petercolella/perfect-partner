@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -45,24 +46,23 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 4,
     color: '#fff',
     padding: 16,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       marginTop: 46
     }
   },
-  pos: {
-    marginBottom: 12
+  headingMediaQuery: {
+    marginBottom: 7.2,
+    marginRight: 24,
+    maxWidth: 275
   },
-  signOut: {
-    fontSize: '1rem',
-    lineHeight: '48px',
-    marginLeft: theme.spacing(1)
-  },
-  title: {
-    fontSize: 14
+  profileMediaQuery: {
+    maxWidth: 275
   }
 }));
 
 const Dashboard = props => {
+  const matches = useMediaQuery('(max-width:770px) and (min-width:600px)');
+
   const [nudge, setNudge] = useState({
     name: '',
     nudgeFrequency: '',
@@ -139,7 +139,11 @@ const Dashboard = props => {
             direction="row"
             justify="space-between"
             alignItems="flex-start">
-            <Grid item xs={12} sm={5}>
+            <Grid
+              item
+              xs={12}
+              sm={5}
+              className={matches ? classes.headingMediaQuery : null}>
               <Typography
                 variant="h3"
                 align="left"
@@ -148,7 +152,11 @@ const Dashboard = props => {
                 Dashboard
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={5}>
+            <Grid
+              item
+              xs={12}
+              sm={5}
+              className={matches ? classes.profileMediaQuery : null}>
               <Paper className={classes.root}>
                 {signedIn ? (
                   <Card className={classes.card}>
