@@ -139,6 +139,7 @@ const App = () => {
               <Birthday
                 {...routeProps}
                 loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
                 user={user}
               />
             )}
@@ -147,7 +148,12 @@ const App = () => {
             exact
             path="/nudges"
             render={routeProps => (
-              <Nudges {...routeProps} loadUserInfo={loadUserInfo} user={user} />
+              <Nudges
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
+                user={user}
+              />
             )}
           />
           <Route
@@ -157,6 +163,7 @@ const App = () => {
               <Partner
                 {...routeProps}
                 loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
                 user={user}
               />
             )}
@@ -165,7 +172,12 @@ const App = () => {
             exact
             path="/phone"
             render={routeProps => (
-              <Phone {...routeProps} loadUserInfo={loadUserInfo} user={user} />
+              <Phone
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
+                user={user}
+              />
             )}
           />
           <Route
@@ -175,6 +187,7 @@ const App = () => {
               <Anniversary
                 {...routeProps}
                 loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
                 user={user}
               />
             )}
