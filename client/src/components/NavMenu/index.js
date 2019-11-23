@@ -87,45 +87,76 @@ const NavMenu = props => {
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <Gift className={classes.svg} />
-              </ListItemIcon>
-              <ListItemText
-                className={classes.listItemText}
-                primary="Anniversary"
-              />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <Cake className={classes.svg} />
-              </ListItemIcon>
-              <ListItemText
-                className={classes.listItemText}
-                primary="Birthday"
-              />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <Reminder className={classes.svg} />
-              </ListItemIcon>
-              <ListItemText className={classes.listItemText} primary="Nudges" />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <Love className={classes.svg} />
-              </ListItemIcon>
-              <ListItemText
-                className={classes.listItemText}
-                primary="Partner"
-              />
-            </ListItem>
-            <ListItem button className={classes.nested}>
-              <ListItemIcon>
-                <Smartphone className={classes.svg} />
-              </ListItemIcon>
-              <ListItemText className={classes.listItemText} primary="Phone" />
-            </ListItem>
+            <Link
+              to="/anniversary"
+              onClick={() => setDrawerOpen(false)}
+              className={classes.link}>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <Gift className={classes.svg} />
+                </ListItemIcon>
+                <ListItemText
+                  className={classes.listItemText}
+                  primary="Anniversary"
+                />
+              </ListItem>
+            </Link>
+            <Link
+              to="/birthday"
+              onClick={() => setDrawerOpen(false)}
+              className={classes.link}>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <Cake className={classes.svg} />
+                </ListItemIcon>
+                <ListItemText
+                  className={classes.listItemText}
+                  primary="Birthday"
+                />
+              </ListItem>
+            </Link>
+            <Link
+              to="/nudges"
+              onClick={() => setDrawerOpen(false)}
+              className={classes.link}>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <Reminder className={classes.svg} />
+                </ListItemIcon>
+                <ListItemText
+                  className={classes.listItemText}
+                  primary="Nudges"
+                />
+              </ListItem>
+            </Link>
+            <Link
+              to="/partner"
+              onClick={() => setDrawerOpen(false)}
+              className={classes.link}>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <Love className={classes.svg} />
+                </ListItemIcon>
+                <ListItemText
+                  className={classes.listItemText}
+                  primary="Partner"
+                />
+              </ListItem>
+            </Link>
+            <Link
+              to="/phone"
+              onClick={() => setDrawerOpen(false)}
+              className={classes.link}>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <Smartphone className={classes.svg} />
+                </ListItemIcon>
+                <ListItemText
+                  className={classes.listItemText}
+                  primary="Phone"
+                />
+              </ListItem>
+            </Link>
           </List>
         </Collapse>
       </List>
