@@ -16,21 +16,23 @@ import Anniversary from './components/QuestionComponents/Anniversary';
 //CSS
 import './styles.css';
 
+const noUser = {
+  anniversaryDate: '',
+  birthDate: '',
+  email: '',
+  firstName: '',
+  imageUrl:
+    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+  lastName: '',
+  name: '',
+  nudges: [],
+  partnerName: '',
+  phone: ''
+};
+
 const App = () => {
   const [signedIn, setSignedIn] = useState(true);
-  const [user, setUser] = useState({
-    anniversaryDate: '',
-    birthDate: '',
-    email: '',
-    firstName: '',
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-    lastName: '',
-    name: '',
-    nudges: [],
-    partnerName: '',
-    phone: ''
-  });
+  const [user, setUser] = useState(noUser);
 
   const loadUserInfo = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
@@ -97,19 +99,7 @@ const App = () => {
   }, [loadUserInfo, renderGoogleLoginButton]);
 
   const setUserSignedOut = () => {
-    setUser({
-      anniversaryDate: '',
-      birthDate: '',
-      email: '',
-      firstName: '',
-      imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-      lastName: '',
-      name: '',
-      nudges: [],
-      partnerName: '',
-      phone: ''
-    });
+    setUser(noUser);
   };
 
   const signOut = () => {
