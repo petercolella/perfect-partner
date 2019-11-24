@@ -5,7 +5,7 @@ import { ReactComponent as Smartphone } from './smartphone.svg';
 
 const state = {
   label: 'Phone',
-  nextQuestionLink: '/partner',
+  nextQuestionLink: '/dashboard',
   placeholder: 'Enter with no dashes or spaces.',
   question: 'what is your phone number?',
   title: 'Phone Number'

@@ -5,7 +5,7 @@ import { ReactComponent as Gift } from './gift.svg';
 
 const state = {
   label: 'Anniversary',
-  nextQuestionLink: '/nudges',
+  nextQuestionLink: '/birthday',
   question: 'what is your anniversary date?',
   title: 'Anniversary'
 };

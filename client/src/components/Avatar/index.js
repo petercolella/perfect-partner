@@ -62,7 +62,7 @@ const Avatar = props => {
                 gutterBottom>{`Welcome, ${user.name}`}</Typography>
               <Typography variant="subtitle2">
                 Please click{' '}
-                <Link to="/phone" className={classes.link}>
+                <Link to="/anniversary" className={classes.link}>
                   HERE
                 </Link>
               </Typography>

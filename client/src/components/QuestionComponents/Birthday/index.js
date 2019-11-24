@@ -5,7 +5,7 @@ import { ReactComponent as Cake } from './cake.svg';
 
 const state = {
   label: "Partner's Birthday",
-  nextQuestionLink: '/anniversary',
+  nextQuestionLink: '/nudges',
   question: "what is your partner's birthday?",
   title: 'Birthday'
 };

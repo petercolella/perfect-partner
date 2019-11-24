@@ -5,7 +5,7 @@ import { ReactComponent as Love } from './love.svg';
 
 const state = {
   label: "Partner's Name",
-  nextQuestionLink: '/birthday',
+  nextQuestionLink: '/phone',
   placeholder: "Enter your partner's name.",
   question: "what is your partner's name?",
   title: 'Partner Name'

@@ -134,6 +134,18 @@ const App = () => {
           />
           <Route
             exact
+            path="/anniversary"
+            render={routeProps => (
+              <Anniversary
+                {...routeProps}
+                loadUserInfo={loadUserInfo}
+                signedIn={signedIn}
+                user={user}
+              />
+            )}
+          />
+          <Route
+            exact
             path="/birthday"
             render={routeProps => (
               <Birthday
@@ -173,18 +185,6 @@ const App = () => {
             path="/phone"
             render={routeProps => (
               <Phone
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/anniversary"
-            render={routeProps => (
-              <Anniversary
                 {...routeProps}
                 loadUserInfo={loadUserInfo}
                 signedIn={signedIn}
