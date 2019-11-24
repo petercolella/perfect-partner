@@ -4,23 +4,23 @@ import API from '../../../utils/API';
 import { ReactComponent as Reminder } from './reminder.svg';
 
 const state = {
-  nextQuestionLink: '/dashboard',
+  nextQuestionLink: '/partner',
   question: 'please select your nudges.',
   title: 'Nudges'
 };
 
 const Nudges = props => {
-  const { loadUserInfo, user } = props;
+  const id = sessionStorage.getItem('currentUserId');
+  const { loadUserInfo, signedIn, user } = props;
   const [nudges, setNudges] = useState([]);
 
   const loadNudges = useCallback(() => {
-    const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
         setNudges(res.data.nudges);
       });
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadNudges();
@@ -34,6 +34,7 @@ const Nudges = props => {
       loadUserInfo={loadUserInfo}
       nudges={nudges}
       question={state.question}
+      signedIn={signedIn}
       title={state.title}
       user={user}
     />
