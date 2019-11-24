@@ -121,7 +121,7 @@ const DateQuestionDialog = props => {
     userField
   } = props;
 
-  const [toastOpen, setToastOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const loadDialog = useCallback(() => {
@@ -144,17 +144,17 @@ const DateQuestionDialog = props => {
     setDialogOpen(false);
   }
 
-  function handleToastClose(event, reason) {
+  function handleSnackbarClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToastOpen(false);
+    setSnackbarOpen(false);
   }
 
   const clickHandler = e => {
     handleFormSubmit(e);
-    setToastOpen(true);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -165,16 +165,16 @@ const DateQuestionDialog = props => {
             vertical: 'bottom',
             horizontal: 'left'
           }}
-          open={toastOpen}
+          open={snackbarOpen}
           autoHideDuration={3000}
-          onClose={handleToastClose}
+          onClose={handleSnackbarClose}
           TransitionComponent={TransitionUp}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
           {userField ? (
             <MySnackbarContentWrapper
-              onClose={handleToastClose}
+              onClose={handleSnackbarClose}
               variant="success"
               message={
                 <span>
@@ -185,7 +185,7 @@ const DateQuestionDialog = props => {
             />
           ) : (
             <MySnackbarContentWrapper
-              onClose={handleToastClose}
+              onClose={handleSnackbarClose}
               variant="warning"
               message={
                 <span>
