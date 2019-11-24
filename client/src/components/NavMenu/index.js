@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
     textDecoration: 'none'
   },
   listItemText: {
-    marginLeft: '-1.5em'
+    marginBottom: 0
   },
   nested: {
-    paddingLeft: theme.spacing(4)
+    paddingLeft: theme.spacing(2)
   },
   svg: {
     height: '1.25em',
