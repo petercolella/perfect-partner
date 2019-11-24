@@ -27,14 +27,24 @@ import API from '../../../utils/API';
 import Grow from '@material-ui/core/Grow';
 
 const useStyles = makeStyles(theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
   root: {
     display: 'flex'
   },
+  button: {
+    margin: theme.spacing(1)
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  },
   formControl: {
     margin: theme.spacing(3)
+  },
+  link: {
+    color: theme.palette.text.primary,
+    textDecoration: 'none'
   },
   lineThrough: {
     textDecoration: 'line-through'
@@ -120,6 +130,7 @@ const NudgeDialog = props => {
     loadUserInfo,
     nudges,
     question,
+    signedIn,
     title,
     user
   } = props;
@@ -129,11 +140,17 @@ const NudgeDialog = props => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [state, setState] = useState({});
 
-  React.useEffect(() => {
+  const loadDialog = useCallback(() => {
+    setDialogOpen(false);
     setTimeout(() => {
+      loadUserInfo();
       setDialogOpen(true);
     }, 250);
-  }, []);
+  }, [loadUserInfo]);
+
+  useEffect(() => {
+    loadDialog();
+  }, [loadDialog, signedIn]);
 
   const nudgeArrRef = useRef();
   nudgeArrRef.current = nudgeArr;
@@ -205,18 +222,14 @@ const NudgeDialog = props => {
   }
 
   function handleDialogClose(event, reason) {
-    if (reason === 'clickaway') {
+    if (reason === 'clickaway' || reason === 'backdropClick') {
       return;
     }
 
     setDialogOpen(false);
-    loadUserInfo();
-    setTimeout(() => {
-      setDialogOpen(true);
-    }, 250);
   }
 
-  function handleToastClose(event, reason) {
+  function handleSnackbarClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
@@ -233,14 +246,14 @@ const NudgeDialog = props => {
         }}
         open={snackbarOpen}
         autoHideDuration={3000}
-        onClose={handleToastClose}
+        onClose={handleSnackbarClose}
         TransitionComponent={TransitionUp}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}>
         {snackbarNudges.length > 0 ? (
           <MySnackbarContentWrapper
-            onClose={handleToastClose}
+            onClose={handleSnackbarClose}
             variant="success"
             message={
               <span>
@@ -255,7 +268,7 @@ const NudgeDialog = props => {
           />
         ) : (
           <MySnackbarContentWrapper
-            onClose={handleToastClose}
+            onClose={handleSnackbarClose}
             variant="warning"
             message={<span>Oops!</span>}
           />
@@ -275,58 +288,87 @@ const NudgeDialog = props => {
         <DialogTitle id="form-dialog-title">
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           {title}
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={handleDialogClose}>
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {user.firstName}, {question}
-          </DialogContentText>
-          <div className={classes.root}>
-            <FormControl
-              component="fieldset"
-              className={classes.formControl}
-              fullWidth={true}>
-              <FormGroup row>
-                {nudgeArr.map(name => (
-                  <FormControlLabel
-                    key={name}
-                    className={
-                      snackbarNudges.includes(name) ? classes.lineThrough : null
-                    }
-                    control={
-                      <Checkbox
-                        checked={state[name]}
-                        onChange={handleChange(name)}
-                        value={name}
-                        disabled={isDiabled(name)}
+        {signedIn ? (
+          <>
+            <DialogContent>
+              <DialogContentText>
+                {user.firstName}, {question}
+              </DialogContentText>
+              <div className={classes.root}>
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
+                  fullWidth={true}>
+                  <FormGroup row>
+                    {nudgeArr.map(name => (
+                      <FormControlLabel
+                        key={name}
+                        className={
+                          snackbarNudges.includes(name)
+                            ? classes.lineThrough
+                            : null
+                        }
+                        control={
+                          <Checkbox
+                            checked={state[name]}
+                            onChange={handleChange(name)}
+                            value={name}
+                            disabled={isDiabled(name)}
+                          />
+                        }
+                        label={name}
                       />
-                    }
-                    label={name}
-                  />
-                ))}
-              </FormGroup>
-              <FormHelperText>*These can be customized later.</FormHelperText>
-            </FormControl>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={selectAll} color="primary">
-            &#10003; All
-          </Button>
-          <Button onClick={deselectAll} color="primary">
-            &#10003; None
-          </Button>
-          <Button onClick={handleDialogClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
-          </Button>
-          <Link to={link}>
-            <Button onClick={() => setDialogOpen(false)} color="primary">
-              Next
-            </Button>
-          </Link>
-        </DialogActions>
+                    ))}
+                  </FormGroup>
+                  <FormHelperText>
+                    *These can be customized later.
+                  </FormHelperText>
+                </FormControl>
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={selectAll} color="primary">
+                &#10003; All
+              </Button>
+              <Button onClick={deselectAll} color="primary">
+                &#10003; None
+              </Button>
+              <Button onClick={deselectAll} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit} color="primary">
+                Submit
+              </Button>
+              <Link to={link} className={classes.link}>
+                <Button onClick={() => setDialogOpen(false)} color="primary">
+                  Next
+                </Button>
+              </Link>
+            </DialogActions>
+          </>
+        ) : (
+          <>
+            <DialogContent>
+              <DialogContentText>
+                Please close this dialog and sign in to continue.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Link to={link} className={classes.link}>
+                <Button onClick={() => setDialogOpen(false)} color="primary">
+                  Next
+                </Button>
+              </Link>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </div>
   );
