@@ -11,11 +11,11 @@ const state = {
 };
 
 const Birthday = props => {
-  const { loadUserInfo, user } = props;
+  const id = sessionStorage.getItem('currentUserId');
+  const { loadUserInfo, signedIn, user } = props;
   const [birthDate, setBirthDate] = useState(null);
 
   const loadBirthDate = useCallback(() => {
-    const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
         if (res.data.birthDate) {
@@ -23,7 +23,7 @@ const Birthday = props => {
         }
       });
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadBirthDate();
@@ -42,6 +42,7 @@ const Birthday = props => {
 
   return (
     <DateQuestionDialog
+      cancel={loadBirthDate}
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
@@ -50,6 +51,7 @@ const Birthday = props => {
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
+      signedIn={signedIn}
       title={state.title}
       userField={birthDate}
     />
