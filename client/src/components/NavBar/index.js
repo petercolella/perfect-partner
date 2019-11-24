@@ -102,7 +102,10 @@ const NavBar = props => {
             </Grid>
             <Grid item xs={12} sm={8} xl={10} id="login-grid">
               <div className={classes.login} id="login">
-                <Fade in={!signedIn} timeout={2500}>
+                <Fade
+                  in={!signedIn}
+                  timeout={2500}
+                  style={{ transitionDelay: !signedIn ? '1000ms' : '0ms' }}>
                   <div
                     className={`${
                       signedIn ? classes.googleHide : classes.googleShow
