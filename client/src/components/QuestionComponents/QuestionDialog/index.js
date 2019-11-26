@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -41,12 +41,22 @@ const useStyles1 = makeStyles(theme => ({
   warning: {
     backgroundColor: amber[700]
   },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500]
+  },
   icon: {
     fontSize: 20
   },
   iconVariant: {
     opacity: 0.9,
     marginRight: theme.spacing(1)
+  },
+  link: {
+    color: theme.palette.text.primary,
+    textDecoration: 'none'
   },
   message: {
     display: 'flex',
@@ -89,7 +99,10 @@ function TransitionUp(props) {
 }
 
 const QuestionDialog = props => {
+  const classes = useStyles1();
+
   const {
+    cancel,
     firstName,
     handleFormSubmit,
     handleInputChange,
@@ -99,42 +112,45 @@ const QuestionDialog = props => {
     loadUserInfo,
     placeholder,
     question,
+    signedIn,
     title,
     userField
   } = props;
 
-  const [toastOpen, setToastOpen] = React.useState(false);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  React.useEffect(() => {
+  const loadDialog = useCallback(() => {
+    setDialogOpen(false);
     setTimeout(() => {
+      loadUserInfo();
       setDialogOpen(true);
     }, 250);
-  }, []);
+  }, [loadUserInfo]);
+
+  useEffect(() => {
+    loadDialog();
+  }, [loadDialog, signedIn]);
 
   function handleDialogClose(event, reason) {
-    if (reason === 'clickaway') {
+    if (reason === 'clickaway' || reason === 'backdropClick') {
       return;
     }
 
     setDialogOpen(false);
-    loadUserInfo();
-    setTimeout(() => {
-      setDialogOpen(true);
-    }, 250);
   }
 
-  function handleToastClose(event, reason) {
+  function handleSnackbarClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToastOpen(false);
+    setSnackbarOpen(false);
   }
 
   const clickHandler = e => {
     handleFormSubmit(e);
-    setToastOpen(true);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -145,16 +161,16 @@ const QuestionDialog = props => {
             vertical: 'bottom',
             horizontal: 'left'
           }}
-          open={toastOpen}
+          open={snackbarOpen}
           autoHideDuration={3000}
-          onClose={handleToastClose}
+          onClose={handleSnackbarClose}
           TransitionComponent={TransitionUp}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
           {userField ? (
             <MySnackbarContentWrapper
-              onClose={handleToastClose}
+              onClose={handleSnackbarClose}
               variant="success"
               message={
                 <span>
@@ -164,9 +180,9 @@ const QuestionDialog = props => {
             />
           ) : (
             <MySnackbarContentWrapper
-              onClose={handleToastClose}
+              onClose={handleSnackbarClose}
               variant="warning"
-              message={<span>Oops!</span>}
+              message={<span>Oops! The input field was left blank.</span>}
             />
           )}
         </Snackbar>
@@ -185,8 +201,14 @@ const QuestionDialog = props => {
         <DialogTitle id="form-dialog-title">
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           {title}
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={handleDialogClose}>
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
-        {firstName ? (
+        {signedIn ? (
           <>
             <DialogContent>
               <DialogContentText>
@@ -205,13 +227,13 @@ const QuestionDialog = props => {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDialogClose} color="secondary">
+              <Button onClick={cancel} color="secondary">
                 Cancel
               </Button>
               <Button onClick={clickHandler} color="primary">
                 Submit
               </Button>
-              <Link to={link}>
+              <Link to={link} className={classes.link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>
@@ -222,18 +244,11 @@ const QuestionDialog = props => {
           <>
             <DialogContent>
               <DialogContentText>
-                Please click{' '}
-                <Link to="/" style={{ color: '#22b5e0' }}>
-                  here
-                </Link>{' '}
-                to sign in before continuing.
+                Please close this dialog and sign in to continue.
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDialogClose} color="secondary">
-                Cancel
-              </Button>
-              <Link to={link}>
+              <Link to={link} className={classes.link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>
