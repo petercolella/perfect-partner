@@ -12,11 +12,11 @@ const state = {
 };
 
 const Partner = props => {
-  const { loadUserInfo, user } = props;
+  const id = sessionStorage.getItem('currentUserId');
+  const { loadUserInfo, signedIn, user } = props;
   const [partnerName, setPartnerName] = useState('');
 
   const loadPartner = useCallback(() => {
-    const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
         if (res.data.partnerName) {
@@ -24,7 +24,7 @@ const Partner = props => {
         }
       });
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadPartner();
@@ -44,6 +44,7 @@ const Partner = props => {
 
   return (
     <QuestionDialog
+      cancel={loadPartner}
       firstName={user.firstName}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
@@ -53,6 +54,7 @@ const Partner = props => {
       loadUserInfo={loadUserInfo}
       placeholder={state.placeholder}
       question={state.question}
+      signedIn={signedIn}
       title={state.title}
       userField={partnerName}
     />

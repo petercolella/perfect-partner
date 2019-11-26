@@ -12,11 +12,11 @@ const state = {
 };
 
 const Phone = props => {
-  const { loadUserInfo, user } = props;
+  const id = sessionStorage.getItem('currentUserId');
+  const { loadUserInfo, signedIn, user } = props;
   const [phone, setPhone] = useState('');
 
   const loadPhone = useCallback(() => {
-    const id = sessionStorage.getItem('currentUserId');
     if (id) {
       API.getUser(id).then(res => {
         if (res.data.phone) {
@@ -24,7 +24,7 @@ const Phone = props => {
         }
       });
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     loadPhone();
@@ -45,6 +45,7 @@ const Phone = props => {
 
   return (
     <QuestionDialog
+      cancel={loadPhone}
       firstName={user.firstName}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
@@ -54,6 +55,7 @@ const Phone = props => {
       loadUserInfo={loadUserInfo}
       placeholder={state.placeholder}
       question={state.question}
+      signedIn={signedIn}
       title={state.title}
       userField={phone}
     />
