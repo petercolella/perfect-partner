@@ -1,4 +1,5 @@
 const db = require('../models');
+const textControl = require('./textController');
 
 // Defining methods for the usersController
 module.exports = {
@@ -21,7 +22,13 @@ module.exports = {
   },
   update: function(req, res) {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        if (req.body.hasOwnProperty('phone')) {
+          const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
+          textControl.sendText(updateBody, dbModel.phone);
+        }
+        res.json(dbModel);
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function(req, res) {
