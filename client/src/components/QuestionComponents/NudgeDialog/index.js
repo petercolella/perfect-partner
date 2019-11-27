@@ -39,6 +39,10 @@ const useStyles = makeStyles(theme => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
+  dialogClosed: {
+    height: '100vh',
+    width: '100vw'
+  },
   formControl: {
     margin: theme.spacing(3)
   },
@@ -237,8 +241,14 @@ const NudgeDialog = props => {
     setSnackbarOpen(false);
   }
 
+  const reloadDialog = () => {
+    if (!dialogOpen) setDialogOpen(true);
+  };
+
   return (
-    <div>
+    <div
+      className={!dialogOpen ? classes.dialogClosed : null}
+      onClick={reloadDialog}>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

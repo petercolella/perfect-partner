@@ -52,6 +52,10 @@ const useStyles1 = makeStyles(theme => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
+  dialogClosed: {
+    height: '100vh',
+    width: '100vw'
+  },
   icon: {
     fontSize: 20
   },
@@ -157,8 +161,14 @@ const DateQuestionDialog = props => {
     setSnackbarOpen(true);
   };
 
+  const reloadDialog = () => {
+    if (!dialogOpen) setDialogOpen(true);
+  };
+
   return (
-    <div>
+    <div
+      className={!dialogOpen ? classes.dialogClosed : null}
+      onClick={reloadDialog}>
       <div>
         <Snackbar
           anchorOrigin={{
