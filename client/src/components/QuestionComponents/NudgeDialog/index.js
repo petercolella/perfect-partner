@@ -13,18 +13,21 @@ import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Fade from '@material-ui/core/Fade';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-import API from '../../../utils/API';
 import Grow from '@material-ui/core/Grow';
+import Typography from '@material-ui/core/Typography';
+
+import API from '../../../utils/API';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,13 +36,21 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
   },
+  click: {
+    color: '#fff',
+    padding: theme.spacing(4),
+    textShadow: '2px 2px #848484',
+    margin: 'auto'
+  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
-  dialogClosed: {
+  dialogBackground: {
+    display: 'flex',
+    justifyContent: 'center',
     height: '100vh',
     width: '100vw'
   },
@@ -246,9 +257,7 @@ const NudgeDialog = props => {
   };
 
   return (
-    <div
-      className={!dialogOpen ? classes.dialogClosed : null}
-      onClick={reloadDialog}>
+    <div className={classes.dialogBackground} onClick={reloadDialog}>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -284,6 +293,14 @@ const NudgeDialog = props => {
           />
         )}
       </Snackbar>
+      <Fade
+        in={!dialogOpen}
+        timeout={1000}
+        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}>
+        <Typography variant="h2" align="center" className={classes.click}>
+          Click to reload dialog.
+        </Typography>
+      </Fade>
       <Dialog
         fullWidth={true}
         open={dialogOpen}

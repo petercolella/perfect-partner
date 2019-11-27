@@ -18,8 +18,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
+import Fade from '@material-ui/core/Fade';
 import Grow from '@material-ui/core/Grow';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -41,13 +43,21 @@ const useStyles1 = makeStyles(theme => ({
   warning: {
     backgroundColor: amber[700]
   },
+  click: {
+    color: '#fff',
+    padding: theme.spacing(4),
+    textShadow: '2px 2px #848484',
+    margin: 'auto'
+  },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500]
   },
-  dialogClosed: {
+  dialogBackground: {
+    display: 'flex',
+    justifyContent: 'center',
     height: '100vh',
     width: '100vw'
   },
@@ -162,9 +172,7 @@ const QuestionDialog = props => {
   };
 
   return (
-    <div
-      className={!dialogOpen ? classes.dialogClosed : null}
-      onClick={reloadDialog}>
+    <div className={classes.dialogBackground} onClick={reloadDialog}>
       <div>
         <Snackbar
           anchorOrigin={{
@@ -197,6 +205,14 @@ const QuestionDialog = props => {
           )}
         </Snackbar>
       </div>
+      <Fade
+        in={!dialogOpen}
+        timeout={1000}
+        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}>
+        <Typography variant="h2" align="center" className={classes.click}>
+          Click to reload dialog.
+        </Typography>
+      </Fade>
       <Dialog
         fullWidth={true}
         open={dialogOpen}
