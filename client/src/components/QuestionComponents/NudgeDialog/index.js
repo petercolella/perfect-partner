@@ -360,7 +360,7 @@ const NudgeDialog = props => {
                 </FormControl>
               </div>
             </DialogContent>
-            <DialogActions>
+            <DialogActions style={{ flexWrap: 'wrap' }}>
               <Button onClick={selectAll} color="primary">
                 &#10003; All
               </Button>
