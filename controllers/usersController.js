@@ -21,7 +21,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   update: function(req, res) {
-    db.User.findOneAndUpdate({ _id: req.params.id }, req.body)
+    db.User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+      runValidators: true
+    })
       .then(dbModel => {
         if (req.body.hasOwnProperty('phone')) {
           const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
@@ -29,7 +32,7 @@ module.exports = {
         }
         res.json(dbModel);
       })
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   remove: function(req, res) {
     db.User.findById({ _id: req.params.id })
