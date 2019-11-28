@@ -6,7 +6,16 @@ const userSchema = new Schema({
   name: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String },
-  phone: { type: String },
+  phone: {
+    type: String,
+    validate: {
+      validator: async v => {
+        const docs = await User.findOne({ phone: v });
+        return !docs;
+      },
+      message: 'Phone number already exists!'
+    }
+  },
   partnerName: { type: String },
   email: { type: String, required: true, unique: true },
   imageUrl: { type: String },
