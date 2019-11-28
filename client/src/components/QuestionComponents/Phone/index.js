@@ -35,7 +35,9 @@ const Phone = props => {
     const phoneRegEx = phone.replace(/\D/g, '');
     API.updateUser(user._id, {
       phone: phoneRegEx
-    }).then(loadUserInfo);
+    })
+      .then(loadUserInfo)
+      .catch(err => console.log(err.response.data));
   };
 
   const handleInputChange = event => {
