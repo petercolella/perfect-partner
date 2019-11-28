@@ -92,7 +92,7 @@ const NavBar = props => {
             <MenuIcon />
           </IconButton>
           <Grid container alignItems="center" justify="space-between">
-            <Grid item xs={12} sm={4} xl={2} id="logo-grid">
+            <Grid item xs={12} sm={3} lg={2} id="logo-grid">
               <img
                 className={classes.logo}
                 id="logo"
