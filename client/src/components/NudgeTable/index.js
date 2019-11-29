@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -34,6 +34,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const StyledTableCell = withStyles(theme => ({
+  body: {
+    minWidth: '12em'
+  }
+}))(TableCell);
+
 const NudgeTable = props => {
   const classes = useStyles();
 
@@ -62,7 +68,9 @@ const NudgeTable = props => {
                 <TableCell component="th" scope="row">
                   {nudge.name}
                 </TableCell>
-                <TableCell align="center">{nudge.textMessage}</TableCell>
+                <StyledTableCell align="center">
+                  {nudge.textMessage}
+                </StyledTableCell>
                 <TableCell align="center">
                   Once Every {nudge.nudgeFrequency}{' '}
                   {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
