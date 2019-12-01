@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
-import EditIcon from '@material-ui/icons/Edit';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+
+import EditIcon from '@material-ui/icons/Edit';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+
+import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
@@ -40,8 +46,47 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
+const StyledKeyboardArrowRight = withStyles(theme => ({
+  root: {
+    marginRight: -12
+  }
+}))(KeyboardArrowRight);
+
 const NudgeTable = props => {
   const classes = useStyles();
+
+  const [arrowOneFade, setArrowOneFade] = useState(false);
+  const [arrowTwoFade, setArrowTwoFade] = useState(false);
+  const [arrowThreeFade, setArrowThreeFade] = useState(false);
+
+  useEffect(() => {
+    const fadeIn = () => {
+      setArrowOneFade(true);
+      setTimeout(() => {
+        setArrowTwoFade(true);
+      }, 200);
+      setTimeout(() => {
+        setArrowThreeFade(true);
+      }, 400);
+    };
+
+    const fadeOut = () => {
+      setTimeout(() => {
+        setArrowOneFade(false);
+        setTimeout(() => {
+          setArrowTwoFade(false);
+        }, 200);
+        setTimeout(() => {
+          setArrowThreeFade(false);
+        }, 400);
+      }, 600);
+    };
+
+    setInterval(() => {
+      fadeIn();
+      fadeOut();
+    }, 2000);
+  }, []);
 
   return (
     <>
@@ -93,6 +138,21 @@ const NudgeTable = props => {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell>
+                <Fade in={arrowOneFade} timeout={1000}>
+                  <StyledKeyboardArrowRight />
+                </Fade>
+                <Fade in={arrowTwoFade} timeout={1000}>
+                  <StyledKeyboardArrowRight />
+                </Fade>
+                <Fade in={arrowThreeFade} timeout={1000}>
+                  <StyledKeyboardArrowRight />
+                </Fade>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
         <NudgeUpdate
           closeUpdateComp={props.closeUpdateComp}
