@@ -82,10 +82,14 @@ const NudgeTable = props => {
       }, 600);
     };
 
-    setInterval(() => {
+    const fadeInAndOut = setInterval(() => {
       fadeIn();
       fadeOut();
     }, 2000);
+
+    return () => {
+      clearInterval(fadeInAndOut);
+    };
   }, []);
 
   return (
