@@ -52,6 +52,21 @@ const StyledKeyboardArrowRight = withStyles(theme => ({
   }
 }))(KeyboardArrowRight);
 
+const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
+  setTimeout(
+    () => {
+      fnOne(inBool);
+      setTimeout(() => {
+        fnTwo(inBool);
+      }, msStep);
+      setTimeout(() => {
+        fnThree(inBool);
+      }, msStep * 2);
+    },
+    inBool ? 0 : msStep * 3
+  );
+};
+
 const NudgeTable = props => {
   const classes = useStyles();
 
@@ -60,31 +75,12 @@ const NudgeTable = props => {
   const [arrowThreeFade, setArrowThreeFade] = useState(false);
 
   useEffect(() => {
-    const fadeIn = () => {
-      setArrowOneFade(true);
-      setTimeout(() => {
-        setArrowTwoFade(true);
-      }, 200);
-      setTimeout(() => {
-        setArrowThreeFade(true);
-      }, 400);
-    };
-
-    const fadeOut = () => {
-      setTimeout(() => {
-        setArrowOneFade(false);
-        setTimeout(() => {
-          setArrowTwoFade(false);
-        }, 200);
-        setTimeout(() => {
-          setArrowThreeFade(false);
-        }, 400);
-      }, 600);
-    };
+    fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, true, 200);
+    fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, false, 200);
 
     const fadeInAndOut = setInterval(() => {
-      fadeIn();
-      fadeOut();
+      fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, true, 200);
+      fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, false, 200);
     }, 2000);
 
     return () => {
