@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
@@ -37,6 +38,9 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: theme.spacing(1)
+  },
+  footer: {
+    display: 'none'
   }
 }));
 
@@ -68,6 +72,7 @@ const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
 };
 
 const NudgeTable = props => {
+  const matches = useMediaQuery('(min-width:820px)');
   const classes = useStyles();
 
   const [arrowOneFade, setArrowOneFade] = useState(false);
@@ -138,7 +143,7 @@ const NudgeTable = props => {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter>
+          <TableFooter className={matches ? classes.footer : null}>
             <TableRow>
               <TableCell>
                 <Fade in={arrowOneFade} timeout={1000}>
