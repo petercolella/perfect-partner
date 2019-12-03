@@ -8,7 +8,6 @@ import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,7 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import EditIcon from '@material-ui/icons/Edit';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
@@ -39,8 +38,8 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
   },
-  footer: {
-    display: 'none'
+  arrows: {
+    color: 'white'
   }
 }));
 
@@ -50,11 +49,11 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-const StyledKeyboardArrowRight = withStyles(theme => ({
+const StyledKeyboardArrowLeft = withStyles(theme => ({
   root: {
-    marginRight: -12
+    marginLeft: '-0.5em'
   }
-}))(KeyboardArrowRight);
+}))(KeyboardArrowLeft);
 
 const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
   setTimeout(
@@ -72,7 +71,7 @@ const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
 };
 
 const NudgeTable = props => {
-  const matches = useMediaQuery('(min-width:820px)');
+  const matches = useMediaQuery('(max-width:818px)');
   const classes = useStyles();
 
   const [arrowOneFade, setArrowOneFade] = useState(false);
@@ -80,18 +79,19 @@ const NudgeTable = props => {
   const [arrowThreeFade, setArrowThreeFade] = useState(false);
 
   useEffect(() => {
-    fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, true, 200);
-    fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, false, 200);
+    fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, true, 200);
+    fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, false, 200);
 
     const fadeInAndOut = setInterval(() => {
-      fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, true, 200);
-      fade(setArrowOneFade, setArrowTwoFade, setArrowThreeFade, false, 200);
+      if (!matches) clearInterval(fadeInAndOut);
+      fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, true, 200);
+      fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, false, 200);
     }, 2000);
 
     return () => {
       clearInterval(fadeInAndOut);
     };
-  }, []);
+  }, [matches]);
 
   return (
     <>
@@ -143,21 +143,6 @@ const NudgeTable = props => {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter className={matches ? classes.footer : null}>
-            <TableRow>
-              <TableCell>
-                <Fade in={arrowOneFade} timeout={1000}>
-                  <StyledKeyboardArrowRight />
-                </Fade>
-                <Fade in={arrowTwoFade} timeout={1000}>
-                  <StyledKeyboardArrowRight />
-                </Fade>
-                <Fade in={arrowThreeFade} timeout={1000}>
-                  <StyledKeyboardArrowRight />
-                </Fade>
-              </TableCell>
-            </TableRow>
-          </TableFooter>
         </Table>
         <NudgeUpdate
           closeUpdateComp={props.closeUpdateComp}
@@ -167,6 +152,19 @@ const NudgeTable = props => {
           dialogOpen={props.dialogOpen}
         />
       </Paper>
+      {matches && (
+        <Typography align="right" className={classes.arrows} variant="h4">
+          <Fade in={arrowOneFade} timeout={1000}>
+            <StyledKeyboardArrowLeft fontSize="inherit" />
+          </Fade>
+          <Fade in={arrowTwoFade} timeout={1000}>
+            <StyledKeyboardArrowLeft fontSize="inherit" />
+          </Fade>
+          <Fade in={arrowThreeFade} timeout={1000}>
+            <StyledKeyboardArrowLeft fontSize="inherit" />
+          </Fade>
+        </Typography>
+      )}
       {/* <div>
         Icons made by{' '}
         <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
