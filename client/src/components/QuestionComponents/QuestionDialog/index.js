@@ -126,12 +126,15 @@ const QuestionDialog = props => {
     loadUserInfo,
     placeholder,
     question,
+    res,
     signedIn,
+    snackbarOpen,
+    setSnackbarOpen,
     title,
-    userField
+    userField,
+    variant
   } = props;
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const loadDialog = useCallback(() => {
@@ -164,11 +167,35 @@ const QuestionDialog = props => {
 
   const clickHandler = e => {
     handleFormSubmit(e);
-    setSnackbarOpen(true);
   };
 
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
+  };
+
+  const renderSnackbarContentWrapper = (res, variant) => {
+    let span;
+    switch (variant) {
+      case 'error':
+        span = res;
+        break;
+      case 'success':
+        span = `${title}: ${res} has been submitted.`;
+        break;
+      case 'warning':
+        span = `Oops! That's not valid input.`;
+        break;
+      default:
+        return;
+    }
+
+    return (
+      <MySnackbarContentWrapper
+        onClose={handleSnackbarClose}
+        variant={variant}
+        message={<span>{span}</span>}
+      />
+    );
   };
 
   return (
@@ -186,23 +213,7 @@ const QuestionDialog = props => {
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          {userField ? (
-            <MySnackbarContentWrapper
-              onClose={handleSnackbarClose}
-              variant="success"
-              message={
-                <span>
-                  {title}: {userField} has been submitted.
-                </span>
-              }
-            />
-          ) : (
-            <MySnackbarContentWrapper
-              onClose={handleSnackbarClose}
-              variant="warning"
-              message={<span>Oops! The input field was left blank.</span>}
-            />
-          )}
+          {renderSnackbarContentWrapper(res, variant)}
         </Snackbar>
       </div>
       <Fade
