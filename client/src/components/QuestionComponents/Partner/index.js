@@ -15,6 +15,9 @@ const Partner = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [partnerName, setPartnerName] = useState('');
+  const [res, setRes] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [variant, setVariant] = useState(null);
 
   const loadPartner = useCallback(() => {
     if (id) {
@@ -32,9 +35,29 @@ const Partner = props => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
+
+    if (!partnerName) {
+      setVariant('warning');
+      setSnackbarOpen(true);
+      return;
+    }
+
     API.updateUser(user._id, {
       partnerName
-    }).then(loadUserInfo);
+    })
+      .then(res => {
+        loadUserInfo();
+        setRes(res.data.partnerName);
+        setVariant('success');
+        setSnackbarOpen(true);
+      })
+      .catch(err => {
+        const resArr = err.response.data.split(': ');
+        const errMsg = resArr[resArr.length - 1];
+        setRes(errMsg);
+        setVariant('error');
+        setSnackbarOpen(true);
+      });
   };
 
   const handleInputChange = event => {
@@ -54,9 +77,13 @@ const Partner = props => {
       loadUserInfo={loadUserInfo}
       placeholder={state.placeholder}
       question={state.question}
+      res={res}
       signedIn={signedIn}
+      snackbarOpen={snackbarOpen}
+      setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={partnerName}
+      variant={variant}
     />
   );
 };
