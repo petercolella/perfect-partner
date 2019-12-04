@@ -15,6 +15,9 @@ const Phone = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [phone, setPhone] = useState('');
+  const [res, setRes] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [variant, setVariant] = useState(null);
 
   const loadPhone = useCallback(() => {
     if (id) {
@@ -33,11 +36,29 @@ const Phone = props => {
   const handleFormSubmit = event => {
     event.preventDefault();
     const phoneRegEx = phone.replace(/\D/g, '');
+
+    if (phoneRegEx.length !== 10) {
+      setVariant('warning');
+      setSnackbarOpen(true);
+      return;
+    }
+
     API.updateUser(user._id, {
       phone: phoneRegEx
     })
-      .then(loadUserInfo)
-      .catch(err => console.log(err.response.data));
+      .then(res => {
+        loadUserInfo();
+        setRes(res.data.phone);
+        setVariant('success');
+        setSnackbarOpen(true);
+      })
+      .catch(err => {
+        const resArr = err.response.data.split(': ');
+        const errMsg = resArr[resArr.length - 1];
+        setRes(errMsg);
+        setVariant('error');
+        setSnackbarOpen(true);
+      });
   };
 
   const handleInputChange = event => {
@@ -57,9 +78,13 @@ const Phone = props => {
       loadUserInfo={loadUserInfo}
       placeholder={state.placeholder}
       question={state.question}
+      res={res}
       signedIn={signedIn}
+      snackbarOpen={snackbarOpen}
+      setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={phone}
+      variant={variant}
     />
   );
 };
