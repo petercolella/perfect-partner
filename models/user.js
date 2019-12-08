@@ -16,10 +16,21 @@ const userSchema = new Schema({
       message: 'Phone number already exists!'
     }
   },
-  partnerName: { type: String },
+  partnerName: {
+    type: String,
+    maxlength: [50, 'Partner name may not exceed 50 characters!']
+  },
   email: { type: String, required: true, unique: true },
   imageUrl: { type: String },
-  anniversaryDate: { type: Date },
+  anniversaryDate: {
+    type: Date,
+    validate: [
+      function() {
+        return this.anniversaryDate != null;
+      },
+      'Anniversary must be a valid date!'
+    ]
+  },
   birthDate: { type: Date },
   nudges: [
     {
