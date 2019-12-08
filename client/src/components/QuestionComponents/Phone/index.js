@@ -33,13 +33,17 @@ const Phone = props => {
     loadPhone();
   }, [loadPhone]);
 
+  const handleSnackbarOpen = variant => {
+    setVariant(variant);
+    setSnackbarOpen(true);
+  };
+
   const handleFormSubmit = event => {
     event.preventDefault();
     const phoneRegEx = phone.replace(/\D/g, '');
 
     if (phoneRegEx.length !== 10) {
-      setVariant('warning');
-      setSnackbarOpen(true);
+      handleSnackbarOpen('warning');
       return;
     }
 
@@ -49,15 +53,13 @@ const Phone = props => {
       .then(res => {
         loadUserInfo();
         setRes(res.data.phone);
-        setVariant('success');
-        setSnackbarOpen(true);
+        handleSnackbarOpen('success');
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         setRes(errMsg);
-        setVariant('error');
-        setSnackbarOpen(true);
+        handleSnackbarOpen('error');
       });
   };
 

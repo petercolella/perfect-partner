@@ -33,12 +33,16 @@ const Partner = props => {
     loadPartner();
   }, [loadPartner]);
 
+  const handleSnackbarOpen = variant => {
+    setVariant(variant);
+    setSnackbarOpen(true);
+  };
+
   const handleFormSubmit = event => {
     event.preventDefault();
 
     if (!partnerName) {
-      setVariant('warning');
-      setSnackbarOpen(true);
+      handleSnackbarOpen('warning');
       return;
     }
 
@@ -48,15 +52,13 @@ const Partner = props => {
       .then(res => {
         loadUserInfo();
         setRes(res.data.partnerName);
-        setVariant('success');
-        setSnackbarOpen(true);
+        handleSnackbarOpen('success');
       })
       .catch(err => {
-        const resArr = err.response.data.split(': ');
-        const errMsg = resArr[resArr.length - 1];
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         setRes(errMsg);
-        setVariant('error');
-        setSnackbarOpen(true);
+        handleSnackbarOpen('error');
       });
   };
 
