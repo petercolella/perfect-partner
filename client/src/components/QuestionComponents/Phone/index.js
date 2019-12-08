@@ -53,8 +53,8 @@ const Phone = props => {
         setSnackbarOpen(true);
       })
       .catch(err => {
-        const resArr = err.response.data.split(': ');
-        const errMsg = resArr[resArr.length - 1];
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         setRes(errMsg);
         setVariant('error');
         setSnackbarOpen(true);
