@@ -25,13 +25,21 @@ const userSchema = new Schema({
   anniversaryDate: {
     type: Date,
     validate: [
-      function() {
-        return this.anniversaryDate != null;
+      function(v) {
+        return v !== null;
       },
       'Anniversary must be a valid date!'
     ]
   },
-  birthDate: { type: Date },
+  birthDate: {
+    type: Date,
+    validate: [
+      function(v) {
+        return v !== null;
+      },
+      'Birthday must be a valid date!'
+    ]
+  },
   nudges: [
     {
       type: Schema.Types.ObjectId,
