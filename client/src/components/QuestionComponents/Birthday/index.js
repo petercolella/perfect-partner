@@ -14,6 +14,9 @@ const Birthday = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [birthDate, setBirthDate] = useState(null);
+  const [res, setRes] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [variant, setVariant] = useState(null);
 
   const loadBirthDate = useCallback(() => {
     if (id) {
@@ -29,11 +32,33 @@ const Birthday = props => {
     loadBirthDate();
   }, [loadBirthDate]);
 
+  const handleSnackbarOpen = variant => {
+    setVariant(variant);
+    setSnackbarOpen(true);
+  };
+
   const handleFormSubmit = event => {
     event.preventDefault();
+
+    if (!birthDate) {
+      handleSnackbarOpen('warning');
+      return;
+    }
+
     API.updateUser(user._id, {
       birthDate
-    }).then(loadUserInfo);
+    })
+      .then(res => {
+        loadUserInfo();
+        setRes(res.data.birthDate);
+        handleSnackbarOpen('success');
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        setRes(errMsg);
+        handleSnackbarOpen('error');
+      });
   };
 
   const handleDateInputChange = date => {
@@ -51,9 +76,13 @@ const Birthday = props => {
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
+      res={res}
       signedIn={signedIn}
+      snackbarOpen={snackbarOpen}
+      setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={birthDate}
+      variant={variant}
     />
   );
 };
