@@ -1,25 +1,20 @@
 import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
-import { amber, green } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import WarningIcon from '@material-ui/icons/Warning';
 import { makeStyles } from '@material-ui/core/styles';
-import Slide from '@material-ui/core/Slide';
+
+import CloseIcon from '@material-ui/icons/Close';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import Grow from '@material-ui/core/Grow';
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 import 'date-fns';
@@ -29,26 +24,9 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
-const variantIcon = {
-  success: CheckCircleIcon,
-  warning: WarningIcon,
-  error: ErrorIcon,
-  info: InfoIcon
-};
+import SnackbarContentWrapper from '../../SnackbarContentWrapper';
 
 const useStyles1 = makeStyles(theme => ({
-  success: {
-    backgroundColor: green[600]
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark
-  },
-  info: {
-    backgroundColor: theme.palette.primary.main
-  },
-  warning: {
-    backgroundColor: amber[700]
-  },
   click: {
     color: '#fff',
     padding: theme.spacing(4),
@@ -67,52 +45,11 @@ const useStyles1 = makeStyles(theme => ({
     height: '100vh',
     width: '100vw'
   },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing(1)
-  },
   link: {
     color: theme.palette.text.primary,
     textDecoration: 'none'
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
   }
 }));
-
-const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
-  const Icon = variantIcon[variant];
-
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant])}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <Icon className={clsx(classes.icon, classes.iconVariant)} />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
-          onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>
-      ]}
-      {...other}
-      ref={ref}
-    />
-  );
-});
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
@@ -131,12 +68,15 @@ const DateQuestionDialog = props => {
     link,
     loadUserInfo,
     question,
+    res,
     signedIn,
+    snackbarOpen,
+    setSnackbarOpen,
     title,
-    userField
+    userField,
+    variant
   } = props;
 
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const loadDialog = useCallback(() => {
@@ -167,13 +107,33 @@ const DateQuestionDialog = props => {
     setSnackbarOpen(false);
   }
 
-  const clickHandler = e => {
-    handleFormSubmit(e);
-    setSnackbarOpen(true);
-  };
-
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
+  };
+
+  const renderSnackbarContentWrapper = (res, variant) => {
+    let span;
+    switch (variant) {
+      case 'error':
+        span = res;
+        break;
+      case 'success':
+        span = `${title}: ${res} has been submitted.`;
+        break;
+      case 'warning':
+        span = `Oops! That's not valid input.`;
+        break;
+      default:
+        return;
+    }
+
+    return (
+      <SnackbarContentWrapper
+        onClose={handleSnackbarClose}
+        variant={variant}
+        message={<span>{span}</span>}
+      />
+    );
   };
 
   return (
@@ -191,29 +151,7 @@ const DateQuestionDialog = props => {
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          {userField ? (
-            <MySnackbarContentWrapper
-              onClose={handleSnackbarClose}
-              variant="success"
-              message={
-                <span>
-                  {title}: {new Date(userField).toLocaleDateString()} has been
-                  submitted.
-                </span>
-              }
-            />
-          ) : (
-            <MySnackbarContentWrapper
-              onClose={handleSnackbarClose}
-              variant="warning"
-              message={
-                <span>
-                  The {title} date has been cleared. Please enter a valid date
-                  before submitting.
-                </span>
-              }
-            />
-          )}
+          {renderSnackbarContentWrapper(res, variant)}
         </Snackbar>
       </div>
       <Fade
@@ -274,7 +212,7 @@ const DateQuestionDialog = props => {
               <Button onClick={cancel} color="secondary">
                 Cancel
               </Button>
-              <Button onClick={clickHandler} color="primary">
+              <Button onClick={e => handleFormSubmit(e)} color="primary">
                 Submit
               </Button>
               <Link to={link} className={classes.link}>
