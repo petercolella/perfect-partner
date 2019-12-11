@@ -118,7 +118,9 @@ const DateQuestionDialog = props => {
         span = res;
         break;
       case 'success':
-        span = `${title}: ${res} has been submitted.`;
+        span = `${title}: ${new Date(
+          res
+        ).toLocaleDateString()} has been submitted.`;
         break;
       case 'warning':
         span = `Oops! That's not valid input.`;
