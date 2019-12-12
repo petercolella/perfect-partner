@@ -11,33 +11,6 @@ const client = require('twilio')(accountSid, authToken);
 const intervals = {};
 
 const self = (module.exports = {
-  sendText: function(body, to) {
-    return client.messages.create({
-      body: `${body}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: `+1${to}`
-    });
-    console.log('Body:', body, 'To:', to);
-  },
-  toggle: function(req, res) {
-    db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  textRecursiveTimeout: function(nudge, milliseconds, phone) {
-    const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
-    const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
-    console.log('randomFrequency', randomFrequency);
-    const randomMilliseconds =
-      (milliseconds * randomFrequency) / nudgeFrequency;
-    console.log('randomMilliseconds', randomMilliseconds);
-    clearTimeout(intervals[_id]);
-    intervals[_id] = setTimeout(() => {
-      console.log(textMessage);
-      self.sendText(textMessage, phone);
-      self.textRecursiveTimeout(nudge, milliseconds, phone);
-    }, randomMilliseconds);
-  },
   activate: function(req, res) {
     const nudge = req.body.nudge;
     const {
@@ -84,6 +57,10 @@ const self = (module.exports = {
       if (err) {
         console.log({ error: err.message });
       }
+      self.sendText(
+        `runActivatedNudges function in directory: ${__dirname}`,
+        '4047841090'
+      );
       nudges.forEach(nudge => {
         const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = nudge;
         if (activated) {
@@ -102,6 +79,33 @@ const self = (module.exports = {
         }
       });
     });
+  },
+  sendText: function(body, to) {
+    return client.messages.create({
+      body: `${body}`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: `+1${to}`
+    });
+    console.log('Body:', body, 'To:', to);
+  },
+  textRecursiveTimeout: function(nudge, milliseconds, phone) {
+    const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+    const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
+    console.log('randomFrequency', randomFrequency);
+    const randomMilliseconds =
+      (milliseconds * randomFrequency) / nudgeFrequency;
+    console.log('randomMilliseconds', randomMilliseconds);
+    clearTimeout(intervals[_id]);
+    intervals[_id] = setTimeout(() => {
+      console.log(textMessage);
+      self.sendText(textMessage, phone);
+      self.textRecursiveTimeout(nudge, milliseconds, phone);
+    }, randomMilliseconds);
+  },
+  toggle: function(req, res) {
+    db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   },
   send: function(req, res) {
     const { phone, textMessage } = req.body;
