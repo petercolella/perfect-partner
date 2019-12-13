@@ -38,7 +38,7 @@ const self = (module.exports = {
                   nudgeFrequencyUnit.length - 1
                 )} with the message, "${textMessage}"`;
           self.sendText(activateBody, phone);
-          self.textRecursiveTimeout(nudge, milliseconds, phone);
+          self.setFutureTimestamp(nudge, milliseconds, phone);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           clearInterval(intervals[_id]);
@@ -62,20 +62,32 @@ const self = (module.exports = {
         '4047841090'
       );
       nudges.forEach(nudge => {
-        const { _id, nudgeFrequency, nudgeFrequencyUnit, activated } = nudge;
+        const {
+          _id,
+          nudgeFrequency,
+          nudgeFrequencyUnit,
+          textMessage,
+          activated,
+          textTimestamp
+        } = nudge;
         if (activated) {
           const milliseconds = fn.frequencyToMilliseconds(
             nudgeFrequency,
             nudgeFrequencyUnit
           );
-          db.User.findOne({
-            nudges: { $in: _id }
-          })
-            .then(userModel => {
-              const { phone } = userModel;
-              self.textRecursiveTimeout(nudge, milliseconds, phone);
+          const now = Date.now();
+          console.log('now - textTimestamp:', now - textTimestamp);
+          if (now - textTimestamp > 0) {
+            db.User.findOne({
+              nudges: { $in: _id }
             })
-            .catch(err => console.log('Error: ', err.message));
+              .then(userModel => {
+                const { phone } = userModel;
+                self.sendText(textMessage, phone);
+                self.setFutureTimestamp(nudge, milliseconds, phone);
+              })
+              .catch(err => console.log('Error: ', err.message));
+          }
         }
       });
     });
@@ -88,7 +100,7 @@ const self = (module.exports = {
     });
     console.log('Body:', body, 'To:', to);
   },
-  textRecursiveTimeout: function(nudge, milliseconds, phone) {
+  setFutureTimestamp: function(nudge, milliseconds, phone) {
     const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
     const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
     console.log('randomFrequency', randomFrequency);
@@ -96,11 +108,24 @@ const self = (module.exports = {
       (milliseconds * randomFrequency) / nudgeFrequency;
     console.log('randomMilliseconds', randomMilliseconds);
     clearTimeout(intervals[_id]);
-    intervals[_id] = setTimeout(() => {
-      console.log(textMessage);
-      self.sendText(textMessage, phone);
-      self.textRecursiveTimeout(nudge, milliseconds, phone);
-    }, randomMilliseconds);
+    const currentTimestamp = Date.now();
+    console.log('currentTimestamp:', currentTimestamp);
+    const futureTimestamp = currentTimestamp + randomMilliseconds;
+    console.log('futureTimestamp:', futureTimestamp);
+    db.Nudge.findOneAndUpdate(
+      { _id: _id },
+      { textTimestamp: futureTimestamp },
+      { new: true }
+    )
+      .then(dbModel => {
+        console.log(dbModel);
+      })
+      .catch(err => console.log(err.message));
+    // intervals[_id] = setTimeout(() => {
+    //   console.log(textMessage);
+    //   self.sendText(textMessage, phone);
+    //   self.textRecursiveTimeout(nudge, milliseconds, phone);
+    // }, randomMilliseconds);
   },
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)

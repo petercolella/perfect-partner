@@ -58,7 +58,7 @@ module.exports = {
               nudgeFrequency,
               nudgeFrequencyUnit
             );
-            textControl.textRecursiveTimeout(dbModel, milliseconds, phone);
+            textControl.setFutureTimestamp(dbModel, milliseconds, phone);
           }
         });
         res.json(dbModel);
