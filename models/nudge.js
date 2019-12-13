@@ -16,7 +16,7 @@ const nudgeSchema = new Schema({
     required: true,
     default: false
   },
-  timerId: { type: Number, default: null }
+  textTimestamp: { type: Date, default: null }
 });
 
 const Nudge = mongoose.model('Nudge', nudgeSchema);
