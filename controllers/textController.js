@@ -8,7 +8,6 @@ const fn = require('../scripts/fn');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
-const intervals = {};
 
 const self = (module.exports = {
   activate: function(req, res) {
@@ -22,10 +21,6 @@ const self = (module.exports = {
       activated
     } = nudge;
     const { phone } = req.body.user;
-    const milliseconds = fn.frequencyToMilliseconds(
-      nudgeFrequency,
-      nudgeFrequencyUnit
-    );
 
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, nudge, { new: true })
       .then(dbModel => {
@@ -38,10 +33,9 @@ const self = (module.exports = {
                   nudgeFrequencyUnit.length - 1
                 )} with the message, "${textMessage}"`;
           self.sendText(activateBody, phone);
-          self.setFutureTimestamp(nudge, milliseconds, phone);
+          self.setFutureTimestamp(nudge);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
-          clearInterval(intervals[_id]);
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
           self.sendText(deactivateBody, phone);
           res.json({
@@ -62,19 +56,8 @@ const self = (module.exports = {
         '4047841090'
       );
       nudges.forEach(nudge => {
-        const {
-          _id,
-          nudgeFrequency,
-          nudgeFrequencyUnit,
-          textMessage,
-          activated,
-          textTimestamp
-        } = nudge;
+        const { _id, textMessage, activated, textTimestamp } = nudge;
         if (activated) {
-          const milliseconds = fn.frequencyToMilliseconds(
-            nudgeFrequency,
-            nudgeFrequencyUnit
-          );
           const now = Date.now();
           console.log('now - textTimestamp:', now - textTimestamp);
           if (now - textTimestamp > 0) {
@@ -84,7 +67,7 @@ const self = (module.exports = {
               .then(userModel => {
                 const { phone } = userModel;
                 self.sendText(textMessage, phone);
-                self.setFutureTimestamp(nudge, milliseconds, phone);
+                self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
           }
@@ -93,21 +76,24 @@ const self = (module.exports = {
     });
   },
   sendText: function(body, to) {
+    console.log('Body:', body, 'To:', to);
     return client.messages.create({
       body: `${body}`,
       from: process.env.TWILIO_PHONE_NUMBER,
       to: `+1${to}`
     });
-    console.log('Body:', body, 'To:', to);
   },
-  setFutureTimestamp: function(nudge, milliseconds, phone) {
-    const { _id, nudgeFrequency, nudgeFrequencyUnit, textMessage } = nudge;
+  setFutureTimestamp: function(nudge) {
+    const { _id, nudgeFrequency, nudgeFrequencyUnit } = nudge;
+    const milliseconds = fn.frequencyToMilliseconds(
+      nudgeFrequency,
+      nudgeFrequencyUnit
+    );
     const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
     console.log('randomFrequency', randomFrequency);
     const randomMilliseconds =
       (milliseconds * randomFrequency) / nudgeFrequency;
     console.log('randomMilliseconds', randomMilliseconds);
-    clearTimeout(intervals[_id]);
     const currentTimestamp = Date.now();
     console.log('currentTimestamp:', currentTimestamp);
     const futureTimestamp = currentTimestamp + randomMilliseconds;
@@ -121,11 +107,6 @@ const self = (module.exports = {
         console.log(dbModel);
       })
       .catch(err => console.log(err.message));
-    // intervals[_id] = setTimeout(() => {
-    //   console.log(textMessage);
-    //   self.sendText(textMessage, phone);
-    //   self.textRecursiveTimeout(nudge, milliseconds, phone);
-    // }, randomMilliseconds);
   },
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
