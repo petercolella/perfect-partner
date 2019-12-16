@@ -1,6 +1,5 @@
 const db = require('../models');
 const textControl = require('./textController');
-const fn = require('../scripts/fn');
 
 // Defining methods for the nudgesController
 module.exports = {
@@ -41,6 +40,7 @@ module.exports = {
           textMessage,
           activated
         } = dbModel;
+
         const updateBody =
           nudgeFrequency > 1
             ? `You have updated your ${name} Nudge to a frequency of once every 1 - ${nudgeFrequency} ${nudgeFrequencyUnit} with the message, "${textMessage}"`
@@ -48,19 +48,18 @@ module.exports = {
                 0,
                 nudgeFrequencyUnit.length - 1
               )} with the message, "${textMessage}"`;
+
+        if (activated) {
+          textControl.setFutureTimestamp(dbModel);
+        }
+
         db.User.findOne({
           nudges: { $in: _id }
         }).then(userModel => {
           const { phone } = userModel;
           textControl.sendText(updateBody, phone);
-          if (activated) {
-            const milliseconds = fn.frequencyToMilliseconds(
-              nudgeFrequency,
-              nudgeFrequencyUnit
-            );
-            textControl.setFutureTimestamp(dbModel, milliseconds, phone);
-          }
         });
+
         res.json(dbModel);
       })
       .catch(err => res.status(422).json(err));
