@@ -3,16 +3,16 @@
 Heroku link:
 https://perfectpartner.herokuapp.com/
 
-Perfect Partner helps add spontaneity and creativity to a relationship.
+Perfect Partner helps add spontaneity to a relationship.
 
 ### Technologies Used
 
-- ReactJS
-- Bootstrap
-- Node Mailer
-- Express
 - Mongoose
-- Axios
+- Express
+- React
+- Node
+- Google Sign-In
+- Material-UI
 - Twilio
 
 ### Original Group Members
