@@ -59,7 +59,6 @@ const self = (module.exports = {
         const { _id, textMessage, activated, textTimestamp } = nudge;
         if (activated) {
           const now = Date.now();
-          console.log('now - textTimestamp:', now - textTimestamp);
           if (now - textTimestamp > 0) {
             db.User.findOne({
               nudges: { $in: _id }
@@ -84,22 +83,11 @@ const self = (module.exports = {
     });
   },
   setFutureTimestamp: function(nudge) {
-    const { _id, nudgeFrequency, nudgeFrequencyUnit } = nudge;
-    const milliseconds = fn.frequencyToMilliseconds(
-      nudgeFrequency,
-      nudgeFrequencyUnit
-    );
-    const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
-    console.log('randomFrequency', randomFrequency);
-    const randomMilliseconds =
-      (milliseconds * randomFrequency) / nudgeFrequency;
-    console.log('randomMilliseconds', randomMilliseconds);
-    const currentTimestamp = Date.now();
-    console.log('currentTimestamp:', currentTimestamp);
-    const futureTimestamp = currentTimestamp + randomMilliseconds;
-    console.log('futureTimestamp:', futureTimestamp);
+    const futureTimestamp = fn.getFutureTimestamp(nudge);
+    console.log('futureTimestamp:', new Date(futureTimestamp));
+
     db.Nudge.findOneAndUpdate(
-      { _id: _id },
+      { _id: nudge._id },
       { textTimestamp: futureTimestamp },
       { new: true }
     )
