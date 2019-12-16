@@ -1,29 +1,38 @@
 module.exports = {
-  frequencyToMilliseconds: function(nudgeFrequency, nudgeFrequencyUnit) {
+  getFutureTimestamp: function(nudge) {
+    const { nudgeFrequency, nudgeFrequencyUnit } = nudge;
+    let milliseconds;
+
     switch (nudgeFrequencyUnit) {
       case 'seconds':
-        return nudgeFrequency * 1000;
+        milliseconds = nudgeFrequency * 1000;
         break;
       case 'minutes':
-        return nudgeFrequency * 60 * 1000;
+        milliseconds = nudgeFrequency * 60 * 1000;
         break;
       case 'hours':
-        return nudgeFrequency * 3600 * 1000;
+        milliseconds = nudgeFrequency * 3600 * 1000;
         break;
       case 'days':
-        return nudgeFrequency * 86400 * 1000;
+        milliseconds = nudgeFrequency * 86400 * 1000;
         break;
       case 'weeks':
-        return nudgeFrequency * 604800 * 1000;
+        milliseconds = nudgeFrequency * 604800 * 1000;
         break;
       case 'months':
-        return nudgeFrequency * 2419200 * 1000;
+        milliseconds = nudgeFrequency * 2419200 * 1000;
         break;
       case 'years':
-        return nudgeFrequency * 31449600 * 1000;
+        milliseconds = nudgeFrequency * 31449600 * 1000;
         break;
       default:
-        return nudgeFrequency * 60480 * 1000;
+        milliseconds = nudgeFrequency * 60480 * 1000;
     }
+    const randomFrequency = Math.floor(Math.random() * nudgeFrequency) + 1;
+    const randomMilliseconds =
+      (milliseconds * randomFrequency) / nudgeFrequency;
+    const futureTimestamp = Date.now() + randomMilliseconds;
+
+    return futureTimestamp;
   }
 };
