@@ -87,7 +87,9 @@ const NudgeDialog = props => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [res, setRes] = useState(null);
   const [state, setState] = useState({});
+  const [variant, setVariant] = useState(null);
 
   const loadDialog = useCallback(() => {
     setDialogOpen(false);
@@ -146,29 +148,50 @@ const NudgeDialog = props => {
 
   const deselectAll = () => selectAllCheckboxes(false);
 
-  function handleSubmit() {
-    const newNudges = [];
-
-    Object.keys(state)
-      .filter(nudge => state[nudge])
-      .forEach(nudge => {
-        newNudges.push(nudge);
-        const newNudge = {
-          userId: user._id,
-          nudge: {
-            name: nudge
-          }
-        };
-        API.saveNudge(newNudge).then(() => {
-          loadNudges();
-          loadUserInfo();
-          deselectAll();
-        });
-      });
-
-    setSnackbarNudges(snackbarNudges.concat(newNudges));
+  const handleSnackbarOpen = variant => {
+    setVariant(variant);
     setSnackbarOpen(true);
-  }
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const newNudges = Object.keys(state).filter(nudge => state[nudge]);
+
+    if (!newNudges.length > 0) {
+      handleSnackbarOpen('warning');
+      return;
+    }
+
+    const promises = [];
+
+    newNudges.forEach(nudge => {
+      const newNudge = {
+        userId: user._id,
+        nudge: {
+          name: nudge
+        }
+      };
+
+      promises.push(API.saveNudge(newNudge));
+    });
+
+    Promise.all(promises)
+      .then(results => {
+        loadNudges();
+        loadUserInfo();
+        deselectAll();
+        setSnackbarNudges(snackbarNudges.concat(newNudges));
+        handleSnackbarOpen('success');
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        setRes(errMsg);
+        handleSnackbarOpen('error');
+        return;
+      });
+  };
 
   function handleDialogClose(event, reason) {
     if (reason === 'clickaway' || reason === 'backdropClick') {
@@ -190,6 +213,44 @@ const NudgeDialog = props => {
     if (!dialogOpen) setDialogOpen(true);
   };
 
+  const renderNudgeList = snackbarNudges => {
+    return (
+      <>
+        You submitted these nudges:
+        <ul>
+          {snackbarNudges.map((nudge, i) => (
+            <li key={i}>{nudge}</li>
+          ))}
+        </ul>
+      </>
+    );
+  };
+
+  const renderSnackbarContentWrapper = (res, variant) => {
+    let span;
+    switch (variant) {
+      case 'error':
+        span = res;
+        break;
+      case 'success':
+        span = renderNudgeList(snackbarNudges);
+        break;
+      case 'warning':
+        span = `Oops! That's not valid input.`;
+        break;
+      default:
+        return;
+    }
+
+    return (
+      <SnackbarContentWrapper
+        onClose={handleSnackbarClose}
+        variant={variant}
+        message={<span>{span}</span>}
+      />
+    );
+  };
+
   return (
     <div className={classes.dialogBackground} onClick={reloadDialog}>
       <Snackbar
@@ -204,28 +265,7 @@ const NudgeDialog = props => {
         ContentProps={{
           'aria-describedby': 'message-id'
         }}>
-        {snackbarNudges.length > 0 ? (
-          <SnackbarContentWrapper
-            onClose={handleSnackbarClose}
-            variant="success"
-            message={
-              <span>
-                You submitted these nudges:
-                <ul>
-                  {snackbarNudges.map((nudge, i) => (
-                    <li key={i}>{nudge}</li>
-                  ))}
-                </ul>
-              </span>
-            }
-          />
-        ) : (
-          <SnackbarContentWrapper
-            onClose={handleSnackbarClose}
-            variant="warning"
-            message={<span>Oops!</span>}
-          />
-        )}
+        {renderSnackbarContentWrapper(res, variant)}
       </Snackbar>
       <Fade
         in={!dialogOpen}
