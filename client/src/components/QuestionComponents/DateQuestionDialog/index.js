@@ -26,7 +26,7 @@ import {
 
 import SnackbarContentWrapper from '../../SnackbarContentWrapper';
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   click: {
     color: '#fff',
     padding: theme.spacing(4),
@@ -56,7 +56,7 @@ function TransitionUp(props) {
 }
 
 const DateQuestionDialog = props => {
-  const classes = useStyles1();
+  const classes = useStyles();
 
   const {
     cancel,

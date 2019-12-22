@@ -102,9 +102,11 @@ const Dashboard = props => {
     event.preventDefault();
     API.updateNudge(nudge._id, {
       ...nudge
-    }).then(() => {
-      loadUserInfo();
-    });
+    })
+      .then(() => {
+        loadUserInfo();
+      })
+      .catch(err => console.log(err));
     setDialogOpen(false);
   };
 
