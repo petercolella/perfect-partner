@@ -24,7 +24,7 @@ module.exports = {
           { _id: userId },
           { $push: { nudges: nudgeData._id } },
           { new: true }
-        );
+        ).populate('nudges');
       })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
