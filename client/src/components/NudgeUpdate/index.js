@@ -20,19 +20,19 @@ function TransitionUp(props) {
 }
 
 const NudgeUpdate = props => {
-  const [toastOpen, setToastOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
-  function handleToastClose(event, reason) {
+  function handleSnackbarClose(event, reason) {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToastOpen(false);
+    setSnackbarOpen(false);
   }
 
   const clickHandler = e => {
     props.handleFormSubmit(e);
-    setToastOpen(true);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -42,15 +42,15 @@ const NudgeUpdate = props => {
           vertical: 'bottom',
           horizontal: 'left'
         }}
-        open={toastOpen}
+        open={snackbarOpen}
         autoHideDuration={2000}
-        onClose={handleToastClose}
+        onClose={handleSnackbarClose}
         TransitionComponent={TransitionUp}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}>
         <SnackbarContentWrapper
-          onClose={handleToastClose}
+          onClose={handleSnackbarClose}
           variant="success"
           message={
             <span>{props.nudge.name} has been successfully updated.</span>
