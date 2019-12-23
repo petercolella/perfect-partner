@@ -6,18 +6,16 @@ module.exports = {
   findAll: function(req, res) {
     db.Nudge.find(req.query)
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   findById: function(req, res) {
     db.Nudge.findById(req.params.id)
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   create: function(req, res) {
     const userId = req.body.userId;
     const newNudge = req.body.nudge;
-    console.log('userId: ', userId);
-    console.log('newNudge: ', newNudge);
     db.Nudge.create(newNudge)
       .then(function(nudgeData) {
         return db.User.findOneAndUpdate(
@@ -27,7 +25,7 @@ module.exports = {
         ).populate('nudges');
       })
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   update: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
@@ -62,12 +60,12 @@ module.exports = {
 
         res.json(dbModel);
       })
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   remove: function(req, res) {
     db.Nudge.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   }
 };

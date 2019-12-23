@@ -44,7 +44,7 @@ const self = (module.exports = {
           });
         }
       })
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   runActivatedNudges: function() {
     db.Nudge.find({}, (err, nudges) => {
@@ -99,7 +99,7 @@ const self = (module.exports = {
   toggle: function(req, res) {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err.message));
   },
   send: function(req, res) {
     const { phone, textMessage } = req.body;
