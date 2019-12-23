@@ -178,10 +178,14 @@ const NudgeDialog = props => {
 
     Promise.all(promises)
       .then(results => {
+        const resultsNameArr = results.reduce(
+          (arr, result) => [...arr, result.data.name],
+          []
+        );
         loadNudges();
         loadUserInfo();
         deselectAll();
-        setSnackbarNudges(snackbarNudges.concat(newNudges));
+        setSnackbarNudges(snackbarNudges.concat(resultsNameArr));
         handleSnackbarOpen('success');
       })
       .catch(err => {
@@ -236,7 +240,7 @@ const NudgeDialog = props => {
         span = renderNudgeList(snackbarNudges);
         break;
       case 'warning':
-        span = `Oops! That's not valid input.`;
+        span = `Please select at least one nudge.`;
         break;
       default:
         return;
