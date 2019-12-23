@@ -18,13 +18,14 @@ module.exports = {
     const newNudge = req.body.nudge;
     db.Nudge.create(newNudge)
       .then(function(nudgeData) {
+        res.json(nudgeData);
         return db.User.findOneAndUpdate(
           { _id: userId },
           { $push: { nudges: nudgeData._id } },
           { new: true }
         ).populate('nudges');
       })
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => console.log(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
   update: function(req, res) {
