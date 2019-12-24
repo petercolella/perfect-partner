@@ -15,44 +15,44 @@ module.exports = {
       });
 
       const payload = ticket.getPayload();
-
-      console.log('payload:', payload);
-
-      const googleId = payload['sub'];
-      const name = payload['name'];
-      const email = payload['email'];
-      const imageUrl = payload['picture'];
-      const firstName = payload['given_name'];
-      const lastName = payload['family_name'];
-
-      const newUser = {
-        googleId,
-        name,
-        email,
-        imageUrl,
-        firstName,
-        lastName
-      };
-
-      if (CLIENT_ID === payload['aud']) {
-        db.User.findOne({ googleId }, (err, docs) => {
-          if (err) {
-            console.error(err);
-          }
-
-          if (!docs) {
-            db.User.create(newUser).then(dbModel => {
-              console.log('dbModel: ', dbModel);
-              res.send(dbModel._id);
-            });
-          } else {
-            console.log('docs: ', docs);
-            res.send(docs._id);
-          }
-        });
-      }
+      return payload;
     }
 
-    verify().catch(console.error);
+    verify()
+      .then(payload => {
+        console.log('payload', payload);
+        const googleId = payload['sub'];
+        const name = payload['name'];
+        const email = payload['email'];
+        const imageUrl = payload['picture'];
+        const firstName = payload['given_name'];
+        const lastName = payload['family_name'];
+
+        const newUser = {
+          googleId,
+          name,
+          email,
+          imageUrl,
+          firstName,
+          lastName
+        };
+
+        if (CLIENT_ID === payload['aud']) {
+          db.User.findOne({ googleId }, (err, docs) => {
+            if (err) {
+              console.error(err);
+            }
+
+            if (!docs) {
+              db.User.create(newUser).then(dbModel => {
+                res.send(dbModel._id);
+              });
+            } else {
+              res.send(docs._id);
+            }
+          });
+        }
+      })
+      .catch(console.error);
   }
 };
