@@ -46,19 +46,21 @@ const App = () => {
     }
   }, []);
 
-  const onSuccess = googleUser => {
-    console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
-    const id_token = googleUser.getAuthResponse().id_token;
+  const onSuccess = useCallback(
+    googleUser => {
+      console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
+      const id_token = googleUser.getAuthResponse().id_token;
+      sessionStorage.setItem('id_token', id_token);
 
-    API.tokenSignInAxios(id_token).then(id => {
-      sessionStorage.setItem('currentUserId', id);
-      API.getUser(id).then(res => {
-        setUser(user => (res.data ? res.data : user));
+      API.tokenSignInAxios(id_token).then(id => {
+        sessionStorage.setItem('currentUserId', id);
+        loadUserInfo();
       });
-    });
 
-    setSignedIn(true);
-  };
+      setSignedIn(true);
+    },
+    [loadUserInfo]
+  );
 
   const onFailure = error => {
     console.log(error);
@@ -75,7 +77,7 @@ const App = () => {
       onsuccess: onSuccess,
       onfailure: onFailure
     });
-  }, []);
+  }, [onSuccess]);
 
   useEffect(() => {
     const loadGoogle = () => {
