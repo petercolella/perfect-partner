@@ -1,6 +1,5 @@
 const db = require('../models');
 const textControl = require('./textController');
-const authware = require('../middleware/authware');
 
 // Defining methods for the usersController
 module.exports = {
@@ -10,10 +9,9 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  findById: authware,
-  function(req, res) {
-    if (req.user._id !== req.params.id) {
-      res.status(401).json({ message: 'Unauthorized' });
+  findById: function(req, res) {
+    if (req.user._id != req.params.id) {
+      return res.status(401).json({ message: 'Unauthorized' });
     }
     db.User.findById(req.params.id)
       .populate('nudges')
