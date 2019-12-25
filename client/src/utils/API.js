@@ -1,4 +1,5 @@
 import axios from 'axios';
+import tokenHeaderAxios from './tokenHeaderAxios';
 
 export default {
   // Gets all users
@@ -7,7 +8,7 @@ export default {
   },
   // Gets the user with the given id
   getUser: function(id) {
-    return axios.get('/api/users/' + id);
+    return tokenHeaderAxios.get('/api/users/' + id);
   },
   getUserByEmail: function(email) {
     return axios.get('/api/users?email=' + email);
@@ -25,7 +26,7 @@ export default {
   },
   tokenSignInXhr: function(id_token) {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', 'api/token');
+    xhr.open('POST', '/api/token');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       console.log('Signed in as: ' + xhr.responseText);
@@ -35,7 +36,7 @@ export default {
   tokenSignInAxios: function(id_token) {
     const tokenStr = 'idtoken=' + id_token;
     return axios
-      .post('api/token', tokenStr)
+      .post('/api/token', tokenStr)
       .then(function(res) {
         return res.data;
       })
