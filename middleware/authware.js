@@ -1,25 +1,14 @@
 const User = require('../models/user');
 require('dotenv').config();
-const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = process.env.CLIENT_ID;
-const client = new OAuth2Client(CLIENT_ID);
+const fn = require('../scripts/fn');
 
 module.exports = function(req, res, next) {
   try {
     const { authorization } = req.headers;
     if (!authorization) throw new Error();
 
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-        idToken: authorization,
-        audience: CLIENT_ID
-      });
-
-      const payload = ticket.getPayload();
-      return payload;
-    }
-
-    verify()
+    fn.verify(authorization)
       .then(payload => {
         const googleId = payload['sub'];
 
