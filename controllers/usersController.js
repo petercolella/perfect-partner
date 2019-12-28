@@ -11,8 +11,9 @@ module.exports = {
   },
   findById: function(req, res) {
     if (req.user._id != req.params.id) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(403).json({ message: 'Forbidden' });
     }
+
     db.User.findById(req.params.id)
       .populate('nudges')
       .then(dbModel => res.json(dbModel))
