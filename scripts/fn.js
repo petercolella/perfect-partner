@@ -1,3 +1,8 @@
+require('dotenv').config();
+const { OAuth2Client } = require('google-auth-library');
+const CLIENT_ID = process.env.CLIENT_ID;
+const client = new OAuth2Client(CLIENT_ID);
+
 module.exports = {
   getFutureTimestamp: function(nudge) {
     const { nudgeFrequency, nudgeFrequencyUnit } = nudge;
@@ -34,5 +39,11 @@ module.exports = {
     const futureTimestamp = Date.now() + randomMilliseconds;
 
     return futureTimestamp;
+  },
+  verify: function(token_id) {
+    return client.verifyIdToken({
+      idToken: token_id,
+      audience: CLIENT_ID
+    });
   }
 };
