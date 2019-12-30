@@ -8,7 +8,7 @@ export default {
   },
   // Gets the user with the given id
   getUser: function(id) {
-    return tokenHeaderAxios.get('/api/users/' + id);
+    return tokenHeaderAxios().get('/api/users/' + id);
   },
   getUserByEmail: function(email) {
     return axios.get('/api/users?email=' + email);
