@@ -31,33 +31,52 @@ const noUser = {
 };
 
 const App = () => {
-  const [signedIn, setSignedIn] = useState(true);
+  const [signedIn, setSignedIn] = useState(false);
   const [user, setUser] = useState(noUser);
+
+  const signOut = useCallback(() => {
+    if (window.gapi && window.gapi.auth2) {
+      const GoogleAuth = window.gapi.auth2.getAuthInstance();
+      GoogleAuth.signOut().then(function() {
+        console.log('User signed out.');
+      });
+    }
+
+    setUserSignedOut();
+    sessionStorage.removeItem('currentUserId');
+    sessionStorage.removeItem('id_token');
+  }, []);
 
   const loadUserInfo = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      API.getUser(id).then(res => {
-        setUser(user => (res.data ? res.data : user));
-      });
+      console.log('id:', id);
+      API.getUser(id)
+        .then(res => {
+          setUser(user => (res.data ? res.data : user));
+        })
+        .catch(err => {
+          console.log(err.response);
+          signOut();
+        });
     } else {
-      setSignedIn(false);
-      setUserSignedOut();
+      signOut();
     }
-  }, []);
+  }, [signOut]);
 
   const onSuccess = useCallback(
     googleUser => {
       console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
       const id_token = googleUser.getAuthResponse().id_token;
+      console.log('id_token:', id_token);
       sessionStorage.setItem('id_token', id_token);
 
-      API.tokenSignInAxios(id_token).then(id => {
-        sessionStorage.setItem('currentUserId', id);
-        loadUserInfo();
-      });
-
-      setSignedIn(true);
+      API.tokenSignInAxios(id_token)
+        .then(id => {
+          sessionStorage.setItem('currentUserId', id);
+          loadUserInfo();
+        })
+        .catch(err => console.log(err));
     },
     [loadUserInfo]
   );
@@ -102,18 +121,6 @@ const App = () => {
 
   const setUserSignedOut = () => {
     setUser(noUser);
-  };
-
-  const signOut = () => {
-    const GoogleAuth = window.gapi.auth2.getAuthInstance();
-    GoogleAuth.signOut().then(function() {
-      console.log('User signed out.');
-    });
-
-    sessionStorage.setItem('currentUserId', '');
-
-    setSignedIn(false);
-    setUserSignedOut();
   };
 
   return (
