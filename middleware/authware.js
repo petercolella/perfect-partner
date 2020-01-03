@@ -6,10 +6,11 @@ const fn = require('../scripts/fn');
 module.exports = function(req, res, next) {
   try {
     const { authorization } = req.headers;
-    if (!authorization) throw new Error();
+    if (!authorization) throw new Error('Unauthorized');
 
     fn.verify(authorization)
-      .then(payload => {
+      .then(ticket => {
+        const payload = ticket.getPayload();
         const googleId = payload['sub'];
 
         if (CLIENT_ID === payload['aud']) {
@@ -19,8 +20,12 @@ module.exports = function(req, res, next) {
           });
         }
       })
-      .catch(console.error);
+      .catch(err => {
+        console.log('verify err:', err);
+        res.status(401).json(err.message);
+      });
   } catch (err) {
-    res.status(401).json({ message: 'Unauthorized' });
+    console.log('authorization err:', err);
+    res.status(401).json(err.message);
   }
 };
