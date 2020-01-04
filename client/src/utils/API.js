@@ -35,14 +35,9 @@ export default {
   },
   tokenSignInAxios: function(id_token) {
     const tokenStr = 'idtoken=' + id_token;
-    return axios
-      .post('/api/token', tokenStr)
-      .then(function(res) {
-        return res.data;
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    return axios.post('/api/token', tokenStr).then(function(res) {
+      return res.data;
+    });
   },
   getNudges: function() {
     return axios.get('/api/nudges');
