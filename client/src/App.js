@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
 import API from './utils/API';
 
-//components
 import Landing from './components/Landing';
 import Dashboard from './components/Dashboard';
 import Birthday from './components/QuestionComponents/Birthday';
@@ -12,8 +13,8 @@ import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';
 import Phone from './components/QuestionComponents/Phone';
 import Anniversary from './components/QuestionComponents/Anniversary';
+import SnackbarContentWrapper from './components/SnackbarContentWrapper';
 
-//CSS
 import './styles.css';
 
 const noUser = {
@@ -30,9 +31,22 @@ const noUser = {
   phone: ''
 };
 
+const Transition = props => {
+  return <Slide {...props} direction="up" />;
+};
+
 const App = () => {
+  const [message, setMessage] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [user, setUser] = useState(noUser);
+  const [variant, setVariant] = useState(null);
+
+  const handleSnackbarOpen = (message, variant) => {
+    setMessage(message);
+    setVariant(variant);
+    setSnackbarOpen(true);
+  };
 
   const signOut = useCallback(() => {
     if (window.gapi && window.gapi.auth2) {
@@ -50,13 +64,14 @@ const App = () => {
   const loadUserInfo = useCallback(() => {
     const id = sessionStorage.getItem('currentUserId');
     if (id) {
-      console.log('id:', id);
+      setSignedIn(true);
       API.getUser(id)
         .then(res => {
           setUser(user => (res.data ? res.data : user));
         })
         .catch(err => {
-          console.log(err.response);
+          console.log(err.response.data);
+          handleSnackbarOpen(err.response.data, 'error');
           signOut();
         });
     } else {
@@ -68,7 +83,6 @@ const App = () => {
     googleUser => {
       console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
       const id_token = googleUser.getAuthResponse().id_token;
-      console.log('id_token:', id_token);
       sessionStorage.setItem('id_token', id_token);
 
       API.tokenSignInAxios(id_token)
@@ -76,9 +90,13 @@ const App = () => {
           sessionStorage.setItem('currentUserId', id);
           loadUserInfo();
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err.response.data);
+          handleSnackbarOpen(err.response.data, 'error');
+          signOut();
+        });
     },
-    [loadUserInfo]
+    [loadUserInfo, signOut]
   );
 
   const onFailure = error => {
@@ -123,8 +141,34 @@ const App = () => {
     setUser(noUser);
   };
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarOpen(false);
+  };
+
   return (
     <React.Fragment>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        TransitionComponent={Transition}
+        ContentProps={{
+          'aria-describedby': 'message-id'
+        }}>
+        <SnackbarContentWrapper
+          onClose={handleSnackbarClose}
+          variant={variant}
+          message={message}
+        />
+      </Snackbar>
       <CssBaseline />
       <BrowserRouter>
         <>
