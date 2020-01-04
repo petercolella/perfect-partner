@@ -1,26 +1,16 @@
 require('dotenv').config();
 const db = require('../models');
-const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = process.env.CLIENT_ID;
-const client = new OAuth2Client(CLIENT_ID);
+const fn = require('../scripts/fn');
 
 module.exports = {
   create: function(req, res) {
     const token_id = req.body.idtoken;
 
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-        idToken: token_id,
-        audience: CLIENT_ID
-      });
+    fn.verify(token_id)
+      .then(ticket => {
+        const payload = ticket.getPayload();
 
-      const payload = ticket.getPayload();
-      return payload;
-    }
-
-    verify()
-      .then(payload => {
-        console.log('payload', payload);
         const googleId = payload['sub'];
         const name = payload['name'];
         const email = payload['email'];
@@ -40,7 +30,7 @@ module.exports = {
         if (CLIENT_ID === payload['aud']) {
           db.User.findOne({ googleId }, (err, docs) => {
             if (err) {
-              console.error(err);
+              res.status(422).json(err.message);
             }
 
             if (!docs) {
@@ -53,6 +43,9 @@ module.exports = {
           });
         }
       })
-      .catch(console.error);
+      .catch(err => {
+        console.log('tokenController err:', err);
+        res.status(401).json(err.message);
+      });
   }
 };
