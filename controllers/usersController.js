@@ -11,7 +11,7 @@ module.exports = {
   },
   findById: function(req, res) {
     if (req.user._id != req.params.id) {
-      return res.status(403).json({ message: 'Forbidden' });
+      return res.status(403).json('Forbidden');
     }
 
     db.User.findById(req.params.id)
