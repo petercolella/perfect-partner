@@ -3,11 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+const http = require('http');
+const { DateTime } = require('luxon');
+const CronJob = require('cron').CronJob;
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const textController = require('./controllers/textController');
-const http = require('http');
-const { DateTime } = require('luxon');
 
 // Prevents Heroku from idling.
 setInterval(function() {
@@ -42,6 +44,13 @@ setInterval(function() {
     });
 }, 300000);
 
+console.log('Before job instantiation');
+const job = new CronJob('0 0 8 * * *', function() {
+  const d = new Date();
+  console.log('runActivatedNudges:', d);
+  textController.runActivatedNudges();
+});
+
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -64,4 +73,6 @@ mongoose.set('useCreateIndex', true);
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   textController.runActivatedNudges();
+  console.log('After job instantiation');
+  job.start();
 });
