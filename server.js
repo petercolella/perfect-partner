@@ -45,11 +45,17 @@ setInterval(function() {
 }, 300000);
 
 console.log('Before job instantiation');
-const job = new CronJob('0 0 8 * * *', function() {
-  const d = new Date();
-  console.log('runActivatedNudges:', d);
-  textController.runActivatedNudges();
-});
+const job = new CronJob(
+  '0 0 8 * * *',
+  function() {
+    const d = new Date();
+    console.log('runActivatedNudges:', d);
+    textController.runActivatedNudges();
+  },
+  null,
+  false,
+  'America/New_York'
+);
 
 // Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
