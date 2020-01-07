@@ -44,30 +44,28 @@ setInterval(function() {
     });
 }, 300000);
 
-console.log('Before job instantiation');
 const job = new CronJob(
   '0 0 8 * * *',
   function() {
     const d = new Date();
-    console.log('runActivatedNudges:', d);
+    console.log('run job:', d);
     textController.runActivatedNudges();
+    textController.runBirthdayNudges();
   },
   null,
   false,
   'America/New_York'
 );
 
-// Define middleware here
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// Serve up static assets (usually on heroku)
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
-// Add routes, both API and view
+
 app.use(routes);
 
-// Connect to the Mongo DB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp', {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -75,10 +73,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp', {
 });
 mongoose.set('useCreateIndex', true);
 
-// Start the API server
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-  textController.runActivatedNudges();
-  console.log('After job instantiation');
   job.start();
 });
