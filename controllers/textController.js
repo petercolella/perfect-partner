@@ -51,10 +51,7 @@ const self = (module.exports = {
       if (err) {
         console.log({ error: err.message });
       }
-      self.sendText(
-        `runActivatedNudges function in directory: ${__dirname}`,
-        '4047841090'
-      );
+
       nudges.forEach(nudge => {
         const { _id, textMessage, activated, textTimestamp } = nudge;
         if (activated) {
@@ -70,6 +67,43 @@ const self = (module.exports = {
               })
               .catch(err => console.log('Error: ', err.message));
           }
+        }
+      });
+    });
+  },
+  runBirthdayNudges: function() {
+    db.User.find({}, (err, users) => {
+      if (err) {
+        console.log({ error: err.message });
+      }
+
+      users.forEach(user => {
+        const { birthDate, partnerName, phone } = user;
+
+        const now = Date.now();
+        const currentYear = new Date().getFullYear();
+        const birthDateThisYear = birthDate
+          ? new Date(birthDate).setFullYear(currentYear)
+          : null;
+        const daysToBirthday = birthDateThisYear
+          ? Math.floor((birthDateThisYear - now) / (1000 * 60 * 60 * 24))
+          : null;
+        const birthDateThisYearString = new Date(
+          birthDateThisYear
+        ).toDateString();
+
+        console.log(
+          'daysToBirthday:',
+          daysToBirthday,
+          'birthDateThisYearString:',
+          birthDateThisYearString
+        );
+
+        if (daysToBirthday == 28 || daysToBirthday == -337) {
+          self.sendText(
+            `Don't forget ${partnerName}'s birthday on ${birthDateThisYearString}! Only four weeks to go!`,
+            phone
+          );
         }
       });
     });
