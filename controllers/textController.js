@@ -71,6 +71,43 @@ const self = (module.exports = {
       });
     });
   },
+  runAnniversaryNudges: function() {
+    db.User.find({}, (err, users) => {
+      if (err) {
+        console.log({ error: err.message });
+      }
+
+      users.forEach(user => {
+        const { anniversaryDate, partnerName, phone } = user;
+
+        const now = Date.now();
+        const currentYear = new Date().getFullYear();
+        const anniversaryDateThisYear = anniversaryDate
+          ? new Date(anniversaryDate).setFullYear(currentYear)
+          : null;
+        const daysToAnniversary = anniversaryDateThisYear
+          ? Math.floor((anniversaryDateThisYear - now) / (1000 * 60 * 60 * 24))
+          : null;
+        const anniversaryDateThisYearString = new Date(
+          anniversaryDateThisYear
+        ).toDateString();
+
+        console.log(
+          'daysToAnniversary:',
+          daysToAnniversary,
+          'anniversaryDateThisYearString:',
+          anniversaryDateThisYearString
+        );
+
+        if (daysToAnniversary == 28 || daysToAnniversary == -337) {
+          self.sendText(
+            `Don't forget your and ${partnerName}'s anniversary on ${anniversaryDateThisYearString}! Only four weeks to go!`,
+            phone
+          );
+        }
+      });
+    });
+  },
   runBirthdayNudges: function() {
     db.User.find({}, (err, users) => {
       if (err) {

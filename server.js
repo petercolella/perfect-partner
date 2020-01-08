@@ -51,6 +51,7 @@ const job = new CronJob(
     console.log('run job:', d);
     textController.runActivatedNudges();
     textController.runBirthdayNudges();
+    textController.runAnniversaryNudges();
   },
   null,
   false,
