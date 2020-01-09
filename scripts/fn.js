@@ -40,6 +40,12 @@ module.exports = {
 
     return futureTimestamp;
   },
+  ordinalNumberGenerator: function(num) {
+    const ordinalIndicatorArray = ['th', 'st', 'nd', 'rd'];
+    let lastDigit = num % 10;
+    if (lastDigit > 3) lastDigit = 0;
+    return num + ordinalIndicatorArray[lastDigit];
+  },
   verify: function(token_id) {
     return client.verifyIdToken({
       idToken: token_id,
