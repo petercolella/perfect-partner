@@ -82,6 +82,8 @@ const self = (module.exports = {
 
         const now = Date.now();
         const currentYear = new Date().getFullYear();
+        const yearOfAnniversay = new Date(anniversaryDate).getFullYear();
+        const years = parseInt(currentYear - yearOfAnniversay);
         const anniversaryDateThisYear = anniversaryDate
           ? new Date(anniversaryDate).setFullYear(currentYear)
           : null;
@@ -101,7 +103,9 @@ const self = (module.exports = {
 
         if (daysToAnniversary == 28 || daysToAnniversary == -337) {
           self.sendText(
-            `Don't forget your and ${partnerName}'s anniversary on ${anniversaryDateThisYearString}! Only four weeks to go!`,
+            `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
+              years
+            )} anniversary on ${anniversaryDateThisYearString}! Only four weeks to go!`,
             phone
           );
         }
@@ -119,6 +123,8 @@ const self = (module.exports = {
 
         const now = Date.now();
         const currentYear = new Date().getFullYear();
+        const yearOfBirthday = new Date(birthDate).getFullYear();
+        const age = parseInt(currentYear - yearOfBirthday);
         const birthDateThisYear = birthDate
           ? new Date(birthDate).setFullYear(currentYear)
           : null;
@@ -138,7 +144,9 @@ const self = (module.exports = {
 
         if (daysToBirthday == 28 || daysToBirthday == -337) {
           self.sendText(
-            `Don't forget ${partnerName}'s birthday on ${birthDateThisYearString}! Only four weeks to go!`,
+            `Don't forget ${partnerName}'s ${fn.ordinalNumberGenerator(
+              age
+            )} birthday on ${birthDateThisYearString}! Only four weeks to go!`,
             phone
           );
         }
