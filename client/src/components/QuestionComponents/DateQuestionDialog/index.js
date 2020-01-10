@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import CloseIcon from '@material-ui/icons/Close';
 
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,6 +13,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -45,15 +50,23 @@ const useStyles = makeStyles(theme => ({
     height: '100vh',
     width: '100vw'
   },
+  formControl: {
+    margin: theme.spacing(3)
+  },
   link: {
     color: theme.palette.text.primary,
     textDecoration: 'none'
+  },
+  lineThrough: {
+    textDecoration: 'line-through'
   }
 }));
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
 }
+
+const reminderArr = ['4 Weeks', '8 Weeks', '12 Weeks'];
 
 const DateQuestionDialog = props => {
   const classes = useStyles();
@@ -77,7 +90,8 @@ const DateQuestionDialog = props => {
     variant
   } = props;
 
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [state, setState] = useState({});
 
   const loadDialog = useCallback(() => {
     setDialogOpen(false);
@@ -90,6 +104,39 @@ const DateQuestionDialog = props => {
   useEffect(() => {
     loadDialog();
   }, [loadDialog, signedIn]);
+
+  const reminderArrRef = useRef();
+  reminderArrRef.current = reminderArr;
+
+  const createReminderObject = useCallback(() => {
+    const newNameObj = reminderArrRef.current.reduce(
+      (reminderObj, reminder) => {
+        return {
+          ...reminderObj,
+          [reminder]: false
+        };
+      },
+      {}
+    );
+    setState(newNameObj);
+  }, []);
+
+  useEffect(() => {
+    createReminderObject();
+  }, [createReminderObject]);
+
+  //   const isDiabled = name => {
+  //     for (let nudge of nudges) {
+  //       if (nudge.name === name) {
+  //         return true;
+  //       }
+  //     }
+  //     return false;
+  //   };
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
+  };
 
   function handleDialogClose(event, reason) {
     if (reason === 'clickaway' || reason === 'backdropClick') {
@@ -209,6 +256,37 @@ const DateQuestionDialog = props => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+              <div className={classes.root}>
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
+                  fullWidth={true}>
+                  <FormGroup row>
+                    {reminderArr.map(name => (
+                      <FormControlLabel
+                        key={name}
+                        // className={
+                        //   snackbarNudges.includes(name)
+                        //     ? classes.lineThrough
+                        //     : null
+                        // }
+                        control={
+                          <Checkbox
+                            checked={state[name]}
+                            onChange={handleChange(name)}
+                            value={name}
+                            // disabled={isDiabled(name)}
+                          />
+                        }
+                        label={name}
+                      />
+                    ))}
+                  </FormGroup>
+                  <FormHelperText>
+                    *These can be customized later.
+                  </FormHelperText>
+                </FormControl>
+              </div>
             </DialogContent>
             <DialogActions>
               <Button onClick={cancel} color="secondary">
