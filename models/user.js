@@ -31,6 +31,7 @@ const userSchema = new Schema({
       'Anniversary must be a valid date!'
     ]
   },
+  anniversaryReminders: { type: Array },
   birthDate: {
     type: Date,
     validate: [
