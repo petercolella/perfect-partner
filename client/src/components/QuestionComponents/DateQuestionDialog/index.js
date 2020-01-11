@@ -88,6 +88,7 @@ const DateQuestionDialog = props => {
     res,
     signedIn,
     snackbarOpen,
+    setAnniversaryReminders,
     setSnackbarOpen,
     title,
     userField,
@@ -95,6 +96,7 @@ const DateQuestionDialog = props => {
   } = props;
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reminders, setReminders] = useState([]);
   const [state, setState] = useState({});
 
   const loadDialog = useCallback(() => {
@@ -128,6 +130,15 @@ const DateQuestionDialog = props => {
   useEffect(() => {
     createReminderObject();
   }, [createReminderObject]);
+
+  useEffect(() => {
+    const newReminders = Object.keys(state).filter(reminder => state[reminder]);
+    setReminders(newReminders);
+  }, [state]);
+
+  useEffect(() => {
+    setAnniversaryReminders(reminders);
+  }, [reminders, setAnniversaryReminders]);
 
   //   const isDiabled = name => {
   //     for (let nudge of nudges) {
@@ -294,7 +305,7 @@ const DateQuestionDialog = props => {
               <Button onClick={cancel} color="secondary">
                 Cancel
               </Button>
-              <Button onClick={e => handleFormSubmit(e)} color="primary">
+              <Button onClick={handleFormSubmit} color="primary">
                 Submit
               </Button>
               <Link to={link} className={classes.link}>
