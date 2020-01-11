@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     width: '100vw'
   },
   formControl: {
-    margin: theme.spacing(3)
+    margin: theme.spacing(2)
   },
   link: {
     color: theme.palette.text.primary,
@@ -59,6 +59,10 @@ const useStyles = makeStyles(theme => ({
   },
   lineThrough: {
     textDecoration: 'line-through'
+  },
+  root: {
+    marginBottom: 0,
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -66,7 +70,7 @@ function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
 }
 
-const reminderArr = ['4 Weeks', '8 Weeks', '12 Weeks'];
+const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
 const DateQuestionDialog = props => {
   const classes = useStyles();
@@ -234,7 +238,7 @@ const DateQuestionDialog = props => {
         </DialogTitle>
         {signedIn ? (
           <>
-            <DialogContent>
+            <DialogContent dividers>
               <DialogContentText>
                 {firstName}, {question}
               </DialogContentText>
@@ -257,6 +261,10 @@ const DateQuestionDialog = props => {
                 />
               </MuiPickersUtilsProvider>
               <div className={classes.root}>
+                <DialogContentText classes={{ root: classes.root }}>
+                  Select each reminder you would like (in addition to the day
+                  of):
+                </DialogContentText>
                 <FormControl
                   component="fieldset"
                   className={classes.formControl}
@@ -265,17 +273,11 @@ const DateQuestionDialog = props => {
                     {reminderArr.map(name => (
                       <FormControlLabel
                         key={name}
-                        // className={
-                        //   snackbarNudges.includes(name)
-                        //     ? classes.lineThrough
-                        //     : null
-                        // }
                         control={
                           <Checkbox
                             checked={state[name]}
                             onChange={handleChange(name)}
                             value={name}
-                            // disabled={isDiabled(name)}
                           />
                         }
                         label={name}
@@ -283,7 +285,7 @@ const DateQuestionDialog = props => {
                     ))}
                   </FormGroup>
                   <FormHelperText>
-                    *These can be customized later.
+                    *Submitting overrides previous values
                   </FormHelperText>
                 </FormControl>
               </div>
