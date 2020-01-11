@@ -14,6 +14,7 @@ const Anniversary = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [anniversaryDate, setAnniversaryDate] = useState(null);
+  const [anniversaryReminders, setAnniversaryReminders] = useState([]);
   const [res, setRes] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
@@ -37,16 +38,15 @@ const Anniversary = props => {
     setSnackbarOpen(true);
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-
+  const handleFormSubmit = () => {
     if (!anniversaryDate) {
       handleSnackbarOpen('warning');
       return;
     }
 
     API.updateUser(user._id, {
-      anniversaryDate
+      anniversaryDate,
+      anniversaryReminders
     })
       .then(res => {
         loadUserInfo();
@@ -76,9 +76,11 @@ const Anniversary = props => {
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
+      reminders={anniversaryReminders}
       res={res}
       signedIn={signedIn}
       snackbarOpen={snackbarOpen}
+      setAnniversaryReminders={setAnniversaryReminders}
       setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={anniversaryDate}
