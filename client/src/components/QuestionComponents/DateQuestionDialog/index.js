@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -76,8 +76,9 @@ const DateQuestionDialog = props => {
   const classes = useStyles();
 
   const {
-    cancel,
     Image,
+    cancel,
+    dialogReminders,
     firstName,
     handleDateInputChange,
     handleFormSubmit,
@@ -86,10 +87,10 @@ const DateQuestionDialog = props => {
     loadUserInfo,
     question,
     res,
+    setParentReminders,
+    setSnackbarOpen,
     signedIn,
     snackbarOpen,
-    setAnniversaryReminders,
-    setSnackbarOpen,
     title,
     userField,
     variant
@@ -111,25 +112,31 @@ const DateQuestionDialog = props => {
     loadDialog();
   }, [loadDialog, signedIn]);
 
-  const reminderArrRef = useRef();
-  reminderArrRef.current = reminderArr;
+  const isChecked = useCallback(
+    name => {
+      for (let reminder of dialogReminders) {
+        if (reminder === name) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [dialogReminders]
+  );
 
   const createReminderObject = useCallback(() => {
-    const newNameObj = reminderArrRef.current.reduce(
-      (reminderObj, reminder) => {
-        return {
-          ...reminderObj,
-          [reminder]: false
-        };
-      },
-      {}
-    );
+    const newNameObj = reminderArr.reduce((reminderObj, reminder) => {
+      return {
+        ...reminderObj,
+        [reminder]: isChecked(reminder)
+      };
+    }, {});
     setState(newNameObj);
-  }, []);
+  }, [isChecked]);
 
   useEffect(() => {
     createReminderObject();
-  }, [createReminderObject]);
+  }, [createReminderObject, dialogReminders]);
 
   useEffect(() => {
     const newReminders = Object.keys(state).filter(reminder => state[reminder]);
@@ -137,17 +144,8 @@ const DateQuestionDialog = props => {
   }, [state]);
 
   useEffect(() => {
-    setAnniversaryReminders(reminders);
-  }, [reminders, setAnniversaryReminders]);
-
-  //   const isDiabled = name => {
-  //     for (let nudge of nudges) {
-  //       if (nudge.name === name) {
-  //         return true;
-  //       }
-  //     }
-  //     return false;
-  //   };
+    setParentReminders(reminders);
+  }, [reminders, setParentReminders]);
 
   const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked });
