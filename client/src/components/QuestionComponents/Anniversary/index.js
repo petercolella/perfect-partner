@@ -15,6 +15,7 @@ const Anniversary = props => {
   const { loadUserInfo, signedIn, user } = props;
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [anniversaryReminders, setAnniversaryReminders] = useState([]);
+  const [dialogReminders, setDialogReminders] = useState([]);
   const [res, setRes] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
@@ -24,6 +25,7 @@ const Anniversary = props => {
       API.getUser(id).then(res => {
         if (res.data.anniversaryDate) {
           setAnniversaryDate(res.data.anniversaryDate);
+          setDialogReminders(res.data.anniversaryReminders);
         }
       });
     }
@@ -32,6 +34,10 @@ const Anniversary = props => {
   useEffect(() => {
     loadAnniversaryDate();
   }, [loadAnniversaryDate]);
+
+  const handleDateInputChange = date => {
+    setAnniversaryDate(date);
+  };
 
   const handleSnackbarOpen = variant => {
     setVariant(variant);
@@ -61,27 +67,23 @@ const Anniversary = props => {
       });
   };
 
-  const handleDateInputChange = date => {
-    setAnniversaryDate(date);
-  };
-
   return (
     <DateQuestionDialog
+      Image={Gift}
       cancel={loadAnniversaryDate}
+      dialogReminders={dialogReminders}
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
-      Image={Gift}
       label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
-      reminders={anniversaryReminders}
       res={res}
+      setParentReminders={setAnniversaryReminders}
+      setSnackbarOpen={setSnackbarOpen}
       signedIn={signedIn}
       snackbarOpen={snackbarOpen}
-      setAnniversaryReminders={setAnniversaryReminders}
-      setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={anniversaryDate}
       variant={variant}
