@@ -14,6 +14,8 @@ const Birthday = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [birthDate, setBirthDate] = useState(null);
+  const [birthdayReminders, setBirthdayReminders] = useState([]);
+  const [dialogReminders, setDialogReminders] = useState([]);
   const [res, setRes] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
@@ -23,6 +25,7 @@ const Birthday = props => {
       API.getUser(id).then(res => {
         if (res.data.birthDate) {
           setBirthDate(res.data.birthDate);
+          setDialogReminders(res.data.birthdayReminders);
         }
       });
     }
@@ -37,16 +40,15 @@ const Birthday = props => {
     setSnackbarOpen(true);
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-
+  const handleFormSubmit = () => {
     if (!birthDate) {
       handleSnackbarOpen('warning');
       return;
     }
 
     API.updateUser(user._id, {
-      birthDate
+      birthDate,
+      birthdayReminders
     })
       .then(res => {
         loadUserInfo();
@@ -67,19 +69,21 @@ const Birthday = props => {
 
   return (
     <DateQuestionDialog
+      Image={Cake}
       cancel={loadBirthDate}
+      dialogReminders={dialogReminders}
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
-      Image={Cake}
       label={state.label}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       question={state.question}
       res={res}
+      setParentReminders={setBirthdayReminders}
+      setSnackbarOpen={setSnackbarOpen}
       signedIn={signedIn}
       snackbarOpen={snackbarOpen}
-      setSnackbarOpen={setSnackbarOpen}
       title={state.title}
       userField={birthDate}
       variant={variant}
