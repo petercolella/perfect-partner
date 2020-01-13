@@ -41,6 +41,7 @@ const userSchema = new Schema({
       'Birthday must be a valid date!'
     ]
   },
+  birthdayReminders: { type: Array },
   nudges: [
     {
       type: Schema.Types.ObjectId,
