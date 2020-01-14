@@ -1,6 +1,7 @@
 require('dotenv').config();
 const db = require('../models');
 const fn = require('../scripts/fn');
+const { DateTime } = require('luxon');
 
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Your Account Sid and Auth Token from twilio.com/console
@@ -8,6 +9,14 @@ const fn = require('../scripts/fn');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
+
+const reminderObj = {
+  '1 Week': 7,
+  '2 Weeks': 14,
+  '30 Days': 30,
+  '60 Days': 60,
+  '90 Days': 90
+};
 
 const self = (module.exports = {
   activate: function(req, res) {
@@ -119,7 +128,7 @@ const self = (module.exports = {
       }
 
       users.forEach(user => {
-        const { birthDate, partnerName, phone } = user;
+        const { birthDate, birthdayReminders, partnerName, phone } = user;
 
         const now = Date.now();
         const currentYear = new Date().getFullYear();
@@ -129,8 +138,19 @@ const self = (module.exports = {
           ? new Date(birthDate).setFullYear(currentYear)
           : null;
         const daysToBirthday = birthDateThisYear
-          ? Math.floor((birthDateThisYear - now) / (1000 * 60 * 60 * 24))
+          ? Math.trunc((birthDateThisYear - now) / (1000 * 60 * 60 * 24))
           : null;
+
+        const birthDateDayOfYearLuxon = DateTime.fromJSDate(birthDate)
+          .set({
+            year: currentYear
+          })
+          .toFormat('o');
+        console.log('birthDateDayOfYearLuxon:', birthDateDayOfYearLuxon);
+        const nowDayOfYear = DateTime.local().toFormat('o');
+        console.log('nowDayOfYear:', nowDayOfYear);
+        const daysToBirthdayLuxon = birthDateDayOfYearLuxon - nowDayOfYear;
+        console.log('daysToBirthdayLuxon:', daysToBirthdayLuxon);
         const birthDateThisYearString = new Date(
           birthDateThisYear
         ).toDateString();
@@ -142,24 +162,40 @@ const self = (module.exports = {
           birthDateThisYearString
         );
 
-        if (daysToBirthday == 28 || daysToBirthday == -337) {
+        if (daysToBirthday == 0) {
           self.sendText(
-            `Don't forget ${partnerName}'s ${fn.ordinalNumberGenerator(
+            `It's ${partnerName}'s ${fn.ordinalNumberGenerator(
               age
-            )} birthday on ${birthDateThisYearString}! Only four weeks to go!`,
+            )} birthday today! Make it special!`,
             phone
           );
         }
+
+        birthdayReminders.forEach(rem => {
+          const reminderDays = reminderObj[rem];
+
+          if (
+            daysToBirthdayLuxon == reminderDays ||
+            daysToBirthdayLuxon == reminderDays - 365
+          ) {
+            self.sendText(
+              `Don't forget ${partnerName}'s ${fn.ordinalNumberGenerator(
+                age
+              )} birthday on ${birthDateThisYearString}! Only ${rem} to go!`,
+              phone
+            );
+          }
+        });
       });
     });
   },
   sendText: function(body, to) {
     console.log('Body:', body, 'To:', to);
-    return client.messages.create({
-      body: `${body}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: `+1${to}`
-    });
+    // return client.messages.create({
+    //   body: `${body}`,
+    //   from: process.env.TWILIO_PHONE_NUMBER,
+    //   to: `+1${to}`
+    // });
   },
   setFutureTimestamp: function(nudge) {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
