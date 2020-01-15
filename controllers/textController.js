@@ -130,30 +130,25 @@ const self = (module.exports = {
       users.forEach(user => {
         const { birthDate, birthdayReminders, partnerName, phone } = user;
 
-        const now = Date.now();
-        const currentYear = new Date().getFullYear();
-        const yearOfBirthday = new Date(birthDate).getFullYear();
-        const age = parseInt(currentYear - yearOfBirthday);
-        const birthDateThisYear = birthDate
-          ? new Date(birthDate).setFullYear(currentYear)
-          : null;
-        const daysToBirthday = birthDateThisYear
-          ? Math.trunc((birthDateThisYear - now) / (1000 * 60 * 60 * 24))
-          : null;
+        const now = DateTime.local();
+        const currentYear = now.toFormat('yyyy');
+        const nowDayOfYear = now.toFormat('o');
 
-        const birthDateDayOfYearLuxon = DateTime.fromJSDate(birthDate)
-          .set({
-            year: currentYear
-          })
-          .toFormat('o');
-        console.log('birthDateDayOfYearLuxon:', birthDateDayOfYearLuxon);
-        const nowDayOfYear = DateTime.local().toFormat('o');
-        console.log('nowDayOfYear:', nowDayOfYear);
-        const daysToBirthdayLuxon = birthDateDayOfYearLuxon - nowDayOfYear;
-        console.log('daysToBirthdayLuxon:', daysToBirthdayLuxon);
-        const birthDateThisYearString = new Date(
-          birthDateThisYear
-        ).toDateString();
+        const bdayObj = DateTime.fromJSDate(birthDate);
+        const birthDateThisYear = bdayObj.set({ year: currentYear });
+        const birthDateDayOfYear = birthDateThisYear.toFormat('o');
+        const birthDateThisYearString = birthDateThisYear.toFormat('MMMM d');
+        const yearOfBirthday = bdayObj.toFormat('yyyy');
+
+        const age = parseInt(currentYear - yearOfBirthday);
+        const daysToBirthday = birthDateDayOfYear - nowDayOfYear;
+
+        console.log(
+          'birthDateDayOfYear:',
+          birthDateDayOfYear,
+          'nowDayOfYear:',
+          nowDayOfYear
+        );
 
         console.log(
           'daysToBirthday:',
@@ -175,8 +170,8 @@ const self = (module.exports = {
           const reminderDays = reminderObj[rem];
 
           if (
-            daysToBirthdayLuxon == reminderDays ||
-            daysToBirthdayLuxon == reminderDays - 365
+            daysToBirthday == reminderDays ||
+            daysToBirthday == reminderDays - 365
           ) {
             self.sendText(
               `Don't forget ${partnerName}'s ${fn.ordinalNumberGenerator(
