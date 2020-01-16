@@ -18,6 +18,15 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
   'o'
 );
 
+function formatDate(date) {
+  const dateObj = {};
+  const dt = DateTime.fromJSDate(date);
+  dateObj.dateDayOfYear = dt.set({ year: currentYear }).toFormat('o');
+  dateObj.dateString = dt.toFormat('MMMM d');
+  dateObj.yearOfDate = dt.toFormat('yyyy');
+  return dateObj;
+}
+
 const reminderObj = {
   '1 Week': 7,
   '2 Weeks': 14,
@@ -140,23 +149,11 @@ const self = (module.exports = {
         const partner = partnerName || 'your partner';
 
         if (birthDate && phone) {
-          const bdayObj = DateTime.fromJSDate(birthDate);
-          const birthDateThisYear = bdayObj.set({ year: currentYear });
-          const birthDateDayOfYear = birthDateThisYear.toFormat('o');
-          const birthDateString = bdayObj.toFormat('MMMM d');
-          const yearOfBirthday = bdayObj.toFormat('yyyy');
-
-          const age = parseInt(currentYear - yearOfBirthday);
-          const daysToBirthday = birthDateDayOfYear - nowDayOfYear;
-
-          console.log(
-            'Day of Year -- Bday:',
-            birthDateDayOfYear,
-            ', Now:',
-            nowDayOfYear,
-            ', Days to Bday:',
-            daysToBirthday
+          const { dateDayOfYear, dateString, yearOfDate } = formatDate(
+            birthDate
           );
+          const age = currentYear - yearOfDate;
+          const daysToBirthday = dateDayOfYear - nowDayOfYear;
 
           if (daysToBirthday == 0) {
             self.sendText(
@@ -177,7 +174,7 @@ const self = (module.exports = {
               self.sendText(
                 `Don't forget ${partner}'s ${fn.ordinalNumberGenerator(
                   age
-                )} birthday on ${birthDateString}! Only ${rem} to go!`,
+                )} birthday on ${dateString}! Only ${rem} to go!`,
                 phone
               );
             }
