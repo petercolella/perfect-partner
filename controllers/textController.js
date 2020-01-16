@@ -10,6 +10,14 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
+// const now = DateTime.fromISO('2020-12-20T08:30:00');
+const now = DateTime.local();
+const currentYear = now.toFormat('yyyy');
+const nowDayOfYear = now.toFormat('o');
+const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
+  'o'
+);
+
 const reminderObj = {
   '1 Week': 7,
   '2 Weeks': 14,
@@ -129,58 +137,52 @@ const self = (module.exports = {
 
       users.forEach(user => {
         const { birthDate, birthdayReminders, partnerName, phone } = user;
+        const partner = partnerName || 'your partner';
 
-        const now = DateTime.local();
-        const currentYear = now.toFormat('yyyy');
-        const nowDayOfYear = now.toFormat('o');
+        if (birthDate && phone) {
+          const bdayObj = DateTime.fromJSDate(birthDate);
+          const birthDateThisYear = bdayObj.set({ year: currentYear });
+          const birthDateDayOfYear = birthDateThisYear.toFormat('o');
+          const birthDateString = bdayObj.toFormat('MMMM d');
+          const yearOfBirthday = bdayObj.toFormat('yyyy');
 
-        const bdayObj = DateTime.fromJSDate(birthDate);
-        const birthDateThisYear = bdayObj.set({ year: currentYear });
-        const birthDateDayOfYear = birthDateThisYear.toFormat('o');
-        const birthDateThisYearString = birthDateThisYear.toFormat('MMMM d');
-        const yearOfBirthday = bdayObj.toFormat('yyyy');
+          const age = parseInt(currentYear - yearOfBirthday);
+          const daysToBirthday = birthDateDayOfYear - nowDayOfYear;
 
-        const age = parseInt(currentYear - yearOfBirthday);
-        const daysToBirthday = birthDateDayOfYear - nowDayOfYear;
-
-        console.log(
-          'birthDateDayOfYear:',
-          birthDateDayOfYear,
-          'nowDayOfYear:',
-          nowDayOfYear
-        );
-
-        console.log(
-          'daysToBirthday:',
-          daysToBirthday,
-          'birthDateThisYearString:',
-          birthDateThisYearString
-        );
-
-        if (daysToBirthday == 0) {
-          self.sendText(
-            `It's ${partnerName}'s ${fn.ordinalNumberGenerator(
-              age
-            )} birthday today! Make it special!`,
-            phone
+          console.log(
+            'Day of Year -- Bday:',
+            birthDateDayOfYear,
+            ', Now:',
+            nowDayOfYear,
+            ', Days to Bday:',
+            daysToBirthday
           );
-        }
 
-        birthdayReminders.forEach(rem => {
-          const reminderDays = reminderObj[rem];
-
-          if (
-            daysToBirthday == reminderDays ||
-            daysToBirthday == reminderDays - 365
-          ) {
+          if (daysToBirthday == 0) {
             self.sendText(
-              `Don't forget ${partnerName}'s ${fn.ordinalNumberGenerator(
+              `It's ${partner}'s ${fn.ordinalNumberGenerator(
                 age
-              )} birthday on ${birthDateThisYearString}! Only ${rem} to go!`,
+              )} birthday today! Make it special!`,
               phone
             );
           }
-        });
+
+          birthdayReminders.forEach(rem => {
+            const reminderDays = reminderObj[rem];
+
+            if (
+              daysToBirthday == reminderDays ||
+              daysToBirthday == reminderDays - numberOfDaysInYear
+            ) {
+              self.sendText(
+                `Don't forget ${partner}'s ${fn.ordinalNumberGenerator(
+                  age
+                )} birthday on ${birthDateString}! Only ${rem} to go!`,
+                phone
+              );
+            }
+          });
+        }
       });
     });
   },
