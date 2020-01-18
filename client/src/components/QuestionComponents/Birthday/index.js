@@ -64,7 +64,8 @@ const Birthday = props => {
   };
 
   const handleDateInputChange = date => {
-    setBirthDate(date);
+    const dateToDateString = date.toDateString();
+    setBirthDate(dateToDateString);
   };
 
   return (
