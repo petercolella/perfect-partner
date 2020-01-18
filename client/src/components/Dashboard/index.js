@@ -123,9 +123,11 @@ const Dashboard = props => {
     event.preventDefault();
     API.updateUser(user._id, {
       ...user
-    }).then(() => {
-      loadUserInfo();
-    });
+    })
+      .then(() => {
+        loadUserInfo();
+      })
+      .catch(err => console.log(err.response.data));
     setUserDialogOpen(false);
   };
 
