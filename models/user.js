@@ -3,25 +3,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   googleId: { type: String },
+  email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
+  imageUrl: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String },
-  phone: {
-    type: String,
-    validate: {
-      validator: async v => {
-        const docs = await User.findOne({ phone: v });
-        return !docs;
-      },
-      message: 'Phone number already exists!'
-    }
-  },
-  partnerName: {
-    type: String,
-    maxlength: [50, 'Partner name may not exceed 50 characters!']
-  },
-  email: { type: String, required: true, unique: true },
-  imageUrl: { type: String },
   anniversaryDate: {
     type: Date,
     validate: [
@@ -42,6 +28,22 @@ const userSchema = new Schema({
     ]
   },
   birthdayReminders: { type: Array },
+  partnerName: {
+    type: String,
+    default: '',
+    maxlength: [50, 'Partner name may not exceed 50 characters!']
+  },
+  phone: {
+    type: String,
+    default: '',
+    validate: {
+      validator: async v => {
+        const docs = await User.findOne({ phone: v });
+        return !docs;
+      },
+      message: 'Phone number already exists!'
+    }
+  },
   nudges: [
     {
       type: Schema.Types.ObjectId,
