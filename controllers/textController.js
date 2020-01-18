@@ -104,36 +104,45 @@ const self = (module.exports = {
       }
 
       users.forEach(user => {
-        const { anniversaryDate, partnerName, phone } = user;
+        const {
+          anniversaryDate,
+          anniversaryReminders,
+          partnerName,
+          phone
+        } = user;
+        const partner = partnerName || 'your partner';
 
-        const now = Date.now();
-        const currentYear = new Date().getFullYear();
-        const yearOfAnniversay = new Date(anniversaryDate).getFullYear();
-        const years = parseInt(currentYear - yearOfAnniversay);
-        const anniversaryDateThisYear = anniversaryDate
-          ? new Date(anniversaryDate).setFullYear(currentYear)
-          : null;
-        const daysToAnniversary = anniversaryDateThisYear
-          ? Math.floor((anniversaryDateThisYear - now) / (1000 * 60 * 60 * 24))
-          : null;
-        const anniversaryDateThisYearString = new Date(
-          anniversaryDateThisYear
-        ).toDateString();
-
-        console.log(
-          'daysToAnniversary:',
-          daysToAnniversary,
-          'anniversaryDateThisYearString:',
-          anniversaryDateThisYearString
-        );
-
-        if (daysToAnniversary == 28 || daysToAnniversary == -337) {
-          self.sendText(
-            `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
-              years
-            )} anniversary on ${anniversaryDateThisYearString}! Only four weeks to go!`,
-            phone
+        if (anniversaryDate && phone) {
+          const { dateDayOfYear, dateString, yearOfDate } = formatDate(
+            anniversaryDate
           );
+          const years = currentYear - yearOfDate;
+          const daysToAnniversary = dateDayOfYear - nowDayOfYear;
+
+          if (daysToAnniversary == 0) {
+            self.sendText(
+              `It's your and ${partner}'s ${fn.ordinalNumberGenerator(
+                years
+              )} anniversary today! Make it special!`,
+              phone
+            );
+          }
+
+          anniversaryReminders.forEach(rem => {
+            const reminderDays = reminderObj[rem];
+
+            if (
+              daysToAnniversary == reminderDays ||
+              daysToAnniversary == reminderDays - numberOfDaysInYear
+            ) {
+              self.sendText(
+                `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
+                  years
+                )} anniversary on ${dateString}! Only ${rem} to go!`,
+                phone
+              );
+            }
+          });
         }
       });
     });
