@@ -1,15 +1,13 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const routes = require('./routes');
-const http = require('http');
 const { DateTime } = require('luxon');
 const CronJob = require('cron').CronJob;
+const express = require('express');
+const http = require('http');
+const mongoose = require('mongoose');
+const routes = require('./routes');
+const textController = require('./controllers/textController');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const textController = require('./controllers/textController');
 
 // Prevents Heroku from idling.
 setInterval(function() {
@@ -50,16 +48,16 @@ const job = new CronJob(
     const d = new Date();
     console.log('run job:', d);
     textController.runActivatedNudges();
-    textController.runBirthdayNudges();
     textController.runAnniversaryNudges();
+    textController.runBirthdayNudges();
   },
   null,
   false,
   'America/New_York'
 );
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -68,8 +66,8 @@ if (process.env.NODE_ENV === 'production') {
 app.use(routes);
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp', {
-  useNewUrlParser: true,
   useFindAndModify: false,
+  useNewUrlParser: true,
   useUnifiedTopology: true
 });
 mongoose.set('useCreateIndex', true);
