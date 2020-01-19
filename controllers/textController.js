@@ -12,8 +12,10 @@ const client = require('twilio')(accountSid, authToken);
 
 // const now = DateTime.fromISO('2020-12-20T08:30:00');
 const now = DateTime.local();
+console.log('now:', now);
 const currentYear = now.toFormat('yyyy');
 const nowDayOfYear = now.toFormat('o');
+console.log('nowDayOfYear:', nowDayOfYear);
 const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
   'o'
 );
@@ -21,9 +23,11 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
 function formatDate(date) {
   const dateObj = {};
   const dt = DateTime.fromJSDate(date);
+  console.log('dt:', dt);
   dateObj.dateDayOfYear = dt.set({ year: currentYear }).toFormat('o');
   dateObj.dateString = dt.toFormat('MMMM d');
   dateObj.yearOfDate = dt.toFormat('yyyy');
+  console.log('dateObj:', dateObj);
   return dateObj;
 }
 
@@ -194,11 +198,11 @@ const self = (module.exports = {
   },
   sendText: function(body, to) {
     console.log('Body:', body, 'To:', to);
-    return client.messages.create({
-      body: `${body}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: `+1${to}`
-    });
+    // return client.messages.create({
+    //   body: `${body}`,
+    //   from: process.env.TWILIO_PHONE_NUMBER,
+    //   to: `+1${to}`
+    // });
   },
   setFutureTimestamp: function(nudge) {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
