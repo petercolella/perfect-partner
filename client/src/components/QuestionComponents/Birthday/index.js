@@ -35,6 +35,10 @@ const Birthday = props => {
     loadBirthDate();
   }, [loadBirthDate]);
 
+  const handleDateInputChange = date => {
+    setBirthDate(date.setUTCHours(0, 0, 0));
+  };
+
   const handleSnackbarOpen = variant => {
     setVariant(variant);
     setSnackbarOpen(true);
@@ -61,11 +65,6 @@ const Birthday = props => {
         setRes(errMsg);
         handleSnackbarOpen('error');
       });
-  };
-
-  const handleDateInputChange = date => {
-    const dateToDateString = date.toDateString();
-    setBirthDate(dateToDateString);
   };
 
   return (
