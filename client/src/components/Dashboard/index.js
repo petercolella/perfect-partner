@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -72,9 +72,16 @@ const Dashboard = props => {
   });
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [fade, setFade] = useState(true);
   const [userDialogOpen, setUserDialogOpen] = useState(false);
 
   const { loadUserInfo, setUser, signedIn, user } = props;
+
+  useEffect(() => {
+    return () => {
+      setFade(false);
+    };
+  }, []);
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
@@ -134,7 +141,7 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <Fade in={true} timeout={1000}>
+    <Fade in={fade} timeout={1000}>
       <Container className={classes.container}>
         <Toolbar />
         <Grid container spacing={4}>
