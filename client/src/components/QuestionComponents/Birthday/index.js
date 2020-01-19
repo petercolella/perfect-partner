@@ -36,6 +36,7 @@ const Birthday = props => {
   }, [loadBirthDate]);
 
   const handleDateInputChange = date => {
+    date = new Date(date.setUTCHours(0, 0));
     console.log(date);
     console.log(date.toISOString());
     setBirthDate(date);

@@ -36,6 +36,7 @@ const Anniversary = props => {
   }, [loadAnniversaryDate]);
 
   const handleDateInputChange = date => {
+    date = new Date(date.setUTCHours(0, 0));
     console.log(date);
     console.log(date.toISOString());
     setAnniversaryDate(date);
