@@ -25,6 +25,8 @@ const Birthday = props => {
       API.getUser(id).then(res => {
         if (res.data.birthDate) {
           setBirthDate(res.data.birthDate);
+        }
+        if (res.data.birthdayReminders) {
           setDialogReminders(res.data.birthdayReminders);
         }
       });
@@ -36,7 +38,7 @@ const Birthday = props => {
   }, [loadBirthDate]);
 
   const handleDateInputChange = date => {
-    date = new Date(date.setUTCHours(0, 0));
+    date = new Date(date.setHours(0, 0, 0, 0));
     console.log(date);
     console.log(date.toISOString());
     setBirthDate(date);

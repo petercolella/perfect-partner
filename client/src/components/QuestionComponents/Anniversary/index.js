@@ -25,6 +25,8 @@ const Anniversary = props => {
       API.getUser(id).then(res => {
         if (res.data.anniversaryDate) {
           setAnniversaryDate(res.data.anniversaryDate);
+        }
+        if (res.data.anniversaryReminders) {
           setDialogReminders(res.data.anniversaryReminders);
         }
       });
@@ -36,7 +38,7 @@ const Anniversary = props => {
   }, [loadAnniversaryDate]);
 
   const handleDateInputChange = date => {
-    date = new Date(date.setUTCHours(0, 0));
+    date = new Date(date.setHours(0, 0, 0, 0));
     console.log(date);
     console.log(date.toISOString());
     setAnniversaryDate(date);
