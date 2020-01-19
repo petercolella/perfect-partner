@@ -25,18 +25,32 @@ module.exports = {
       .catch(err => res.status(422).json(err.message));
   },
   update: function(req, res) {
-    db.User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-      runValidators: true
-    })
-      .then(dbModel => {
-        if (req.body.hasOwnProperty('phone')) {
-          const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
-          textControl.sendText(updateBody, dbModel.phone);
-        }
-        res.json(dbModel);
+    console.log(
+      'req.body.anniversaryDate:',
+      req.body.anniversaryDate,
+      'req.body.birthDate:',
+      req.body.birthDate
+    );
+
+    db.User.findOne({ phone: req.body.phone }).then(dbModel => {
+      if (dbModel) {
+        const { phone, ...rest } = req.body;
+        req.body = rest;
+      }
+
+      db.User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+        runValidators: true
       })
-      .catch(err => res.status(422).json(err.message));
+        .then(dbModel => {
+          if (req.body.hasOwnProperty('phone')) {
+            const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
+            textControl.sendText(updateBody, dbModel.phone);
+          }
+          res.json(dbModel);
+        })
+        .catch(err => res.status(422).json(err.message));
+    });
   },
   remove: function(req, res) {
     db.User.findById({ _id: req.params.id })
