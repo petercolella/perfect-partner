@@ -74,5 +74,7 @@ mongoose.set('useCreateIndex', true);
 
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+  textController.runAnniversaryNudges();
+  textController.runBirthdayNudges();
   job.start();
 });
