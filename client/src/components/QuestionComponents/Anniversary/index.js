@@ -36,8 +36,7 @@ const Anniversary = props => {
   }, [loadAnniversaryDate]);
 
   const handleDateInputChange = date => {
-    const dateToDateString = date.toDateString();
-    setAnniversaryDate(dateToDateString);
+    setAnniversaryDate(date.setUTCHours(0, 0, 0));
   };
 
   const handleSnackbarOpen = variant => {
