@@ -50,10 +50,10 @@ const job = new CronJob(
     textController.runActivatedNudges();
     textController.runAnniversaryNudges();
     textController.runBirthdayNudges();
-  },
-  null,
-  false,
-  'America/New_York'
+  }
+  //   null,
+  //   false,
+  //   'America/New_York'
 );
 
 app.use(express.json());
