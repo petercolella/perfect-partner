@@ -12,15 +12,15 @@ const client = require('twilio')(accountSid, authToken);
 
 // const now = DateTime.fromISO('2020-12-20T08:30:00');
 const now = DateTime.local();
-console.log('now:', now);
 const currentYear = now.toFormat('yyyy');
 const nowDayOfYear = now.toFormat('o');
-console.log('nowDayOfYear:', nowDayOfYear);
 const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
   'o'
 );
 
 function formatDate(date) {
+  console.log('now:', now);
+  console.log('nowDayOfYear:', nowDayOfYear);
   const dateObj = {};
   const dt = DateTime.fromJSDate(date);
   console.log('dt:', dt);
