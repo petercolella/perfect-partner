@@ -50,10 +50,10 @@ const job = new CronJob(
     textController.runActivatedNudges();
     textController.runAnniversaryNudges();
     textController.runBirthdayNudges();
-  }
-  //   null,
-  //   false,
-  //   'America/New_York'
+  },
+  null,
+  false,
+  'America/New_York'
 );
 
 app.use(express.json());
@@ -74,7 +74,5 @@ mongoose.set('useCreateIndex', true);
 
 app.listen(PORT, function() {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-  textController.runAnniversaryNudges();
-  textController.runBirthdayNudges();
   job.start();
 });
