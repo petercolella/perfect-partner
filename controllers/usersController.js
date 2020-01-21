@@ -1,5 +1,6 @@
 const db = require('../models');
 const textControl = require('./textController');
+const { DateTime } = require('luxon');
 
 // Defining methods for the usersController
 module.exports = {
@@ -26,10 +27,16 @@ module.exports = {
   },
   update: function(req, res) {
     console.log(
-      'req.body.anniversaryDate:',
+      'anniversaryDate:',
       req.body.anniversaryDate,
-      'req.body.birthDate:',
-      req.body.birthDate
+      'anniversaryDate.getTimeszoneOffset:',
+      DateTime.fromISO(req.body.anniversaryDate).offset
+    );
+    console.log(
+      'birthDate:',
+      req.body.birthDate,
+      'birthDate.getTimeszoneOffset:',
+      DateTime.fromISO(req.body.birthDate).offset
     );
 
     db.User.findOne({ phone: req.body.phone }).then(dbModel => {
