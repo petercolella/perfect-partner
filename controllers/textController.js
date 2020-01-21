@@ -19,11 +19,15 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
 );
 
 function formatDate(date) {
-  console.log('now:', now);
-  console.log('nowDayOfYear:', nowDayOfYear);
-  const dateObj = {};
   const dt = DateTime.fromJSDate(date);
-  console.log('dt:', dt);
+  console.log(`
+DateTime.ts: ${dt.ts}
+DateTime.loc.locale: ${dt.loc.locale}
+DateTime.loc.intl: ${dt.loc.intl}
+DateTime.o: ${dt.o}`);
+  console.log('DateTime.c:', dt.c);
+
+  const dateObj = {};
   dateObj.dateDayOfYear = dt.set({ year: currentYear }).toFormat('o');
   dateObj.dateString = dt.toFormat('MMMM d');
   dateObj.yearOfDate = dt.toFormat('yyyy');
@@ -102,7 +106,7 @@ const self = (module.exports = {
     });
   },
   runAnniversaryNudges: function() {
-    db.User.find({}, (err, users) => {
+    return db.User.find({}, (err, users) => {
       if (err) {
         console.log({ error: err.message });
       }
@@ -152,7 +156,7 @@ const self = (module.exports = {
     });
   },
   runBirthdayNudges: function() {
-    db.User.find({}, (err, users) => {
+    return db.User.find({}, (err, users) => {
       if (err) {
         console.log({ error: err.message });
       }
