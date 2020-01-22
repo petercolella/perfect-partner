@@ -11,7 +11,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 // const now = DateTime.fromISO('2020-12-20T08:30:00');
-const now = DateTime.local();
+const now = DateTime.utc();
 const currentYear = now.toFormat('yyyy');
 const nowDayOfYear = now.toFormat('o');
 const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(

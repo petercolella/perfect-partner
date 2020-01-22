@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const db = require('../models');
 const textController = require('../controllers/textController');
 
-const now = DateTime.local();
+const now = DateTime.utc();
 const nowDayOfYear = now.toFormat('o');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp', {
