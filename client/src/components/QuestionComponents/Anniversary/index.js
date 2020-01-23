@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { DateTime } from 'luxon';
 import DateQuestionDialog from '../DateQuestionDialog';
 import API from '../../../utils/API';
 import { ReactComponent as Gift } from './gift.svg';
@@ -20,11 +21,27 @@ const Anniversary = props => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
 
+  const localToUTC = date => {
+    console.log('localToUTC:', date, date.toISO());
+    const newDate = date.setZone('UTC').set({ hour: 0 });
+    console.log(newDate, newDate.toISO());
+    return newDate;
+  };
+
+  const UTCToLocal = date => {
+    console.log('UTCToLocal:', date, date.toISO());
+    const newHour = date.hour - date.offset / 60;
+    const newDate = date.set({ hour: newHour });
+    console.log(newHour, newDate, newDate.toISO());
+    return newDate;
+  };
+
   const loadAnniversaryDate = useCallback(() => {
     if (id) {
       API.getUser(id).then(res => {
         if (res.data.anniversaryDate) {
-          setAnniversaryDate(res.data.anniversaryDate);
+          const dt = DateTime.fromISO(res.data.anniversaryDate);
+          setAnniversaryDate(UTCToLocal(dt));
         }
         if (res.data.anniversaryReminders) {
           setDialogReminders(res.data.anniversaryReminders);
@@ -38,10 +55,9 @@ const Anniversary = props => {
   }, [loadAnniversaryDate]);
 
   const handleDateInputChange = date => {
-    date = new Date(date.setHours(0, 0, 0, 0));
-    console.log(date);
-    console.log(date.toISOString());
-    setAnniversaryDate(date);
+    const dt = DateTime.fromJSDate(date).set({ hour: 0, minute: 0 });
+    console.log('handleDateInputChange:', dt, dt.toISO());
+    setAnniversaryDate(dt);
   };
 
   const handleSnackbarOpen = variant => {
@@ -56,11 +72,11 @@ const Anniversary = props => {
     }
 
     API.updateUser(user._id, {
-      anniversaryDate,
+      anniversaryDate: localToUTC(anniversaryDate),
       anniversaryReminders
     })
       .then(res => {
-        loadUserInfo();
+        loadAnniversaryDate();
         setRes(res.data.anniversaryDate);
         handleSnackbarOpen('success');
       })
