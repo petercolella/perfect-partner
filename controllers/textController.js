@@ -19,7 +19,7 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
 );
 
 function formatDate(date) {
-  const dt = DateTime.fromJSDate(date);
+  const dt = DateTime.fromJSDate(date).setZone('UTC');
   console.log(`
 DateTime.ts: ${dt.ts}
 DateTime.loc.locale: ${dt.loc.locale}
