@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -172,15 +173,16 @@ const DateQuestionDialog = props => {
   };
 
   const renderSnackbarContentWrapper = (res, variant) => {
+    const dt = DateTime.fromISO(res);
+    const localeStr = dt.setZone('UTC').toLocaleString();
+
     let span;
     switch (variant) {
       case 'error':
         span = res;
         break;
       case 'success':
-        span = `${title}: ${new Date(
-          res
-        ).toLocaleDateString()} has been submitted.`;
+        span = `${title}: ${localeStr} has been submitted.`;
         break;
       case 'warning':
         span = `Oops! That's not valid input.`;
