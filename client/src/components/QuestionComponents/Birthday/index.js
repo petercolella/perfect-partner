@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { DateTime } from 'luxon';
 import DateQuestionDialog from '../DateQuestionDialog';
 import API from '../../../utils/API';
 import { ReactComponent as Cake } from './cake.svg';
@@ -20,11 +21,27 @@ const Birthday = props => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
 
+  const localToUTC = date => {
+    console.log('localToUTC:', date, date.toISO());
+    const newDate = date.setZone('UTC').set({ hour: 0 });
+    console.log(newDate, newDate.toISO());
+    return newDate;
+  };
+
+  const UTCToLocal = date => {
+    console.log('UTCToLocal:', date, date.toISO());
+    const newHour = date.hour - date.offset / 60;
+    const newDate = date.set({ hour: newHour });
+    console.log(newHour, newDate, newDate.toISO());
+    return newDate;
+  };
+
   const loadBirthDate = useCallback(() => {
     if (id) {
       API.getUser(id).then(res => {
         if (res.data.birthDate) {
-          setBirthDate(res.data.birthDate);
+          const dt = DateTime.fromISO(res.data.birthDate);
+          setBirthDate(UTCToLocal(dt));
         }
         if (res.data.birthdayReminders) {
           setDialogReminders(res.data.birthdayReminders);
@@ -38,10 +55,14 @@ const Birthday = props => {
   }, [loadBirthDate]);
 
   const handleDateInputChange = date => {
-    date = new Date(date.setHours(0, 0, 0, 0));
-    console.log(date);
-    console.log(date.toISOString());
-    setBirthDate(date);
+    const dt = DateTime.fromJSDate(date).set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+    console.log('handleDateInputChange:', dt, dt.toISO());
+    setBirthDate(dt);
   };
 
   const handleSnackbarOpen = variant => {
@@ -56,11 +77,11 @@ const Birthday = props => {
     }
 
     API.updateUser(user._id, {
-      birthDate,
+      birthDate: localToUTC(birthDate),
       birthdayReminders
     })
       .then(res => {
-        loadUserInfo();
+        loadBirthDate();
         setRes(res.data.birthDate);
         handleSnackbarOpen('success');
       })
