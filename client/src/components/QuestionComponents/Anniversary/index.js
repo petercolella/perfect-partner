@@ -55,7 +55,12 @@ const Anniversary = props => {
   }, [loadAnniversaryDate]);
 
   const handleDateInputChange = date => {
-    const dt = DateTime.fromJSDate(date).set({ hour: 0, minute: 0 });
+    const dt = DateTime.fromJSDate(date).set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
     console.log('handleDateInputChange:', dt, dt.toISO());
     setAnniversaryDate(dt);
   };
