@@ -2,27 +2,17 @@ import axios from 'axios';
 import tokenHeaderAxios from './tokenHeaderAxios';
 
 export default {
-  // Gets all users
-  getUsers: function() {
-    return axios.get('/api/users');
-  },
-  // Gets the user with the given id
   getUser: function(id) {
     return tokenHeaderAxios().get('/api/users/' + id);
   },
-  getUserByEmail: function(email) {
-    return axios.get('/api/users?email=' + email);
-  },
-  // Deletes the user with the given id
   deleteUser: function(id) {
-    return axios.delete('/api/users/' + id);
+    return tokenHeaderAxios().delete('/api/users/' + id);
   },
-  // Saves a user to the database
   saveUser: function(userData) {
     return axios.post('/api/users', userData);
   },
   updateUser: function(id, userData) {
-    return axios.put('/api/users/' + id, userData);
+    return tokenHeaderAxios().put('/api/users/' + id, userData);
   },
   tokenSignInXhr: function(id_token) {
     const xhr = new XMLHttpRequest();
@@ -38,9 +28,6 @@ export default {
     return axios.post('/api/token', tokenStr).then(function(res) {
       return res.data;
     });
-  },
-  getNudges: function() {
-    return axios.get('/api/nudges');
   },
   getNudge: function(id) {
     return axios.get('/api/nudges/' + id);
