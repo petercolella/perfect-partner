@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -181,86 +181,93 @@ const App = () => {
             signOut={signOut}
             user={user}
           />
-          <Route
-            exact
-            path="/"
-            render={routeProps => (
-              <Landing {...routeProps} signedIn={signedIn} user={user} />
-            )}
-          />
-          <Route
-            exact
-            path="/anniversary"
-            render={routeProps => (
-              <Anniversary
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/birthday"
-            render={routeProps => (
-              <Birthday
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/nudges"
-            render={routeProps => (
-              <Nudges
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/partner"
-            render={routeProps => (
-              <Partner
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/phone"
-            render={routeProps => (
-              <Phone
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/dashboard"
-            render={routeProps => (
-              <Dashboard
-                {...routeProps}
-                loadUserInfo={loadUserInfo}
-                setUser={setUser}
-                signedIn={signedIn}
-                user={user}
-              />
-            )}
-          />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={routeProps => (
+                <Landing {...routeProps} signedIn={signedIn} user={user} />
+              )}
+            />
+            <Route
+              exact
+              path="/anniversary"
+              render={routeProps => (
+                <Anniversary
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/birthday"
+              render={routeProps => (
+                <Birthday
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/nudges"
+              render={routeProps => (
+                <Nudges
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/partner"
+              render={routeProps => (
+                <Partner
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/phone"
+              render={routeProps => (
+                <Phone
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/dashboard"
+              render={routeProps => (
+                <Dashboard
+                  {...routeProps}
+                  loadUserInfo={loadUserInfo}
+                  setUser={setUser}
+                  signedIn={signedIn}
+                  user={user}
+                />
+              )}
+            />
+            <Route
+              render={routeProps => (
+                <Landing {...routeProps} signedIn={signedIn} user={user} />
+              )}
+            />
+          </Switch>
         </>
       </BrowserRouter>
     </React.Fragment>
