@@ -51,9 +51,11 @@ const App = () => {
   const signOut = useCallback(() => {
     if (window.gapi && window.gapi.auth2) {
       const GoogleAuth = window.gapi.auth2.getAuthInstance();
-      GoogleAuth.signOut().then(function() {
-        console.log('User signed out.');
-      });
+      GoogleAuth.signOut()
+        .then(function() {
+          console.log('User signed out.');
+        })
+        .catch(err => console.log(err));
     }
 
     setUserSignedOut();
@@ -70,8 +72,9 @@ const App = () => {
           setUser(user => (res.data ? res.data : user));
         })
         .catch(err => {
-          console.log(err.response.data);
-          handleSnackbarOpen(err.response.data, 'error');
+          const errStr = err.response.data.split(', ')[0];
+          console.log(errStr);
+          handleSnackbarOpen(errStr, 'error');
           signOut();
         });
     } else {
