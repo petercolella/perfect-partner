@@ -3,16 +3,13 @@ const usersController = require('../../controllers/usersController');
 const authware = require('../../middleware/authware');
 
 // Matches with "/api/users"
-router
-  .route('/')
-  .get(usersController.findAll)
-  .post(usersController.create);
+router.route('/').post(usersController.create);
 
 // Matches with "/api/users/:id"
 router
   .route('/:id')
   .get(authware, usersController.findById)
-  .put(usersController.update)
-  .delete(usersController.remove);
+  .put(authware, usersController.update)
+  .delete(authware, usersController.remove);
 
 module.exports = router;
