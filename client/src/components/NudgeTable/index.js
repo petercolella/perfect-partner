@@ -55,14 +55,18 @@ const StyledKeyboardArrowLeft = withStyles(theme => ({
   }
 }))(KeyboardArrowLeft);
 
+let timeoutOne;
+let timeoutTwo;
+let timeoutThree;
+
 const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
-  setTimeout(
+  timeoutOne = setTimeout(
     () => {
       fnOne(inBool);
-      setTimeout(() => {
+      timeoutTwo = setTimeout(() => {
         fnTwo(inBool);
       }, msStep);
-      setTimeout(() => {
+      timeoutThree = setTimeout(() => {
         fnThree(inBool);
       }, msStep * 2);
     },
@@ -90,6 +94,9 @@ const NudgeTable = props => {
 
     return () => {
       clearInterval(fadeInAndOut);
+      clearTimeout(timeoutOne);
+      clearTimeout(timeoutTwo);
+      clearTimeout(timeoutThree);
       setArrowOneFade(false);
       setArrowTwoFade(false);
       setArrowThreeFade(false);
