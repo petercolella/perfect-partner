@@ -60,16 +60,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const noNudge = {
+  name: '',
+  nudgeFrequency: '',
+  nudgeFrequencyUnit: '',
+  textMessage: '',
+  activated: false
+};
+
 const Dashboard = props => {
   const matches = useMediaQuery('(max-width:770px) and (min-width:600px)');
 
-  const [nudge, setNudge] = useState({
-    name: '',
-    nudgeFrequency: '',
-    nudgeFrequencyUnit: '',
-    textMessage: '',
-    activated: false
-  });
+  const [nudge, setNudge] = useState(noNudge);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [fade, setFade] = useState(true);
@@ -80,6 +82,7 @@ const Dashboard = props => {
   useEffect(() => {
     return () => {
       setFade(false);
+      setNudge(noNudge);
     };
   }, []);
 
