@@ -1,7 +1,7 @@
 {
-  "name": "mern",
+  "name": "perfectpartner",
   "version": "1.0.0",
-  "description": "",
+  "description": "A MERN project to help the user be a better partner",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
