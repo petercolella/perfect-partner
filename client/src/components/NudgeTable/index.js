@@ -90,6 +90,9 @@ const NudgeTable = props => {
 
     return () => {
       clearInterval(fadeInAndOut);
+      setArrowOneFade(false);
+      setArrowTwoFade(false);
+      setArrowThreeFade(false);
     };
   }, [matches]);
 
