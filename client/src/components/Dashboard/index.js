@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: '#22b5e0',
     minHeight: '100vh',
-    padding: theme.spacing(4, 9, 8)
+    padding: theme.spacing(4, 8, 8)
   },
   heading: {
     border: '2px #fff solid',
@@ -59,6 +60,14 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 275
   }
 }));
+
+const CustomCardMedia = withStyles(theme => ({
+  root: {
+    backgroundPositionX: 'left',
+    maxWidth: 96,
+    objectFit: 'contain'
+  }
+}))(CardMedia);
 
 const noNudge = {
   name: '',
@@ -175,13 +184,40 @@ const Dashboard = props => {
                 {signedIn ? (
                   <Card className={classes.card}>
                     <CardContent>
+                      <CustomCardMedia
+                        component="img"
+                        image={user.imageUrl}
+                        alt={`${user.firstName}'s Image`}
+                        title={`${user.firstName}'s Image`}
+                        height="96"
+                      />
+                      <Typography variant="body1" noWrap={true}>
+                        <span>Image Url: </span>
+                        {user.imageUrl}
+                      </Typography>
                       <Typography variant="body1">
-                        <span>Phone Number: </span>
-                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                        <span>First Name: </span>
+                        {user.firstName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Last Name: </span>
+                        {user.lastName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Full Name: </span>
+                        {user.name}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Email: </span>
+                        {user.email}
                       </Typography>
                       <Typography variant="body1">
                         <span>Partner's Name: </span>
                         {user.partnerName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Phone Number: </span>
+                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
                       </Typography>
                       <Typography variant="body1">
                         <span>Partner's Birthday: </span>
