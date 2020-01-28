@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: '#22b5e0',
     minHeight: '100vh',
-    padding: theme.spacing(4, 8, 8)
+    padding: theme.spacing(4, 4, 8)
   },
   heading: {
     border: '2px #fff solid',
@@ -165,16 +165,21 @@ const Dashboard = props => {
             <Grid
               item
               xs={12}
-              sm={5}
               className={matches ? classes.headingMediaQuery : null}>
               <Typography
                 variant="h3"
-                align="left"
+                align="center"
                 className={classes.heading}
                 gutterBottom>
                 Dashboard
               </Typography>
             </Grid>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            justify="space-between"
+            alignItems="flex-start">
             <Grid
               item
               xs={12}
@@ -219,6 +224,38 @@ const Dashboard = props => {
                         <span>Phone Number: </span>
                         {user.phone ? fn.formatPhoneNumber(user.phone) : null}
                       </Typography>
+                    </CardContent>
+                    <div className={classes.buttonContainer}>
+                      <CardActions>
+                        <Button
+                          variant="outlined"
+                          className={classes.button}
+                          onClick={launchUserUpdateComp}>
+                          Edit Your Profile
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </Card>
+                ) : (
+                  <Card className={classes.card}>
+                    <CardContent>
+                      <Typography color="textSecondary" variant="body1">
+                        Please sign in to continue.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                )}
+              </Paper>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={5}
+              className={matches ? classes.profileMediaQuery : null}>
+              <Paper className={classes.root}>
+                {signedIn ? (
+                  <Card className={classes.card}>
+                    <CardContent>
                       <Typography variant="body1">
                         <span>Partner's Birthday: </span>
                         {user.birthDate
