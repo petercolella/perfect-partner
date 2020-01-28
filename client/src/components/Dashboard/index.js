@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -34,9 +33,6 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 8,
     paddingRight: 8
   },
-  card: {
-    minWidth: 275
-  },
   container: {
     backgroundColor: '#22b5e0',
     minHeight: '100vh',
@@ -50,14 +46,6 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       marginTop: 46
     }
-  },
-  headingMediaQuery: {
-    marginBottom: 7.2,
-    marginRight: 24,
-    maxWidth: 275
-  },
-  profileMediaQuery: {
-    maxWidth: 275
   }
 }));
 
@@ -78,8 +66,6 @@ const noNudge = {
 };
 
 const Dashboard = props => {
-  const matches = useMediaQuery('(max-width:770px) and (min-width:600px)');
-
   const [nudge, setNudge] = useState(noNudge);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -157,154 +143,125 @@ const Dashboard = props => {
       <Container className={classes.container}>
         <Toolbar />
         <Grid container spacing={4}>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="flex-start">
-            <Grid
-              item
-              xs={12}
-              className={matches ? classes.headingMediaQuery : null}>
-              <Typography
-                variant="h3"
-                align="center"
-                className={classes.heading}
-                gutterBottom>
-                Dashboard
-              </Typography>
-            </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h3" align="center" className={classes.heading}>
+              Dashboard
+            </Typography>
           </Grid>
-          <Grid
-            container
-            direction="row"
-            justify="space-between"
-            alignItems="flex-start">
-            <Grid
-              item
-              xs={12}
-              sm={5}
-              className={matches ? classes.profileMediaQuery : null}>
-              <Paper className={classes.root}>
-                {signedIn ? (
-                  <Card className={classes.card}>
-                    <CardContent>
-                      <CustomCardMedia
-                        component="img"
-                        image={user.imageUrl}
-                        alt={`${user.firstName}'s Image`}
-                        title={`${user.firstName}'s Image`}
-                        height="96"
-                      />
-                      <Typography variant="body1" noWrap={true}>
-                        <span>Image Url: </span>
-                        {user.imageUrl}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>First Name: </span>
-                        {user.firstName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Last Name: </span>
-                        {user.lastName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Full Name: </span>
-                        {user.name}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Email: </span>
-                        {user.email}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Partner's Name: </span>
-                        {user.partnerName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Phone Number: </span>
-                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-                      </Typography>
-                    </CardContent>
-                    <div className={classes.buttonContainer}>
-                      <CardActions>
-                        <Button
-                          variant="outlined"
-                          className={classes.button}
-                          onClick={launchUserUpdateComp}>
-                          Edit Your Profile
-                        </Button>
-                      </CardActions>
-                    </div>
-                  </Card>
-                ) : (
-                  <Card className={classes.card}>
-                    <CardContent>
-                      <Typography color="textSecondary" variant="body1">
-                        Please sign in to continue.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                )}
-              </Paper>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={5}
-              className={matches ? classes.profileMediaQuery : null}>
-              <Paper className={classes.root}>
-                {signedIn ? (
-                  <Card className={classes.card}>
-                    <CardContent>
-                      <Typography variant="body1">
-                        <span>Partner's Birthday: </span>
-                        {user.birthDate
-                          ? new Date(user.birthDate).toLocaleDateString()
-                          : ''}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Your Anniversary: </span>
-                        {user.anniversaryDate
-                          ? new Date(user.anniversaryDate).toLocaleDateString()
-                          : ''}
-                      </Typography>
-                    </CardContent>
-                    <div className={classes.buttonContainer}>
-                      <CardActions>
-                        <Button
-                          variant="outlined"
-                          className={classes.button}
-                          onClick={launchUserUpdateComp}>
-                          Edit Your Profile
-                        </Button>
-                      </CardActions>
-                    </div>
-                  </Card>
-                ) : (
-                  <Card className={classes.card}>
-                    <CardContent>
-                      <Typography color="textSecondary" variant="body1">
-                        Please sign in to continue.
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                )}
-              </Paper>
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.root}>
+              {signedIn ? (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <CustomCardMedia
+                      component="img"
+                      image={user.imageUrl}
+                      alt={`${user.firstName}'s Image`}
+                      title={`${user.firstName}'s Image`}
+                      height="96"
+                    />
+                    <Typography variant="body1" noWrap={true}>
+                      <span>Image Url: </span>
+                      {user.imageUrl}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>First Name: </span>
+                      {user.firstName}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Last Name: </span>
+                      {user.lastName}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Full Name: </span>
+                      {user.name}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Email: </span>
+                      {user.email}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Partner's Name: </span>
+                      {user.partnerName}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Phone Number: </span>
+                      {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                    </Typography>
+                  </CardContent>
+                  <div className={classes.buttonContainer}>
+                    <CardActions>
+                      <Button
+                        variant="outlined"
+                        className={classes.button}
+                        onClick={launchUserUpdateComp}>
+                        Edit Your Profile
+                      </Button>
+                    </CardActions>
+                  </div>
+                </Card>
+              ) : (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography color="textSecondary" variant="body1">
+                      Please sign in to continue.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+            </Paper>
           </Grid>
-          <Grid container>
-            <Grid item xs={12}>
-              <NudgeTable
-                user={user}
-                nudge={nudge}
-                loadUserInfo={loadUserInfo}
-                launchUpdateComp={launchUpdateComp}
-                closeUpdateComp={closeUpdateComp}
-                handleInputChange={handleInputChange}
-                handleFormSubmit={handleFormSubmit}
-                dialogOpen={dialogOpen}
-              />
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <Paper className={classes.root}>
+              {signedIn ? (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography variant="body1">
+                      <span>Partner's Birthday: </span>
+                      {user.birthDate
+                        ? new Date(user.birthDate).toLocaleDateString()
+                        : ''}
+                    </Typography>
+                    <Typography variant="body1">
+                      <span>Your Anniversary: </span>
+                      {user.anniversaryDate
+                        ? new Date(user.anniversaryDate).toLocaleDateString()
+                        : ''}
+                    </Typography>
+                  </CardContent>
+                  <div className={classes.buttonContainer}>
+                    <CardActions>
+                      <Button
+                        variant="outlined"
+                        className={classes.button}
+                        onClick={launchUserUpdateComp}>
+                        Edit Your Profile
+                      </Button>
+                    </CardActions>
+                  </div>
+                </Card>
+              ) : (
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Typography color="textSecondary" variant="body1">
+                      Please sign in to continue.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <NudgeTable
+              user={user}
+              nudge={nudge}
+              loadUserInfo={loadUserInfo}
+              launchUpdateComp={launchUpdateComp}
+              closeUpdateComp={closeUpdateComp}
+              handleInputChange={handleInputChange}
+              handleFormSubmit={handleFormSubmit}
+              dialogOpen={dialogOpen}
+            />
           </Grid>
           <UserUpdate
             closeUserUpdateComp={closeUserUpdateComp}
