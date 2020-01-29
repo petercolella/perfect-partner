@@ -152,113 +152,112 @@ const Dashboard = props => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
-              {signedIn ? (
-                <Card className={classes.card}>
-                  <CardHeader title={`${user.firstName}'s Profile:`} />
-                  <Divider />
-                  <CardContent>
-                    <CustomCardMedia
-                      component="img"
-                      image={user.imageUrl}
-                      alt={`${user.firstName}'s Image`}
-                      title={`${user.firstName}'s Image`}
-                      height="96"
-                    />
-                    <Typography variant="body1" noWrap={true}>
-                      <span>Image Url: </span>
-                      {user.imageUrl}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>First Name: </span>
-                      {user.firstName}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Last Name: </span>
-                      {user.lastName}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Full Name: </span>
-                      {user.name}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Email: </span>
-                      {user.email}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Partner's Name: </span>
-                      {user.partnerName}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Phone Number: </span>
-                      {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-                    </Typography>
-                  </CardContent>
-                  <div className={classes.buttonContainer}>
-                    <CardActions>
-                      <Button
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={launchUserUpdateComp}>
-                        Edit Your Profile
-                      </Button>
-                    </CardActions>
-                  </div>
-                </Card>
-              ) : (
-                <Card className={classes.card}>
-                  <CardHeader title={`${user.firstName}'s Profile:`} />
-                  <Divider />
+              <Card className={classes.card}>
+                <CardHeader
+                  title={`${signedIn ? user.firstName + "'s" : 'User'} Profile:
+                  `}
+                />
+                <Divider />
+                {signedIn ? (
+                  <>
+                    <CardContent>
+                      <CustomCardMedia
+                        component="img"
+                        image={user.imageUrl}
+                        alt={`${user.firstName}'s Image`}
+                        title={`${user.firstName}'s Image`}
+                        height="96"
+                      />
+                      <Typography variant="body1" noWrap={true}>
+                        <span>Image Url: </span>
+                        {user.imageUrl}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>First Name: </span>
+                        {user.firstName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Last Name: </span>
+                        {user.lastName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Full Name: </span>
+                        {user.name}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Email: </span>
+                        {user.email}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Partner's Name: </span>
+                        {user.partnerName}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Phone Number: </span>
+                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.buttonContainer}>
+                      <CardActions>
+                        <Button
+                          variant="outlined"
+                          className={classes.button}
+                          onClick={launchUserUpdateComp}>
+                          Edit Your Profile
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </>
+                ) : (
                   <CardContent>
                     <Typography color="textSecondary" variant="body1">
                       Please sign in to continue.
                     </Typography>
                   </CardContent>
-                </Card>
-              )}
+                )}
+              </Card>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
-              {signedIn ? (
-                <Card className={classes.card}>
-                  <CardHeader title="Important Dates:" />
-                  <Divider />
-                  <CardContent>
-                    <Typography variant="body1">
-                      <span>Partner's Birthday: </span>
-                      {user.birthDate
-                        ? new Date(user.birthDate).toLocaleDateString()
-                        : ''}
-                    </Typography>
-                    <Typography variant="body1">
-                      <span>Your Anniversary: </span>
-                      {user.anniversaryDate
-                        ? new Date(user.anniversaryDate).toLocaleDateString()
-                        : ''}
-                    </Typography>
-                  </CardContent>
-                  <div className={classes.buttonContainer}>
-                    <CardActions>
-                      <Button
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={launchUserUpdateComp}>
-                        Edit Your Profile
-                      </Button>
-                    </CardActions>
-                  </div>
-                </Card>
-              ) : (
-                <Card className={classes.card}>
-                  <CardHeader title="Important Dates:" />
-                  <Divider />
+              <Card className={classes.card}>
+                <CardHeader title="Important Dates:" />
+                <Divider />
+                {signedIn ? (
+                  <>
+                    <CardContent>
+                      <Typography variant="body1">
+                        <span>Partner's Birthday: </span>
+                        {user.birthDate
+                          ? new Date(user.birthDate).toLocaleDateString()
+                          : ''}
+                      </Typography>
+                      <Typography variant="body1">
+                        <span>Your Anniversary: </span>
+                        {user.anniversaryDate
+                          ? new Date(user.anniversaryDate).toLocaleDateString()
+                          : ''}
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.buttonContainer}>
+                      <CardActions>
+                        <Button
+                          variant="outlined"
+                          className={classes.button}
+                          onClick={launchUserUpdateComp}>
+                          Edit Your Profile
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </>
+                ) : (
                   <CardContent>
                     <Typography color="textSecondary" variant="body1">
                       Please sign in to continue.
                     </Typography>
                   </CardContent>
-                </Card>
-              )}
+                )}
+              </Card>
             </Paper>
           </Grid>
           <Grid item xs={12}>
