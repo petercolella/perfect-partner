@@ -4,8 +4,10 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
@@ -152,6 +154,8 @@ const Dashboard = props => {
             <Paper className={classes.root}>
               {signedIn ? (
                 <Card className={classes.card}>
+                  <CardHeader title={`${user.firstName}'s Profile:`} />
+                  <Divider />
                   <CardContent>
                     <CustomCardMedia
                       component="img"
@@ -202,6 +206,8 @@ const Dashboard = props => {
                 </Card>
               ) : (
                 <Card className={classes.card}>
+                  <CardHeader title={`${user.firstName}'s Profile:`} />
+                  <Divider />
                   <CardContent>
                     <Typography color="textSecondary" variant="body1">
                       Please sign in to continue.
@@ -215,6 +221,8 @@ const Dashboard = props => {
             <Paper className={classes.root}>
               {signedIn ? (
                 <Card className={classes.card}>
+                  <CardHeader title="Important Dates:" />
+                  <Divider />
                   <CardContent>
                     <Typography variant="body1">
                       <span>Partner's Birthday: </span>
@@ -242,6 +250,8 @@ const Dashboard = props => {
                 </Card>
               ) : (
                 <Card className={classes.card}>
+                  <CardHeader title="Important Dates:" />
+                  <Divider />
                   <CardContent>
                     <Typography color="textSecondary" variant="body1">
                       Please sign in to continue.
