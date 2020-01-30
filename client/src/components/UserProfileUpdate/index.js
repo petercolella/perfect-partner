@@ -16,12 +16,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { ReactComponent as User } from './user.svg';
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -75,7 +69,7 @@ function TransitionUp(props) {
   return <Slide {...props} direction="up" />;
 }
 
-const UserUpdate = props => {
+const UserProfileUpdate = props => {
   const [toastOpen, setToastOpen] = React.useState(false);
 
   function handleToastClose(event, reason) {
@@ -120,8 +114,8 @@ const UserUpdate = props => {
       </div>
       <Dialog
         fullWidth={true}
-        open={props.userDialogOpen}
-        onClose={props.closeUserUpdateComp}
+        open={props.userProfileDialogOpen}
+        onClose={props.closeUserProfileUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
@@ -134,12 +128,12 @@ const UserUpdate = props => {
             with which you logged in.
           </DialogContentText>
           <TextField
-            id="name"
-            label="Full Name"
+            id="imageUrl"
+            label="Image Link"
             type="text"
             fullWidth
-            value={props.user.name}
-            onChange={props.handleUserInputChange('name')}
+            value={props.user.imageUrl}
+            onChange={props.handleUserInputChange('imageUrl')}
             margin="normal"
             variant="outlined"
           />
@@ -164,22 +158,22 @@ const UserUpdate = props => {
             variant="outlined"
           />
           <TextField
+            id="name"
+            label="Full Name"
+            type="text"
+            fullWidth
+            value={props.user.name}
+            onChange={props.handleUserInputChange('name')}
+            margin="normal"
+            variant="outlined"
+          />
+          <TextField
             id="email"
             label="Email"
             type="email"
             fullWidth
             value={props.user.email}
             onChange={props.handleUserInputChange('email')}
-            margin="normal"
-            variant="outlined"
-          />
-          <TextField
-            id="phone"
-            label="Phone"
-            type="tel"
-            fullWidth
-            value={props.user.phone}
-            onChange={props.handleUserInputChange('phone')}
             margin="normal"
             variant="outlined"
           />
@@ -193,43 +187,19 @@ const UserUpdate = props => {
             margin="normal"
             variant="outlined"
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              autoOk
-              id="anniversaryDate"
-              label="Anniversary Date"
-              format="MM/dd/yyyy"
-              fullWidth
-              value={props.user.anniversaryDate}
-              onChange={props.handleUserDateInputChange('anniversaryDate')}
-              KeyboardButtonProps={{
-                'aria-label': 'change date'
-              }}
-              margin="normal"
-              variant="inline"
-              inputVariant="outlined"
-            />
-          </MuiPickersUtilsProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              autoOk
-              id="birthDate"
-              label="Partner's Birthday"
-              format="MM/dd/yyyy"
-              fullWidth
-              value={props.user.birthDate}
-              onChange={props.handleUserDateInputChange('birthDate')}
-              KeyboardButtonProps={{
-                'aria-label': 'change date'
-              }}
-              margin="normal"
-              variant="inline"
-              inputVariant="outlined"
-            />
-          </MuiPickersUtilsProvider>
+          <TextField
+            id="phone"
+            label="Phone"
+            type="tel"
+            fullWidth
+            value={props.user.phone}
+            onChange={props.handleUserInputChange('phone')}
+            margin="normal"
+            variant="outlined"
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.closeUserUpdateComp} color="primary">
+          <Button onClick={props.closeUserProfileUpdateComp} color="primary">
             Cancel
           </Button>
           <Button onClick={e => clickHandler(e)} color="primary">
@@ -241,4 +211,4 @@ const UserUpdate = props => {
   );
 };
 
-export default UserUpdate;
+export default UserProfileUpdate;

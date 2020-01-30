@@ -22,7 +22,7 @@ import Typography from '@material-ui/core/Typography';
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 import NudgeTable from '../NudgeTable';
-import UserUpdate from '../UserUpdate';
+import UserProfileUpdate from '../UserProfileUpdate';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -78,7 +78,7 @@ const Dashboard = props => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [fade, setFade] = useState(true);
-  const [userDialogOpen, setUserDialogOpen] = useState(false);
+  const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
 
   const { loadUserInfo, setUser, signedIn, user } = props;
 
@@ -99,11 +99,11 @@ const Dashboard = props => {
   };
 
   const launchUserUpdateComp = () => {
-    setUserDialogOpen(true);
+    setUserProfileDialogOpen(true);
   };
 
-  const closeUserUpdateComp = () => {
-    setUserDialogOpen(false);
+  const closeUserProfileUpdateComp = () => {
+    setUserProfileDialogOpen(false);
     loadUserInfo();
   };
 
@@ -141,7 +141,7 @@ const Dashboard = props => {
         loadUserInfo();
       })
       .catch(err => console.log(err.response.data));
-    setUserDialogOpen(false);
+    setUserProfileDialogOpen(false);
   };
 
   const classes = useStyles();
@@ -327,13 +327,13 @@ const Dashboard = props => {
               dialogOpen={dialogOpen}
             />
           </Grid>
-          <UserUpdate
-            closeUserUpdateComp={closeUserUpdateComp}
+          <UserProfileUpdate
+            closeUserProfileUpdateComp={closeUserProfileUpdateComp}
             handleUserInputChange={handleUserInputChange}
             handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
             user={user}
-            userDialogOpen={userDialogOpen}
+            userProfileDialogOpen={userProfileDialogOpen}
           />
         </Grid>
       </Container>
