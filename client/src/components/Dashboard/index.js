@@ -277,30 +277,47 @@ const Dashboard = props => {
             <Paper className={classes.root}>
               <Card className={classes.card}>
                 <CardHeader align="center" title="Important Dates" />
-                <Divider />
+                <Divider variant="middle" />
                 {signedIn ? (
                   <>
-                    <CardContent>
-                      <Typography variant="body1">
-                        Partner's Birthday:{' '}
-                        {user.birthDate
-                          ? new Date(user.birthDate).toLocaleDateString()
-                          : ''}
-                      </Typography>
-                      <Typography variant="body1">
-                        Your Anniversary:{' '}
-                        {user.anniversaryDate
-                          ? new Date(user.anniversaryDate).toLocaleDateString()
-                          : ''}
-                      </Typography>
-                    </CardContent>
+                    <List dense={true}>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Your Anniversary:"
+                          secondary={
+                            user.anniversaryDate
+                              ? new Date(
+                                  user.anniversaryDate
+                                ).toLocaleDateString()
+                              : ''
+                          }
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Partner's Birthday:"
+                          secondary={
+                            user.birthDate
+                              ? new Date(user.birthDate).toLocaleDateString()
+                              : ''
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                    <Divider variant="middle" />
                     <div className={classes.buttonContainer}>
                       <CardActions>
                         <Button
                           variant="outlined"
                           className={classes.button}
                           onClick={launchUserUpdateComp}>
-                          Edit Your Profile
+                          Change Your Dates
                         </Button>
                       </CardActions>
                     </div>
