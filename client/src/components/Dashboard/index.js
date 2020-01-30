@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MuiLink from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -181,8 +182,15 @@ const Dashboard = props => {
                           classes={{
                             multiline: classes.multiline
                           }}
-                          primary="Image Url:"
-                          secondary={user.imageUrl}
+                          primary="Image Link:"
+                          secondary={
+                            <MuiLink
+                              href={user.imageUrl}
+                              color="inherit"
+                              target="_blank">
+                              {user.imageUrl}
+                            </MuiLink>
+                          }
                           secondaryTypographyProps={{ noWrap: true }}
                         />
                       </ListItem>
