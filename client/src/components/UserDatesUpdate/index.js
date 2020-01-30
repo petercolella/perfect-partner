@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ReactComponent as User } from './user.svg';
+import { ReactComponent as Calendar } from './calendar.svg';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -124,7 +124,7 @@ const UserDatesUpdate = props => {
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle id="form-dialog-title">
-          <User height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
+          <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           Change Your Dates, {props.user.firstName}.
         </DialogTitle>
         <DialogContent>
