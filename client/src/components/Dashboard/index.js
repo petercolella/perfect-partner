@@ -22,6 +22,7 @@ import Typography from '@material-ui/core/Typography';
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 import NudgeTable from '../NudgeTable';
+import UserDatesUpdate from '../UserDatesUpdate';
 import UserProfileUpdate from '../UserProfileUpdate';
 
 const useStyles = makeStyles(theme => ({
@@ -78,6 +79,7 @@ const Dashboard = props => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [fade, setFade] = useState(true);
+  const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
 
   const { loadUserInfo, setUser, signedIn, user } = props;
@@ -98,7 +100,16 @@ const Dashboard = props => {
     setDialogOpen(false);
   };
 
-  const launchUserUpdateComp = () => {
+  const launchUserDatesUpdateComp = () => {
+    setUserDatesDialogOpen(true);
+  };
+
+  const closeUserDatesUpdateComp = () => {
+    setUserDatesDialogOpen(false);
+    loadUserInfo();
+  };
+
+  const launchUserProfileUpdateComp = () => {
     setUserProfileDialogOpen(true);
   };
 
@@ -141,6 +152,7 @@ const Dashboard = props => {
         loadUserInfo();
       })
       .catch(err => console.log(err.response.data));
+    setUserDatesDialogOpen(false);
     setUserProfileDialogOpen(false);
   };
 
@@ -257,7 +269,7 @@ const Dashboard = props => {
                         <Button
                           variant="outlined"
                           className={classes.button}
-                          onClick={launchUserUpdateComp}>
+                          onClick={launchUserProfileUpdateComp}>
                           Edit Your Profile
                         </Button>
                       </CardActions>
@@ -316,7 +328,7 @@ const Dashboard = props => {
                         <Button
                           variant="outlined"
                           className={classes.button}
-                          onClick={launchUserUpdateComp}>
+                          onClick={launchUserDatesUpdateComp}>
                           Change Your Dates
                         </Button>
                       </CardActions>
@@ -344,10 +356,16 @@ const Dashboard = props => {
               dialogOpen={dialogOpen}
             />
           </Grid>
+          <UserDatesUpdate
+            closeUserDatesUpdateComp={closeUserDatesUpdateComp}
+            handleUserDateInputChange={handleUserDateInputChange}
+            handleUserFormSubmit={handleUserFormSubmit}
+            user={user}
+            userDatesDialogOpen={userDatesDialogOpen}
+          />
           <UserProfileUpdate
             closeUserProfileUpdateComp={closeUserProfileUpdateComp}
             handleUserInputChange={handleUserInputChange}
-            handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
             user={user}
             userProfileDialogOpen={userProfileDialogOpen}
