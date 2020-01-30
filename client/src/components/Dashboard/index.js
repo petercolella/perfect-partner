@@ -11,6 +11,9 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -27,13 +30,12 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     borderColor: '#22b5e0',
-    color: '#22b5e0'
+    color: '#22b5e0',
+    margin: theme.spacing(1)
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'flex-end',
-    paddingBottom: 8,
-    paddingRight: 8
+    justifyContent: 'space-around'
   },
   container: {
     backgroundColor: '#22b5e0',
@@ -48,6 +50,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       marginTop: 46
     }
+  },
+  multiline: {
+    margin: 0
   }
 }));
 
@@ -154,49 +159,91 @@ const Dashboard = props => {
             <Paper className={classes.root}>
               <Card className={classes.card}>
                 <CardHeader
-                  title={`${signedIn ? user.firstName + "'s" : 'User'} Profile:
+                  align="center"
+                  title={`${signedIn ? `${user.firstName}'s` : 'User'} Profile
                   `}
                 />
-                <Divider />
+                <Divider variant="middle" />
                 {signedIn ? (
                   <>
-                    <CardContent>
-                      <CustomCardMedia
-                        component="img"
-                        image={user.imageUrl}
-                        alt={`${user.firstName}'s Image`}
-                        title={`${user.firstName}'s Image`}
-                        height="96"
-                      />
-                      <Typography variant="body1" noWrap={true}>
-                        <span>Image Url: </span>
-                        {user.imageUrl}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>First Name: </span>
-                        {user.firstName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Last Name: </span>
-                        {user.lastName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Full Name: </span>
-                        {user.name}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Email: </span>
-                        {user.email}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Partner's Name: </span>
-                        {user.partnerName}
-                      </Typography>
-                      <Typography variant="body1">
-                        <span>Phone Number: </span>
-                        {user.phone ? fn.formatPhoneNumber(user.phone) : null}
-                      </Typography>
-                    </CardContent>
+                    <List dense={true}>
+                      <ListItem>
+                        <CustomCardMedia
+                          component="img"
+                          image={user.imageUrl}
+                          alt={`${user.firstName}'s Image`}
+                          title={`${user.firstName}'s Image`}
+                          height="96"
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Image Url:"
+                          secondary={user.imageUrl}
+                          secondaryTypographyProps={{ noWrap: true }}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="First Name:"
+                          secondary={user.firstName}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Last Name:"
+                          secondary={user.lastName}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Full Name:"
+                          secondary={user.name}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Email:"
+                          secondary={user.email}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Partner's Name:"
+                          secondary={user.partnerName}
+                        />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText
+                          classes={{
+                            multiline: classes.multiline
+                          }}
+                          primary="Phone Number:"
+                          secondary={
+                            user.phone ? fn.formatPhoneNumber(user.phone) : null
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                    <Divider variant="middle" />
                     <div className={classes.buttonContainer}>
                       <CardActions>
                         <Button
@@ -221,19 +268,19 @@ const Dashboard = props => {
           <Grid item xs={12} sm={6}>
             <Paper className={classes.root}>
               <Card className={classes.card}>
-                <CardHeader title="Important Dates:" />
+                <CardHeader align="center" title="Important Dates" />
                 <Divider />
                 {signedIn ? (
                   <>
                     <CardContent>
                       <Typography variant="body1">
-                        <span>Partner's Birthday: </span>
+                        Partner's Birthday:{' '}
                         {user.birthDate
                           ? new Date(user.birthDate).toLocaleDateString()
                           : ''}
                       </Typography>
                       <Typography variant="body1">
-                        <span>Your Anniversary: </span>
+                        Your Anniversary:{' '}
                         {user.anniversaryDate
                           ? new Date(user.anniversaryDate).toLocaleDateString()
                           : ''}
