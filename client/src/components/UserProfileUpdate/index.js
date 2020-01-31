@@ -15,9 +15,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 import { ReactComponent as User } from './user.svg';
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   success: {
     backgroundColor: green[600]
   },
@@ -31,11 +32,15 @@ const useStyles1 = makeStyles(theme => ({
   message: {
     display: 'flex',
     alignItems: 'center'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
 
 const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles1();
+  const classes = useStyles();
   const { message, onClose, variant, ...other } = props;
 
   return (
@@ -70,6 +75,7 @@ function TransitionUp(props) {
 }
 
 const UserProfileUpdate = props => {
+  const classes = useStyles();
   const [toastOpen, setToastOpen] = React.useState(false);
 
   function handleToastClose(event, reason) {
@@ -118,9 +124,14 @@ const UserProfileUpdate = props => {
         onClose={props.closeUserProfileUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle
+          className={classes.title}
+          id="form-dialog-title"
+          disableTypography={true}>
           <User height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          Edit Your Profile, {props.user.firstName}.
+          <Typography variant="h6">
+            Edit Your Profile, {props.user.firstName}.
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>

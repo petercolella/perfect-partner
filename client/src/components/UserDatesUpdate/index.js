@@ -14,6 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
 import { ReactComponent as Calendar } from './calendar.svg';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -22,7 +23,7 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   success: {
     backgroundColor: green[600]
   },
@@ -36,11 +37,15 @@ const useStyles1 = makeStyles(theme => ({
   message: {
     display: 'flex',
     alignItems: 'center'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
 
 const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles1();
+  const classes = useStyles();
   const { message, onClose, variant, ...other } = props;
 
   return (
@@ -75,6 +80,7 @@ function TransitionUp(props) {
 }
 
 const UserDatesUpdate = props => {
+  const classes = useStyles();
   const [toastOpen, setToastOpen] = React.useState(false);
 
   function handleToastClose(event, reason) {
@@ -123,9 +129,14 @@ const UserDatesUpdate = props => {
         onClose={props.closeUserDatesUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle
+          className={classes.title}
+          id="form-dialog-title"
+          disableTypography={true}>
           <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          Change Your Dates, {props.user.firstName}.
+          <Typography variant="h6">
+            Change Your Dates, {props.user.firstName}.
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Make changes below.</DialogContentText>
