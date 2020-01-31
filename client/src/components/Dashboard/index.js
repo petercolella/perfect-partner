@@ -173,8 +173,7 @@ const Dashboard = props => {
               <Card className={classes.card}>
                 <CardHeader
                   align="center"
-                  title={`${signedIn ? `${user.firstName}'s` : 'User'} Profile
-                  `}
+                  title={`${signedIn ? user.firstName + `'s` : `User`} Profile`}
                 />
                 <Divider variant="middle" />
                 {signedIn ? (
