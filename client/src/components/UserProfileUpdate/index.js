@@ -1,94 +1,53 @@
-import React from 'react';
-import clsx from 'clsx';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CloseIcon from '@material-ui/icons/Close';
-import { green } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Slide from '@material-ui/core/Slide';
+
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+
 import { ReactComponent as User } from './user.svg';
+import SnackbarContentWrapper from '../SnackbarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
-  success: {
-    backgroundColor: green[600]
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing(1)
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  },
   title: {
     display: 'flex',
     alignItems: 'center'
   }
 }));
 
-const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles();
-  const { message, onClose, variant, ...other } = props;
-
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant])}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <CheckCircleIcon
-            className={clsx(classes.icon, classes.iconVariant)}
-          />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
-          onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>
-      ]}
-      {...other}
-      ref={ref}
-    />
-  );
-});
-
-function TransitionUp(props) {
+const Transition = props => {
   return <Slide {...props} direction="up" />;
-}
+};
 
 const UserProfileUpdate = props => {
   const classes = useStyles();
-  const [toastOpen, setToastOpen] = React.useState(false);
+  const {
+    closeUserProfileUpdateComp,
+    handleUserFormSubmit,
+    handleUserInputChange,
+    userProfileDialogOpen,
+    user
+  } = props;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  function handleToastClose(event, reason) {
+  const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToastOpen(false);
-  }
+    setSnackbarOpen(false);
+  };
 
   const clickHandler = e => {
-    props.handleUserFormSubmit(e);
-    setToastOpen(true);
+    handleUserFormSubmit(e);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -99,20 +58,19 @@ const UserProfileUpdate = props => {
             vertical: 'bottom',
             horizontal: 'left'
           }}
-          open={toastOpen}
+          open={snackbarOpen}
           autoHideDuration={2000}
-          onClose={handleToastClose}
-          TransitionComponent={TransitionUp}
+          onClose={handleSnackbarClose}
+          TransitionComponent={Transition}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          <MySnackbarContentWrapper
-            onClose={handleToastClose}
+          <SnackbarContentWrapper
+            onClose={handleSnackbarClose}
             variant="success"
             message={
               <span>
-                Your profile has been successfully updated,{' '}
-                {props.user.firstName}.
+                Your profile has been successfully updated, {user.firstName}.
               </span>
             }
           />
@@ -120,8 +78,8 @@ const UserProfileUpdate = props => {
       </div>
       <Dialog
         fullWidth={true}
-        open={props.userProfileDialogOpen}
-        onClose={props.closeUserProfileUpdateComp}
+        open={userProfileDialogOpen}
+        onClose={closeUserProfileUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle
@@ -130,7 +88,7 @@ const UserProfileUpdate = props => {
           disableTypography={true}>
           <User height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">
-            Edit Your Profile, {props.user.firstName}.
+            Edit Your Profile, {user.firstName}.
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -143,8 +101,8 @@ const UserProfileUpdate = props => {
             label="Image Link"
             type="text"
             fullWidth
-            value={props.user.imageUrl}
-            onChange={props.handleUserInputChange('imageUrl')}
+            value={user.imageUrl}
+            onChange={handleUserInputChange('imageUrl')}
             margin="normal"
             variant="outlined"
           />
@@ -153,8 +111,8 @@ const UserProfileUpdate = props => {
             label="First Name"
             type="text"
             fullWidth
-            value={props.user.firstName}
-            onChange={props.handleUserInputChange('firstName')}
+            value={user.firstName}
+            onChange={handleUserInputChange('firstName')}
             margin="normal"
             variant="outlined"
           />
@@ -163,8 +121,8 @@ const UserProfileUpdate = props => {
             label="Last Name"
             type="text"
             fullWidth
-            value={props.user.lastName}
-            onChange={props.handleUserInputChange('lastName')}
+            value={user.lastName}
+            onChange={handleUserInputChange('lastName')}
             margin="normal"
             variant="outlined"
           />
@@ -173,8 +131,8 @@ const UserProfileUpdate = props => {
             label="Full Name"
             type="text"
             fullWidth
-            value={props.user.name}
-            onChange={props.handleUserInputChange('name')}
+            value={user.name}
+            onChange={handleUserInputChange('name')}
             margin="normal"
             variant="outlined"
           />
@@ -183,8 +141,8 @@ const UserProfileUpdate = props => {
             label="Email"
             type="email"
             fullWidth
-            value={props.user.email}
-            onChange={props.handleUserInputChange('email')}
+            value={user.email}
+            onChange={handleUserInputChange('email')}
             margin="normal"
             variant="outlined"
           />
@@ -193,8 +151,8 @@ const UserProfileUpdate = props => {
             label="Partner's Name"
             type="text"
             fullWidth
-            value={props.user.partnerName}
-            onChange={props.handleUserInputChange('partnerName')}
+            value={user.partnerName}
+            onChange={handleUserInputChange('partnerName')}
             margin="normal"
             variant="outlined"
           />
@@ -203,14 +161,14 @@ const UserProfileUpdate = props => {
             label="Phone"
             type="tel"
             fullWidth
-            value={props.user.phone}
-            onChange={props.handleUserInputChange('phone')}
+            value={user.phone}
+            onChange={handleUserInputChange('phone')}
             margin="normal"
             variant="outlined"
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.closeUserProfileUpdateComp} color="primary">
+          <Button onClick={closeUserProfileUpdateComp} color="primary">
             Cancel
           </Button>
           <Button onClick={e => clickHandler(e)} color="primary">

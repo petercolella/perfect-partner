@@ -1,21 +1,19 @@
-import React from 'react';
-import clsx from 'clsx';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CloseIcon from '@material-ui/icons/Close';
-import { green } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Slide from '@material-ui/core/Slide';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
+
 import { ReactComponent as Calendar } from './calendar.svg';
+import SnackbarContentWrapper from '../SnackbarContentWrapper';
+
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -24,76 +22,38 @@ import {
 } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
-  success: {
-    backgroundColor: green[600]
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing(1)
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  },
   title: {
     display: 'flex',
     alignItems: 'center'
   }
 }));
 
-const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles();
-  const { message, onClose, variant, ...other } = props;
-
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant])}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <CheckCircleIcon
-            className={clsx(classes.icon, classes.iconVariant)}
-          />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
-          onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>
-      ]}
-      {...other}
-      ref={ref}
-    />
-  );
-});
-
-function TransitionUp(props) {
+const Transition = props => {
   return <Slide {...props} direction="up" />;
-}
+};
 
 const UserDatesUpdate = props => {
   const classes = useStyles();
-  const [toastOpen, setToastOpen] = React.useState(false);
+  const {
+    closeUserDatesUpdateComp,
+    handleUserFormSubmit,
+    handleUserDateInputChange,
+    userDatesDialogOpen,
+    user
+  } = props;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  function handleToastClose(event, reason) {
+  const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToastOpen(false);
-  }
+    setSnackbarOpen(false);
+  };
 
   const clickHandler = e => {
-    props.handleUserFormSubmit(e);
-    setToastOpen(true);
+    handleUserFormSubmit(e);
+    setSnackbarOpen(true);
   };
 
   return (
@@ -104,20 +64,19 @@ const UserDatesUpdate = props => {
             vertical: 'bottom',
             horizontal: 'left'
           }}
-          open={toastOpen}
+          open={snackbarOpen}
           autoHideDuration={2000}
-          onClose={handleToastClose}
-          TransitionComponent={TransitionUp}
+          onClose={handleSnackbarClose}
+          TransitionComponent={Transition}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>
-          <MySnackbarContentWrapper
-            onClose={handleToastClose}
+          <SnackbarContentWrapper
+            onClose={handleSnackbarClose}
             variant="success"
             message={
               <span>
-                Your profile has been successfully updated,{' '}
-                {props.user.firstName}.
+                Your profile has been successfully updated, {user.firstName}.
               </span>
             }
           />
@@ -125,8 +84,8 @@ const UserDatesUpdate = props => {
       </div>
       <Dialog
         fullWidth={true}
-        open={props.userDatesDialogOpen}
-        onClose={props.closeUserDatesUpdateComp}
+        open={userDatesDialogOpen}
+        onClose={closeUserDatesUpdateComp}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle
@@ -135,7 +94,7 @@ const UserDatesUpdate = props => {
           disableTypography={true}>
           <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">
-            Change Your Dates, {props.user.firstName}.
+            Change Your Dates, {user.firstName}.
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -147,8 +106,8 @@ const UserDatesUpdate = props => {
               label="Anniversary Date"
               format="MM/dd/yyyy"
               fullWidth
-              value={props.user.anniversaryDate}
-              onChange={props.handleUserDateInputChange('anniversaryDate')}
+              value={user.anniversaryDate}
+              onChange={handleUserDateInputChange('anniversaryDate')}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
@@ -164,8 +123,8 @@ const UserDatesUpdate = props => {
               label="Partner's Birthday"
               format="MM/dd/yyyy"
               fullWidth
-              value={props.user.birthDate}
-              onChange={props.handleUserDateInputChange('birthDate')}
+              value={user.birthDate}
+              onChange={handleUserDateInputChange('birthDate')}
               KeyboardButtonProps={{
                 'aria-label': 'change date'
               }}
@@ -176,7 +135,7 @@ const UserDatesUpdate = props => {
           </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.closeUserDatesUpdateComp} color="primary">
+          <Button onClick={closeUserDatesUpdateComp} color="primary">
             Cancel
           </Button>
           <Button onClick={e => clickHandler(e)} color="primary">
