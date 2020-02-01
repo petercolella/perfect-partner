@@ -106,7 +106,7 @@ const NudgeTable = props => {
     <>
       <Paper className={classes.root}>
         <Toolbar className={classes.toolbar}>
-          <Typography variant="h6" align="left">
+          <Typography variant="h5" align="left">
             Your Nudges
           </Typography>
         </Toolbar>
