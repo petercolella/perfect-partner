@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { DateTime } from 'luxon';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,6 +14,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as Calendar } from './calendar.svg';
 import SnackbarContentWrapper from '../SnackbarContentWrapper';
+
+import fn from '../../utils/fn';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -42,6 +45,18 @@ const UserDatesUpdate = props => {
     user
   } = props;
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  if (user.anniversaryDate) {
+    const dt = DateTime.fromISO(user.anniversaryDate);
+    user.anniversaryDate = fn.UTCToLocal(dt);
+    console.log('user.anniversaryDate:', user.anniversaryDate);
+  }
+
+  if (user.birthDate) {
+    const dt = DateTime.fromISO(user.birthDate);
+    user.birthDate = fn.UTCToLocal(dt);
+    console.log('user.birthDate:', user.birthDate);
+  }
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
