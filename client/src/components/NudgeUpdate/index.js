@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -29,7 +29,15 @@ const Transition = props => {
 
 const NudgeUpdate = props => {
   const classes = useStyles();
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const {
+    setNudgeDialogOpen,
+    nudgeDialogOpen,
+    handleNudgeFormSubmit,
+    handleInputChange,
+    nudge
+  } = props;
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -39,8 +47,8 @@ const NudgeUpdate = props => {
     setSnackbarOpen(false);
   };
 
-  const clickHandler = e => {
-    props.handleFormSubmit(e);
+  const clickHandler = () => {
+    handleNudgeFormSubmit();
     setSnackbarOpen(true);
   };
 
@@ -61,15 +69,13 @@ const NudgeUpdate = props => {
         <SnackbarContentWrapper
           onClose={handleSnackbarClose}
           variant="success"
-          message={
-            <span>{props.nudge.name} has been successfully updated.</span>
-          }
+          message={<span>{nudge.name} has been successfully updated.</span>}
         />
       </Snackbar>
       <Dialog
         fullWidth={true}
-        open={props.dialogOpen}
-        onClose={props.closeUpdateComp}
+        open={nudgeDialogOpen}
+        onClose={() => setNudgeDialogOpen(false)}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
         <DialogTitle
@@ -78,7 +84,7 @@ const NudgeUpdate = props => {
           disableTypography={true}>
           <Pencil height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">
-            Personalize Your {props.nudge.name} Nudge
+            Personalize Your {nudge.name} Nudge
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -91,8 +97,8 @@ const NudgeUpdate = props => {
             label="Nudge Name"
             type="text"
             fullWidth
-            value={props.nudge.name}
-            onChange={props.handleInputChange('name')}
+            value={nudge.name}
+            onChange={handleInputChange('name')}
             margin="normal"
             variant="outlined"
           />
@@ -101,8 +107,8 @@ const NudgeUpdate = props => {
             label="Text Body"
             type="text"
             fullWidth
-            value={props.nudge.textMessage}
-            onChange={props.handleInputChange('textMessage')}
+            value={nudge.textMessage}
+            onChange={handleInputChange('textMessage')}
             margin="normal"
             variant="outlined"
           />
@@ -111,8 +117,8 @@ const NudgeUpdate = props => {
             label="Frequency"
             type="number"
             fullWidth
-            value={props.nudge.nudgeFrequency}
-            onChange={props.handleInputChange('nudgeFrequency')}
+            value={nudge.nudgeFrequency}
+            onChange={handleInputChange('nudgeFrequency')}
             margin="normal"
             variant="outlined"
           />
@@ -122,8 +128,8 @@ const NudgeUpdate = props => {
             label="Frequency Unit"
             type="text"
             fullWidth
-            value={props.nudge.nudgeFrequencyUnit}
-            onChange={props.handleInputChange('nudgeFrequencyUnit')}
+            value={nudge.nudgeFrequencyUnit}
+            onChange={handleInputChange('nudgeFrequencyUnit')}
             margin="normal"
             variant="outlined">
             <MenuItem value="days">days</MenuItem>
@@ -133,10 +139,10 @@ const NudgeUpdate = props => {
           </TextField>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.closeUpdateComp} color="primary">
+          <Button onClick={() => setNudgeDialogOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={e => clickHandler(e)} color="primary">
+          <Button onClick={clickHandler} color="primary">
             Submit
           </Button>
         </DialogActions>
