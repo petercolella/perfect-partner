@@ -80,8 +80,7 @@ const Dashboard = props => {
 
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [fade, setFade] = useState(true);
+  const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
 
@@ -101,24 +100,11 @@ const Dashboard = props => {
 
   useEffect(() => {
     loadDates();
-    setFade(true);
-
-    return () => {
-      setNudge(noNudge);
-    };
   }, [loadDates]);
 
-  const launchUpdateComp = nudge => {
+  const launchNudgeUpdateComp = nudge => {
     setNudge(nudge);
-    setDialogOpen(true);
-  };
-
-  const closeUpdateComp = () => {
-    setDialogOpen(false);
-  };
-
-  const launchUserDatesUpdateComp = () => {
-    setUserDatesDialogOpen(true);
+    setNudgeDialogOpen(true);
   };
 
   const closeUserDatesUpdateComp = () => {
@@ -126,21 +112,16 @@ const Dashboard = props => {
     loadUserInfo();
   };
 
-  const launchUserProfileUpdateComp = () => {
-    setUserProfileDialogOpen(true);
-  };
-
   const closeUserProfileUpdateComp = () => {
     setUserProfileDialogOpen(false);
     loadUserInfo();
   };
 
-  const handleInputChange = name => event => {
+  const handleNudgeInputChange = name => event => {
     setNudge({ ...nudge, [name]: event.target.value });
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
+  const handleNudgeFormSubmit = () => {
     API.updateNudge(nudge._id, {
       ...nudge
     })
@@ -148,7 +129,7 @@ const Dashboard = props => {
         loadUserInfo();
       })
       .catch(err => console.log(err));
-    setDialogOpen(false);
+    setNudgeDialogOpen(false);
   };
 
   const handleUserInputChange = name => event => {
@@ -171,7 +152,7 @@ const Dashboard = props => {
     useStateObj[name](dt);
   };
 
-  const handleUserFormSubmit = event => {
+  const handleUserFormSubmit = () => {
     const newUser = {
       ...user,
       anniversaryDate: fn.localToUTC(anniversaryDate),
@@ -190,7 +171,7 @@ const Dashboard = props => {
   const classes = useStyles();
 
   return (
-    <Fade in={fade} timeout={1000}>
+    <Fade in={true} timeout={1000}>
       <Container className={classes.container}>
         <Toolbar />
         <Grid container spacing={4}>
@@ -299,7 +280,7 @@ const Dashboard = props => {
                         <Button
                           variant="outlined"
                           className={classes.button}
-                          onClick={launchUserProfileUpdateComp}>
+                          onClick={() => setUserProfileDialogOpen(true)}>
                           Edit Your Profile
                         </Button>
                       </CardActions>
@@ -360,7 +341,7 @@ const Dashboard = props => {
                         <Button
                           variant="outlined"
                           className={classes.button}
-                          onClick={launchUserDatesUpdateComp}>
+                          onClick={() => setUserDatesDialogOpen(true)}>
                           Change Your Dates
                         </Button>
                       </CardActions>
@@ -380,11 +361,11 @@ const Dashboard = props => {
             <NudgeTable
               user={user}
               nudge={nudge}
-              launchUpdateComp={launchUpdateComp}
-              closeUpdateComp={closeUpdateComp}
-              handleInputChange={handleInputChange}
-              handleFormSubmit={handleFormSubmit}
-              dialogOpen={dialogOpen}
+              launchNudgeUpdateComp={launchNudgeUpdateComp}
+              setNudgeDialogOpen={setNudgeDialogOpen}
+              handleNudgeInputChange={handleNudgeInputChange}
+              handleNudgeFormSubmit={handleNudgeFormSubmit}
+              nudgeDialogOpen={nudgeDialogOpen}
             />
           </Grid>
           <UserDatesUpdate
