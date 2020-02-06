@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { DateTime } from 'luxon';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -77,6 +78,8 @@ const noNudge = {
 const Dashboard = props => {
   const [nudge, setNudge] = useState(noNudge);
 
+  const [anniversaryDate, setAnniversaryDate] = useState(null);
+  const [birthDate, setBirthDate] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [fade, setFade] = useState(true);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
@@ -84,12 +87,26 @@ const Dashboard = props => {
 
   const { loadUserInfo, setUser, signedIn, user } = props;
 
+  const loadDates = useCallback(() => {
+    if (user.anniversaryDate) {
+      const dt = DateTime.fromISO(user.anniversaryDate);
+      setAnniversaryDate(fn.UTCToLocal(dt));
+    }
+
+    if (user.birthDate) {
+      const dt = DateTime.fromISO(user.birthDate);
+      setBirthDate(fn.UTCToLocal(dt));
+    }
+  }, [user]);
+
   useEffect(() => {
+    loadDates();
+    setFade(true);
+
     return () => {
-      setFade(false);
       setNudge(noNudge);
     };
-  }, []);
+  }, [loadDates]);
 
   const launchUpdateComp = nudge => {
     setNudge(nudge);
@@ -139,15 +156,29 @@ const Dashboard = props => {
   };
 
   const handleUserDateInputChange = name => date => {
-    console.log('date:', date);
-    setUser({ ...user, [name]: date });
+    const dt = DateTime.fromJSDate(date).set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+
+    const useStateObj = {
+      anniversaryDate: setAnniversaryDate,
+      birthDate: setBirthDate
+    };
+
+    useStateObj[name](dt);
   };
 
   const handleUserFormSubmit = event => {
-    event.preventDefault();
-    API.updateUser(user._id, {
-      ...user
-    })
+    const newUser = {
+      ...user,
+      anniversaryDate: fn.localToUTC(anniversaryDate),
+      birthDate: fn.localToUTC(birthDate)
+    };
+
+    API.updateUser(user._id, newUser)
       .then(() => {
         loadUserInfo();
       })
@@ -300,9 +331,9 @@ const Dashboard = props => {
                           primary="Your Anniversary:"
                           secondary={
                             user.anniversaryDate
-                              ? new Date(
-                                  user.anniversaryDate
-                                ).toLocaleDateString()
+                              ? DateTime.fromISO(anniversaryDate)
+                                  .setZone('UTC')
+                                  .toLocaleString()
                               : ''
                           }
                         />
@@ -315,7 +346,9 @@ const Dashboard = props => {
                           primary="Partner's Birthday:"
                           secondary={
                             user.birthDate
-                              ? new Date(user.birthDate).toLocaleDateString()
+                              ? DateTime.fromISO(birthDate)
+                                  .setZone('UTC')
+                                  .toLocaleString()
                               : ''
                           }
                         />
@@ -347,7 +380,6 @@ const Dashboard = props => {
             <NudgeTable
               user={user}
               nudge={nudge}
-              loadUserInfo={loadUserInfo}
               launchUpdateComp={launchUpdateComp}
               closeUpdateComp={closeUpdateComp}
               handleInputChange={handleInputChange}
@@ -356,6 +388,8 @@ const Dashboard = props => {
             />
           </Grid>
           <UserDatesUpdate
+            anniversaryDate={anniversaryDate}
+            birthDate={birthDate}
             closeUserDatesUpdateComp={closeUserDatesUpdateComp}
             handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
