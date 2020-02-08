@@ -362,6 +362,7 @@ const Dashboard = props => {
               user={user}
               nudge={nudge}
               launchNudgeUpdateComp={launchNudgeUpdateComp}
+              loadUserInfo={loadUserInfo}
               setNudgeDialogOpen={setNudgeDialogOpen}
               handleNudgeInputChange={handleNudgeInputChange}
               handleNudgeFormSubmit={handleNudgeFormSubmit}
