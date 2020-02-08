@@ -85,7 +85,6 @@ const DateQuestionDialog = props => {
     handleFormSubmit,
     label,
     link,
-    loadUserInfo,
     question,
     res,
     setParentReminders,
@@ -102,12 +101,10 @@ const DateQuestionDialog = props => {
   const [state, setState] = useState({});
 
   const loadDialog = useCallback(() => {
-    setDialogOpen(false);
     setTimeout(() => {
-      loadUserInfo();
       setDialogOpen(true);
     }, 250);
-  }, [loadUserInfo]);
+  }, []);
 
   useEffect(() => {
     loadDialog();

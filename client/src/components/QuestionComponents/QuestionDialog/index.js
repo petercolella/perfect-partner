@@ -60,7 +60,6 @@ const QuestionDialog = props => {
     Image,
     label,
     link,
-    loadUserInfo,
     placeholder,
     question,
     res,
@@ -76,10 +75,9 @@ const QuestionDialog = props => {
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
-      loadUserInfo();
       setDialogOpen(true);
     }, 250);
-  }, [loadUserInfo]);
+  }, []);
 
   useEffect(() => {
     loadDialog();
@@ -199,7 +197,7 @@ const QuestionDialog = props => {
               <Button onClick={cancel} color="secondary">
                 Cancel
               </Button>
-              <Button onClick={e => handleFormSubmit(e)} color="primary">
+              <Button onClick={handleFormSubmit} color="primary">
                 Submit
               </Button>
               <Link to={link} className={classes.link}>

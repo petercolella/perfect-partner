@@ -92,12 +92,10 @@ const NudgeDialog = props => {
   const [variant, setVariant] = useState(null);
 
   const loadDialog = useCallback(() => {
-    setDialogOpen(false);
     setTimeout(() => {
-      loadUserInfo();
       setDialogOpen(true);
     }, 250);
-  }, [loadUserInfo]);
+  }, []);
 
   useEffect(() => {
     loadDialog();
@@ -153,9 +151,7 @@ const NudgeDialog = props => {
     setSnackbarOpen(true);
   };
 
-  const handleSubmit = event => {
-    event.preventDefault();
-
+  const handleSubmit = () => {
     const newNudges = Object.keys(state).filter(nudge => state[nudge]);
 
     if (!newNudges.length > 0) {
