@@ -49,7 +49,6 @@ const Anniversary = props => {
       second: 0,
       millisecond: 0
     });
-    console.log('handleDateInputChange:', dt, dt.toISO());
     setAnniversaryDate(dt);
   };
 
@@ -69,6 +68,7 @@ const Anniversary = props => {
       anniversaryReminders
     })
       .then(res => {
+        loadUserInfo();
         loadAnniversaryDate();
         setRes(res.data.anniversaryDate);
         handleSnackbarOpen('success');
@@ -91,7 +91,6 @@ const Anniversary = props => {
       handleFormSubmit={handleFormSubmit}
       label={state.label}
       link={state.nextQuestionLink}
-      loadUserInfo={loadUserInfo}
       question={state.question}
       res={res}
       setParentReminders={setAnniversaryReminders}

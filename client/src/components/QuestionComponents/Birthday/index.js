@@ -49,7 +49,6 @@ const Birthday = props => {
       second: 0,
       millisecond: 0
     });
-    console.log('handleDateInputChange:', dt, dt.toISO());
     setBirthDate(dt);
   };
 
@@ -69,6 +68,7 @@ const Birthday = props => {
       birthdayReminders
     })
       .then(res => {
+        loadUserInfo();
         loadBirthDate();
         setRes(res.data.birthDate);
         handleSnackbarOpen('success');
@@ -91,7 +91,6 @@ const Birthday = props => {
       handleFormSubmit={handleFormSubmit}
       label={state.label}
       link={state.nextQuestionLink}
-      loadUserInfo={loadUserInfo}
       question={state.question}
       res={res}
       setParentReminders={setBirthdayReminders}
