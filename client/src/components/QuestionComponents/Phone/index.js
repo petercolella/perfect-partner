@@ -38,8 +38,7 @@ const Phone = props => {
     setSnackbarOpen(true);
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
+  const handleFormSubmit = () => {
     const phoneRegEx = phone.replace(/\D/g, '');
 
     if (phoneRegEx.length !== 10) {

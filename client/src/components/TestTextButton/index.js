@@ -76,8 +76,7 @@ const TestTextButton = props => {
     setToastOpen(false);
   }
 
-  function sendText(e) {
-    e.preventDefault();
+  function sendText() {
     const phone = props.user.phone;
     const textMessage = props.nudge.textMessage;
     API.sendText({ phone, textMessage })

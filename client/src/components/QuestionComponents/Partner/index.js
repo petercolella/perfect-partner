@@ -38,9 +38,7 @@ const Partner = props => {
     setSnackbarOpen(true);
   };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-
+  const handleFormSubmit = () => {
     if (!partnerName) {
       handleSnackbarOpen('warning');
       return;

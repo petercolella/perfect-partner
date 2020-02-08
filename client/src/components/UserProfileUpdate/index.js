@@ -45,8 +45,8 @@ const UserProfileUpdate = props => {
     setSnackbarOpen(false);
   };
 
-  const clickHandler = e => {
-    handleUserFormSubmit(e);
+  const clickHandler = () => {
+    handleUserFormSubmit();
     setSnackbarOpen(true);
   };
 
@@ -171,7 +171,7 @@ const UserProfileUpdate = props => {
           <Button onClick={closeUserProfileUpdateComp} color="primary">
             Cancel
           </Button>
-          <Button onClick={e => clickHandler(e)} color="primary">
+          <Button onClick={clickHandler} color="primary">
             Submit
           </Button>
         </DialogActions>
