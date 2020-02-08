@@ -35,7 +35,7 @@ const NudgeUpdate = props => {
     setNudgeDialogOpen,
     nudgeDialogOpen,
     handleNudgeFormSubmit,
-    handleInputChange,
+    handleNudgeInputChange,
     nudge
   } = props;
 
@@ -98,7 +98,7 @@ const NudgeUpdate = props => {
             type="text"
             fullWidth
             value={nudge.name}
-            onChange={handleInputChange('name')}
+            onChange={handleNudgeInputChange('name')}
             margin="normal"
             variant="outlined"
           />
@@ -108,7 +108,7 @@ const NudgeUpdate = props => {
             type="text"
             fullWidth
             value={nudge.textMessage}
-            onChange={handleInputChange('textMessage')}
+            onChange={handleNudgeInputChange('textMessage')}
             margin="normal"
             variant="outlined"
           />
@@ -118,7 +118,7 @@ const NudgeUpdate = props => {
             type="number"
             fullWidth
             value={nudge.nudgeFrequency}
-            onChange={handleInputChange('nudgeFrequency')}
+            onChange={handleNudgeInputChange('nudgeFrequency')}
             margin="normal"
             variant="outlined"
           />
@@ -129,7 +129,7 @@ const NudgeUpdate = props => {
             type="text"
             fullWidth
             value={nudge.nudgeFrequencyUnit}
-            onChange={handleInputChange('nudgeFrequencyUnit')}
+            onChange={handleNudgeInputChange('nudgeFrequencyUnit')}
             margin="normal"
             variant="outlined">
             <MenuItem value="days">days</MenuItem>
