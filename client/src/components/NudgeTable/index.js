@@ -74,8 +74,18 @@ const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
 };
 
 const NudgeTable = props => {
-  const matches = useMediaQuery('(max-width:818px)');
+  const matches = useMediaQuery('(max-width:770px)');
   const classes = useStyles();
+
+  const {
+    setNudgeDialogOpen,
+    nudgeDialogOpen,
+    handleNudgeInputChange,
+    handleNudgeFormSubmit,
+    launchNudgeUpdateComp,
+    nudge,
+    user
+  } = props;
 
   const [arrowOneFade, setArrowOneFade] = useState(false);
   const [arrowTwoFade, setArrowTwoFade] = useState(false);
@@ -107,7 +117,7 @@ const NudgeTable = props => {
       <Paper className={classes.root}>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h5" align="left">
-            Your Nudges
+            Nudges
           </Typography>
         </Toolbar>
         <Table className={classes.table}>
@@ -122,7 +132,7 @@ const NudgeTable = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.user.nudges.map(nudge => (
+            {user.nudges.map(nudge => (
               <TableRow key={nudge._id}>
                 <TableCell component="th" scope="row">
                   {nudge.name}
@@ -138,7 +148,7 @@ const NudgeTable = props => {
                   <Tooltip title="Edit Nudge" color="primary">
                     <IconButton
                       aria-label="edit nudge"
-                      onClick={() => props.launchUpdateComp(nudge)}>
+                      onClick={() => launchNudgeUpdateComp(nudge)}>
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
@@ -154,11 +164,11 @@ const NudgeTable = props => {
           </TableBody>
         </Table>
         <NudgeUpdate
-          closeUpdateComp={props.closeUpdateComp}
-          handleInputChange={props.handleInputChange}
-          handleFormSubmit={props.handleFormSubmit}
-          nudge={props.nudge}
-          dialogOpen={props.dialogOpen}
+          setNudgeDialogOpen={setNudgeDialogOpen}
+          handleNudgeInputChange={handleNudgeInputChange}
+          handleNudgeFormSubmit={handleNudgeFormSubmit}
+          nudge={nudge}
+          nudgeDialogOpen={nudgeDialogOpen}
         />
       </Paper>
       {matches && (
