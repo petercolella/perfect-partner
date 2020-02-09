@@ -4,7 +4,7 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const fn = require('../scripts/fn');
 
 module.exports = {
-  create: function(req, res) {
+  create: (req, res) => {
     const token_id = req.body.idtoken;
 
     fn.verify(token_id)

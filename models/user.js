@@ -11,7 +11,7 @@ const userSchema = new Schema({
   anniversaryDate: {
     type: Date,
     validate: [
-      function(v) {
+      v => {
         return v !== null;
       },
       'Anniversary must be a valid date!'
@@ -21,7 +21,7 @@ const userSchema = new Schema({
   birthDate: {
     type: Date,
     validate: [
-      function(v) {
+      v => {
         return v !== null;
       },
       'Birthday must be a valid date!'

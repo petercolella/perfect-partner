@@ -18,7 +18,7 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
   'o'
 );
 
-function formatDate(date) {
+const formatDate = date => {
   const dt = DateTime.fromJSDate(date).setZone('UTC');
   console.log(`
 DateTime.ts: ${dt.ts}
@@ -33,7 +33,7 @@ DateTime.o: ${dt.o}`);
   dateObj.yearOfDate = dt.toFormat('yyyy');
   console.log('dateObj:', dateObj);
   return dateObj;
-}
+};
 
 const reminderObj = {
   '1 Week': 7,
@@ -44,7 +44,7 @@ const reminderObj = {
 };
 
 const self = (module.exports = {
-  activate: function(req, res) {
+  activate: (req, res) => {
     const nudge = req.body.nudge;
     const {
       _id,
@@ -80,7 +80,7 @@ const self = (module.exports = {
       })
       .catch(err => res.status(422).json(err.message));
   },
-  runActivatedNudges: function() {
+  runActivatedNudges: () => {
     db.Nudge.find({}, (err, nudges) => {
       if (err) {
         console.log({ error: err.message });
@@ -105,7 +105,7 @@ const self = (module.exports = {
       });
     });
   },
-  runAnniversaryNudges: function() {
+  runAnniversaryNudges: () => {
     return db.User.find({}, (err, users) => {
       if (err) {
         console.log({ error: err.message });
@@ -155,7 +155,7 @@ const self = (module.exports = {
       });
     });
   },
-  runBirthdayNudges: function() {
+  runBirthdayNudges: () => {
     return db.User.find({}, (err, users) => {
       if (err) {
         console.log({ error: err.message });
@@ -200,15 +200,15 @@ const self = (module.exports = {
       });
     });
   },
-  sendText: function(body, to) {
+  sendText: (body, to) => {
     console.log('Body:', body, 'To:', to);
-    return client.messages.create({
-      body: `${body}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: `+1${to}`
-    });
+    // return client.messages.create({
+    //   body: `${body}`,
+    //   from: process.env.TWILIO_PHONE_NUMBER,
+    //   to: `+1${to}`
+    // });
   },
-  setFutureTimestamp: function(nudge) {
+  setFutureTimestamp: nudge => {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
     console.log('futureTimestamp:', new Date(futureTimestamp));
 
@@ -222,12 +222,12 @@ const self = (module.exports = {
       })
       .catch(err => console.log(err.message));
   },
-  toggle: function(req, res) {
+  toggle: (req, res) => {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  send: function(req, res) {
+  send: (req, res) => {
     const { phone, textMessage } = req.body;
 
     self.sendText(textMessage, phone).then(message => {

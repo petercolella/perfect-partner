@@ -63,9 +63,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function TransitionUp(props) {
+const Transition = props => {
   return <Slide {...props} direction="up" />;
-}
+};
 
 const nudgeArr = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
@@ -193,21 +193,21 @@ const NudgeDialog = props => {
       });
   };
 
-  function handleDialogClose(event, reason) {
+  const handleDialogClose = (event, reason) => {
     if (reason === 'clickaway' || reason === 'backdropClick') {
       return;
     }
 
     setDialogOpen(false);
-  }
+  };
 
-  function handleSnackbarClose(event, reason) {
+  const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setSnackbarOpen(false);
-  }
+  };
 
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
@@ -261,7 +261,7 @@ const NudgeDialog = props => {
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={Transition}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}>

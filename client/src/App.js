@@ -52,7 +52,7 @@ const App = () => {
     if (window.gapi && window.gapi.auth2) {
       const GoogleAuth = window.gapi.auth2.getAuthInstance();
       GoogleAuth.signOut()
-        .then(function() {
+        .then(() => {
           console.log('User signed out.');
         })
         .catch(err => console.log(err));
@@ -122,7 +122,7 @@ const App = () => {
   useEffect(() => {
     const loadGoogle = () => {
       console.log('loadGoogle');
-      window.gapi.load('auth2', function() {
+      window.gapi.load('auth2', () => {
         window.gapi.auth2.init({
           client_id:
             '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'

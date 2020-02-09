@@ -61,22 +61,22 @@ const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
   );
 });
 
-function TransitionUp(props) {
+const Transition = props => {
   return <Slide {...props} direction="up" />;
-}
+};
 
 const TestTextButton = props => {
   const [toastOpen, setToastOpen] = React.useState(false);
 
-  function handleToastClose(event, reason) {
+  const handleToastClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setToastOpen(false);
-  }
+  };
 
-  function sendText() {
+  const sendText = () => {
     const phone = props.user.phone;
     const textMessage = props.nudge.textMessage;
     API.sendText({ phone, textMessage })
@@ -87,7 +87,7 @@ const TestTextButton = props => {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
   return (
     <>
       <Snackbar
@@ -98,7 +98,7 @@ const TestTextButton = props => {
         open={toastOpen}
         autoHideDuration={2000}
         onClose={handleToastClose}
-        TransitionComponent={TransitionUp}
+        TransitionComponent={Transition}
         ContentProps={{
           'aria-describedby': 'message-id'
         }}>

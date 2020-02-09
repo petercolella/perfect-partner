@@ -22,11 +22,11 @@ now.o: ${now.o}`);
 console.log('now.c:', now.c);
 console.log('nowDayOfYear:', nowDayOfYear);
 
-async function runMethods() {
+const runMethods = async () => {
   await textController.runAnniversaryNudges();
   await textController.runBirthdayNudges();
 
   process.exit(0);
-}
+};
 
 runMethods();

@@ -3,7 +3,7 @@ require('dotenv').config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const fn = require('../scripts/fn');
 
-module.exports = function(req, res, next) {
+module.exports = (req, res, next) => {
   try {
     const { authorization } = req.headers;
     if (!authorization) throw new Error('Unauthorized');
@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
         const googleId = payload['sub'];
 
         if (CLIENT_ID === payload['aud']) {
-          User.findOne({ googleId }).then(function(dbUser) {
+          User.findOne({ googleId }).then(dbUser => {
             req.user = dbUser;
             next();
           });

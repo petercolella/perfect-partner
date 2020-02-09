@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Prevents Heroku from idling.
-setInterval(function() {
+setInterval(() => {
   http
     .get('http://perfectpartner.herokuapp.com/', res => {
       const { statusCode } = res;
@@ -44,7 +44,7 @@ setInterval(function() {
 
 const job = new CronJob(
   '0 0 8 * * *',
-  function() {
+  () => {
     const d = new Date();
     console.log('run job:', d);
     textController.runActivatedNudges();
@@ -72,7 +72,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pp', {
 });
 mongoose.set('useCreateIndex', true);
 
-app.listen(PORT, function() {
+app.listen(PORT, () => {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   job.start();
 });

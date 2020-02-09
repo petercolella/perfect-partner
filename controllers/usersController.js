@@ -4,13 +4,13 @@ const { DateTime } = require('luxon');
 
 // Defining methods for the usersController
 module.exports = {
-  findAll: function(req, res) {
+  findAll: (req, res) => {
     db.User.find(req.query)
       .populate('nudges')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  findById: function(req, res) {
+  findById: (req, res) => {
     if (req.user._id != req.params.id) {
       return res.status(403).json('Forbidden');
     }
@@ -20,12 +20,12 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  create: function(req, res) {
+  create: (req, res) => {
     db.User.create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  update: function(req, res) {
+  update: (req, res) => {
     console.log(
       'anniversaryDate:',
       req.body.anniversaryDate,
@@ -59,7 +59,7 @@ module.exports = {
         .catch(err => res.status(422).json(err.message));
     });
   },
-  remove: function(req, res) {
+  remove: (req, res) => {
     db.User.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))

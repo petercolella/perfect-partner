@@ -67,9 +67,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function TransitionUp(props) {
+const Transition = props => {
   return <Slide {...props} direction="up" />;
-}
+};
 
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
@@ -149,21 +149,21 @@ const DateQuestionDialog = props => {
     setState({ ...state, [name]: event.target.checked });
   };
 
-  function handleDialogClose(event, reason) {
+  const handleDialogClose = (event, reason) => {
     if (reason === 'clickaway' || reason === 'backdropClick') {
       return;
     }
 
     setDialogOpen(false);
-  }
+  };
 
-  function handleSnackbarClose(event, reason) {
+  const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setSnackbarOpen(false);
-  }
+  };
 
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
@@ -208,7 +208,7 @@ const DateQuestionDialog = props => {
           open={snackbarOpen}
           autoHideDuration={3000}
           onClose={handleSnackbarClose}
-          TransitionComponent={TransitionUp}
+          TransitionComponent={Transition}
           ContentProps={{
             'aria-describedby': 'message-id'
           }}>

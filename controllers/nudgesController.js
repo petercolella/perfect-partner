@@ -3,21 +3,21 @@ const textControl = require('./textController');
 
 // Defining methods for the nudgesController
 module.exports = {
-  findAll: function(req, res) {
+  findAll: (req, res) => {
     db.Nudge.find(req.query)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  findById: function(req, res) {
+  findById: (req, res) => {
     db.Nudge.findById(req.params.id)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  create: function(req, res) {
+  create: (req, res) => {
     const userId = req.body.userId;
     const newNudge = req.body.nudge;
     db.Nudge.create(newNudge)
-      .then(function(nudgeData) {
+      .then(nudgeData => {
         res.json(nudgeData);
         return db.User.findOneAndUpdate(
           { _id: userId },
@@ -28,7 +28,7 @@ module.exports = {
       .then(dbModel => console.log(dbModel))
       .catch(err => res.status(422).json(err.message));
   },
-  update: function(req, res) {
+  update: (req, res) => {
     db.Nudge.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbModel => {
         const {
@@ -63,7 +63,7 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err.message));
   },
-  remove: function(req, res) {
+  remove: (req, res) => {
     db.Nudge.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
