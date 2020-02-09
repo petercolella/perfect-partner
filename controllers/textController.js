@@ -202,11 +202,11 @@ const self = (module.exports = {
   },
   sendText: (body, to) => {
     console.log('Body:', body, 'To:', to);
-    // return client.messages.create({
-    //   body: `${body}`,
-    //   from: process.env.TWILIO_PHONE_NUMBER,
-    //   to: `+1${to}`
-    // });
+    return client.messages.create({
+      body: `${body}`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: `+1${to}`
+    });
   },
   setFutureTimestamp: nudge => {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
