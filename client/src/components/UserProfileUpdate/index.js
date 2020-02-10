@@ -7,13 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as User } from './user.svg';
-import SnackbarContentWrapper from '../SnackbarContentWrapper';
+import SnackbarComponent from '../SnackbarComponent';
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -21,10 +19,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center'
   }
 }));
-
-const Transition = props => {
-  return <Slide {...props} direction="up" />;
-};
 
 const UserProfileUpdate = props => {
   const classes = useStyles();
@@ -37,14 +31,6 @@ const UserProfileUpdate = props => {
   } = props;
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
   const clickHandler = () => {
     handleUserFormSubmit();
     setSnackbarOpen(true);
@@ -52,30 +38,15 @@ const UserProfileUpdate = props => {
 
   return (
     <div>
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
-          }}
-          open={snackbarOpen}
-          autoHideDuration={2000}
-          onClose={handleSnackbarClose}
-          TransitionComponent={Transition}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}>
-          <SnackbarContentWrapper
-            onClose={handleSnackbarClose}
-            variant="success"
-            message={
-              <span>
-                Your profile has been successfully updated, {user.firstName}.
-              </span>
-            }
-          />
-        </Snackbar>
-      </div>
+      <SnackbarComponent
+        open={snackbarOpen}
+        message={
+          <span>
+            Your profile has been successfully updated, {user.firstName}.
+          </span>
+        }
+        variant="success"
+      />
       <Dialog
         fullWidth={true}
         open={userProfileDialogOpen}
