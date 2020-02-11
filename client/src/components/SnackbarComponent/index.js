@@ -11,6 +11,10 @@ const SnackbarComponent = props => {
   const { message, open, variant } = props;
   const [snackbarOpen, setSnackbarOpen] = useState(open);
 
+  useEffect(() => {
+    setSnackbarOpen(open);
+  }, [open]);
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -19,9 +23,30 @@ const SnackbarComponent = props => {
     setSnackbarOpen(false);
   };
 
-  useEffect(() => {
-    setSnackbarOpen(open);
-  }, [open]);
+  const renderSnackbarContentWrapper = (message, variant) => {
+    let span;
+    switch (variant) {
+      case 'error':
+        span = message;
+        break;
+      case 'success':
+        span = message;
+        break;
+      case 'warning':
+        span = `Oops! That's not valid input.`;
+        break;
+      default:
+        return;
+    }
+
+    return (
+      <SnackbarContentWrapper
+        onClose={handleSnackbarClose}
+        variant={variant}
+        message={<span>{span}</span>}
+      />
+    );
+  };
 
   return (
     <Snackbar
@@ -36,11 +61,7 @@ const SnackbarComponent = props => {
       ContentProps={{
         'aria-describedby': 'message-id'
       }}>
-      <SnackbarContentWrapper
-        onClose={handleSnackbarClose}
-        variant={variant}
-        message={message}
-      />
+      {renderSnackbarContentWrapper(message, variant)}
     </Snackbar>
   );
 };
