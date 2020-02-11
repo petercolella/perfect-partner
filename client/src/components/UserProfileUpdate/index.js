@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -26,26 +26,19 @@ const UserProfileUpdate = props => {
     closeUserProfileUpdateComp,
     handleUserFormSubmit,
     handleUserInputChange,
+    message,
+    snackbarOpen,
     userProfileDialogOpen,
-    user
+    user,
+    variant
   } = props;
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const clickHandler = () => {
-    handleUserFormSubmit();
-    setSnackbarOpen(true);
-  };
 
   return (
     <div>
       <SnackbarComponent
         open={snackbarOpen}
-        message={
-          <span>
-            Your profile has been successfully updated, {user.firstName}.
-          </span>
-        }
-        variant="success"
+        message={message}
+        variant={variant}
       />
       <Dialog
         fullWidth={true}
@@ -142,7 +135,7 @@ const UserProfileUpdate = props => {
           <Button onClick={closeUserProfileUpdateComp} color="primary">
             Cancel
           </Button>
-          <Button onClick={clickHandler} color="primary">
+          <Button onClick={handleUserFormSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>
