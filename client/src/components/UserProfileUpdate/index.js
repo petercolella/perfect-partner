@@ -27,6 +27,7 @@ const UserProfileUpdate = props => {
     handleUserFormSubmit,
     handleUserInputChange,
     message,
+    setSnackbarOpen,
     snackbarOpen,
     userProfileDialogOpen,
     user,
@@ -38,6 +39,7 @@ const UserProfileUpdate = props => {
       <SnackbarComponent
         open={snackbarOpen}
         message={message}
+        setSnackbarOpen={setSnackbarOpen}
         variant={variant}
       />
       <Dialog

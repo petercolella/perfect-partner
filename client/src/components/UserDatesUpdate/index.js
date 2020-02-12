@@ -35,6 +35,7 @@ const UserDatesUpdate = props => {
     handleUserFormSubmit,
     handleUserDateInputChange,
     message,
+    setSnackbarOpen,
     snackbarOpen,
     userDatesDialogOpen,
     user,
@@ -46,6 +47,7 @@ const UserDatesUpdate = props => {
       <SnackbarComponent
         open={snackbarOpen}
         message={message}
+        setSnackbarOpen={setSnackbarOpen}
         variant={variant}
       />
       <Dialog
