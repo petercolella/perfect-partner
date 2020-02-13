@@ -1,45 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import Container from '@material-ui/core/Container';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MuiLink from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 import NudgeTable from '../NudgeTable';
+import SnackbarComponent from '../SnackbarComponent';
+import UserDates from '../UserDates';
 import UserDatesUpdate from '../UserDatesUpdate';
+import UserProfile from '../UserProfile';
 import UserProfileUpdate from '../UserProfileUpdate';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    overflowX: 'auto'
-  },
-  button: {
-    borderColor: '#22b5e0',
-    color: '#22b5e0',
-    margin: theme.spacing(1)
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'space-around'
-  },
   container: {
     backgroundColor: '#22b5e0',
     minHeight: '100vh',
@@ -53,19 +31,8 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       marginTop: 46
     }
-  },
-  multiline: {
-    margin: 0
   }
 }));
-
-const CustomCardMedia = withStyles(theme => ({
-  root: {
-    backgroundPositionX: 'left',
-    maxWidth: 96,
-    objectFit: 'contain'
-  }
-}))(CardMedia);
 
 const noNudge = {
   name: '',
@@ -75,16 +42,50 @@ const noNudge = {
   activated: false
 };
 
-const Dashboard = props => {
-  const [nudge, setNudge] = useState(noNudge);
+const keyNameObj = {
+  imageUrl: 'Image Link',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  name: 'Full Name',
+  email: 'Email',
+  partnerName: `Partner's name`,
+  phone: 'Phone Number',
+  anniversaryDate: 'Your Anniversary',
+  birthDate: `Partner's Birthday`
+};
 
+const keyNameAndValue = obj => {
+  for (let key in obj) {
+    obj.name = keyNameObj[key];
+    obj.value = obj[key];
+    delete obj[key];
+  }
+  return obj;
+};
+
+const Dashboard = props => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [nudge, setNudge] = useState(noNudge);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [testNudge, setTestNudge] = useState(null);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
+  const [variant, setVariant] = useState(null);
 
-  const { loadUserInfo, setUser, signedIn, user } = props;
+  const { loadUserInfo, signedIn, user } = props;
+
+  const [dashboardUser, setDashboardUser] = useState(user);
+
+  const loadDashboardUser = useCallback(() => {
+    setDashboardUser(user);
+  }, [user]);
+
+  useEffect(() => {
+    loadDashboardUser();
+  }, [loadDashboardUser]);
 
   const loadDates = useCallback(() => {
     if (user.anniversaryDate) {
@@ -102,38 +103,58 @@ const Dashboard = props => {
     loadDates();
   }, [loadDates]);
 
-  const launchNudgeUpdateComp = nudge => {
-    setNudge(nudge);
-    setNudgeDialogOpen(true);
-  };
-
   const closeUserDatesUpdateComp = () => {
     setUserDatesDialogOpen(false);
-    loadUserInfo();
+    loadDates();
   };
 
   const closeUserProfileUpdateComp = () => {
     setUserProfileDialogOpen(false);
-    loadUserInfo();
+    loadDashboardUser();
+  };
+
+  const handleSnackbarOpen = (message, variant) => {
+    setMessage(message);
+    setVariant(variant);
+    setSnackbarOpen(true);
   };
 
   const handleNudgeInputChange = name => event => {
     setNudge({ ...nudge, [name]: event.target.value });
   };
 
+  const launchNudgeUpdateComp = nudge => {
+    setNudge(nudge);
+    setTestNudge(nudge);
+    setNudgeDialogOpen(true);
+  };
+
   const handleNudgeFormSubmit = () => {
+    const testArray = Object.keys(testNudge).filter(
+      key => testNudge[key] !== nudge[key]
+    );
+
+    if (!testArray.length) {
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
+      return;
+    }
+
     API.updateNudge(nudge._id, {
       ...nudge
     })
-      .then(() => {
+      .then(res => {
+        handleSnackbarOpen(
+          `${nudge.name} has been successfully updated.`,
+          'success'
+        );
         loadUserInfo();
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
     setNudgeDialogOpen(false);
-  };
-
-  const handleUserInputChange = name => event => {
-    setUser({ ...user, [name]: event.target.value });
   };
 
   const handleUserDateInputChange = name => date => {
@@ -144,26 +165,87 @@ const Dashboard = props => {
       millisecond: 0
     });
 
-    const useStateObj = {
+    const setStateObj = {
       anniversaryDate: setAnniversaryDate,
       birthDate: setBirthDate
     };
 
-    useStateObj[name](dt);
+    setStateObj[name](dt);
+  };
+
+  const handleUserInputChange = name => event => {
+    setDashboardUser({ ...dashboardUser, [name]: event.target.value });
+  };
+
+  const renderSnackbarMessage = res => {
+    const dateKeysArray = ['anniversaryDate', 'birthDate'];
+
+    const updatedValuesArray = Object.keys(res)
+      .filter(key => res[key] !== user[key] && typeof res[key] !== 'object')
+      .map(key => {
+        return {
+          [key]: !dateKeysArray.includes(key)
+            ? res[key]
+            : DateTime.fromISO(res[key])
+                .setZone('UTC')
+                .toLocaleString()
+        };
+      });
+
+    const messageHTML = (
+      <div>
+        <p>
+          Your profile has been successfully updated with the following changes:
+        </p>
+        <ul>
+          {updatedValuesArray.map(el => {
+            el = keyNameAndValue(el);
+            return (
+              <li key={el.name}>
+                {el.name}: {el.value}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+
+    handleSnackbarOpen(messageHTML, 'success');
   };
 
   const handleUserFormSubmit = () => {
     const newUser = {
-      ...user,
+      ...dashboardUser,
       anniversaryDate: fn.localToUTC(anniversaryDate),
       birthDate: fn.localToUTC(birthDate)
     };
 
+    const testUser = {
+      ...newUser,
+      anniversaryDate: fn.localToUTC(anniversaryDate).toISO(),
+      birthDate: fn.localToUTC(birthDate).toISO()
+    };
+
+    const testArray = Object.keys(testUser).filter(
+      key => testUser[key] !== user[key]
+    );
+
+    if (!testArray.length) {
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
+      return;
+    }
+
     API.updateUser(user._id, newUser)
-      .then(() => {
+      .then(res => {
+        renderSnackbarMessage(res.data);
         loadUserInfo();
       })
-      .catch(err => console.log(err.response.data));
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
+
     setUserDatesDialogOpen(false);
     setUserProfileDialogOpen(false);
   };
@@ -181,194 +263,38 @@ const Dashboard = props => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.root}>
-              <Card className={classes.card}>
-                <CardHeader
-                  align="center"
-                  title={`${signedIn ? user.firstName + `'s` : `User`} Profile`}
-                />
-                <Divider variant="middle" />
-                {signedIn ? (
-                  <>
-                    <List dense={true}>
-                      <ListItem>
-                        <CustomCardMedia
-                          component="img"
-                          image={user.imageUrl}
-                          alt={`${user.firstName}'s Image`}
-                          title={`${user.firstName}'s Image`}
-                          height="96"
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Image Link:"
-                          secondary={
-                            <MuiLink
-                              href={user.imageUrl}
-                              color="inherit"
-                              target="_blank">
-                              {user.imageUrl}
-                            </MuiLink>
-                          }
-                          secondaryTypographyProps={{ noWrap: true }}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="First Name:"
-                          secondary={user.firstName}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Last Name:"
-                          secondary={user.lastName}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Full Name:"
-                          secondary={user.name}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Email:"
-                          secondary={user.email}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Partner's Name:"
-                          secondary={user.partnerName}
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Phone Number:"
-                          secondary={
-                            user.phone ? fn.formatPhoneNumber(user.phone) : null
-                          }
-                        />
-                      </ListItem>
-                    </List>
-                    <Divider variant="middle" />
-                    <div className={classes.buttonContainer}>
-                      <CardActions>
-                        <Button
-                          variant="outlined"
-                          className={classes.button}
-                          onClick={() => setUserProfileDialogOpen(true)}>
-                          Edit Your Profile
-                        </Button>
-                      </CardActions>
-                    </div>
-                  </>
-                ) : (
-                  <CardContent>
-                    <Typography color="textSecondary" variant="body1">
-                      Please sign in to continue.
-                    </Typography>
-                  </CardContent>
-                )}
-              </Card>
-            </Paper>
+            <UserProfile
+              setUserProfileDialogOpen={setUserProfileDialogOpen}
+              signedIn={signedIn}
+              user={user}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Paper className={classes.root}>
-              <Card className={classes.card}>
-                <CardHeader align="center" title="Important Dates" />
-                <Divider variant="middle" />
-                {signedIn ? (
-                  <>
-                    <List dense={true}>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Your Anniversary:"
-                          secondary={
-                            user.anniversaryDate
-                              ? DateTime.fromISO(anniversaryDate)
-                                  .setZone('UTC')
-                                  .toLocaleString()
-                              : ''
-                          }
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <ListItemText
-                          classes={{
-                            multiline: classes.multiline
-                          }}
-                          primary="Partner's Birthday:"
-                          secondary={
-                            user.birthDate
-                              ? DateTime.fromISO(birthDate)
-                                  .setZone('UTC')
-                                  .toLocaleString()
-                              : ''
-                          }
-                        />
-                      </ListItem>
-                    </List>
-                    <Divider variant="middle" />
-                    <div className={classes.buttonContainer}>
-                      <CardActions>
-                        <Button
-                          variant="outlined"
-                          className={classes.button}
-                          onClick={() => setUserDatesDialogOpen(true)}>
-                          Change Your Dates
-                        </Button>
-                      </CardActions>
-                    </div>
-                  </>
-                ) : (
-                  <CardContent>
-                    <Typography color="textSecondary" variant="body1">
-                      Please sign in to continue.
-                    </Typography>
-                  </CardContent>
-                )}
-              </Card>
-            </Paper>
+            <UserDates
+              anniversaryDate={anniversaryDate}
+              birthDate={birthDate}
+              setUserDatesDialogOpen={setUserDatesDialogOpen}
+              signedIn={signedIn}
+              user={user}
+            />
           </Grid>
           <Grid item xs={12}>
             <NudgeTable
-              user={user}
-              nudge={nudge}
-              launchNudgeUpdateComp={launchNudgeUpdateComp}
-              loadUserInfo={loadUserInfo}
-              setNudgeDialogOpen={setNudgeDialogOpen}
-              handleNudgeInputChange={handleNudgeInputChange}
               handleNudgeFormSubmit={handleNudgeFormSubmit}
+              handleNudgeInputChange={handleNudgeInputChange}
+              launchNudgeUpdateComp={launchNudgeUpdateComp}
+              nudge={nudge}
               nudgeDialogOpen={nudgeDialogOpen}
+              setNudgeDialogOpen={setNudgeDialogOpen}
+              user={user}
             />
           </Grid>
+          <SnackbarComponent
+            message={message}
+            open={snackbarOpen}
+            setSnackbarOpen={setSnackbarOpen}
+            variant={variant}
+          />
           <UserDatesUpdate
             anniversaryDate={anniversaryDate}
             birthDate={birthDate}
@@ -380,9 +306,9 @@ const Dashboard = props => {
           />
           <UserProfileUpdate
             closeUserProfileUpdateComp={closeUserProfileUpdateComp}
-            handleUserInputChange={handleUserInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
-            user={user}
+            handleUserInputChange={handleUserInputChange}
+            user={dashboardUser}
             userProfileDialogOpen={userProfileDialogOpen}
           />
         </Grid>
