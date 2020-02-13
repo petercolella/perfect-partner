@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContentWrapper from '../SnackbarContentWrapper';
@@ -8,12 +8,7 @@ const Transition = props => {
 };
 
 const SnackbarComponent = props => {
-  const { message, open, variant } = props;
-  const [snackbarOpen, setSnackbarOpen] = useState(open);
-
-  useEffect(() => {
-    setSnackbarOpen(open);
-  }, [open]);
+  const { message, open, setSnackbarOpen, variant } = props;
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -23,45 +18,24 @@ const SnackbarComponent = props => {
     setSnackbarOpen(false);
   };
 
-  const renderSnackbarContentWrapper = (message, variant) => {
-    let span;
-    switch (variant) {
-      case 'error':
-        span = message;
-        break;
-      case 'success':
-        span = message;
-        break;
-      case 'warning':
-        span = `Oops! That's not valid input.`;
-        break;
-      default:
-        return;
-    }
-
-    return (
-      <SnackbarContentWrapper
-        onClose={handleSnackbarClose}
-        variant={variant}
-        message={<span>{span}</span>}
-      />
-    );
-  };
-
   return (
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left'
       }}
-      open={snackbarOpen}
-      autoHideDuration={2000}
+      open={open}
+      autoHideDuration={5000}
       onClose={handleSnackbarClose}
       TransitionComponent={Transition}
       ContentProps={{
         'aria-describedby': 'message-id'
       }}>
-      {renderSnackbarContentWrapper(message, variant)}
+      <SnackbarContentWrapper
+        onClose={handleSnackbarClose}
+        variant={variant}
+        message={message}
+      />
     </Snackbar>
   );
 };
