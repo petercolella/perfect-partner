@@ -78,12 +78,12 @@ const NudgeTable = props => {
   const classes = useStyles();
 
   const {
-    setNudgeDialogOpen,
-    nudgeDialogOpen,
-    handleNudgeInputChange,
     handleNudgeFormSubmit,
+    handleNudgeInputChange,
     launchNudgeUpdateComp,
     nudge,
+    nudgeDialogOpen,
+    setNudgeDialogOpen,
     user
   } = props;
 
