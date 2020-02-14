@@ -13,12 +13,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Fade from '@material-ui/core/Fade';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-
-import SnackbarContentWrapper from '../../SnackbarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
   click: {
@@ -45,10 +41,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TransitionUp = props => {
-  return <Slide {...props} direction="up" />;
-};
-
 const QuestionDialog = props => {
   const classes = useStyles();
 
@@ -62,13 +54,9 @@ const QuestionDialog = props => {
     link,
     placeholder,
     question,
-    res,
     signedIn,
-    snackbarOpen,
-    setSnackbarOpen,
     title,
-    userField,
-    variant
+    userField
   } = props;
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -91,61 +79,12 @@ const QuestionDialog = props => {
     setDialogOpen(false);
   };
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
   };
 
-  const renderSnackbarContentWrapper = (res, variant) => {
-    let span;
-    switch (variant) {
-      case 'error':
-        span = res;
-        break;
-      case 'success':
-        span = `${title}: ${res} has been submitted.`;
-        break;
-      case 'warning':
-        span = `Oops! That's not valid input.`;
-        break;
-      default:
-        return;
-    }
-
-    return (
-      <SnackbarContentWrapper
-        onClose={handleSnackbarClose}
-        variant={variant}
-        message={<span>{span}</span>}
-      />
-    );
-  };
-
   return (
     <div className={classes.dialogBackground} onClick={reloadDialog}>
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
-          }}
-          open={snackbarOpen}
-          autoHideDuration={3000}
-          onClose={handleSnackbarClose}
-          TransitionComponent={TransitionUp}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}>
-          {renderSnackbarContentWrapper(res, variant)}
-        </Snackbar>
-      </div>
       <Fade
         in={!dialogOpen}
         timeout={1000}
