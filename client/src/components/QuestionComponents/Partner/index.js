@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import QuestionDialog from '../QuestionDialog';
+import SnackbarComponent from '../../SnackbarComponent';
 import API from '../../../utils/API';
 import { ReactComponent as Love } from './love.svg';
 
@@ -14,8 +15,8 @@ const state = {
 const Partner = props => {
   const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
+  const [message, setMessage] = useState(null);
   const [partnerName, setPartnerName] = useState('');
-  const [res, setRes] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [variant, setVariant] = useState(null);
 
@@ -33,14 +34,15 @@ const Partner = props => {
     loadPartner();
   }, [loadPartner]);
 
-  const handleSnackbarOpen = variant => {
+  const handleSnackbarOpen = (message, variant) => {
+    setMessage(message);
     setVariant(variant);
     setSnackbarOpen(true);
   };
 
   const handleFormSubmit = () => {
     if (!partnerName) {
-      handleSnackbarOpen('warning');
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
       return;
     }
 
@@ -48,15 +50,16 @@ const Partner = props => {
       partnerName
     })
       .then(res => {
+        handleSnackbarOpen(
+          `${state.title}: ${res.data.partnerName} has been submitted.`,
+          'success'
+        );
         loadUserInfo();
-        setRes(res.data.partnerName);
-        handleSnackbarOpen('success');
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        setRes(errMsg);
-        handleSnackbarOpen('error');
+        handleSnackbarOpen(errMsg, 'error');
       });
   };
 
@@ -66,25 +69,28 @@ const Partner = props => {
   };
 
   return (
-    <QuestionDialog
-      cancel={loadPartner}
-      firstName={user.firstName}
-      handleFormSubmit={handleFormSubmit}
-      handleInputChange={handleInputChange}
-      Image={Love}
-      label={state.label}
-      link={state.nextQuestionLink}
-      loadUserInfo={loadUserInfo}
-      placeholder={state.placeholder}
-      question={state.question}
-      res={res}
-      signedIn={signedIn}
-      snackbarOpen={snackbarOpen}
-      setSnackbarOpen={setSnackbarOpen}
-      title={state.title}
-      userField={partnerName}
-      variant={variant}
-    />
+    <>
+      <SnackbarComponent
+        message={message}
+        open={snackbarOpen}
+        setSnackbarOpen={setSnackbarOpen}
+        variant={variant}
+      />
+      <QuestionDialog
+        cancel={loadPartner}
+        firstName={user.firstName}
+        handleFormSubmit={handleFormSubmit}
+        handleInputChange={handleInputChange}
+        Image={Love}
+        label={state.label}
+        link={state.nextQuestionLink}
+        placeholder={state.placeholder}
+        question={state.question}
+        signedIn={signedIn}
+        title={state.title}
+        userField={partnerName}
+      />
+    </>
   );
 };
 
