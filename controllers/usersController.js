@@ -40,7 +40,7 @@ module.exports = {
     );
 
     db.User.findOne({ phone: req.body.phone }).then(dbModel => {
-      if (dbModel) {
+      if (dbModel && dbModel._id == req.params.id) {
         const { phone, ...rest } = req.body;
         req.body = rest;
       }
