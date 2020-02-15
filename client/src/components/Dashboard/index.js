@@ -143,18 +143,20 @@ const Dashboard = props => {
       ...nudge
     })
       .then(res => {
+        loadUserInfo();
         handleSnackbarOpen(
           `${nudge.name} has been successfully updated.`,
           'success'
         );
-        loadUserInfo();
+        setNudgeDialogOpen(false);
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
+        loadDashboardUser();
+        return;
       });
-    setNudgeDialogOpen(false);
   };
 
   const handleUserDateInputChange = name => date => {
@@ -237,17 +239,18 @@ const Dashboard = props => {
 
     API.updateUser(user._id, newUser)
       .then(res => {
-        renderSnackbarMessage(res.data);
         loadUserInfo();
+        renderSnackbarMessage(res.data);
+        setUserDatesDialogOpen(false);
+        setUserProfileDialogOpen(false);
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
+        loadDashboardUser();
+        return;
       });
-
-    setUserDatesDialogOpen(false);
-    setUserProfileDialogOpen(false);
   };
 
   const classes = useStyles();
