@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import NudgeDialog from '../NudgeDialog';
-import API from '../../../utils/API';
 import { ReactComponent as Reminder } from './reminder.svg';
 
 const state = {
@@ -10,27 +9,17 @@ const state = {
 };
 
 const Nudges = props => {
-  const id = sessionStorage.getItem('currentUserId');
   const { loadUserInfo, signedIn, user } = props;
   const [nudges, setNudges] = useState([]);
 
-  const loadNudges = useCallback(() => {
-    if (id) {
-      API.getUser(id).then(res => {
-        setNudges(res.data.nudges);
-      });
-    }
-  }, [id]);
-
   useEffect(() => {
-    loadNudges();
-  }, [loadNudges]);
+    setNudges(user.nudges);
+  }, [user]);
 
   return (
     <NudgeDialog
       Image={Reminder}
       link={state.nextQuestionLink}
-      loadNudges={loadNudges}
       loadUserInfo={loadUserInfo}
       nudges={nudges}
       question={state.question}
