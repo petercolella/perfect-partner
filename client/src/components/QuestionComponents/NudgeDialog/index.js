@@ -18,20 +18,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
-import SnackbarContentWrapper from '../../SnackbarContentWrapper';
+import SnackbarComponent from '../../SnackbarComponent';
 
 import API from '../../../utils/API';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
-  },
-  button: {
-    margin: theme.spacing(1)
   },
   click: {
     color: '#fff',
@@ -60,12 +55,12 @@ const useStyles = makeStyles(theme => ({
   },
   lineThrough: {
     textDecoration: 'line-through'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
-
-const Transition = props => {
-  return <Slide {...props} direction="up" />;
-};
 
 const nudgeArr = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
@@ -75,7 +70,6 @@ const NudgeDialog = props => {
   const {
     Image,
     link,
-    loadNudges,
     loadUserInfo,
     nudges,
     question,
@@ -85,9 +79,9 @@ const NudgeDialog = props => {
   } = props;
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [message, setMessage] = useState(null);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [res, setRes] = useState(null);
   const [state, setState] = useState({});
   const [variant, setVariant] = useState(null);
 
@@ -118,6 +112,20 @@ const NudgeDialog = props => {
     createNudgeObject();
   }, [createNudgeObject]);
 
+  const handleDialogClose = (event, reason) => {
+    if (reason === 'clickaway' || reason === 'backdropClick') {
+      return;
+    }
+
+    setDialogOpen(false);
+  };
+
+  const handleSnackbarOpen = (message, variant) => {
+    setMessage(message);
+    setVariant(variant);
+    setSnackbarOpen(true);
+  };
+
   const isDiabled = name => {
     for (let nudge of nudges) {
       if (nudge.name === name) {
@@ -127,8 +135,8 @@ const NudgeDialog = props => {
     return false;
   };
 
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+  const reloadDialog = () => {
+    if (!dialogOpen) setDialogOpen(true);
   };
 
   const selectAllCheckboxes = isSelected => {
@@ -146,16 +154,28 @@ const NudgeDialog = props => {
 
   const deselectAll = () => selectAllCheckboxes(false);
 
-  const handleSnackbarOpen = variant => {
-    setVariant(variant);
-    setSnackbarOpen(true);
+  const renderNudgeList = snackbarNudges => {
+    return (
+      <div>
+        <p>You submitted these nudges:</p>
+        <ul>
+          {snackbarNudges.map((nudge, i) => (
+            <li key={i}>{nudge}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  const handleChange = name => event => {
+    setState({ ...state, [name]: event.target.checked });
   };
 
   const handleSubmit = () => {
     const newNudges = Object.keys(state).filter(nudge => state[nudge]);
 
     if (!newNudges.length > 0) {
-      handleSnackbarOpen('warning');
+      handleSnackbarOpen('Please select at least one nudge.', 'warning');
       return;
     }
 
@@ -178,95 +198,29 @@ const NudgeDialog = props => {
           (arr, result) => [...arr, result.data.name],
           []
         );
-        loadNudges();
         loadUserInfo();
         deselectAll();
+        handleSnackbarOpen(
+          renderNudgeList(snackbarNudges.concat(resultsNameArr)),
+          'success'
+        );
         setSnackbarNudges(snackbarNudges.concat(resultsNameArr));
-        handleSnackbarOpen('success');
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        setRes(errMsg);
-        handleSnackbarOpen('error');
-        return;
+        handleSnackbarOpen(errMsg, 'error');
       });
-  };
-
-  const handleDialogClose = (event, reason) => {
-    if (reason === 'clickaway' || reason === 'backdropClick') {
-      return;
-    }
-
-    setDialogOpen(false);
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
-  const reloadDialog = () => {
-    if (!dialogOpen) setDialogOpen(true);
-  };
-
-  const renderNudgeList = snackbarNudges => {
-    return (
-      <>
-        You submitted these nudges:
-        <ul>
-          {snackbarNudges.map((nudge, i) => (
-            <li key={i}>{nudge}</li>
-          ))}
-        </ul>
-      </>
-    );
-  };
-
-  const renderSnackbarContentWrapper = (res, variant) => {
-    let span;
-    switch (variant) {
-      case 'error':
-        span = res;
-        break;
-      case 'success':
-        span = renderNudgeList(snackbarNudges);
-        break;
-      case 'warning':
-        span = `Please select at least one nudge.`;
-        break;
-      default:
-        return;
-    }
-
-    return (
-      <SnackbarContentWrapper
-        onClose={handleSnackbarClose}
-        variant={variant}
-        message={<span>{span}</span>}
-      />
-    );
   };
 
   return (
     <div className={classes.dialogBackground} onClick={reloadDialog}>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
+      <SnackbarComponent
+        message={message}
         open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        TransitionComponent={Transition}
-        ContentProps={{
-          'aria-describedby': 'message-id'
-        }}>
-        {renderSnackbarContentWrapper(res, variant)}
-      </Snackbar>
+        setSnackbarOpen={setSnackbarOpen}
+        variant={variant}
+      />
       <Fade
         in={!dialogOpen}
         timeout={1000}
@@ -286,9 +240,12 @@ const NudgeDialog = props => {
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle
+          className={classes.title}
+          id="form-dialog-title"
+          disableTypography={true}>
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          {title}
+          <Typography variant="h6">{title}</Typography>
           <IconButton
             aria-label="close"
             className={classes.closeButton}
