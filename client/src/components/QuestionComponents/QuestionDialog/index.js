@@ -38,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   link: {
     color: theme.palette.text.primary,
     textDecoration: 'none'
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center'
   }
 }));
 
@@ -104,9 +108,12 @@ const QuestionDialog = props => {
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
         scroll={'body'}>
-        <DialogTitle id="form-dialog-title">
+        <DialogTitle
+          className={classes.title}
+          id="form-dialog-title"
+          disableTypography={true}>
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-          {title}
+          <Typography variant="h6">{title}</Typography>
           <IconButton
             aria-label="close"
             className={classes.closeButton}
