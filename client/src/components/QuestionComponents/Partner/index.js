@@ -13,11 +13,12 @@ const question = {
 };
 
 const Partner = props => {
-  const { loadUserInfo, signedIn, user } = props;
+  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
 
   return (
     <QuestionPage
       Image={Love}
+      handleSnackbarOpen={handleSnackbarOpen}
       loadUserInfo={loadUserInfo}
       question={question}
       signedIn={signedIn}

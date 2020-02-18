@@ -13,11 +13,12 @@ const question = {
 };
 
 const Phone = props => {
-  const { loadUserInfo, signedIn, user } = props;
+  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
 
   return (
     <QuestionPage
       Image={Smartphone}
+      handleSnackbarOpen={handleSnackbarOpen}
       loadUserInfo={loadUserInfo}
       question={question}
       signedIn={signedIn}

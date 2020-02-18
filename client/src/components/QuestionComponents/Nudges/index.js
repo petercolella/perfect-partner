@@ -9,7 +9,7 @@ const state = {
 };
 
 const Nudges = props => {
-  const { loadUserInfo, signedIn, user } = props;
+  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
   const [nudges, setNudges] = useState([]);
 
   useEffect(() => {
@@ -19,6 +19,7 @@ const Nudges = props => {
   return (
     <NudgeDialog
       Image={Reminder}
+      handleSnackbarOpen={handleSnackbarOpen}
       link={state.nextQuestionLink}
       loadUserInfo={loadUserInfo}
       nudges={nudges}
