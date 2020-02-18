@@ -20,8 +20,6 @@ import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-import SnackbarComponent from '../../SnackbarComponent';
-
 import API from '../../../utils/API';
 
 const useStyles = makeStyles(theme => ({
@@ -69,6 +67,7 @@ const NudgeDialog = props => {
 
   const {
     Image,
+    handleSnackbarOpen,
     link,
     loadUserInfo,
     nudges,
@@ -79,11 +78,8 @@ const NudgeDialog = props => {
   } = props;
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [message, setMessage] = useState(null);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [state, setState] = useState({});
-  const [variant, setVariant] = useState(null);
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -118,12 +114,6 @@ const NudgeDialog = props => {
     }
 
     setDialogOpen(false);
-  };
-
-  const handleSnackbarOpen = (message, variant) => {
-    setMessage(message);
-    setVariant(variant);
-    setSnackbarOpen(true);
   };
 
   const isDiabled = name => {
@@ -215,12 +205,6 @@ const NudgeDialog = props => {
 
   return (
     <div className={classes.dialogBackground} onClick={reloadDialog}>
-      <SnackbarComponent
-        message={message}
-        open={snackbarOpen}
-        setSnackbarOpen={setSnackbarOpen}
-        variant={variant}
-      />
       <Fade
         in={!dialogOpen}
         timeout={1000}
