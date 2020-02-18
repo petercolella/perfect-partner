@@ -1,19 +1,18 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
-import API from './utils/API';
 
-import Landing from './components/Landing';
-import Dashboard from './components/Dashboard';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import API from './utils/API';
+import Anniversary from './components/QuestionComponents/Anniversary';
 import Birthday from './components/QuestionComponents/Birthday';
+import Dashboard from './components/Dashboard';
+import Landing from './components/Landing';
 import NavBar from './components/NavBar';
 import Nudges from './components/QuestionComponents/Nudges';
 import Partner from './components/QuestionComponents/Partner';
 import Phone from './components/QuestionComponents/Phone';
-import Anniversary from './components/QuestionComponents/Anniversary';
-import SnackbarContentWrapper from './components/SnackbarContentWrapper';
+import SnackbarComponent from './components/SnackbarComponent';
 
 import './styles.css';
 
@@ -29,10 +28,6 @@ const noUser = {
   nudges: [],
   partnerName: '',
   phone: ''
-};
-
-const Transition = props => {
-  return <Slide {...props} direction="up" />;
 };
 
 const App = () => {
@@ -144,34 +139,14 @@ const App = () => {
     setUser(noUser);
   };
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
   return (
     <React.Fragment>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
+      <SnackbarComponent
+        message={message}
         open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        TransitionComponent={Transition}
-        ContentProps={{
-          'aria-describedby': 'message-id'
-        }}>
-        <SnackbarContentWrapper
-          onClose={handleSnackbarClose}
-          variant={variant}
-          message={message}
-        />
-      </Snackbar>
+        setSnackbarOpen={setSnackbarOpen}
+        variant={variant}
+      />
       <CssBaseline />
       <BrowserRouter>
         <>
@@ -195,6 +170,7 @@ const App = () => {
               render={routeProps => (
                 <Anniversary
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   signedIn={signedIn}
                   user={user}
@@ -207,6 +183,7 @@ const App = () => {
               render={routeProps => (
                 <Birthday
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   signedIn={signedIn}
                   user={user}
@@ -219,6 +196,7 @@ const App = () => {
               render={routeProps => (
                 <Nudges
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   signedIn={signedIn}
                   user={user}
@@ -231,6 +209,7 @@ const App = () => {
               render={routeProps => (
                 <Partner
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   signedIn={signedIn}
                   user={user}
@@ -243,6 +222,7 @@ const App = () => {
               render={routeProps => (
                 <Phone
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   signedIn={signedIn}
                   user={user}
@@ -255,6 +235,7 @@ const App = () => {
               render={routeProps => (
                 <Dashboard
                   {...routeProps}
+                  handleSnackbarOpen={handleSnackbarOpen}
                   loadUserInfo={loadUserInfo}
                   setUser={setUser}
                   signedIn={signedIn}
