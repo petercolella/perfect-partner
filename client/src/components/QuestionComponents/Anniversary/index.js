@@ -3,7 +3,7 @@ import { ReactComponent as Gift } from './gift.svg';
 
 import DateQuestionPage from '../DateQuestionPage';
 
-const question = {
+const data = {
   dateKey: 'anniversaryDate',
   label: 'Anniversary',
   nextQuestionLink: '/birthday',
@@ -20,7 +20,7 @@ const Anniversary = props => {
       Image={Gift}
       handleSnackbarOpen={handleSnackbarOpen}
       loadUserInfo={loadUserInfo}
-      question={question}
+      data={data}
       signedIn={signedIn}
       user={user}
     />
