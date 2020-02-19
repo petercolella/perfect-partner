@@ -1,105 +1,28 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { DateTime } from 'luxon';
-
+import React from 'react';
 import { ReactComponent as Gift } from './gift.svg';
-import DateQuestionDialog from '../DateQuestionDialog';
 
-import API from '../../../utils/API';
-import fn from '../../../utils/fn';
+import DateQuestionPage from '../DateQuestionPage';
 
-const state = {
+const question = {
+  dateKey: 'anniversaryDate',
   label: 'Anniversary',
   nextQuestionLink: '/birthday',
   question: 'what is your anniversary date?',
+  reminderKey: 'anniversaryReminders',
   title: 'Anniversary'
 };
 
 const Anniversary = props => {
-  const id = sessionStorage.getItem('currentUserId');
-  const { loadUserInfo, signedIn, user } = props;
-  const [anniversaryDate, setAnniversaryDate] = useState(null);
-  const [anniversaryReminders, setAnniversaryReminders] = useState([]);
-  const [dialogReminders, setDialogReminders] = useState([]);
-  const [res, setRes] = useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [variant, setVariant] = useState(null);
-
-  const loadAnniversaryDate = useCallback(() => {
-    if (id) {
-      API.getUser(id).then(res => {
-        if (res.data.anniversaryDate) {
-          const dt = DateTime.fromISO(res.data.anniversaryDate);
-          setAnniversaryDate(fn.UTCToLocal(dt));
-        }
-        if (res.data.anniversaryReminders) {
-          setDialogReminders(res.data.anniversaryReminders);
-        }
-      });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    loadAnniversaryDate();
-  }, [loadAnniversaryDate]);
-
-  const handleDateInputChange = date => {
-    const dt = DateTime.fromJSDate(date).set({
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0
-    });
-    setAnniversaryDate(dt);
-  };
-
-  const handleSnackbarOpen = variant => {
-    setVariant(variant);
-    setSnackbarOpen(true);
-  };
-
-  const handleFormSubmit = () => {
-    if (!anniversaryDate) {
-      handleSnackbarOpen('warning');
-      return;
-    }
-
-    API.updateUser(user._id, {
-      anniversaryDate: fn.localToUTC(anniversaryDate),
-      anniversaryReminders
-    })
-      .then(res => {
-        loadUserInfo();
-        loadAnniversaryDate();
-        setRes(res.data.anniversaryDate);
-        handleSnackbarOpen('success');
-      })
-      .catch(err => {
-        // captures error message after last colon and space
-        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        setRes(errMsg);
-        handleSnackbarOpen('error');
-      });
-  };
+  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
 
   return (
-    <DateQuestionDialog
+    <DateQuestionPage
       Image={Gift}
-      cancel={loadAnniversaryDate}
-      dialogReminders={dialogReminders}
-      firstName={user.firstName}
-      handleDateInputChange={handleDateInputChange}
-      handleFormSubmit={handleFormSubmit}
-      label={state.label}
-      link={state.nextQuestionLink}
-      question={state.question}
-      res={res}
-      setParentReminders={setAnniversaryReminders}
-      setSnackbarOpen={setSnackbarOpen}
+      handleSnackbarOpen={handleSnackbarOpen}
+      loadUserInfo={loadUserInfo}
+      question={question}
       signedIn={signedIn}
-      snackbarOpen={snackbarOpen}
-      title={state.title}
-      userField={anniversaryDate}
-      variant={variant}
+      user={user}
     />
   );
 };
