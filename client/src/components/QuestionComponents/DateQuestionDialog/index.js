@@ -86,7 +86,7 @@ const DateQuestionDialog = props => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reminders, setReminders] = useState([]);
-  const [state, setState] = useState({});
+  const [reminderObj, setReminderObj] = useState({});
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -111,13 +111,13 @@ const DateQuestionDialog = props => {
   );
 
   const createReminderObject = useCallback(() => {
-    const newNameObj = reminderArr.reduce((reminderObj, reminder) => {
+    const newReminderObj = reminderArr.reduce((reminderObj, reminder) => {
       return {
         ...reminderObj,
         [reminder]: isChecked(reminder)
       };
     }, {});
-    setState(newNameObj);
+    setReminderObj(newReminderObj);
   }, [isChecked]);
 
   useEffect(() => {
@@ -125,16 +125,18 @@ const DateQuestionDialog = props => {
   }, [createReminderObject, dialogReminders]);
 
   useEffect(() => {
-    const newReminders = Object.keys(state).filter(reminder => state[reminder]);
+    const newReminders = Object.keys(reminderObj).filter(
+      reminder => reminderObj[reminder]
+    );
     setReminders(newReminders);
-  }, [state]);
+  }, [reminderObj]);
 
   useEffect(() => {
     setParentReminders(reminders);
   }, [reminders, setParentReminders]);
 
   const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+    setReminderObj({ ...reminderObj, [name]: event.target.checked });
   };
 
   const handleDialogClose = (event, reason) => {
@@ -147,6 +149,11 @@ const DateQuestionDialog = props => {
 
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
+  };
+
+  const reset = () => {
+    cancel();
+    createReminderObject();
   };
 
   return (
@@ -209,7 +216,7 @@ const DateQuestionDialog = props => {
               </MuiPickersUtilsProvider>
               <div className={classes.root}>
                 <DialogContentText classes={{ root: classes.root }}>
-                  Select each reminder you would like (in addition to the day
+                  Select each reminder you would like* (in addition to the day
                   of):
                 </DialogContentText>
                 <FormControl
@@ -222,7 +229,7 @@ const DateQuestionDialog = props => {
                         key={name}
                         control={
                           <Checkbox
-                            checked={state[name]}
+                            checked={reminderObj[name]}
                             onChange={handleChange(name)}
                             value={name}
                           />
@@ -238,7 +245,7 @@ const DateQuestionDialog = props => {
               </div>
             </DialogContent>
             <DialogActions>
-              <Button onClick={cancel} color="secondary">
+              <Button onClick={reset} color="secondary">
                 Cancel
               </Button>
               <Button onClick={handleFormSubmit} color="primary">
