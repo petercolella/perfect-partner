@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DateTime } from 'luxon';
+
 import DateQuestionDialog from '../DateQuestionDialog';
 
 import API from '../../../utils/API';
@@ -14,34 +15,25 @@ const DateQuestionPage = props => {
     Image,
     handleSnackbarOpen,
     loadUserInfo,
-    question,
+    data,
     signedIn,
     user
   } = props;
-  const { dateKey, reminderKey } = question;
 
-  //   const loadDate = useCallback(() => {
-  //     if (id) {
-  //       API.getUser(id).then(res => {
-  //         if (res.data.anniversaryDate) {
-  //           const dt = DateTime.fromISO(res.data.anniversaryDate);
-  //           setAnniversaryDate(fn.UTCToLocal(dt));
-  //         }
-  //         if (res.data.inputReminders) {
-  //           setDialogReminders(res.data.inputReminders);
-  //         }
-  //       });
-  //     }
-  //   }, [id]);
+  const {
+    dateKey,
+    label,
+    nextQuestionLink,
+    question,
+    reminderKey,
+    title
+  } = data;
 
   useEffect(() => {
-    if (user[dateKey]) {
-      const dt = DateTime.fromISO(user[dateKey]);
-      setInputValue(fn.UTCToLocal(dt));
-    }
-    if (user[reminderKey]) {
-      setDialogReminders(user[reminderKey]);
-    }
+    setInputValue(
+      user[dateKey] ? fn.UTCToLocal(DateTime.fromISO(user[dateKey])) : null
+    );
+    setDialogReminders(user[reminderKey] || []);
   }, [dateKey, reminderKey, user]);
 
   const handleDateInputChange = date => {
@@ -54,32 +46,39 @@ const DateQuestionPage = props => {
     setInputValue(dt);
   };
 
-  //   const handleSnackbarOpen = variant => {
-  //     setVariant(variant);
-  //     setSnackbarOpen(true);
-  //   };
-
   const handleFormSubmit = () => {
     if (!inputValue) {
-      handleSnackbarOpen('warning');
+      handleSnackbarOpen(`Oops! That's not valid input.`, 'warning');
+      return;
+    }
+
+    if (
+      fn.localToUTC(inputValue).toISO() === user[dateKey] &&
+      JSON.stringify(inputReminders) === JSON.stringify(user[reminderKey])
+    ) {
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
       return;
     }
 
     API.updateUser(user._id, {
       [dateKey]: fn.localToUTC(inputValue),
-      inputReminders
+      [reminderKey]: inputReminders
     })
       .then(res => {
         const dt = DateTime.fromISO(res.data[dateKey]);
         const localeStr = dt.setZone('UTC').toLocaleString();
 
-        handleSnackbarOpen(localeStr, 'success');
+        handleSnackbarOpen(
+          `${title}: ${localeStr} has been submitted.`,
+          'success'
+        );
         loadUserInfo();
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
+        loadUserInfo();
       });
   };
 
@@ -91,12 +90,12 @@ const DateQuestionPage = props => {
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
-      label={question.label}
-      link={question.nextQuestionLink}
-      question={question.question}
+      label={label}
+      link={nextQuestionLink}
+      question={question}
       setParentReminders={setInputReminders}
       signedIn={signedIn}
-      title={question.title}
+      title={title}
       userField={inputValue}
     />
   );
