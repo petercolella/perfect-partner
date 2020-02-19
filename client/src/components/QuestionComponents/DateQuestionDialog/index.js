@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { DateTime } from 'luxon';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -19,8 +18,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grow from '@material-ui/core/Grow';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 
 import 'date-fns';
@@ -29,8 +26,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
-
-import SnackbarContentWrapper from '../../SnackbarContentWrapper';
 
 const useStyles = makeStyles(theme => ({
   click: {
@@ -68,10 +63,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Transition = props => {
-  return <Slide {...props} direction="up" />;
-};
-
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
 const DateQuestionDialog = props => {
@@ -87,14 +78,10 @@ const DateQuestionDialog = props => {
     label,
     link,
     question,
-    res,
     setParentReminders,
-    setSnackbarOpen,
     signedIn,
-    snackbarOpen,
     title,
-    userField,
-    variant
+    userField
   } = props;
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -158,64 +145,12 @@ const DateQuestionDialog = props => {
     setDialogOpen(false);
   };
 
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnackbarOpen(false);
-  };
-
   const reloadDialog = () => {
     if (!dialogOpen) setDialogOpen(true);
   };
 
-  const renderSnackbarContentWrapper = (res, variant) => {
-    const dt = DateTime.fromISO(res);
-    const localeStr = dt.setZone('UTC').toLocaleString();
-
-    let span;
-    switch (variant) {
-      case 'error':
-        span = res;
-        break;
-      case 'success':
-        span = `${title}: ${localeStr} has been submitted.`;
-        break;
-      case 'warning':
-        span = `Oops! That's not valid input.`;
-        break;
-      default:
-        return;
-    }
-
-    return (
-      <SnackbarContentWrapper
-        onClose={handleSnackbarClose}
-        variant={variant}
-        message={<span>{span}</span>}
-      />
-    );
-  };
-
   return (
     <div className={classes.dialogBackground} onClick={reloadDialog}>
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left'
-          }}
-          open={snackbarOpen}
-          autoHideDuration={3000}
-          onClose={handleSnackbarClose}
-          TransitionComponent={Transition}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}>
-          {renderSnackbarContentWrapper(res, variant)}
-        </Snackbar>
-      </div>
       <Fade
         in={!dialogOpen}
         timeout={1000}
