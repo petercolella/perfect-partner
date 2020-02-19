@@ -79,7 +79,7 @@ const NudgeDialog = props => {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
-  const [state, setState] = useState({});
+  const [nudgeObj, setNudgeObj] = useState({});
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -101,7 +101,7 @@ const NudgeDialog = props => {
         [nudge]: false
       };
     }, {});
-    setState(newNameObj);
+    setNudgeObj(newNameObj);
   }, []);
 
   useEffect(() => {
@@ -130,9 +130,9 @@ const NudgeDialog = props => {
   };
 
   const selectAllCheckboxes = isSelected => {
-    Object.keys(state).forEach(name => {
+    Object.keys(nudgeObj).forEach(name => {
       if (!isDiabled(name)) {
-        setState(prevState => ({
+        setNudgeObj(prevState => ({
           ...prevState,
           [name]: isSelected
         }));
@@ -158,11 +158,11 @@ const NudgeDialog = props => {
   };
 
   const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked });
+    setNudgeObj({ ...nudgeObj, [name]: event.target.checked });
   };
 
   const handleSubmit = () => {
-    const newNudges = Object.keys(state).filter(nudge => state[nudge]);
+    const newNudges = Object.keys(nudgeObj).filter(nudge => nudgeObj[nudge]);
 
     if (!newNudges.length > 0) {
       handleSnackbarOpen('Please select at least one nudge.', 'warning');
@@ -259,7 +259,7 @@ const NudgeDialog = props => {
                         }
                         control={
                           <Checkbox
-                            checked={state[name]}
+                            checked={nudgeObj[name]}
                             onChange={handleChange(name)}
                             value={name}
                             disabled={isDiabled(name)}
