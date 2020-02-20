@@ -47,8 +47,8 @@ const DateQuestionPage = props => {
   };
 
   const handleFormSubmit = () => {
-    if (!inputValue) {
-      handleSnackbarOpen(`Oops! That's not valid input.`, 'warning');
+    if (!inputValue || !inputValue.isValid) {
+      handleSnackbarOpen(`Oops! That's not valid date.`, 'warning');
       return;
     }
 
