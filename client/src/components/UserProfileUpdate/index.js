@@ -122,7 +122,7 @@ const UserProfileUpdate = props => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeUserProfileUpdateComp} color="primary">
+        <Button onClick={closeUserProfileUpdateComp} color="secondary">
           Cancel
         </Button>
         <Button onClick={handleUserFormSubmit} color="primary">

@@ -91,7 +91,7 @@ const UserDatesUpdate = props => {
         </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeUserDatesUpdateComp} color="primary">
+        <Button onClick={closeUserDatesUpdateComp} color="secondary">
           Cancel
         </Button>
         <Button onClick={handleUserFormSubmit} color="primary">

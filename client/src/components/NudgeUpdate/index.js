@@ -98,7 +98,7 @@ const NudgeUpdate = props => {
         </TextField>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setNudgeDialogOpen(false)} color="primary">
+        <Button onClick={() => setNudgeDialogOpen(false)} color="secondary">
           Cancel
         </Button>
         <Button onClick={handleNudgeFormSubmit} color="primary">
