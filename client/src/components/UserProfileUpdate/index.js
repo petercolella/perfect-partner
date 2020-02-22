@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,6 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import { ReactComponent as User } from './user.svg';
 
 const useStyles = makeStyles(theme => ({
+  buttons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: theme.spacing(1, 3, 3)
+  },
   title: {
     display: 'flex',
     alignItems: 'center'
@@ -23,6 +29,7 @@ const UserProfileUpdate = props => {
   const classes = useStyles();
   const {
     closeUserProfileUpdateComp,
+    handleUserAccountDelete,
     handleUserFormSubmit,
     handleUserInputChange,
     user,
@@ -121,13 +128,23 @@ const UserProfileUpdate = props => {
           variant="outlined"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={closeUserProfileUpdateComp} color="secondary">
-          Cancel
+      <DialogActions className={classes.buttons}>
+        <Button
+          onClick={handleUserAccountDelete}
+          variant="contained"
+          color="secondary"
+          className={classes.button}
+          startIcon={<DeleteIcon />}>
+          Delete Your Account
         </Button>
-        <Button onClick={handleUserFormSubmit} color="primary">
-          Submit
-        </Button>
+        <div>
+          <Button onClick={closeUserProfileUpdateComp} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleUserFormSubmit} color="primary">
+            Submit
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   );
