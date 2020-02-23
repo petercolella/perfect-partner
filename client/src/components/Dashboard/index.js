@@ -73,7 +73,7 @@ const Dashboard = props => {
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
 
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
+  const { handleSnackbarOpen, loadUserInfo, signedIn, signOut, user } = props;
 
   const [dashboardUser, setDashboardUser] = useState(user);
 
@@ -114,6 +114,10 @@ const Dashboard = props => {
   const handleUserAccountDeleteSubmit = () => {
     setUserDeleteDialogOpen(false);
     setUserProfileDialogOpen(false);
+    API.deleteUser(user._id).then(res => {
+      console.log('res:', res.data);
+      signOut();
+    });
     handleSnackbarOpen('See ya!!!', 'info');
   };
 
