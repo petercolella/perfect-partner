@@ -11,10 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 import NudgeTable from '../NudgeTable';
-import SnackbarComponent from '../SnackbarComponent';
 import UserDates from '../UserDates';
 import UserDatesUpdate from '../UserDatesUpdate';
 import UserProfile from '../UserProfile';
+import UserProfileDelete from '../UserProfileDelete';
 import UserProfileUpdate from '../UserProfileUpdate';
 
 const useStyles = makeStyles(theme => ({
@@ -66,16 +66,14 @@ const keyNameAndValue = obj => {
 const Dashboard = props => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
-  const [message, setMessage] = useState(null);
   const [nudge, setNudge] = useState(noNudge);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [testNudge, setTestNudge] = useState(null);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
+  const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
-  const [variant, setVariant] = useState(null);
 
-  const { loadUserInfo, signedIn, user } = props;
+  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
 
   const [dashboardUser, setDashboardUser] = useState(user);
 
@@ -113,10 +111,10 @@ const Dashboard = props => {
     loadDashboardUser();
   };
 
-  const handleSnackbarOpen = (message, variant) => {
-    setMessage(message);
-    setVariant(variant);
-    setSnackbarOpen(true);
+  const handleUserAccountDeleteSubmit = () => {
+    setUserDeleteDialogOpen(false);
+    setUserProfileDialogOpen(false);
+    handleSnackbarOpen('See ya!!!', 'info');
   };
 
   const handleNudgeInputChange = name => event => {
@@ -292,12 +290,6 @@ const Dashboard = props => {
               user={user}
             />
           </Grid>
-          <SnackbarComponent
-            message={message}
-            open={snackbarOpen}
-            setSnackbarOpen={setSnackbarOpen}
-            variant={variant}
-          />
           <UserDatesUpdate
             anniversaryDate={anniversaryDate}
             birthDate={birthDate}
@@ -307,8 +299,15 @@ const Dashboard = props => {
             user={user}
             userDatesDialogOpen={userDatesDialogOpen}
           />
+          <UserProfileDelete
+            setUserDeleteDialogOpen={setUserDeleteDialogOpen}
+            handleUserAccountDeleteSubmit={handleUserAccountDeleteSubmit}
+            userDeleteDialogOpen={userDeleteDialogOpen}
+            user={user}
+          />
           <UserProfileUpdate
             closeUserProfileUpdateComp={closeUserProfileUpdateComp}
+            setUserDeleteDialogOpen={setUserDeleteDialogOpen}
             handleUserFormSubmit={handleUserFormSubmit}
             handleUserInputChange={handleUserInputChange}
             user={dashboardUser}
