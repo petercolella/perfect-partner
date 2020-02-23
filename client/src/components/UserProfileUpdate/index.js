@@ -29,9 +29,9 @@ const UserProfileUpdate = props => {
   const classes = useStyles();
   const {
     closeUserProfileUpdateComp,
-    handleUserAccountDelete,
     handleUserFormSubmit,
     handleUserInputChange,
+    setUserDeleteDialogOpen,
     user,
     userProfileDialogOpen
   } = props;
@@ -130,7 +130,7 @@ const UserProfileUpdate = props => {
       </DialogContent>
       <DialogActions className={classes.buttons}>
         <Button
-          onClick={handleUserAccountDelete}
+          onClick={() => setUserDeleteDialogOpen(true)}
           variant="contained"
           color="secondary"
           className={classes.button}
