@@ -239,6 +239,7 @@ const App = () => {
                   loadUserInfo={loadUserInfo}
                   setUser={setUser}
                   signedIn={signedIn}
+                  signOut={signOut}
                   user={user}
                 />
               )}
