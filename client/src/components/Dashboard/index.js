@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 
@@ -68,6 +69,7 @@ const Dashboard = props => {
   const [birthDate, setBirthDate] = useState(null);
   const [nudge, setNudge] = useState(noNudge);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const [testNudge, setTestNudge] = useState(null);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
@@ -118,7 +120,10 @@ const Dashboard = props => {
       console.log('res:', res.data);
       signOut();
     });
-    handleSnackbarOpen('See ya!!!', 'info');
+    handleSnackbarOpen('See ya!!!', 'info', 2000);
+    setTimeout(() => {
+      setRedirect(true);
+    }, 4000);
   };
 
   const handleNudgeInputChange = name => event => {
@@ -257,6 +262,10 @@ const Dashboard = props => {
 
   const classes = useStyles();
 
+  if (redirect) {
+    return <Redirect to="/landing" />;
+  }
+
   return (
     <Fade in={true} timeout={1000}>
       <Container className={classes.container}>
@@ -304,6 +313,7 @@ const Dashboard = props => {
             userDatesDialogOpen={userDatesDialogOpen}
           />
           <UserProfileDelete
+            setRedirect={setRedirect}
             setUserDeleteDialogOpen={setUserDeleteDialogOpen}
             handleUserAccountDeleteSubmit={handleUserAccountDeleteSubmit}
             userDeleteDialogOpen={userDeleteDialogOpen}
