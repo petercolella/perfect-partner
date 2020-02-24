@@ -200,15 +200,15 @@ const DateQuestionDialog = props => {
                 <KeyboardDatePicker
                   animateYearScrolling={true}
                   clearable
-                  fullWidth
-                  inputVariant="outlined"
                   format="MM/dd/yyyy"
-                  margin="normal"
+                  fullWidth
                   id="dateQuestionDialogDatePicker"
+                  inputVariant="outlined"
                   label={label}
+                  margin="normal"
+                  onChange={handleDateInputChange}
                   placeholder="mm/dd/yyyy"
                   value={userField}
-                  onChange={handleDateInputChange}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'
                   }}

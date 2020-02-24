@@ -58,37 +58,37 @@ const UserDatesUpdate = props => {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             animateYearScrolling={true}
-            id="anniversaryDate"
-            label="Anniversary Date"
-            placeholder="mm/dd/yyyy"
+            clearable
             format="MM/dd/yyyy"
             fullWidth
-            value={anniversaryDate}
+            id="anniversaryDate"
+            inputVariant="outlined"
+            label="Anniversary Date"
+            margin="normal"
             onChange={handleUserDateInputChange('anniversaryDate')}
+            placeholder="mm/dd/yyyy"
+            value={anniversaryDate}
             KeyboardButtonProps={{
               'aria-label': 'change date'
             }}
-            margin="normal"
-            variant="inline"
-            inputVariant="outlined"
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             animateYearScrolling={true}
-            id="birthDate"
-            label="Partner's Birthday"
-            placeholder="mm/dd/yyyy"
+            clearable
             format="MM/dd/yyyy"
             fullWidth
-            value={birthDate}
+            id="birthDate"
+            inputVariant="outlined"
+            label="Partner's Birthday"
+            margin="normal"
             onChange={handleUserDateInputChange('birthDate')}
+            placeholder="mm/dd/yyyy"
+            value={birthDate}
             KeyboardButtonProps={{
               'aria-label': 'change date'
             }}
-            margin="normal"
-            variant="inline"
-            inputVariant="outlined"
           />
         </MuiPickersUtilsProvider>
       </DialogContent>
