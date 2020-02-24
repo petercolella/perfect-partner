@@ -31,13 +31,15 @@ const noUser = {
 };
 
 const App = () => {
+  const [autoHideDuration, setAutoHideDuration] = useState(null);
   const [message, setMessage] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [user, setUser] = useState(noUser);
   const [variant, setVariant] = useState(null);
 
-  const handleSnackbarOpen = (message, variant) => {
+  const handleSnackbarOpen = (message, variant, autoHideDuration = 5000) => {
+    setAutoHideDuration(autoHideDuration);
     setMessage(message);
     setVariant(variant);
     setSnackbarOpen(true);
@@ -142,6 +144,7 @@ const App = () => {
   return (
     <React.Fragment>
       <SnackbarComponent
+        autoHideDuration={autoHideDuration}
         message={message}
         open={snackbarOpen}
         setSnackbarOpen={setSnackbarOpen}
