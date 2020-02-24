@@ -57,9 +57,10 @@ const UserDatesUpdate = props => {
         <DialogContentText>Make changes below.</DialogContentText>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            autoOk
+            animateYearScrolling={true}
             id="anniversaryDate"
             label="Anniversary Date"
+            placeholder="mm/dd/yyyy"
             format="MM/dd/yyyy"
             fullWidth
             value={anniversaryDate}
@@ -74,9 +75,10 @@ const UserDatesUpdate = props => {
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
-            autoOk
+            animateYearScrolling={true}
             id="birthDate"
             label="Partner's Birthday"
+            placeholder="mm/dd/yyyy"
             format="MM/dd/yyyy"
             fullWidth
             value={birthDate}
