@@ -8,7 +8,7 @@ const Transition = props => {
 };
 
 const SnackbarComponent = props => {
-  const { message, open, setSnackbarOpen, variant } = props;
+  const { autoHideDuration, message, open, setSnackbarOpen, variant } = props;
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -25,7 +25,7 @@ const SnackbarComponent = props => {
         horizontal: 'left'
       }}
       open={open}
-      autoHideDuration={5000}
+      autoHideDuration={autoHideDuration}
       onClose={handleSnackbarClose}
       TransitionComponent={Transition}
       ContentProps={{
