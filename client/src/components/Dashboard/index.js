@@ -223,36 +223,20 @@ const Dashboard = props => {
   };
 
   const handleUserFormSubmit = () => {
-    const newAnniversaryDate = anniversaryDate
-      ? { anniversaryDate: fn.localToUTC(anniversaryDate) }
-      : null;
-
-    const newBirthDate = birthDate
-      ? { birthDate: fn.localToUTC(birthDate) }
-      : null;
-
-    console.log(newAnniversaryDate, newBirthDate);
-
     const newUser = {
       ...dashboardUser,
-      newAnniversaryDate,
-      newBirthDate
+      anniversaryDate: anniversaryDate
+        ? fn.localToUTC(anniversaryDate)
+        : undefined,
+      birthDate: birthDate ? fn.localToUTC(birthDate) : undefined
     };
-
-    console.log('newUser:', newUser);
-
-    const newAnniversaryDateTest = anniversaryDate
-      ? { anniversaryDate: fn.localToUTC(anniversaryDate).toISO() }
-      : null;
-
-    const newBirthDateTest = birthDate
-      ? { birthDate: fn.localToUTC(birthDate).toISO() }
-      : null;
 
     const testUser = {
       ...newUser,
-      newAnniversaryDateTest,
-      newBirthDateTest
+      anniversaryDate: anniversaryDate
+        ? fn.localToUTC(anniversaryDate).toISO()
+        : undefined,
+      birthDate: birthDate ? fn.localToUTC(birthDate).toISO() : undefined
     };
 
     const testArray = Object.keys(testUser).filter(
