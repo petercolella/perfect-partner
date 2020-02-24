@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
@@ -57,16 +56,14 @@ const UserProfileDelete = props => {
         </DialogContentText>
       </DialogContent>
       <DialogActions className={classes.buttons}>
-        <Link to="/landing" className={classes.link}>
-          <Button
-            onClick={handleUserAccountDeleteSubmit}
-            color="secondary"
-            startIcon={<DeleteForeverIcon />}
-            size="small"
-            variant="contained">
-            Yes, do it.
-          </Button>
-        </Link>
+        <Button
+          onClick={handleUserAccountDeleteSubmit}
+          color="secondary"
+          startIcon={<DeleteForeverIcon />}
+          size="small"
+          variant="contained">
+          Yes, do it.
+        </Button>
         <Button
           onClick={() => setUserDeleteDialogOpen(false)}
           size="small"
