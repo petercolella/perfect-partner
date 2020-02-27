@@ -243,8 +243,6 @@ const Dashboard = props => {
       key => testUser[key] !== user[key]
     );
 
-    console.log('testArray:', testArray);
-
     if (!testArray.length) {
       handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
       return;
@@ -268,11 +266,9 @@ const Dashboard = props => {
 
   const classes = useStyles();
 
-  if (redirect) {
-    return <Redirect to="/landing" />;
-  }
-
-  return (
+  return redirect ? (
+    <Redirect to="/landing" />
+  ) : (
     <Fade in={true} timeout={1000}>
       <Container className={classes.container}>
         <Toolbar />
