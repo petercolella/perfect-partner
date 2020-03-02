@@ -19,6 +19,19 @@ const nudgeSchema = new Schema({
   textTimestamp: { type: Date, default: null }
 });
 
+nudgeSchema.post('remove', document => {
+  const nudgeId = document._id;
+  mongoose
+    .model('User')
+    .findOneAndUpdate(
+      { nudges: { $in: [nudgeId] } },
+      { $pull: { nudges: nudgeId } },
+      { new: true }
+    )
+    .then(dbModel => console.log(dbModel))
+    .catch(err => console.log(err));
+});
+
 const Nudge = mongoose.model('Nudge', nudgeSchema);
 
 module.exports = Nudge;
