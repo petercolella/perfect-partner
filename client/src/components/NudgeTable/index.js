@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
+import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
@@ -78,6 +79,7 @@ const NudgeTable = props => {
   const classes = useStyles();
 
   const {
+    handleNudgeDelete,
     handleNudgeFormSubmit,
     handleNudgeInputChange,
     launchNudgeUpdateComp,
@@ -127,6 +129,7 @@ const NudgeTable = props => {
               <TableCell align="center">Text Body</TableCell>
               <TableCell align="center">Frequency</TableCell>
               <TableCell align="center">Customize</TableCell>
+              <TableCell align="center">Delete</TableCell>
               <TableCell align="center">Test</TableCell>
               <TableCell align="center">Activate</TableCell>
             </TableRow>
@@ -150,6 +153,15 @@ const NudgeTable = props => {
                       aria-label="edit nudge"
                       onClick={() => launchNudgeUpdateComp(nudge)}>
                       <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+                <TableCell align="center">
+                  <Tooltip title="Delete Nudge" color="primary">
+                    <IconButton
+                      aria-label="delete nudge"
+                      onClick={() => handleNudgeDelete(nudge)}>
+                      <DeleteIcon />
                     </IconButton>
                   </Tooltip>
                 </TableCell>
