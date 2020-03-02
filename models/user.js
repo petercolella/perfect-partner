@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Nudge = require('./nudge');
-
 const userSchema = new Schema({
   googleId: { type: String },
   email: { type: String, required: true, unique: true },
@@ -54,13 +52,14 @@ const userSchema = new Schema({
   ]
 });
 
-userSchema.pre('remove', function(next) {
-  this.nudges.forEach(id => {
-    Nudge.findOneAndDelete({ _id: id })
+userSchema.post('remove', document => {
+  document.nudges.forEach(id => {
+    mongoose
+      .model('Nudge')
+      .findOneAndDelete({ _id: id })
       .then(dbModel => console.log(dbModel))
       .catch(err => console.log(err));
   });
-  next();
 });
 
 const User = mongoose.model('User', userSchema);
