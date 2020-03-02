@@ -126,6 +126,14 @@ const Dashboard = props => {
     }, 4000);
   };
 
+  const handleNudgeDelete = nudge => {
+    API.deleteNudge(nudge._id).then(res => {
+      console.log('res:', res.data);
+      loadDashboardUser();
+    });
+    handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
+  };
+
   const handleNudgeInputChange = name => event => {
     setNudge({ ...nudge, [name]: event.target.value });
   };
@@ -296,6 +304,7 @@ const Dashboard = props => {
           </Grid>
           <Grid item xs={12}>
             <NudgeTable
+              handleNudgeDelete={handleNudgeDelete}
               handleNudgeFormSubmit={handleNudgeFormSubmit}
               handleNudgeInputChange={handleNudgeInputChange}
               launchNudgeUpdateComp={launchNudgeUpdateComp}
