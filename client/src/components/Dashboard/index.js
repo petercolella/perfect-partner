@@ -116,10 +116,14 @@ const Dashboard = props => {
   const handleUserAccountDeleteSubmit = () => {
     setUserDeleteDialogOpen(false);
     setUserProfileDialogOpen(false);
-    API.deleteUser(user._id).then(res => {
-      console.log('res:', res.data);
-      signOut();
-    });
+    API.deleteUser(user._id)
+      .then(res => {
+        signOut();
+      })
+      .catch(err => {
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
     handleSnackbarOpen('See ya!!!', 'info', 2000);
     setTimeout(() => {
       setRedirect(true);
@@ -127,10 +131,14 @@ const Dashboard = props => {
   };
 
   const handleNudgeDelete = nudge => {
-    API.deleteNudge(nudge._id).then(res => {
-      console.log('res:', res.data);
-      loadDashboardUser();
-    });
+    API.deleteNudge(nudge._id)
+      .then(res => {
+        loadUserInfo();
+      })
+      .catch(err => {
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
     handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
   };
 
