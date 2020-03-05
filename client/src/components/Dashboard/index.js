@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
@@ -64,6 +64,15 @@ const keyNameAndValue = obj => {
   return obj;
 };
 
+const userKeyArray = [
+  'firstName',
+  'lastName',
+  'name',
+  'email',
+  'partnerName',
+  'phone'
+];
+
 const Dashboard = props => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
@@ -113,21 +122,57 @@ const Dashboard = props => {
     loadDashboardUser();
   };
 
+  const timeTotalRef = useRef();
+  timeTotalRef.current = 0;
+
+  const eraseUser = () => {
+    Object.keys(dashboardUser).forEach(key => {
+      if (
+        typeof dashboardUser[key] === 'string' &&
+        userKeyArray.includes(key)
+      ) {
+        for (let i = dashboardUser[key].length - 1; i >= 0; i--) {
+          setTimeout(() => {
+            setDashboardUser(dashboardUser => {
+              return {
+                ...dashboardUser,
+                [key]: dashboardUser[key].substring(0, i)
+              };
+            });
+          }, (timeTotalRef.current += 75));
+        }
+      }
+    });
+  };
+
   const handleUserAccountDeleteSubmit = () => {
-    setUserDeleteDialogOpen(false);
-    setUserProfileDialogOpen(false);
-    API.deleteUser(user._id)
-      .then(res => {
-        signOut();
-      })
-      .catch(err => {
-        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        handleSnackbarOpen(errMsg, 'error');
-      });
-    handleSnackbarOpen('See ya!!!', 'info', 2000);
+    eraseUser();
     setTimeout(() => {
-      setRedirect(true);
-    }, 4000);
+      setDashboardUser(dashboardUser => {
+        return {
+          ...dashboardUser,
+          imageUrl: ''
+        };
+      });
+    }, (timeTotalRef.current += 100));
+    setTimeout(() => {
+      setUserProfileDialogOpen(false);
+      API.deleteUser(user._id)
+        .then(res => {
+          handleSnackbarOpen('See ya!!!', 'info', 2000);
+          setTimeout(() => {
+            signOut();
+          }, 1000);
+          setTimeout(() => {
+            setRedirect(true);
+          }, 2000);
+        })
+        .catch(err => {
+          const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+          handleSnackbarOpen(errMsg, 'error');
+        });
+    }, (timeTotalRef.current += 100));
+    setUserDeleteDialogOpen(false);
   };
 
   const handleNudgeDelete = nudge => {
