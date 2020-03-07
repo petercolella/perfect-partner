@@ -17,12 +17,18 @@ module.exports = {
 
     db.User.findById(req.params.id)
       .populate('nudges')
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        const { googleId, ...user } = dbModel._doc;
+        res.json(user);
+      })
       .catch(err => res.status(422).json(err.message));
   },
   create: (req, res) => {
     db.User.create(req.body)
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        const { googleId, ...user } = dbModel._doc;
+        res.json(user);
+      })
       .catch(err => res.status(422).json(err.message));
   },
   update: (req, res) => {
@@ -54,7 +60,8 @@ module.exports = {
             const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
             textControl.sendText(updateBody, dbModel.phone);
           }
-          res.json(dbModel);
+          const { googleId, ...user } = dbModel._doc;
+          res.json(user);
         })
         .catch(err => res.status(422).json(err.message));
     });
@@ -62,7 +69,10 @@ module.exports = {
   remove: (req, res) => {
     db.User.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        const { googleId, ...user } = dbModel._doc;
+        res.json(user);
+      })
       .catch(err => res.status(422).json(err.message));
   }
 };
