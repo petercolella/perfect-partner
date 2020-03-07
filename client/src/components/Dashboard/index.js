@@ -18,6 +18,58 @@ import UserProfile from '../UserProfile';
 import UserProfileDelete from '../UserProfileDelete';
 import UserProfileUpdate from '../UserProfileUpdate';
 
+const keyNameObj = {
+  imageUrl: 'Image Link',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  name: 'Full Name',
+  email: 'Email',
+  partnerName: `Partner's name`,
+  phone: 'Phone Number',
+  anniversaryDate: 'Your Anniversary',
+  birthDate: `Partner's Birthday`
+};
+
+const noNudge = {
+  name: '',
+  nudgeFrequency: '',
+  nudgeFrequencyUnit: '',
+  textMessage: '',
+  activated: false
+};
+
+const noUser = {
+  anniversaryDate: '',
+  birthDate: '',
+  email: '',
+  firstName: '',
+  imageUrl:
+    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+  lastName: '',
+  name: '',
+  nudges: [],
+  partnerName: '',
+  phone: ''
+};
+
+const userKeyArray = [
+  'firstName',
+  'lastName',
+  'name',
+  'email',
+  'partnerName',
+  'phone'
+];
+
+const keyNameAndValue = obj => {
+  for (let key in obj) {
+    obj.name = keyNameObj[key];
+    obj.value = obj[key];
+    delete obj[key];
+  }
+  return obj;
+};
+
 const useStyles = makeStyles(theme => ({
   container: {
     backgroundColor: '#22b5e0',
@@ -35,47 +87,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const noNudge = {
-  name: '',
-  nudgeFrequency: '',
-  nudgeFrequencyUnit: '',
-  textMessage: '',
-  activated: false
-};
-
-const keyNameObj = {
-  imageUrl: 'Image Link',
-  firstName: 'First Name',
-  lastName: 'Last Name',
-  name: 'Full Name',
-  email: 'Email',
-  partnerName: `Partner's name`,
-  phone: 'Phone Number',
-  anniversaryDate: 'Your Anniversary',
-  birthDate: `Partner's Birthday`
-};
-
-const keyNameAndValue = obj => {
-  for (let key in obj) {
-    obj.name = keyNameObj[key];
-    obj.value = obj[key];
-    delete obj[key];
-  }
-  return obj;
-};
-
-const userKeyArray = [
-  'firstName',
-  'lastName',
-  'name',
-  'email',
-  'partnerName',
-  'phone'
-];
-
 const Dashboard = props => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
+  const [deleted, setDeleted] = useState(false);
   const [nudge, setNudge] = useState(noNudge);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -148,30 +163,23 @@ const Dashboard = props => {
   const handleUserAccountDeleteSubmit = () => {
     eraseUser();
     setTimeout(() => {
-      setDashboardUser(dashboardUser => {
-        return {
-          ...dashboardUser,
-          imageUrl: ''
-        };
-      });
+      setDeleted(true);
+      setUserProfileDialogOpen(false);
     }, (timeTotalRef.current += 100));
     setTimeout(() => {
-      setUserProfileDialogOpen(false);
       API.deleteUser(user._id)
         .then(res => {
           handleSnackbarOpen('See ya!!!', 'info', 2000);
           setTimeout(() => {
-            signOut();
-          }, 1000);
-          setTimeout(() => {
             setRedirect(true);
+            signOut();
           }, 2000);
         })
         .catch(err => {
           const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
           handleSnackbarOpen(errMsg, 'error');
         });
-    }, (timeTotalRef.current += 100));
+    }, (timeTotalRef.current += 500));
     setUserDeleteDialogOpen(false);
   };
 
@@ -343,7 +351,7 @@ const Dashboard = props => {
             <UserProfile
               setUserProfileDialogOpen={setUserProfileDialogOpen}
               signedIn={signedIn}
-              user={user}
+              user={!deleted ? user : noUser}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
