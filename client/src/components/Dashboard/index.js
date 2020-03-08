@@ -169,17 +169,17 @@ const Dashboard = props => {
     setTimeout(() => {
       API.deleteUser(user._id)
         .then(res => {
-          handleSnackbarOpen('See ya!!!', 'info', 2000);
+          handleSnackbarOpen('See ya!!!', 'info', 1000);
           setTimeout(() => {
             setRedirect(true);
             signOut();
-          }, 2000);
+          }, 1500);
         })
         .catch(err => {
           const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
           handleSnackbarOpen(errMsg, 'error');
         });
-    }, (timeTotalRef.current += 500));
+    }, (timeTotalRef.current += 1000));
     setUserDeleteDialogOpen(false);
   };
 
@@ -349,6 +349,7 @@ const Dashboard = props => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <UserProfile
+              deleted={deleted}
               setUserProfileDialogOpen={setUserProfileDialogOpen}
               signedIn={signedIn}
               user={!deleted ? user : noUser}
@@ -358,6 +359,7 @@ const Dashboard = props => {
             <UserDates
               anniversaryDate={anniversaryDate}
               birthDate={birthDate}
+              deleted={deleted}
               setUserDatesDialogOpen={setUserDatesDialogOpen}
               signedIn={signedIn}
               user={user}
@@ -365,6 +367,7 @@ const Dashboard = props => {
           </Grid>
           <Grid item xs={12}>
             <NudgeTable
+              deleted={deleted}
               handleNudgeDelete={handleNudgeDelete}
               handleNudgeFormSubmit={handleNudgeFormSubmit}
               handleNudgeInputChange={handleNudgeInputChange}
