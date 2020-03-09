@@ -173,13 +173,13 @@ const Dashboard = props => {
           setTimeout(() => {
             setRedirect(true);
             signOut();
-          }, 1500);
+          }, 1250);
         })
         .catch(err => {
           const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
           handleSnackbarOpen(errMsg, 'error');
         });
-    }, (timeTotalRef.current += 1000));
+    }, (timeTotalRef.current += 1250));
     setUserDeleteDialogOpen(false);
   };
 
