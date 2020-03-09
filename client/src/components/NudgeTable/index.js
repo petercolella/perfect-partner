@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -79,6 +80,7 @@ const NudgeTable = props => {
   const classes = useStyles();
 
   const {
+    deleted,
     handleNudgeDelete,
     handleNudgeFormSubmit,
     handleNudgeInputChange,
@@ -116,73 +118,78 @@ const NudgeTable = props => {
 
   return (
     <>
-      <Paper className={classes.root}>
-        <Toolbar className={classes.toolbar}>
-          <Typography variant="h5" align="left">
-            Nudges
-          </Typography>
-        </Toolbar>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Nudge Name</TableCell>
-              <TableCell align="center">Text Body</TableCell>
-              <TableCell align="center">Frequency</TableCell>
-              <TableCell align="center">Customize</TableCell>
-              <TableCell align="center">Delete</TableCell>
-              <TableCell align="center">Test</TableCell>
-              <TableCell align="center">Activate</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {user.nudges.map(nudge => (
-              <TableRow key={nudge._id}>
-                <TableCell component="th" scope="row">
-                  {nudge.name}
-                </TableCell>
-                <StyledTableCell align="center">
-                  {nudge.textMessage}
-                </StyledTableCell>
-                <TableCell align="center">
-                  Once Every {nudge.nudgeFrequency}{' '}
-                  {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
-                </TableCell>
-                <TableCell align="center">
-                  <Tooltip title="Edit Nudge" color="primary">
-                    <IconButton
-                      aria-label="edit nudge"
-                      onClick={() => launchNudgeUpdateComp(nudge)}>
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-                <TableCell align="center">
-                  <Tooltip title="Delete Nudge" color="primary">
-                    <IconButton
-                      aria-label="delete nudge"
-                      onClick={() => handleNudgeDelete(nudge)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-                <TableCell align="center">
-                  <TestTextButton {...props} nudge={nudge} />
-                </TableCell>
-                <TableCell align="center">
-                  <ActivateNudgeSwitch {...props} nudge={nudge} />
-                </TableCell>
+      <Zoom
+        in={!deleted}
+        timeout={{ enter: 0, exit: 2000 }}
+        style={{ transitionDelay: !deleted ? '0ms' : '500ms' }}>
+        <Paper className={classes.root}>
+          <Toolbar className={classes.toolbar}>
+            <Typography variant="h5" align="left">
+              Nudges
+            </Typography>
+          </Toolbar>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Nudge Name</TableCell>
+                <TableCell align="center">Text Body</TableCell>
+                <TableCell align="center">Frequency</TableCell>
+                <TableCell align="center">Customize</TableCell>
+                <TableCell align="center">Delete</TableCell>
+                <TableCell align="center">Test</TableCell>
+                <TableCell align="center">Activate</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <NudgeUpdate
-          setNudgeDialogOpen={setNudgeDialogOpen}
-          handleNudgeInputChange={handleNudgeInputChange}
-          handleNudgeFormSubmit={handleNudgeFormSubmit}
-          nudge={nudge}
-          nudgeDialogOpen={nudgeDialogOpen}
-        />
-      </Paper>
+            </TableHead>
+            <TableBody>
+              {user.nudges.map(nudge => (
+                <TableRow key={nudge._id}>
+                  <TableCell component="th" scope="row">
+                    {nudge.name}
+                  </TableCell>
+                  <StyledTableCell align="center">
+                    {nudge.textMessage}
+                  </StyledTableCell>
+                  <TableCell align="center">
+                    Once Every {nudge.nudgeFrequency}{' '}
+                    {fn.capitalizeFirstLetter(nudge.nudgeFrequencyUnit)}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Tooltip title="Edit Nudge" color="primary">
+                      <IconButton
+                        aria-label="edit nudge"
+                        onClick={() => launchNudgeUpdateComp(nudge)}>
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Tooltip title="Delete Nudge" color="primary">
+                      <IconButton
+                        aria-label="delete nudge"
+                        onClick={() => handleNudgeDelete(nudge)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell align="center">
+                    <TestTextButton {...props} nudge={nudge} />
+                  </TableCell>
+                  <TableCell align="center">
+                    <ActivateNudgeSwitch {...props} nudge={nudge} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <NudgeUpdate
+            setNudgeDialogOpen={setNudgeDialogOpen}
+            handleNudgeInputChange={handleNudgeInputChange}
+            handleNudgeFormSubmit={handleNudgeFormSubmit}
+            nudge={nudge}
+            nudgeDialogOpen={nudgeDialogOpen}
+          />
+        </Paper>
+      </Zoom>
       {matches && (
         <Typography align="right" className={classes.arrows} variant="h4">
           <Fade in={arrowOneFade} timeout={1000}>

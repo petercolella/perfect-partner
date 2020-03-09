@@ -13,6 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Zoom from '@material-ui/core/Zoom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,71 +40,77 @@ const UserDates = props => {
   const {
     anniversaryDate,
     birthDate,
+    deleted,
     setUserDatesDialogOpen,
     signedIn,
     user
   } = props;
 
   return (
-    <Paper className={classes.root}>
-      <Card className={classes.card}>
-        <CardHeader align="center" title="Important Dates" />
-        <Divider variant="middle" />
-        {signedIn ? (
-          <>
-            <List dense={true}>
-              <ListItem>
-                <ListItemText
-                  classes={{
-                    multiline: classes.multiline
-                  }}
-                  primary="Your Anniversary:"
-                  secondary={
-                    user.anniversaryDate
-                      ? DateTime.fromISO(anniversaryDate)
-                          .setZone('UTC')
-                          .toLocaleString()
-                      : ''
-                  }
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  classes={{
-                    multiline: classes.multiline
-                  }}
-                  primary="Partner's Birthday:"
-                  secondary={
-                    user.birthDate
-                      ? DateTime.fromISO(birthDate)
-                          .setZone('UTC')
-                          .toLocaleString()
-                      : ''
-                  }
-                />
-              </ListItem>
-            </List>
-            <Divider variant="middle" />
-            <div className={classes.buttonContainer}>
-              <CardActions>
-                <Button
-                  variant="outlined"
-                  className={classes.button}
-                  onClick={() => setUserDatesDialogOpen(true)}>
-                  Change Your Dates
-                </Button>
-              </CardActions>
-            </div>
-          </>
-        ) : (
-          <CardContent>
-            <Typography color="textSecondary" variant="body1">
-              Please sign in to continue.
-            </Typography>
-          </CardContent>
-        )}
-      </Card>
-    </Paper>
+    <Zoom
+      in={!deleted}
+      timeout={{ enter: 0, exit: 2000 }}
+      style={{ transitionDelay: !deleted ? '0ms' : '250ms' }}>
+      <Paper className={classes.root}>
+        <Card className={classes.card}>
+          <CardHeader align="center" title="Important Dates" />
+          <Divider variant="middle" />
+          {signedIn ? (
+            <>
+              <List dense={true}>
+                <ListItem>
+                  <ListItemText
+                    classes={{
+                      multiline: classes.multiline
+                    }}
+                    primary="Your Anniversary:"
+                    secondary={
+                      user.anniversaryDate
+                        ? DateTime.fromISO(anniversaryDate)
+                            .setZone('UTC')
+                            .toLocaleString()
+                        : ''
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    classes={{
+                      multiline: classes.multiline
+                    }}
+                    primary="Partner's Birthday:"
+                    secondary={
+                      user.birthDate
+                        ? DateTime.fromISO(birthDate)
+                            .setZone('UTC')
+                            .toLocaleString()
+                        : ''
+                    }
+                  />
+                </ListItem>
+              </List>
+              <Divider variant="middle" />
+              <div className={classes.buttonContainer}>
+                <CardActions>
+                  <Button
+                    variant="outlined"
+                    className={classes.button}
+                    onClick={() => setUserDatesDialogOpen(true)}>
+                    Change Your Dates
+                  </Button>
+                </CardActions>
+              </div>
+            </>
+          ) : (
+            <CardContent>
+              <Typography color="textSecondary" variant="body1">
+                Please sign in to continue.
+              </Typography>
+            </CardContent>
+          )}
+        </Card>
+      </Paper>
+    </Zoom>
   );
 };
 
