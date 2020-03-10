@@ -49,6 +49,12 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Nudge'
     }
+  ],
+  customDates: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'customDate'
+    }
   ]
 });
 
@@ -56,6 +62,13 @@ userSchema.post('remove', document => {
   document.nudges.forEach(id => {
     mongoose
       .model('Nudge')
+      .findOneAndDelete({ _id: id })
+      .then(dbModel => console.log(dbModel))
+      .catch(err => console.log(err));
+  });
+  document.customDates.forEach(id => {
+    mongoose
+      .model('customDate')
       .findOneAndDelete({ _id: id })
       .then(dbModel => console.log(dbModel))
       .catch(err => console.log(err));
