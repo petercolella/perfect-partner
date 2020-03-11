@@ -1,6 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
+
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -8,10 +10,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 
@@ -34,6 +38,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const StyledIconButton = withStyles(theme => ({
+  root: {
+    marginBottom: '-0.5em'
+  }
+}))(IconButton);
+
 const UserDates = props => {
   const classes = useStyles();
 
@@ -53,7 +63,17 @@ const UserDates = props => {
       style={{ transitionDelay: !deleted ? '0ms' : '250ms' }}>
       <Paper className={classes.root}>
         <Card className={classes.card}>
-          <CardHeader align="center" title="Important Dates" />
+          <CardHeader
+            align="center"
+            action={
+              <Tooltip title="Add Date" color="primary">
+                <StyledIconButton aria-label="add a date">
+                  <AddBoxIcon color="primary" />
+                </StyledIconButton>
+              </Tooltip>
+            }
+            title="Important Dates"
+          />
           <Divider variant="middle" />
           {signedIn ? (
             <>
