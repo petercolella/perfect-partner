@@ -13,6 +13,7 @@ import API from '../../utils/API';
 import fn from '../../utils/fn';
 import NudgeTable from '../NudgeTable';
 import UserDates from '../UserDates';
+import UserDatesAdd from '../UserDatesAdd';
 import UserDatesUpdate from '../UserDatesUpdate';
 import UserProfile from '../UserProfile';
 import UserProfileDelete from '../UserProfileDelete';
@@ -92,9 +93,11 @@ const Dashboard = props => {
   const [birthDate, setBirthDate] = useState(null);
   const [deleted, setDeleted] = useState(false);
   const [nudge, setNudge] = useState(noNudge);
+  const [newDate, setNewDate] = useState(new Date());
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [testNudge, setTestNudge] = useState(null);
+  const [userDatesAddDialogOpen, setUserDatesAddDialogOpen] = useState(false);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
@@ -245,7 +248,8 @@ const Dashboard = props => {
 
     const setStateObj = {
       anniversaryDate: setAnniversaryDate,
-      birthDate: setBirthDate
+      birthDate: setBirthDate,
+      newDate: setNewDate
     };
 
     setStateObj[name](dt);
@@ -289,6 +293,10 @@ const Dashboard = props => {
     );
 
     handleSnackbarOpen(messageHTML, 'success');
+  };
+
+  const handleNewDateFormSubmit = () => {
+    console.log(newDate);
   };
 
   const handleUserFormSubmit = () => {
@@ -360,6 +368,7 @@ const Dashboard = props => {
               anniversaryDate={anniversaryDate}
               birthDate={birthDate}
               deleted={deleted}
+              setUserDatesAddDialogOpen={setUserDatesAddDialogOpen}
               setUserDatesDialogOpen={setUserDatesDialogOpen}
               signedIn={signedIn}
               user={user}
@@ -378,6 +387,14 @@ const Dashboard = props => {
               user={user}
             />
           </Grid>
+          <UserDatesAdd
+            newDate={newDate}
+            handleUserDateInputChange={handleUserDateInputChange}
+            handleNewDateFormSubmit={handleNewDateFormSubmit}
+            setUserDatesAddDialogOpen={setUserDatesAddDialogOpen}
+            user={user}
+            userDatesAddDialogOpen={userDatesAddDialogOpen}
+          />
           <UserDatesUpdate
             anniversaryDate={anniversaryDate}
             birthDate={birthDate}
