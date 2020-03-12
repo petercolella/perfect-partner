@@ -51,6 +51,7 @@ const UserDates = props => {
     anniversaryDate,
     birthDate,
     deleted,
+    setUserDatesAddDialogOpen,
     setUserDatesDialogOpen,
     signedIn,
     user
@@ -67,7 +68,9 @@ const UserDates = props => {
             align="center"
             action={
               <Tooltip title="Add Date" color="primary">
-                <StyledIconButton aria-label="add a date">
+                <StyledIconButton
+                  aria-label="add a date"
+                  onClick={() => setUserDatesAddDialogOpen(true)}>
                   <AddBoxIcon color="primary" />
                 </StyledIconButton>
               </Tooltip>
