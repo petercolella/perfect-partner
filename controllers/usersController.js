@@ -6,6 +6,7 @@ const { DateTime } = require('luxon');
 module.exports = {
   findAll: (req, res) => {
     db.User.find(req.query)
+      .populate('customDates')
       .populate('nudges')
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err.message));
@@ -16,6 +17,7 @@ module.exports = {
     }
 
     db.User.findById(req.params.id)
+      .populate('customDates')
       .populate('nudges')
       .then(dbModel => {
         const { googleId, ...user } = dbModel._doc;
@@ -67,6 +69,10 @@ module.exports = {
     });
   },
   remove: (req, res) => {
+    if (req.user._id != req.params.id) {
+      return res.status(403).json('Forbidden');
+    }
+
     db.User.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
       .then(dbModel => {
