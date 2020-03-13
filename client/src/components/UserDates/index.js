@@ -111,6 +111,20 @@ const UserDates = props => {
                     }
                   />
                 </ListItem>
+                {user.customDates &&
+                  user.customDates.map(date => (
+                    <ListItem key={date._id}>
+                      <ListItemText
+                        classes={{
+                          multiline: classes.multiline
+                        }}
+                        primary={date.title}
+                        secondary={DateTime.fromISO(date.value)
+                          .setZone('UTC')
+                          .toLocaleString()}
+                      />
+                    </ListItem>
+                  ))}
               </List>
               <Divider variant="middle" />
               <div className={classes.buttonContainer}>
