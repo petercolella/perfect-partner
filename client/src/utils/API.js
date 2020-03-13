@@ -49,5 +49,8 @@ export default {
   },
   sendText: data => {
     return axios.post('/api/text/send', data);
+  },
+  saveDate: dateData => {
+    return axios.post('/api/dates', dateData);
   }
 };
