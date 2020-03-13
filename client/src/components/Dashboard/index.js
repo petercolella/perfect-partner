@@ -31,6 +31,13 @@ const keyNameObj = {
   birthDate: `Partner's Birthday`
 };
 
+const newDateObj = {
+  title: '',
+  description: '',
+  value: new Date(),
+  reminders: []
+};
+
 const noNudge = {
   name: '',
   nudgeFrequency: '',
@@ -91,9 +98,11 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = props => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
+  const [dateReminders, setDateReminders] = useState([]);
   const [deleted, setDeleted] = useState(false);
   const [nudge, setNudge] = useState(noNudge);
-  const [newDate, setNewDate] = useState(new Date());
+  const [newDate, setNewDate] = useState(newDateObj);
+  const [newDateValue, setNewDateValue] = useState(newDateObj.value);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [testNudge, setTestNudge] = useState(null);
@@ -249,10 +258,14 @@ const Dashboard = props => {
     const setStateObj = {
       anniversaryDate: setAnniversaryDate,
       birthDate: setBirthDate,
-      newDate: setNewDate
+      newDate: setNewDateValue
     };
 
     setStateObj[name](dt);
+  };
+
+  const handleDateInputChange = name => event => {
+    setNewDate({ ...newDate, [name]: event.target.value });
   };
 
   const handleUserInputChange = name => event => {
@@ -296,7 +309,14 @@ const Dashboard = props => {
   };
 
   const handleNewDateFormSubmit = () => {
-    console.log(newDate);
+    const newObj = {
+      userId: user._id,
+      title: newDate.title,
+      description: newDate.description,
+      value: newDateValue,
+      reminders: dateReminders
+    };
+    API.saveDate(newObj).then(res => console.log(res));
   };
 
   const handleUserFormSubmit = () => {
@@ -388,9 +408,13 @@ const Dashboard = props => {
             />
           </Grid>
           <UserDatesAdd
-            newDate={newDate}
-            handleUserDateInputChange={handleUserDateInputChange}
+            dialogReminders={newDate.reminders}
+            handleDateInputChange={handleDateInputChange}
             handleNewDateFormSubmit={handleNewDateFormSubmit}
+            handleUserDateInputChange={handleUserDateInputChange}
+            newDate={newDate}
+            newDateValue={newDateValue}
+            setParentReminders={setDateReminders}
             setUserDatesAddDialogOpen={setUserDatesAddDialogOpen}
             user={user}
             userDatesAddDialogOpen={userDatesAddDialogOpen}
