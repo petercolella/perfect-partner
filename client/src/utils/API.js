@@ -51,6 +51,6 @@ export default {
     return axios.post('/api/text/send', data);
   },
   saveDate: dateData => {
-    return axios.post('/api/dates', dateData);
+    return tokenHeaderAxios().post('/api/dates', dateData);
   }
 };
