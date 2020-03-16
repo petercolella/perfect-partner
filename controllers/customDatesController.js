@@ -14,11 +14,10 @@ module.exports = {
       .catch(err => res.status(422).json(err.message));
   },
   create: (req, res) => {
-    const { userId, ...newDate } = req.body;
-    db.CustomDate.create(newDate)
+    db.CustomDate.create(req.body)
       .then(dateData => {
         return db.User.findOneAndUpdate(
-          { _id: userId },
+          { _id: req.user._id },
           { $push: { customDates: dateData._id } },
           { new: true }
         ).populate('customDates');
