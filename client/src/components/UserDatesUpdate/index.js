@@ -31,6 +31,8 @@ const UserDatesUpdate = props => {
     anniversaryDate,
     birthDate,
     closeUserDatesUpdateComp,
+    dashboardCustomDates,
+    handleUserCustomDateInputChange,
     handleUserDateInputChange,
     handleUserFormSubmit,
     user,
@@ -91,6 +93,31 @@ const UserDatesUpdate = props => {
             }}
           />
         </MuiPickersUtilsProvider>
+        {dashboardCustomDates &&
+          Object.keys(dashboardCustomDates).map(key => (
+            <MuiPickersUtilsProvider
+              utils={DateFnsUtils}
+              key={dashboardCustomDates[key]._id}>
+              <KeyboardDatePicker
+                animateYearScrolling={true}
+                clearable
+                format="MM/dd/yyyy"
+                fullWidth
+                id={dashboardCustomDates[key].title}
+                inputVariant="outlined"
+                label={dashboardCustomDates[key].title}
+                margin="normal"
+                onChange={handleUserCustomDateInputChange(
+                  dashboardCustomDates[key].title
+                )}
+                placeholder="mm/dd/yyyy"
+                value={dashboardCustomDates[key].value}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date'
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          ))}
       </DialogContent>
       <DialogActions>
         <Button onClick={closeUserDatesUpdateComp} color="secondary">
