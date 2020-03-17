@@ -113,10 +113,18 @@ const Dashboard = props => {
 
   const { handleSnackbarOpen, loadUserInfo, signedIn, signOut, user } = props;
 
+  const [dashboardCustomDates, setDashboardCustomDates] = useState({});
   const [dashboardUser, setDashboardUser] = useState(user);
 
   const loadDashboardUser = useCallback(() => {
     setDashboardUser(user);
+    if (user.customDates) {
+      user.customDates.forEach(date => {
+        setDashboardCustomDates(prevState => {
+          return { ...prevState, [date.title]: date };
+        });
+      });
+    }
   }, [user]);
 
   useEffect(() => {
@@ -247,6 +255,21 @@ const Dashboard = props => {
       });
   };
 
+  const handleUserCustomDateInputChange = name => date => {
+    const dt = DateTime.fromJSDate(date).set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0
+    });
+
+    const dateObj = { ...dashboardCustomDates[name], value: dt };
+
+    setDashboardCustomDates(prevState => {
+      return { ...prevState, [name]: dateObj };
+    });
+  };
+
   const handleUserDateInputChange = name => date => {
     const dt = DateTime.fromJSDate(date).set({
       hour: 0,
@@ -310,7 +333,6 @@ const Dashboard = props => {
 
   const handleNewDateFormSubmit = () => {
     const newObj = {
-      userId: user._id,
       title: newDate.title,
       description: newDate.description,
       value: newDateValue,
@@ -423,6 +445,8 @@ const Dashboard = props => {
             anniversaryDate={anniversaryDate}
             birthDate={birthDate}
             closeUserDatesUpdateComp={closeUserDatesUpdateComp}
+            dashboardCustomDates={dashboardCustomDates}
+            handleUserCustomDateInputChange={handleUserCustomDateInputChange}
             handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
             user={user}
