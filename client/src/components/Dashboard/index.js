@@ -351,7 +351,7 @@ const Dashboard = props => {
     };
 
     const testUser = {
-      ...newUser,
+      ...dashboardUser,
       anniversaryDate: anniversaryDate
         ? fn.localToUTC(anniversaryDate).toISO()
         : undefined,
@@ -362,25 +362,38 @@ const Dashboard = props => {
       key => testUser[key] !== user[key]
     );
 
-    if (!testArray.length) {
+    const customDateTestArray = Object.keys(dashboardCustomDates).flatMap(
+      key => {
+        return Object.keys(dashboardCustomDates[key]).filter(key2 => {
+          return (
+            dashboardCustomDates[key][key2] !==
+            user.customDates.filter(date => date.title === key).pop()[key2]
+          );
+        });
+      }
+    );
+
+    if (!testArray.length && !customDateTestArray.length) {
       handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
       return;
     }
 
-    API.updateUser(user._id, newUser)
-      .then(res => {
-        loadUserInfo();
-        renderSnackbarMessage(res.data);
-        setUserDatesDialogOpen(false);
-        setUserProfileDialogOpen(false);
-      })
-      .catch(err => {
-        // captures error message after last colon and space
-        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        handleSnackbarOpen(errMsg, 'error');
-        loadDashboardUser();
-        return;
-      });
+    if (testArray.length) {
+      API.updateUser(user._id, newUser)
+        .then(res => {
+          loadUserInfo();
+          renderSnackbarMessage(res.data);
+          setUserDatesDialogOpen(false);
+          setUserProfileDialogOpen(false);
+        })
+        .catch(err => {
+          // captures error message after last colon and space
+          const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+          handleSnackbarOpen(errMsg, 'error');
+          loadDashboardUser();
+          return;
+        });
+    }
   };
 
   const classes = useStyles();
