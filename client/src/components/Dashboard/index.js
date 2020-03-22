@@ -394,6 +394,11 @@ const Dashboard = props => {
           return;
         });
     }
+
+    if (customDateTestArray.length) {
+      console.log('dashboardCustomDates:', dashboardCustomDates);
+      console.log('customDateTestArray:', customDateTestArray);
+    }
   };
 
   const classes = useStyles();
