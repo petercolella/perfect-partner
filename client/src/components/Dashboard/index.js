@@ -118,9 +118,6 @@ const Dashboard = props => {
 
   const loadDashboardUser = useCallback(() => {
     setDashboardUser(user);
-    if (user.customDates) {
-      setDashboardCustomDates(user.customDates);
-    }
   }, [user]);
 
   useEffect(() => {
@@ -142,6 +139,21 @@ const Dashboard = props => {
   useEffect(() => {
     loadDates();
   }, [loadDates]);
+
+  const loadCustomDates = useCallback(() => {
+    if (user.customDates) {
+      const arr = user.customDates.map(date => {
+        const dt = DateTime.fromISO(date.value);
+        date.value = fn.UTCToLocal(dt);
+        return date;
+      });
+      setDashboardCustomDates([...arr]);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadCustomDates();
+  }, [loadCustomDates]);
 
   const closeUserDatesUpdateComp = () => {
     setUserDatesDialogOpen(false);
@@ -251,7 +263,7 @@ const Dashboard = props => {
       });
   };
 
-  const handleUserCustomDateInputChange = name => date => {
+  const handleUserCustomDateInputChange = id => date => {
     const dt = DateTime.fromJSDate(date).set({
       hour: 0,
       minute: 0,
@@ -259,11 +271,13 @@ const Dashboard = props => {
       millisecond: 0
     });
 
-    const dateObj = { ...dashboardCustomDates[name], value: dt };
+    const changedDate = dashboardCustomDates.filter(el => el._id === id).pop();
+    const tempDate = { ...changedDate };
+    tempDate.value = dt;
 
-    setDashboardCustomDates(prevState => {
-      return { ...prevState, [name]: dateObj };
-    });
+    const unchangedDateArr = dashboardCustomDates.filter(el => el._id !== id);
+
+    setDashboardCustomDates([tempDate, ...unchangedDateArr]);
   };
 
   const handleUserDateInputChange = name => date => {
@@ -358,16 +372,16 @@ const Dashboard = props => {
       key => testUser[key] !== user[key]
     );
 
-    const customDateTestArray = Object.keys(dashboardCustomDates).flatMap(
-      key => {
-        return Object.keys(dashboardCustomDates[key]).filter(key2 => {
-          return (
-            dashboardCustomDates[key][key2] !==
-            user.customDates.filter(date => date.title === key).pop()[key2]
-          );
-        });
-      }
-    );
+    const customDateTestArray = dashboardCustomDates.flatMap(date => {
+      return Object.keys(date).filter(key => {
+        return (
+          date[key] !==
+          user.customDates.filter(userDate => userDate._id === date._id).pop()[
+            key
+          ]
+        );
+      });
+    });
 
     if (!testArray.length && !customDateTestArray.length) {
       handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
@@ -392,8 +406,17 @@ const Dashboard = props => {
     }
 
     if (customDateTestArray.length) {
-      console.log('dashboardCustomDates:', dashboardCustomDates);
-      console.log('customDateTestArray:', customDateTestArray);
+      dashboardCustomDates.forEach((date, i) => {
+        let changed = false;
+        Object.keys(date).forEach(key => {
+          if (date[key] !== user.customDates[i][key]) {
+            changed = true;
+          }
+        });
+        if (changed) {
+          console.log(date);
+        }
+      });
     }
   };
 
