@@ -69,7 +69,7 @@ const App = () => {
           setUser(user => (res.data ? res.data : user));
         })
         .catch(err => {
-          const errStr = err.response.data.split(', ')[0];
+          const errStr = err.response ? err.response.data.split(', ')[0] : err;
           console.log(errStr);
           handleSnackbarOpen(errStr, 'error');
           signOut();
