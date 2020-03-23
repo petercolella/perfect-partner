@@ -113,17 +113,13 @@ const Dashboard = props => {
 
   const { handleSnackbarOpen, loadUserInfo, signedIn, signOut, user } = props;
 
-  const [dashboardCustomDates, setDashboardCustomDates] = useState({});
+  const [dashboardCustomDates, setDashboardCustomDates] = useState([]);
   const [dashboardUser, setDashboardUser] = useState(user);
 
   const loadDashboardUser = useCallback(() => {
     setDashboardUser(user);
     if (user.customDates) {
-      user.customDates.forEach(date => {
-        setDashboardCustomDates(prevState => {
-          return { ...prevState, [date.title]: date };
-        });
-      });
+      setDashboardCustomDates(user.customDates);
     }
   }, [user]);
 
