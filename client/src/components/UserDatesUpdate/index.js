@@ -7,6 +7,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as Calendar } from './calendar.svg';
@@ -19,6 +21,12 @@ import {
 } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
+  divider: {
+    margin: theme.spacing(1, 0)
+  },
+  text: {
+    marginBottom: 0
+  },
   title: {
     display: 'flex',
     alignItems: 'center'
@@ -94,29 +102,53 @@ const UserDatesUpdate = props => {
           />
         </MuiPickersUtilsProvider>
         {dashboardCustomDates &&
-          Object.keys(dashboardCustomDates).map(key => (
-            <MuiPickersUtilsProvider
-              utils={DateFnsUtils}
-              key={dashboardCustomDates[key]._id}>
-              <KeyboardDatePicker
-                animateYearScrolling={true}
-                clearable
-                format="MM/dd/yyyy"
+          dashboardCustomDates.map(date => (
+            <div key={date._id}>
+              <Divider className={classes.divider} variant="fullWidth" />
+              <DialogContentText className={classes.text} variant="body2">
+                {date.title}
+              </DialogContentText>
+              <TextField
+                id={date.title}
+                label="Title"
+                type="text"
                 fullWidth
-                id={dashboardCustomDates[key].title}
-                inputVariant="outlined"
-                label={dashboardCustomDates[key].title}
+                name={date.title}
+                value={date.title}
+                onChange={handleUserCustomDateInputChange(date._id)}
                 margin="normal"
-                onChange={handleUserCustomDateInputChange(
-                  dashboardCustomDates[key].title
-                )}
-                placeholder="mm/dd/yyyy"
-                value={dashboardCustomDates[key].value}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date'
-                }}
+                variant="outlined"
               />
-            </MuiPickersUtilsProvider>
+              <TextField
+                id={date.description}
+                label="Description"
+                type="text"
+                fullWidth
+                name={date.description}
+                value={date.description}
+                onChange={handleUserCustomDateInputChange(date._id)}
+                margin="normal"
+                variant="outlined"
+              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  animateYearScrolling={true}
+                  clearable
+                  format="MM/dd/yyyy"
+                  fullWidth
+                  id={date.value}
+                  inputVariant="outlined"
+                  label={date.value.toDateString()}
+                  margin="normal"
+                  onChange={handleUserCustomDateInputChange(date.title)}
+                  placeholder="mm/dd/yyyy"
+                  value={date.value}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date'
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
           ))}
       </DialogContent>
       <DialogActions>
