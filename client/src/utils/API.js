@@ -52,5 +52,8 @@ export default {
   },
   saveDate: dateData => {
     return tokenHeaderAxios().post('/api/dates', dateData);
+  },
+  updateDate: (id, dateData) => {
+    return tokenHeaderAxios().put('/api/dates/' + id, dateData);
   }
 };
