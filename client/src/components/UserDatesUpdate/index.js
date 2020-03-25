@@ -41,6 +41,7 @@ const UserDatesUpdate = props => {
     closeUserDatesUpdateComp,
     dashboardCustomDates,
     handleUserCustomDateInputChange,
+    handleUserCustomDatePickerChange,
     handleUserDateInputChange,
     handleUserFormSubmit,
     user,
@@ -113,7 +114,7 @@ const UserDatesUpdate = props => {
                 label="Title"
                 type="text"
                 fullWidth
-                name={date.title}
+                name="title"
                 value={date.title}
                 onChange={handleUserCustomDateInputChange(date._id)}
                 margin="normal"
@@ -124,7 +125,7 @@ const UserDatesUpdate = props => {
                 label="Description"
                 type="text"
                 fullWidth
-                name={date.description}
+                name="description"
                 value={date.description}
                 onChange={handleUserCustomDateInputChange(date._id)}
                 margin="normal"
@@ -136,11 +137,11 @@ const UserDatesUpdate = props => {
                   clearable
                   format="MM/dd/yyyy"
                   fullWidth
-                  id={date.value}
+                  id={date._id}
                   inputVariant="outlined"
-                  label={date.value.toDateString()}
+                  label="Date"
                   margin="normal"
-                  onChange={handleUserCustomDateInputChange(date.title)}
+                  onChange={handleUserCustomDatePickerChange(date._id)}
                   placeholder="mm/dd/yyyy"
                   value={date.value}
                   KeyboardButtonProps={{
