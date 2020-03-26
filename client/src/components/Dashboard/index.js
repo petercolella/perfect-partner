@@ -75,7 +75,7 @@ const userKeyArray = [
 const keyNameAndValue = obj => {
   for (let key in obj) {
     obj.name = keyNameObj[key];
-    obj.value = obj[key];
+    obj.newValue = obj[key];
     delete obj[key];
   }
   return obj;
@@ -321,7 +321,7 @@ const Dashboard = props => {
   };
 
   const renderSnackbarMessage = res => {
-    const dateKeysArray = ['anniversaryDate', 'birthDate'];
+    const dateKeysArray = ['anniversaryDate', 'birthDate', 'value'];
 
     const customDatesChanged = (resObj, resObjKey) => {
       let changed = false;
@@ -373,7 +373,7 @@ const Dashboard = props => {
             el = keyNameAndValue(el);
             return (
               <li key={el.name}>
-                {el.name}: {el.value}
+                {el.name}: {el.newValue}
               </li>
             );
           })}
@@ -381,7 +381,7 @@ const Dashboard = props => {
       </div>
     );
 
-    handleSnackbarOpen(messageHTML, 'success', 300000);
+    handleSnackbarOpen(messageHTML, 'success');
   };
 
   const handleNewDateFormSubmit = () => {
