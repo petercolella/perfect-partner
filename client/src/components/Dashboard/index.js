@@ -28,7 +28,10 @@ const keyNameObj = {
   partnerName: `Partner's name`,
   phone: 'Phone Number',
   anniversaryDate: 'Your Anniversary',
-  birthDate: `Partner's Birthday`
+  birthDate: `Partner's Birthday`,
+  title: 'Title',
+  description: 'Description',
+  value: 'Custom Date'
 };
 
 const newDateObj = {
@@ -263,8 +266,20 @@ const Dashboard = props => {
       });
   };
 
-  const handleUserCustomDateInputChange = id => date => {
-    const dt = DateTime.fromJSDate(date).set({
+  const handleUserCustomDateInputChange = id => event => {
+    const { name, value } = event.target;
+
+    const changedDate = dashboardCustomDates.filter(el => el._id === id).pop();
+    const tempDate = { ...changedDate };
+    tempDate[name] = value;
+
+    const unchangedDateArr = dashboardCustomDates.filter(el => el._id !== id);
+
+    setDashboardCustomDates([tempDate, ...unchangedDateArr]);
+  };
+
+  const handleUserCustomDatePickerChange = id => input => {
+    const dt = DateTime.fromJSDate(input).set({
       hour: 0,
       minute: 0,
       second: 0,
@@ -308,8 +323,36 @@ const Dashboard = props => {
   const renderSnackbarMessage = res => {
     const dateKeysArray = ['anniversaryDate', 'birthDate'];
 
+    const customDatesChanged = (resObj, resObjKey) => {
+      let changed = false;
+      user.customDates.forEach(date => {
+        if (date._id === resObj._id) {
+          Object.keys(date).forEach(key => {
+            if (key === resObjKey) {
+              changed =
+                key === 'reminders'
+                  ? date[key].join('') !== resObj[key].join('')
+                  : (key === 'value'
+                      ? date[key].setZone('UTC').toISO()
+                      : date[key]) !== resObj[key];
+            }
+          });
+        }
+      });
+      return changed;
+    };
+
     const updatedValuesArray = Object.keys(res)
-      .filter(key => res[key] !== user[key] && typeof res[key] !== 'object')
+      .filter(key => {
+        const changed = customDatesChanged(res, key);
+        if (key === '_id') return false;
+        return (
+          changed ||
+          (user[key]
+            ? res[key] !== user[key] && typeof res[key] !== 'object'
+            : false)
+        );
+      })
       .map(key => {
         return {
           [key]: !dateKeysArray.includes(key)
@@ -338,7 +381,7 @@ const Dashboard = props => {
       </div>
     );
 
-    handleSnackbarOpen(messageHTML, 'success');
+    handleSnackbarOpen(messageHTML, 'success', 300000);
   };
 
   const handleNewDateFormSubmit = () => {
@@ -398,7 +441,9 @@ const Dashboard = props => {
         })
         .catch(err => {
           // captures error message after last colon and space
-          const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+          const [errMsg] = err.response
+            ? err.response.data.match(/(?! )[^:]+$/)
+            : 'Error!';
           handleSnackbarOpen(errMsg, 'error');
           loadDashboardUser();
           return;
@@ -414,7 +459,22 @@ const Dashboard = props => {
           }
         });
         if (changed) {
-          console.log(date);
+          API.updateDate(date._id, date)
+            .then(res => {
+              loadUserInfo();
+              renderSnackbarMessage(res.data);
+              setUserDatesDialogOpen(false);
+              setUserProfileDialogOpen(false);
+            })
+            .catch(err => {
+              // captures error message after last colon and space
+              const [errMsg] = err.response
+                ? err.response.data.match(/(?! )[^:]+$/)
+                : err.message;
+              handleSnackbarOpen(errMsg, 'error');
+              loadDashboardUser();
+              return;
+            });
         }
       });
     }
@@ -484,6 +544,7 @@ const Dashboard = props => {
             closeUserDatesUpdateComp={closeUserDatesUpdateComp}
             dashboardCustomDates={dashboardCustomDates}
             handleUserCustomDateInputChange={handleUserCustomDateInputChange}
+            handleUserCustomDatePickerChange={handleUserCustomDatePickerChange}
             handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
             user={user}
