@@ -37,7 +37,7 @@ const keyNameObj = {
 const newDateObj = {
   title: '',
   description: '',
-  value: new Date(),
+  value: null,
   reminders: []
 };
 
@@ -385,6 +385,16 @@ const Dashboard = props => {
   };
 
   const handleNewDateFormSubmit = () => {
+    if (!newDateValue || !newDateValue.isValid) {
+      handleSnackbarOpen(`Oops! That's not valid date.`, 'warning');
+      return;
+    }
+
+    if (!newDate.title) {
+      handleSnackbarOpen(`Oops! Title  can't be blank.`, 'warning');
+      return;
+    }
+
     const newObj = {
       title: newDate.title,
       description: newDate.description,
