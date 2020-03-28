@@ -50,6 +50,9 @@ export default {
   sendText: data => {
     return axios.post('/api/text/send', data);
   },
+  deleteDate: id => {
+    return axios.delete('/api/dates/' + id);
+  },
   saveDate: dateData => {
     return tokenHeaderAxios().post('/api/dates', dateData);
   },
