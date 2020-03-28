@@ -266,6 +266,19 @@ const Dashboard = props => {
       });
   };
 
+  const handleCustomDateDelete = date => {
+    API.deleteDate(date._id)
+      .then(res => {
+        closeUserDatesUpdateComp()
+        loadUserInfo();
+      })
+      .catch(err => {
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
+    handleSnackbarOpen(`The ${date.title} date has been deleted.`, 'info');
+  };
+
   const handleUserCustomDateInputChange = id => event => {
     const { name, value } = event.target;
 
@@ -553,6 +566,7 @@ const Dashboard = props => {
             birthDate={birthDate}
             closeUserDatesUpdateComp={closeUserDatesUpdateComp}
             dashboardCustomDates={dashboardCustomDates}
+            handleCustomDateDelete={handleCustomDateDelete}
             handleUserCustomDateInputChange={handleUserCustomDateInputChange}
             handleUserCustomDatePickerChange={handleUserCustomDatePickerChange}
             handleUserDateInputChange={handleUserDateInputChange}
