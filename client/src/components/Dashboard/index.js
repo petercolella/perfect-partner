@@ -158,6 +158,11 @@ const Dashboard = props => {
     loadCustomDates();
   }, [loadCustomDates]);
 
+  const closeUserDatesAddComp = () => {
+    setUserDatesAddDialogOpen(false);
+    loadCustomDates();
+  };
+
   const closeUserDatesUpdateComp = () => {
     setUserDatesDialogOpen(false);
     loadDates();
@@ -218,12 +223,12 @@ const Dashboard = props => {
     API.deleteNudge(nudge._id)
       .then(res => {
         loadUserInfo();
+        handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
       })
       .catch(err => {
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
       });
-    handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
   };
 
   const handleNudgeInputChange = name => event => {
@@ -271,12 +276,12 @@ const Dashboard = props => {
       .then(res => {
         closeUserDatesUpdateComp()
         loadUserInfo();
+        handleSnackbarOpen(`The ${date.title} custom date has been deleted.`, 'info');
       })
       .catch(err => {
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
       });
-    handleSnackbarOpen(`The ${date.title} date has been deleted.`, 'info');
   };
 
   const handleUserCustomDateInputChange = id => event => {
@@ -404,7 +409,12 @@ const Dashboard = props => {
     }
 
     if (!newDate.title) {
-      handleSnackbarOpen(`Oops! Title  can't be blank.`, 'warning');
+      handleSnackbarOpen(`Oops! Title can't be blank.`, 'warning');
+      return;
+    }
+
+    if (!newDate.description) {
+      handleSnackbarOpen(`Oops! Description can't be blank.`, 'warning');
       return;
     }
 
@@ -414,7 +424,22 @@ const Dashboard = props => {
       value: newDateValue,
       reminders: dateReminders
     };
-    API.saveDate(newObj).then(res => console.log(res));
+    API.saveDate(newObj).then(res => {
+        closeUserDatesAddComp()
+        loadUserInfo();
+        handleSnackbarOpen(
+          `The ${res.data.title} custom date has been successfully added.`,
+          'success'
+        );
+        setNewDate(newDateObj)
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+        loadCustomDates();
+        return;
+      });;
   };
 
   const handleUserFormSubmit = () => {
