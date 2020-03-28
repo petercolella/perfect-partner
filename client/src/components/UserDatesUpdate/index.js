@@ -8,8 +8,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { ReactComponent as Calendar } from './calendar.svg';
 
@@ -40,6 +44,7 @@ const UserDatesUpdate = props => {
     birthDate,
     closeUserDatesUpdateComp,
     dashboardCustomDates,
+    handleCustomDateDelete,
     handleUserCustomDateInputChange,
     handleUserCustomDatePickerChange,
     handleUserDateInputChange,
@@ -108,6 +113,13 @@ const UserDatesUpdate = props => {
               <Divider className={classes.divider} variant="fullWidth" />
               <DialogContentText className={classes.text} variant="body2">
                 {date.title}
+                <Tooltip title="Delete Date" color="primary">
+                      <IconButton
+                        aria-label="delete date"
+                        onClick={() => handleCustomDateDelete(date)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
               </DialogContentText>
               <TextField
                 id={date.title}
