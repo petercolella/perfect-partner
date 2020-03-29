@@ -87,13 +87,17 @@ const UserDates = props => {
                       multiline: classes.multiline
                     }}
                     primary="Your Anniversary:"
-                    secondary={
+                    secondary={`${
                       user.anniversaryDate
-                        ? DateTime.fromISO(anniversaryDate)
+                        ? `${DateTime.fromISO(anniversaryDate)
                             .setZone('UTC')
-                            .toLocaleString()
-                        : ''
-                    }
+                            .toLocaleString()} \u2014 Reminders: ${
+                            user.anniversaryReminders.length
+                              ? user.anniversaryReminders.join(' \u2022 ')
+                              : 'None'
+                          }`
+                        : 'None Entered'
+                    }`}
                   />
                 </ListItem>
                 <ListItem>
@@ -102,13 +106,17 @@ const UserDates = props => {
                       multiline: classes.multiline
                     }}
                     primary="Partner's Birthday:"
-                    secondary={
+                    secondary={`${
                       user.birthDate
-                        ? DateTime.fromISO(birthDate)
+                        ? `${DateTime.fromISO(birthDate)
                             .setZone('UTC')
-                            .toLocaleString()
-                        : ''
-                    }
+                            .toLocaleString()} \u2014 Reminders: ${
+                            user.birthdayReminders.length
+                              ? user.birthdayReminders.join(' \u2022 ')
+                              : 'None'
+                          }`
+                        : 'None Entered'
+                    }`}
                   />
                 </ListItem>
                 {user.customDates &&
@@ -119,9 +127,13 @@ const UserDates = props => {
                           multiline: classes.multiline
                         }}
                         primary={date.title}
-                        secondary={DateTime.fromISO(date.value)
+                        secondary={`${DateTime.fromISO(date.value)
                           .setZone('UTC')
-                          .toLocaleString()}
+                          .toLocaleString()} \u2014 Reminders: ${
+                          date.reminders.length
+                            ? date.reminders.join(' \u2022 ')
+                            : 'None'
+                        }`}
                       />
                     </ListItem>
                   ))}
