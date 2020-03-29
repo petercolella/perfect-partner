@@ -25,10 +25,15 @@ import {
 } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
+  deleteButton: {
+    padding: 8
+  },
   divider: {
     margin: theme.spacing(1, 0)
   },
   text: {
+    display: 'flex',
+    alignItems: 'center',
     marginBottom: 0
   },
   title: {
@@ -112,14 +117,15 @@ const UserDatesUpdate = props => {
             <div key={date._id}>
               <Divider className={classes.divider} variant="fullWidth" />
               <DialogContentText className={classes.text} variant="body2">
-                {date.title}
                 <Tooltip title="Delete Date" color="primary">
-                      <IconButton
-                        aria-label="delete date"
-                        onClick={() => handleCustomDateDelete(date)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
+                  <IconButton
+                    className={classes.deleteButton}
+                    aria-label="delete date"
+                    onClick={() => handleCustomDateDelete(date)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+                {date.title}
               </DialogContentText>
               <TextField
                 id={date.title}
