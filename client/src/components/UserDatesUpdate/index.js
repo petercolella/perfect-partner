@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
+import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -31,6 +35,10 @@ const useStyles = makeStyles(theme => ({
   divider: {
     margin: theme.spacing(1, 0)
   },
+  root: {
+    marginBottom: 0,
+    marginTop: theme.spacing(2)
+  },
   text: {
     display: 'flex',
     alignItems: 'center',
@@ -42,14 +50,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
+
 const UserDatesUpdate = props => {
   const classes = useStyles();
   const {
     anniversaryDate,
+    anniversaryReminders,
     birthDate,
+    birthdayReminders,
     closeUserDatesUpdateComp,
     dashboardCustomDates,
     handleCustomDateDelete,
+    handleReminderChange,
     handleUserCustomDateInputChange,
     handleUserCustomDatePickerChange,
     handleUserDateInputChange,
@@ -57,6 +70,107 @@ const UserDatesUpdate = props => {
     user,
     userDatesDialogOpen
   } = props;
+
+  const [birthdayUpdateReminders, setBirthdayUpdateReminders] = useState([]);
+  const [birthdayReminderObj, setBirthdayReminderObj] = useState({});
+  const [anniversaryUpdateReminders, setAnniversaryUpdateReminders] = useState(
+    []
+  );
+  const [anniversaryReminderObj, setAnniversaryReminderObj] = useState({});
+
+  const isBirthdayReminderChecked = useCallback(
+    name => {
+      for (let reminder of birthdayReminders) {
+        if (reminder === name) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [birthdayReminders]
+  );
+
+  const isAnniversaryReminderChecked = useCallback(
+    name => {
+      for (let reminder of anniversaryReminders) {
+        if (reminder === name) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [anniversaryReminders]
+  );
+
+  const createBirthdayReminderObject = useCallback(() => {
+    const newBirthdayReminderObj = reminderArr.reduce(
+      (birthdayReminderObj, reminder) => {
+        return {
+          ...birthdayReminderObj,
+          [reminder]: isBirthdayReminderChecked(reminder)
+        };
+      },
+      {}
+    );
+    setBirthdayReminderObj(newBirthdayReminderObj);
+  }, [isBirthdayReminderChecked]);
+
+  const createAnniversaryReminderObject = useCallback(() => {
+    const newAnniversaryReminderObj = reminderArr.reduce(
+      (anniversaryReminderObj, reminder) => {
+        return {
+          ...anniversaryReminderObj,
+          [reminder]: isAnniversaryReminderChecked(reminder)
+        };
+      },
+      {}
+    );
+    setAnniversaryReminderObj(newAnniversaryReminderObj);
+  }, [isAnniversaryReminderChecked]);
+
+  useEffect(() => {
+    createBirthdayReminderObject();
+  }, [createBirthdayReminderObject, birthdayReminders]);
+
+  useEffect(() => {
+    createAnniversaryReminderObject();
+  }, [createAnniversaryReminderObject, anniversaryReminders]);
+
+  useEffect(() => {
+    const newReminders = Object.keys(birthdayReminderObj).filter(
+      reminder => birthdayReminderObj[reminder]
+    );
+    setBirthdayUpdateReminders(newReminders);
+  }, [birthdayReminderObj]);
+
+  useEffect(() => {
+    const newReminders = Object.keys(anniversaryReminderObj).filter(
+      reminder => anniversaryReminderObj[reminder]
+    );
+    setAnniversaryUpdateReminders(newReminders);
+  }, [anniversaryReminderObj]);
+
+  useEffect(() => {
+    handleReminderChange(anniversaryUpdateReminders, birthdayUpdateReminders);
+  }, [
+    anniversaryUpdateReminders,
+    birthdayUpdateReminders,
+    handleReminderChange
+  ]);
+
+  const handleBirthdayChange = name => event => {
+    setBirthdayReminderObj({
+      ...birthdayReminderObj,
+      [name]: event.target.checked
+    });
+  };
+
+  const handleAnniversaryChange = name => event => {
+    setAnniversaryReminderObj({
+      ...anniversaryReminderObj,
+      [name]: event.target.checked
+    });
+  };
 
   return (
     <Dialog
@@ -94,6 +208,29 @@ const UserDatesUpdate = props => {
             }}
           />
         </MuiPickersUtilsProvider>
+        <div className={classes.root}>
+          <FormControl
+            component="fieldset"
+            className={classes.formControl}
+            fullWidth={true}>
+            <FormGroup row>
+              {reminderArr.map(name => (
+                <FormControlLabel
+                  key={name}
+                  control={
+                    <Checkbox
+                      checked={anniversaryReminderObj[name]}
+                      onChange={handleAnniversaryChange(name)}
+                      value={name}
+                    />
+                  }
+                  label={name}
+                />
+              ))}
+            </FormGroup>
+          </FormControl>
+        </div>
+        <Divider className={classes.divider} variant="fullWidth" />
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             animateYearScrolling={true}
@@ -112,6 +249,28 @@ const UserDatesUpdate = props => {
             }}
           />
         </MuiPickersUtilsProvider>
+        <div className={classes.root}>
+          <FormControl
+            component="fieldset"
+            className={classes.formControl}
+            fullWidth={true}>
+            <FormGroup row>
+              {reminderArr.map(name => (
+                <FormControlLabel
+                  key={name}
+                  control={
+                    <Checkbox
+                      checked={birthdayReminderObj[name]}
+                      onChange={handleBirthdayChange(name)}
+                      value={name}
+                    />
+                  }
+                  label={name}
+                />
+              ))}
+            </FormGroup>
+          </FormControl>
+        </div>
         {dashboardCustomDates &&
           dashboardCustomDates.map(date => (
             <div key={date._id}>
