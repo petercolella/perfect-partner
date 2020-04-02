@@ -77,6 +77,7 @@ const UserDatesUpdate = props => {
     []
   );
   const [anniversaryReminderObj, setAnniversaryReminderObj] = useState({});
+  const [customDateReminderArray, setCustomDateReminderArray] = useState([]);
 
   const isBirthdayReminderChecked = useCallback(
     name => {
@@ -100,6 +101,22 @@ const UserDatesUpdate = props => {
       return false;
     },
     [anniversaryReminders]
+  );
+
+  const isCustomDateReminderChecked = useCallback(
+    (id, name) => {
+      for (let date of dashboardCustomDates) {
+        if (date._id === id) {
+          for (let reminder of date.reminders) {
+            if (reminder === name) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    },
+    [dashboardCustomDates]
   );
 
   const createBirthdayReminderObject = useCallback(() => {
@@ -128,6 +145,23 @@ const UserDatesUpdate = props => {
     setAnniversaryReminderObj(newAnniversaryReminderObj);
   }, [isAnniversaryReminderChecked]);
 
+  const createCustomDateReminderArray = useCallback(() => {
+    const newCustomDateArray = [];
+    dashboardCustomDates.forEach(date => {
+      const newCustomDateReminderObj = reminderArr.reduce(
+        (customDateReminderObj, reminder) => {
+          return {
+            ...customDateReminderObj,
+            [reminder]: isCustomDateReminderChecked(date._id, reminder)
+          };
+        },
+        {}
+      );
+      newCustomDateArray.push(newCustomDateReminderObj);
+    });
+    setCustomDateReminderArray(newCustomDateArray);
+  }, [dashboardCustomDates, isCustomDateReminderChecked]);
+
   useEffect(() => {
     createBirthdayReminderObject();
   }, [createBirthdayReminderObject, birthdayReminders]);
@@ -135,6 +169,10 @@ const UserDatesUpdate = props => {
   useEffect(() => {
     createAnniversaryReminderObject();
   }, [createAnniversaryReminderObject, anniversaryReminders]);
+
+  useEffect(() => {
+    createCustomDateReminderArray();
+  }, [createCustomDateReminderArray, dashboardCustomDates]);
 
   useEffect(() => {
     const newReminders = Object.keys(birthdayReminderObj).filter(
@@ -272,7 +310,7 @@ const UserDatesUpdate = props => {
           </FormControl>
         </div>
         {dashboardCustomDates &&
-          dashboardCustomDates.map(date => (
+          dashboardCustomDates.map((date, index) => (
             <div key={date._id}>
               <Divider className={classes.divider} variant="fullWidth" />
               <DialogContentText className={classes.text} variant="body2">
@@ -326,6 +364,32 @@ const UserDatesUpdate = props => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+              <div className={classes.root}>
+                <FormControl
+                  component="fieldset"
+                  className={classes.formControl}
+                  fullWidth={true}>
+                  <FormGroup row>
+                    {reminderArr.map(name => (
+                      <FormControlLabel
+                        key={name}
+                        control={
+                          <Checkbox
+                            checked={
+                              customDateReminderArray.length
+                                ? customDateReminderArray[index][name]
+                                : false
+                            }
+                            onChange={handleAnniversaryChange(name)}
+                            value={name}
+                          />
+                        }
+                        label={name}
+                      />
+                    ))}
+                  </FormGroup>
+                </FormControl>
+              </div>
             </div>
           ))}
       </DialogContent>
