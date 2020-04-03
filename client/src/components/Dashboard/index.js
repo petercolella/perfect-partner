@@ -274,9 +274,12 @@ const Dashboard = props => {
   const handleCustomDateDelete = date => {
     API.deleteDate(date._id)
       .then(res => {
-        closeUserDatesUpdateComp()
+        closeUserDatesUpdateComp();
         loadUserInfo();
-        handleSnackbarOpen(`The ${date.title} custom date has been deleted.`, 'info');
+        handleSnackbarOpen(
+          `The ${date.title} custom date has been deleted.`,
+          'info'
+        );
       })
       .catch(err => {
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
@@ -333,6 +336,19 @@ const Dashboard = props => {
   const handleDateInputChange = name => event => {
     setNewDate({ ...newDate, [name]: event.target.value });
   };
+
+  const handleReminderChange = useCallback(
+    (anniversaryReminders, birthdayReminders) => {
+      setDashboardUser(dashboardUser => {
+        return {
+          ...dashboardUser,
+          anniversaryReminders,
+          birthdayReminders
+        };
+      });
+    },
+    []
+  );
 
   const handleUserInputChange = name => event => {
     setDashboardUser({ ...dashboardUser, [name]: event.target.value });
@@ -424,14 +440,15 @@ const Dashboard = props => {
       value: newDateValue,
       reminders: dateReminders
     };
-    API.saveDate(newObj).then(res => {
-        closeUserDatesAddComp()
+    API.saveDate(newObj)
+      .then(res => {
+        closeUserDatesAddComp();
         loadUserInfo();
         handleSnackbarOpen(
           `The ${res.data.title} custom date has been successfully added.`,
           'success'
         );
-        setNewDate(newDateObj)
+        setNewDate(newDateObj);
       })
       .catch(err => {
         // captures error message after last colon and space
@@ -439,7 +456,7 @@ const Dashboard = props => {
         handleSnackbarOpen(errMsg, 'error');
         loadCustomDates();
         return;
-      });;
+      });
   };
 
   const handleUserFormSubmit = () => {
@@ -588,10 +605,13 @@ const Dashboard = props => {
           />
           <UserDatesUpdate
             anniversaryDate={anniversaryDate}
+            anniversaryReminders={user.anniversaryReminders || []}
             birthDate={birthDate}
+            birthdayReminders={user.birthdayReminders || []}
             closeUserDatesUpdateComp={closeUserDatesUpdateComp}
             dashboardCustomDates={dashboardCustomDates}
             handleCustomDateDelete={handleCustomDateDelete}
+            handleReminderChange={handleReminderChange}
             handleUserCustomDateInputChange={handleUserCustomDateInputChange}
             handleUserCustomDatePickerChange={handleUserCustomDatePickerChange}
             handleUserDateInputChange={handleUserDateInputChange}
