@@ -94,7 +94,7 @@ const UserDates = props => {
                             .toLocaleString()} \u2014 Reminders: ${
                             user.anniversaryReminders.length
                               ? user.anniversaryReminders.join(' \u2022 ')
-                              : 'None'
+                              : 'None Selected'
                           }`
                         : 'None Entered'
                     }`}
@@ -113,7 +113,7 @@ const UserDates = props => {
                             .toLocaleString()} \u2014 Reminders: ${
                             user.birthdayReminders.length
                               ? user.birthdayReminders.join(' \u2022 ')
-                              : 'None'
+                              : 'None Selected'
                           }`
                         : 'None Entered'
                     }`}
@@ -132,7 +132,7 @@ const UserDates = props => {
                           .toLocaleString()} \u2014 Reminders: ${
                           date.reminders.length
                             ? date.reminders.join(' \u2022 ')
-                            : 'None'
+                            : 'None Selected'
                         }`}
                       />
                     </ListItem>
