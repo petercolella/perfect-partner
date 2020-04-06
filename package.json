@@ -18,18 +18,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^4.1.0"
+    "concurrently": "^4.1.2"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "cron": "^1.7.2",
-    "dotenv": "^8.0.0",
+    "cron": "^1.8.2",
+    "dotenv": "^8.2.0",
     "express": "^4.15.4",
     "google-auth-library": "^3.1.0",
     "if-env": "^1.0.4",
-    "luxon": "^1.17.2",
-    "mongoose": "^5.6.0",
+    "luxon": "^1.23.0",
+    "mongoose": "^5.9.7",
     "nodemailer": "^5.1.1",
-    "twilio": "^3.32.0"
+    "twilio": "^3.42.0"
   }
 }
