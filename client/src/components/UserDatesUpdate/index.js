@@ -191,9 +191,9 @@ const UserDatesUpdate = props => {
   useEffect(() => {
     handleReminderChange(anniversaryUpdateReminders, birthdayUpdateReminders);
   }, [
+    handleReminderChange,
     anniversaryUpdateReminders,
-    birthdayUpdateReminders,
-    handleReminderChange
+    birthdayUpdateReminders
   ]);
 
   const handleBirthdayChange = name => event => {
@@ -208,6 +208,20 @@ const UserDatesUpdate = props => {
       ...anniversaryReminderObj,
       [name]: event.target.checked
     });
+  };
+
+  const handleCustomDateChange = (index, name) => event => {
+    const newCustomDateReminderArray = customDateReminderArray.map((obj, i) => {
+      if (index === i) {
+        return {
+          ...obj,
+          [name]: event.target.checked
+        };
+      }
+
+      return obj;
+    });
+    setCustomDateReminderArray(newCustomDateReminderArray);
   };
 
   return (
@@ -380,7 +394,7 @@ const UserDatesUpdate = props => {
                                 ? customDateReminderArray[index][name]
                                 : false
                             }
-                            onChange={handleAnniversaryChange(name)}
+                            onChange={handleCustomDateChange(index, name)}
                             value={name}
                           />
                         }
