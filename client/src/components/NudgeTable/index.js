@@ -15,12 +15,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
+import NudgeAdd from '../NudgeAdd';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
 
@@ -34,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2)
   },
   toolbar: {
+    justifyContent: 'space-between',
     paddingLeft: theme.spacing(2)
   },
   button: {
@@ -43,6 +46,14 @@ const useStyles = makeStyles(theme => ({
     color: 'white'
   }
 }));
+
+const StyledIconButton = withStyles(theme => ({
+  root: {
+    marginBottom: '-0.5em',
+    marginRight: '-16px',
+    marginTop: '-8px'
+  }
+}))(IconButton);
 
 const StyledTableCell = withStyles(theme => ({
   body: {
@@ -81,12 +92,17 @@ const NudgeTable = props => {
 
   const {
     deleted,
+    handleNewNudgeInputChange,
+    handleNudgeAddFormSubmit,
     handleNudgeDelete,
     handleNudgeFormSubmit,
     handleNudgeInputChange,
     launchNudgeUpdateComp,
+    newNudge,
     nudge,
+    nudgeAddDialogOpen,
     nudgeDialogOpen,
+    setNudgeAddDialogOpen,
     setNudgeDialogOpen,
     user
   } = props;
@@ -127,6 +143,13 @@ const NudgeTable = props => {
             <Typography variant="h5" align="left">
               Nudges
             </Typography>
+            <Tooltip title="Add Nudge" color="primary">
+              <StyledIconButton
+                aria-label="add a nudge"
+                onClick={() => setNudgeAddDialogOpen(true)}>
+                <AddBoxIcon color="primary" />
+              </StyledIconButton>
+            </Tooltip>
           </Toolbar>
           <Table className={classes.table}>
             <TableHead>
@@ -181,6 +204,14 @@ const NudgeTable = props => {
               ))}
             </TableBody>
           </Table>
+          <NudgeAdd
+            setNudgeAddDialogOpen={setNudgeAddDialogOpen}
+            handleNewNudgeInputChange={handleNewNudgeInputChange}
+            handleNudgeAddFormSubmit={handleNudgeAddFormSubmit}
+            newNudge={newNudge}
+            nudgeAddDialogOpen={nudgeAddDialogOpen}
+            user={user}
+          />
           <NudgeUpdate
             setNudgeDialogOpen={setNudgeDialogOpen}
             handleNudgeInputChange={handleNudgeInputChange}
