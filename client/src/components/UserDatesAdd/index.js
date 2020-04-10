@@ -115,7 +115,7 @@ const UserDatesUpdate = props => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Add an Important Date, {user.firstName}.
+          Add an important date, {user.firstName}.
         </DialogContentText>
         <TextField
           id="title"
