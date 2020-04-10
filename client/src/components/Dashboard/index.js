@@ -41,6 +41,13 @@ const newDateObj = {
   reminders: []
 };
 
+const newNudgeObj = {
+  name: '',
+  nudgeFrequency: 7,
+  nudgeFrequencyUnit: '',
+  textMessage: ''
+};
+
 const noNudge = {
   name: '',
   nudgeFrequency: '',
@@ -105,10 +112,12 @@ const Dashboard = props => {
   const [deleted, setDeleted] = useState(false);
   const [nudge, setNudge] = useState(noNudge);
   const [newDate, setNewDate] = useState(newDateObj);
+  const [newNudge, setNewNudge] = useState(newNudgeObj);
   const [newDateValue, setNewDateValue] = useState(newDateObj.value);
   const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [testNudge, setTestNudge] = useState(null);
+  const [nudgeAddDialogOpen, setNudgeAddDialogOpen] = useState(false);
   const [userDatesAddDialogOpen, setUserDatesAddDialogOpen] = useState(false);
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
@@ -157,6 +166,11 @@ const Dashboard = props => {
   useEffect(() => {
     loadCustomDates();
   }, [loadCustomDates]);
+
+  const closeNudgeAddComp = () => {
+    setNudgeAddDialogOpen(false);
+    loadDashboardUser();
+  };
 
   const closeUserDatesAddComp = () => {
     setUserDatesAddDialogOpen(false);
@@ -231,6 +245,10 @@ const Dashboard = props => {
       });
   };
 
+  const handleNewNudgeInputChange = name => event => {
+    setNewNudge({ ...newNudge, [name]: event.target.value });
+  };
+
   const handleNudgeInputChange = name => event => {
     setNudge({ ...nudge, [name]: event.target.value });
   };
@@ -239,6 +257,29 @@ const Dashboard = props => {
     setNudge(nudge);
     setTestNudge(nudge);
     setNudgeDialogOpen(true);
+  };
+
+  const handleNudgeAddFormSubmit = () => {
+    console.log(newNudge);
+    const body = {};
+    body.userId = user._id;
+    body.nudge = newNudge;
+
+    API.saveNudge(body)
+      .then(res => {
+        closeNudgeAddComp();
+        handleSnackbarOpen(
+          `${res.data.name} has been successfully added.`,
+          'success'
+        );
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+        loadDashboardUser();
+        return;
+      });
   };
 
   const handleNudgeFormSubmit = () => {
@@ -257,7 +298,7 @@ const Dashboard = props => {
       .then(res => {
         loadUserInfo();
         handleSnackbarOpen(
-          `${nudge.name} has been successfully updated.`,
+          `${res.data.name} has been successfully updated.`,
           'success'
         );
         setNudgeDialogOpen(false);
@@ -391,9 +432,7 @@ const Dashboard = props => {
         return {
           [key]: !dateKeysArray.includes(key)
             ? res[key]
-            : DateTime.fromISO(res[key])
-                .setZone('UTC')
-                .toLocaleString()
+            : DateTime.fromISO(res[key]).setZone('UTC').toLocaleString()
         };
       });
 
@@ -581,11 +620,16 @@ const Dashboard = props => {
           <Grid item xs={12}>
             <NudgeTable
               deleted={deleted}
+              handleNewNudgeInputChange={handleNewNudgeInputChange}
               handleNudgeDelete={handleNudgeDelete}
               handleNudgeFormSubmit={handleNudgeFormSubmit}
+              handleNudgeAddFormSubmit={handleNudgeAddFormSubmit}
               handleNudgeInputChange={handleNudgeInputChange}
               launchNudgeUpdateComp={launchNudgeUpdateComp}
+              newNudge={newNudge}
               nudge={nudge}
+              nudgeAddDialogOpen={nudgeAddDialogOpen}
+              setNudgeAddDialogOpen={setNudgeAddDialogOpen}
               nudgeDialogOpen={nudgeDialogOpen}
               setNudgeDialogOpen={setNudgeDialogOpen}
               user={user}
