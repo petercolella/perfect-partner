@@ -19,6 +19,8 @@ import Typography from '@material-ui/core/Typography';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import UserDatesDelete from '../UserDatesDelete';
+
 import { ReactComponent as Calendar } from './calendar.svg';
 
 import 'date-fns';
@@ -78,6 +80,20 @@ const UserDatesUpdate = props => {
   );
   const [anniversaryReminderObj, setAnniversaryReminderObj] = useState({});
   const [customDateReminderArray, setCustomDateReminderArray] = useState([]);
+  const [userDateDeleteDialogOpen, setUserDateDeleteDialogOpen] = useState(
+    false
+  );
+  const [userDateToDelete, setUserDateToDelete] = useState({ name: '' });
+
+  const handleUserDateDeleteClick = userDate => {
+    setUserDateDeleteDialogOpen(true);
+    setUserDateToDelete(userDate);
+  };
+
+  const handleUserDateDeleteConfirm = userDate => {
+    handleCustomDateDelete(userDate);
+    setUserDateDeleteDialogOpen(false);
+  };
 
   const isBirthdayReminderChecked = useCallback(
     name => {
@@ -133,6 +149,7 @@ const UserDatesUpdate = props => {
   }, [isBirthdayReminderChecked]);
 
   const createAnniversaryReminderObject = useCallback(() => {
+    console.log('createAnniversaryReminderObject');
     const newAnniversaryReminderObj = reminderArr.reduce(
       (anniversaryReminderObj, reminder) => {
         return {
@@ -182,6 +199,7 @@ const UserDatesUpdate = props => {
   }, [birthdayReminderObj]);
 
   useEffect(() => {
+    console.log('setAnniversaryUpdateReminders');
     const newReminders = Object.keys(anniversaryReminderObj).filter(
       reminder => anniversaryReminderObj[reminder]
     );
@@ -204,6 +222,7 @@ const UserDatesUpdate = props => {
   };
 
   const handleAnniversaryChange = name => event => {
+    console.log('handleAnniversaryChange');
     setAnniversaryReminderObj({
       ...anniversaryReminderObj,
       [name]: event.target.checked
@@ -225,197 +244,205 @@ const UserDatesUpdate = props => {
   };
 
   return (
-    <Dialog
-      fullWidth={true}
-      open={userDatesDialogOpen}
-      onClose={closeUserDatesUpdateComp}
-      aria-labelledby="form-dialog-title"
-      scroll={'body'}>
-      <DialogTitle
-        className={classes.title}
-        id="form-dialog-title"
-        disableTypography={true}>
-        <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
-        <Typography variant="h6">
-          Change Your Dates, {user.firstName}.
-        </Typography>
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>Make changes below.</DialogContentText>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            animateYearScrolling={true}
-            clearable
-            format="MM/dd/yyyy"
-            fullWidth
-            id="anniversaryDate"
-            inputVariant="outlined"
-            label="Anniversary Date"
-            margin="normal"
-            onChange={handleUserDateInputChange('anniversaryDate')}
-            placeholder="mm/dd/yyyy"
-            value={anniversaryDate}
-            KeyboardButtonProps={{
-              'aria-label': 'change date'
-            }}
-          />
-        </MuiPickersUtilsProvider>
-        <div className={classes.root}>
-          <FormControl
-            component="fieldset"
-            className={classes.formControl}
-            fullWidth={true}>
-            <FormGroup row>
-              {reminderArr.map(name => (
-                <FormControlLabel
-                  key={name}
-                  control={
-                    <Checkbox
-                      checked={anniversaryReminderObj[name]}
-                      onChange={handleAnniversaryChange(name)}
-                      value={name}
-                    />
-                  }
-                  label={name}
-                />
-              ))}
-            </FormGroup>
-          </FormControl>
-        </div>
-        <Divider className={classes.divider} variant="fullWidth" />
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            animateYearScrolling={true}
-            clearable
-            format="MM/dd/yyyy"
-            fullWidth
-            id="birthDate"
-            inputVariant="outlined"
-            label="Partner's Birthday"
-            margin="normal"
-            onChange={handleUserDateInputChange('birthDate')}
-            placeholder="mm/dd/yyyy"
-            value={birthDate}
-            KeyboardButtonProps={{
-              'aria-label': 'change date'
-            }}
-          />
-        </MuiPickersUtilsProvider>
-        <div className={classes.root}>
-          <FormControl
-            component="fieldset"
-            className={classes.formControl}
-            fullWidth={true}>
-            <FormGroup row>
-              {reminderArr.map(name => (
-                <FormControlLabel
-                  key={name}
-                  control={
-                    <Checkbox
-                      checked={birthdayReminderObj[name]}
-                      onChange={handleBirthdayChange(name)}
-                      value={name}
-                    />
-                  }
-                  label={name}
-                />
-              ))}
-            </FormGroup>
-          </FormControl>
-        </div>
-        {dashboardCustomDates &&
-          dashboardCustomDates.map((date, index) => (
-            <div key={date._id}>
-              <Divider className={classes.divider} variant="fullWidth" />
-              <DialogContentText className={classes.text} variant="body2">
-                <Tooltip title="Delete Date" color="primary">
-                  <IconButton
-                    className={classes.deleteButton}
-                    aria-label="delete date"
-                    onClick={() => handleCustomDateDelete(date)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-                {date.title}
-              </DialogContentText>
-              <TextField
-                id={date.title}
-                label="Title"
-                type="text"
-                fullWidth
-                name="title"
-                value={date.title}
-                onChange={handleUserCustomDateInputChange(date._id)}
-                margin="normal"
-                variant="outlined"
-              />
-              <TextField
-                id={date.description}
-                label="Description"
-                type="text"
-                fullWidth
-                name="description"
-                value={date.description}
-                onChange={handleUserCustomDateInputChange(date._id)}
-                margin="normal"
-                variant="outlined"
-              />
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  animateYearScrolling={true}
-                  clearable
-                  format="MM/dd/yyyy"
-                  fullWidth
-                  id={date._id}
-                  inputVariant="outlined"
-                  label="Date"
-                  margin="normal"
-                  onChange={handleUserCustomDatePickerChange(date._id)}
-                  placeholder="mm/dd/yyyy"
-                  value={date.value}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date'
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-              <div className={classes.root}>
-                <FormControl
-                  component="fieldset"
-                  className={classes.formControl}
-                  fullWidth={true}>
-                  <FormGroup row>
-                    {reminderArr.map(name => (
-                      <FormControlLabel
-                        key={name}
-                        control={
-                          <Checkbox
-                            checked={
-                              customDateReminderArray.length
-                                ? customDateReminderArray[index][name]
-                                : false
-                            }
-                            onChange={handleCustomDateChange(index, name)}
-                            value={name}
-                          />
-                        }
-                        label={name}
+    <>
+      <Dialog
+        fullWidth={true}
+        open={userDatesDialogOpen}
+        onClose={closeUserDatesUpdateComp}
+        aria-labelledby="form-dialog-title"
+        scroll={'body'}>
+        <DialogTitle
+          className={classes.title}
+          id="form-dialog-title"
+          disableTypography={true}>
+          <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
+          <Typography variant="h6">
+            Change Your Dates, {user.firstName}.
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>Make changes below.</DialogContentText>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              animateYearScrolling={true}
+              clearable
+              format="MM/dd/yyyy"
+              fullWidth
+              id="anniversaryDate"
+              inputVariant="outlined"
+              label="Anniversary Date"
+              margin="normal"
+              onChange={handleUserDateInputChange('anniversaryDate')}
+              placeholder="mm/dd/yyyy"
+              value={anniversaryDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <div className={classes.root}>
+            <FormControl
+              component="fieldset"
+              className={classes.formControl}
+              fullWidth={true}>
+              <FormGroup row>
+                {reminderArr.map(name => (
+                  <FormControlLabel
+                    key={name}
+                    control={
+                      <Checkbox
+                        checked={anniversaryReminderObj[name]}
+                        onChange={handleAnniversaryChange(name)}
+                        value={name}
                       />
-                    ))}
-                  </FormGroup>
-                </FormControl>
+                    }
+                    label={name}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
+          </div>
+          <Divider className={classes.divider} variant="fullWidth" />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              animateYearScrolling={true}
+              clearable
+              format="MM/dd/yyyy"
+              fullWidth
+              id="birthDate"
+              inputVariant="outlined"
+              label="Partner's Birthday"
+              margin="normal"
+              onChange={handleUserDateInputChange('birthDate')}
+              placeholder="mm/dd/yyyy"
+              value={birthDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <div className={classes.root}>
+            <FormControl
+              component="fieldset"
+              className={classes.formControl}
+              fullWidth={true}>
+              <FormGroup row>
+                {reminderArr.map(name => (
+                  <FormControlLabel
+                    key={name}
+                    control={
+                      <Checkbox
+                        checked={birthdayReminderObj[name]}
+                        onChange={handleBirthdayChange(name)}
+                        value={name}
+                      />
+                    }
+                    label={name}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
+          </div>
+          {dashboardCustomDates &&
+            dashboardCustomDates.map((date, index) => (
+              <div key={date._id}>
+                <Divider className={classes.divider} variant="fullWidth" />
+                <DialogContentText className={classes.text} variant="body2">
+                  <Tooltip title="Delete Date" color="primary">
+                    <IconButton
+                      className={classes.deleteButton}
+                      aria-label="delete date"
+                      onClick={() => handleUserDateDeleteClick(date)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                  {date.title}
+                </DialogContentText>
+                <TextField
+                  id={date.title}
+                  label="Title"
+                  type="text"
+                  fullWidth
+                  name="title"
+                  value={date.title}
+                  onChange={handleUserCustomDateInputChange(date._id)}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <TextField
+                  id={date.description}
+                  label="Description"
+                  type="text"
+                  fullWidth
+                  name="description"
+                  value={date.description}
+                  onChange={handleUserCustomDateInputChange(date._id)}
+                  margin="normal"
+                  variant="outlined"
+                />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    animateYearScrolling={true}
+                    clearable
+                    format="MM/dd/yyyy"
+                    fullWidth
+                    id={date._id}
+                    inputVariant="outlined"
+                    label="Date"
+                    margin="normal"
+                    onChange={handleUserCustomDatePickerChange(date._id)}
+                    placeholder="mm/dd/yyyy"
+                    value={date.value}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date'
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+                <div className={classes.root}>
+                  <FormControl
+                    component="fieldset"
+                    className={classes.formControl}
+                    fullWidth={true}>
+                    <FormGroup row>
+                      {reminderArr.map(name => (
+                        <FormControlLabel
+                          key={name}
+                          control={
+                            <Checkbox
+                              checked={
+                                customDateReminderArray.length
+                                  ? customDateReminderArray[index][name]
+                                  : false
+                              }
+                              onChange={handleCustomDateChange(index, name)}
+                              value={name}
+                            />
+                          }
+                          label={name}
+                        />
+                      ))}
+                    </FormGroup>
+                  </FormControl>
+                </div>
               </div>
-            </div>
-          ))}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeUserDatesUpdateComp} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={handleUserFormSubmit} color="primary">
-          Submit
-        </Button>
-      </DialogActions>
-    </Dialog>
+            ))}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeUserDatesUpdateComp} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleUserFormSubmit} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <UserDatesDelete
+        handleUserDateDeleteConfirm={handleUserDateDeleteConfirm}
+        userDate={userDateToDelete}
+        userDateDeleteDialogOpen={userDateDeleteDialogOpen}
+        setUserDateDeleteDialogOpen={setUserDateDeleteDialogOpen}
+      />
+    </>
   );
 };
 
