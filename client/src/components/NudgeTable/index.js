@@ -23,6 +23,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
 import TestTextButton from '../TestTextButton';
 import NudgeAdd from '../NudgeAdd';
+import NudgeDelete from '../NudgeDelete';
 import NudgeUpdate from '../NudgeUpdate';
 import fn from '../../utils/fn';
 
@@ -110,6 +111,18 @@ const NudgeTable = props => {
   const [arrowOneFade, setArrowOneFade] = useState(false);
   const [arrowTwoFade, setArrowTwoFade] = useState(false);
   const [arrowThreeFade, setArrowThreeFade] = useState(false);
+  const [nudgeDeleteDialogOpen, setNudgeDeleteDialogOpen] = useState(false);
+  const [nudgeToDelete, setNudgeToDelete] = useState({ name: '' });
+
+  const handleNudgeDeleteClick = nudge => {
+    setNudgeDeleteDialogOpen(true);
+    setNudgeToDelete(nudge);
+  };
+
+  const handleNudgeDeleteConfirm = nudge => {
+    handleNudgeDelete(nudge);
+    setNudgeDeleteDialogOpen(false);
+  };
 
   useEffect(() => {
     fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, true, 200);
@@ -189,7 +202,7 @@ const NudgeTable = props => {
                     <Tooltip title="Delete Nudge" color="primary">
                       <IconButton
                         aria-label="delete nudge"
-                        onClick={() => handleNudgeDelete(nudge)}>
+                        onClick={() => handleNudgeDeleteClick(nudge)}>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
@@ -211,6 +224,12 @@ const NudgeTable = props => {
             newNudge={newNudge}
             nudgeAddDialogOpen={nudgeAddDialogOpen}
             user={user}
+          />
+          <NudgeDelete
+            handleNudgeDeleteConfirm={handleNudgeDeleteConfirm}
+            nudge={nudgeToDelete}
+            nudgeDeleteDialogOpen={nudgeDeleteDialogOpen}
+            setNudgeDeleteDialogOpen={setNudgeDeleteDialogOpen}
           />
           <NudgeUpdate
             setNudgeDialogOpen={setNudgeDialogOpen}
