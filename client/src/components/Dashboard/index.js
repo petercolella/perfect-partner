@@ -260,18 +260,20 @@ const Dashboard = props => {
   };
 
   const handleNudgeAddFormSubmit = () => {
-    console.log(newNudge);
-    const body = {};
-    body.userId = user._id;
-    body.nudge = newNudge;
+    const body = {
+      userId: user._id,
+      nudge: newNudge
+    };
 
     API.saveNudge(body)
       .then(res => {
+        loadUserInfo();
         closeNudgeAddComp();
         handleSnackbarOpen(
           `${res.data.name} has been successfully added.`,
           'success'
         );
+        setNewNudge(newNudgeObj);
       })
       .catch(err => {
         // captures error message after last colon and space
