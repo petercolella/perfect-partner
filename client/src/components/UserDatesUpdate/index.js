@@ -149,7 +149,6 @@ const UserDatesUpdate = props => {
   }, [isBirthdayReminderChecked]);
 
   const createAnniversaryReminderObject = useCallback(() => {
-    console.log('createAnniversaryReminderObject');
     const newAnniversaryReminderObj = reminderArr.reduce(
       (anniversaryReminderObj, reminder) => {
         return {
@@ -199,7 +198,6 @@ const UserDatesUpdate = props => {
   }, [birthdayReminderObj]);
 
   useEffect(() => {
-    console.log('setAnniversaryUpdateReminders');
     const newReminders = Object.keys(anniversaryReminderObj).filter(
       reminder => anniversaryReminderObj[reminder]
     );
@@ -222,7 +220,6 @@ const UserDatesUpdate = props => {
   };
 
   const handleAnniversaryChange = name => event => {
-    console.log('handleAnniversaryChange');
     setAnniversaryReminderObj({
       ...anniversaryReminderObj,
       [name]: event.target.checked
@@ -410,7 +407,7 @@ const UserDatesUpdate = props => {
                           control={
                             <Checkbox
                               checked={
-                                customDateReminderArray.length
+                                customDateReminderArray[index]
                                   ? customDateReminderArray[index][name]
                                   : false
                               }
