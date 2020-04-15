@@ -342,6 +342,20 @@ const Dashboard = props => {
     setDashboardCustomDates([tempDate, ...unchangedDateArr]);
   };
 
+  const handleUserCustomDateReminderChange = (id, value) => {
+    const newDashboardCustomDates = dashboardCustomDates.map(date => {
+      if (date._id === id) {
+        const tempDate = { ...date };
+        tempDate.reminders = value;
+        return tempDate;
+      }
+
+      return date;
+    });
+
+    setDashboardCustomDates(newDashboardCustomDates);
+  };
+
   const handleUserCustomDatePickerChange = id => input => {
     const dt = DateTime.fromJSDate(input).set({
       hour: 0,
@@ -659,6 +673,9 @@ const Dashboard = props => {
             handleCustomDateDelete={handleCustomDateDelete}
             handleReminderChange={handleReminderChange}
             handleUserCustomDateInputChange={handleUserCustomDateInputChange}
+            handleUserCustomDateReminderChange={
+              handleUserCustomDateReminderChange
+            }
             handleUserCustomDatePickerChange={handleUserCustomDatePickerChange}
             handleUserDateInputChange={handleUserDateInputChange}
             handleUserFormSubmit={handleUserFormSubmit}
