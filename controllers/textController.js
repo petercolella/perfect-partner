@@ -200,6 +200,48 @@ const self = (module.exports = {
       });
     });
   },
+  runCustomDateNudges: () => {
+    return db.User.find({})
+      .populate('customDates')
+      .then(users => {
+        users.forEach(user => {
+          const { customDates, phone } = user;
+
+          if (customDates.length && phone) {
+            customDates.forEach(date => {
+              console.log(date);
+              const { title, description, value, reminders } = date;
+              const { dateDayOfYear, dateString, yearOfDate } = formatDate(
+                value
+              );
+              const daysToDate = dateDayOfYear - nowDayOfYear;
+
+              if (daysToDate == 0) {
+                self.sendText(
+                  `It's the ${title} (${description}) today!`,
+                  phone
+                );
+              }
+
+              reminders.forEach(rem => {
+                const reminderDays = reminderObj[rem];
+
+                if (
+                  daysToDate == reminderDays ||
+                  daysToDate == reminderDays - numberOfDaysInYear
+                ) {
+                  self.sendText(
+                    `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`,
+                    phone
+                  );
+                }
+              });
+            });
+          }
+        });
+      })
+      .catch(err => console.log({ error: err.message }));
+  },
   sendText: (body, to) => {
     console.log('Body:', body, 'To:', to);
     return client.messages.create({
