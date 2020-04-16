@@ -50,6 +50,7 @@ const job = new CronJob(
     textController.runActivatedNudges();
     textController.runAnniversaryNudges();
     textController.runBirthdayNudges();
+    textController.runCustomDateNudges();
   },
   null,
   false,
