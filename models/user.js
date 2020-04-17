@@ -17,7 +17,7 @@ const userSchema = new Schema({
       'Anniversary must be a valid date!'
     ]
   },
-  anniversaryReminders: { type: Array },
+  anniversaryReminders: { type: Array, default: [] },
   birthDate: {
     type: Date,
     validate: [
@@ -27,7 +27,7 @@ const userSchema = new Schema({
       'Birthday must be a valid date!'
     ]
   },
-  birthdayReminders: { type: Array },
+  birthdayReminders: { type: Array, default: [] },
   partnerName: {
     type: String,
     default: '',
@@ -38,8 +38,10 @@ const userSchema = new Schema({
     default: '',
     validate: {
       validator: async v => {
-        const docs = await User.findOne({ phone: v });
-        return !docs;
+        if (v) {
+          const docs = await User.findOne({ phone: v });
+          return !docs;
+        }
       },
       message: 'Phone number already exists!'
     }
