@@ -66,6 +66,7 @@ const UserDatesUpdate = props => {
     handleCustomDateDelete,
     handleReminderChange,
     handleUserCustomDateInputChange,
+    handleUserCustomDateReminderChange,
     handleUserCustomDatePickerChange,
     handleUserDateInputChange,
     handleUserFormSubmit,
@@ -79,7 +80,10 @@ const UserDatesUpdate = props => {
     []
   );
   const [anniversaryReminderObj, setAnniversaryReminderObj] = useState({});
-  const [customDateReminderArray, setCustomDateReminderArray] = useState([]);
+  const [
+    customDateReminderBooleanObjArray,
+    setCustomDateReminderBooleanObjArray
+  ] = useState([]);
   const [userDateDeleteDialogOpen, setUserDateDeleteDialogOpen] = useState(
     false
   );
@@ -175,7 +179,7 @@ const UserDatesUpdate = props => {
       );
       newCustomDateArray.push(newCustomDateReminderObj);
     });
-    setCustomDateReminderArray(newCustomDateArray);
+    setCustomDateReminderBooleanObjArray(newCustomDateArray);
   }, [dashboardCustomDates, isCustomDateReminderChecked]);
 
   useEffect(() => {
@@ -226,18 +230,26 @@ const UserDatesUpdate = props => {
     });
   };
 
-  const handleCustomDateChange = (index, name) => event => {
-    const newCustomDateReminderArray = customDateReminderArray.map((obj, i) => {
-      if (index === i) {
-        return {
-          ...obj,
-          [name]: event.target.checked
-        };
-      }
+  const handleCustomDateChange = (index, name, id) => event => {
+    const newCustomDateReminderBooleanObjArray = customDateReminderBooleanObjArray.map(
+      (obj, i) => {
+        if (index === i) {
+          return {
+            ...obj,
+            [name]: event.target.checked
+          };
+        }
 
-      return obj;
-    });
-    setCustomDateReminderArray(newCustomDateReminderArray);
+        return obj;
+      }
+    );
+
+    const newCustomDateReminderArray = Object.keys(
+      newCustomDateReminderBooleanObjArray[index]
+    ).filter(key => newCustomDateReminderBooleanObjArray[index][key]);
+
+    handleUserCustomDateReminderChange(id, newCustomDateReminderArray);
+    setCustomDateReminderBooleanObjArray(newCustomDateReminderBooleanObjArray);
   };
 
   return (
@@ -356,7 +368,7 @@ const UserDatesUpdate = props => {
                   {date.title}
                 </DialogContentText>
                 <TextField
-                  id={date.title}
+                  id={`custom-title-${date.title}`}
                   label="Title"
                   type="text"
                   fullWidth
@@ -367,7 +379,7 @@ const UserDatesUpdate = props => {
                   variant="outlined"
                 />
                 <TextField
-                  id={date.description}
+                  id={`custom-description-${date.description}`}
                   label="Description"
                   type="text"
                   fullWidth
@@ -407,11 +419,17 @@ const UserDatesUpdate = props => {
                           control={
                             <Checkbox
                               checked={
-                                customDateReminderArray[index]
-                                  ? customDateReminderArray[index][name]
+                                customDateReminderBooleanObjArray[index]
+                                  ? customDateReminderBooleanObjArray[index][
+                                      name
+                                    ]
                                   : false
                               }
-                              onChange={handleCustomDateChange(index, name)}
+                              onChange={handleCustomDateChange(
+                                index,
+                                name,
+                                date._id
+                              )}
                               value={name}
                             />
                           }
