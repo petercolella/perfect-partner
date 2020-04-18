@@ -58,7 +58,9 @@ const noNudge = {
 
 const noUser = {
   anniversaryDate: '',
+  anniversaryReminders: [],
   birthDate: '',
+  birthdayReminders: [],
   email: '',
   firstName: '',
   imageUrl:
@@ -317,7 +319,6 @@ const Dashboard = props => {
   const handleCustomDateDelete = date => {
     API.deleteDate(date._id)
       .then(res => {
-        closeUserDatesUpdateComp();
         loadUserInfo();
         handleSnackbarOpen(
           `The ${date.title} custom date has been deleted.`,
@@ -364,13 +365,17 @@ const Dashboard = props => {
       millisecond: 0
     });
 
-    const changedDate = dashboardCustomDates.filter(el => el._id === id).pop();
-    const tempDate = { ...changedDate };
-    tempDate.value = dt;
+    const newDashboardCustomDates = dashboardCustomDates.map(date => {
+      if (date._id === id) {
+        const tempDate = { ...date };
+        tempDate.value = dt;
+        return tempDate;
+      }
 
-    const unchangedDateArr = dashboardCustomDates.filter(el => el._id !== id);
+      return date;
+    });
 
-    setDashboardCustomDates([tempDate, ...unchangedDateArr]);
+    setDashboardCustomDates(newDashboardCustomDates);
   };
 
   const handleUserDateInputChange = name => date => {
@@ -458,10 +463,10 @@ const Dashboard = props => {
           Your profile has been successfully updated with the following changes:
         </p>
         <ul>
-          {updatedValuesArray.map(el => {
+          {updatedValuesArray.map((el, i) => {
             el = keyNameAndValue(el);
             return (
-              <li key={el.name}>
+              <li key={el.name || i}>
                 {el.name}: {el.newValue}
               </li>
             );
@@ -492,9 +497,10 @@ const Dashboard = props => {
     const newObj = {
       title: newDate.title,
       description: newDate.description,
-      value: newDateValue,
+      value: fn.localToUTC(newDateValue),
       reminders: dateReminders
     };
+
     API.saveDate(newObj)
       .then(res => {
         closeUserDatesAddComp();
