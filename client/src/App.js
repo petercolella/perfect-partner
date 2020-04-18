@@ -18,7 +18,9 @@ import './styles.css';
 
 const noUser = {
   anniversaryDate: '',
+  anniversaryReminders: [],
   birthDate: '',
+  birthdayReminders: [],
   email: '',
   firstName: '',
   imageUrl:
