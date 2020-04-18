@@ -62,6 +62,7 @@ const UserProfileUpdate = props => {
           label="Image Link"
           type="text"
           fullWidth
+          name="imageUrl"
           value={user.imageUrl}
           onChange={handleUserInputChange('imageUrl')}
           margin="normal"
@@ -72,6 +73,7 @@ const UserProfileUpdate = props => {
           label="First Name"
           type="text"
           fullWidth
+          name="firstName"
           value={user.firstName}
           onChange={handleUserInputChange('firstName')}
           margin="normal"
@@ -82,6 +84,7 @@ const UserProfileUpdate = props => {
           label="Last Name"
           type="text"
           fullWidth
+          name="lastName"
           value={user.lastName}
           onChange={handleUserInputChange('lastName')}
           margin="normal"
@@ -92,6 +95,7 @@ const UserProfileUpdate = props => {
           label="Full Name"
           type="text"
           fullWidth
+          name="name"
           value={user.name}
           onChange={handleUserInputChange('name')}
           margin="normal"
@@ -102,6 +106,7 @@ const UserProfileUpdate = props => {
           label="Email"
           type="email"
           fullWidth
+          name="email"
           value={user.email}
           onChange={handleUserInputChange('email')}
           margin="normal"
@@ -112,6 +117,7 @@ const UserProfileUpdate = props => {
           label="Partner's Name"
           type="text"
           fullWidth
+          name="partnerName"
           value={user.partnerName}
           onChange={handleUserInputChange('partnerName')}
           margin="normal"
@@ -122,6 +128,7 @@ const UserProfileUpdate = props => {
           label="Phone"
           type="tel"
           fullWidth
+          name="phone"
           value={user.phone}
           onChange={handleUserInputChange('phone')}
           margin="normal"
