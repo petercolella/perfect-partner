@@ -25,6 +25,7 @@ console.log('nowDayOfYear:', nowDayOfYear);
 const runMethods = async () => {
   await textController.runAnniversaryNudges();
   await textController.runBirthdayNudges();
+  await textController.runCustomDateNudges();
 
   process.exit(0);
 };
