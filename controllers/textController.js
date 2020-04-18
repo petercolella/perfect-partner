@@ -20,18 +20,12 @@ const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
 
 const formatDate = date => {
   const dt = DateTime.fromJSDate(date).setZone('UTC');
-  console.log(`
-DateTime.ts: ${dt.ts}
-DateTime.loc.locale: ${dt.loc.locale}
-DateTime.loc.intl: ${dt.loc.intl}
-DateTime.o: ${dt.o}`);
-  console.log('DateTime.c:', dt.c);
-
   const dateObj = {};
+
   dateObj.dateDayOfYear = dt.set({ year: currentYear }).toFormat('o');
   dateObj.dateString = dt.toFormat('MMMM d');
   dateObj.yearOfDate = dt.toFormat('yyyy');
-  console.log('dateObj:', dateObj);
+
   return dateObj;
 };
 
@@ -209,7 +203,6 @@ const self = (module.exports = {
 
           if (customDates.length && phone) {
             customDates.forEach(date => {
-              console.log(date);
               const { title, description, value, reminders } = date;
               const { dateDayOfYear, dateString, yearOfDate } = formatDate(
                 value
@@ -243,7 +236,6 @@ const self = (module.exports = {
       .catch(err => console.log({ error: err.message }));
   },
   sendText: (body, to) => {
-    console.log('Body:', body, 'To:', to);
     return client.messages.create({
       body: `${body}`,
       from: process.env.TWILIO_PHONE_NUMBER,
@@ -252,7 +244,6 @@ const self = (module.exports = {
   },
   setFutureTimestamp: nudge => {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
-    console.log('futureTimestamp:', new Date(futureTimestamp));
 
     db.Nudge.findOneAndUpdate(
       { _id: nudge._id },
