@@ -537,9 +537,12 @@ const Dashboard = props => {
       birthDate: birthDate ? fn.localToUTC(birthDate).toISO() : undefined
     };
 
-    const testArray = Object.keys(testUser).filter(
-      key => testUser[key] !== user[key]
-    );
+    const testArray = Object.keys(testUser).filter(key => {
+      if (Array.isArray(testUser[key])) {
+        return testUser[key].join() !== user[key].join();
+      }
+      return testUser[key] !== user[key];
+    });
 
     const customDateTestArray = dashboardCustomDates.flatMap(date => {
       return Object.keys(date).filter(key => {
