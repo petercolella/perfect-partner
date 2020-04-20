@@ -57,6 +57,8 @@ module.exports = {
         new: true,
         runValidators: true
       })
+        .populate('customDates')
+        .populate('nudges')
         .then(dbModel => {
           if (req.body.hasOwnProperty('phone')) {
             const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
