@@ -29,9 +29,12 @@ const keyNameObj = {
   phone: 'Phone Number',
   anniversaryDate: 'Your Anniversary',
   birthDate: `Partner's Birthday`,
+  anniversaryReminders: 'Anniversary Reminders',
+  birthdayReminders: 'Birthday Reminders',
   title: 'Title',
   description: 'Description',
-  value: 'Custom Date'
+  value: 'Custom Date',
+  reminders: 'Reminders'
 };
 
 const newDateObj = {
@@ -82,12 +85,14 @@ const userKeyArray = [
 ];
 
 const keyNameAndValue = obj => {
+  const newObj = {};
   for (let key in obj) {
-    obj.name = keyNameObj[key];
-    obj.newValue = obj[key];
-    delete obj[key];
+    newObj.name = keyNameObj[key];
+    newObj.newValue = Array.isArray(obj[key])
+      ? obj[key].join(' \u2022 ')
+      : obj[key];
   }
-  return obj;
+  return newObj;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -334,13 +339,17 @@ const Dashboard = props => {
   const handleUserCustomDateInputChange = id => event => {
     const { name, value } = event.target;
 
-    const changedDate = dashboardCustomDates.filter(el => el._id === id).pop();
-    const tempDate = { ...changedDate };
-    tempDate[name] = value;
+    const newDashboardCustomDates = dashboardCustomDates.map(date => {
+      if (date._id === id) {
+        const tempDate = { ...date };
+        tempDate[name] = value;
+        return tempDate;
+      }
 
-    const unchangedDateArr = dashboardCustomDates.filter(el => el._id !== id);
+      return date;
+    });
 
-    setDashboardCustomDates([tempDate, ...unchangedDateArr]);
+    setDashboardCustomDates(newDashboardCustomDates);
   };
 
   const handleUserCustomDateReminderChange = (id, value) => {
@@ -416,11 +425,11 @@ const Dashboard = props => {
     setDashboardUser({ ...dashboardUser, [name]: event.target.value });
   };
 
-  const renderSnackbarMessage = res => {
+  const renderSnackbarMessage = (res, isCustomDate = false) => {
     const dateKeysArray = ['anniversaryDate', 'birthDate', 'value'];
 
     const customDatesChanged = (resObj, resObjKey) => {
-      let changed = false;
+      let changed;
       user.customDates.forEach(date => {
         if (date._id === resObj._id) {
           Object.keys(date).forEach(key => {
@@ -440,14 +449,14 @@ const Dashboard = props => {
 
     const updatedValuesArray = Object.keys(res)
       .filter(key => {
-        const changed = customDatesChanged(res, key);
-        if (key === '_id') return false;
-        return (
-          changed ||
-          (user[key]
-            ? res[key] !== user[key] && typeof res[key] !== 'object'
-            : false)
-        );
+        if (['_id', '__v', 'customDates', 'nudges'].includes(key)) return false;
+
+        if (isCustomDate) return customDatesChanged(res, key);
+
+        if (Array.isArray(res[key]))
+          return res[key].join() !== user[key].join();
+
+        return user[key] ? res[key] !== user[key] : false;
       })
       .map(key => {
         return {
@@ -457,14 +466,18 @@ const Dashboard = props => {
         };
       });
 
+    const snackbarValuesArray = updatedValuesArray.map(
+      el => (el = keyNameAndValue(el))
+    );
+
     const messageHTML = (
       <div>
         <p>
-          Your profile has been successfully updated with the following changes:
+          Your {isCustomDate ? `${res.title} date` : 'profile'} has been
+          successfully updated with the following changes:
         </p>
         <ul>
-          {updatedValuesArray.map((el, i) => {
-            el = keyNameAndValue(el);
+          {snackbarValuesArray.map((el, i) => {
             return (
               <li key={el.name || i}>
                 {el.name}: {el.newValue}
@@ -591,7 +604,7 @@ const Dashboard = props => {
           API.updateDate(date._id, date)
             .then(res => {
               loadUserInfo();
-              renderSnackbarMessage(res.data);
+              renderSnackbarMessage(res.data, true);
               setUserDatesDialogOpen(false);
               setUserProfileDialogOpen(false);
             })
