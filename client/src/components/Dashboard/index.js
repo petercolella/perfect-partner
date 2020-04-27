@@ -561,9 +561,7 @@ const Dashboard = props => {
       return Object.keys(date).filter(key => {
         return (
           date[key] !==
-          user.customDates.filter(userDate => userDate._id === date._id).pop()[
-            key
-          ]
+          user.customDates.filter(userDate => userDate._id === date._id)[0][key]
         );
       });
     });
