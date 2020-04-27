@@ -560,8 +560,9 @@ const Dashboard = props => {
     const customDateTestArray = dashboardCustomDates.flatMap(date => {
       return Object.keys(date).filter(key => {
         return (
+          user.customDates.find(({ _id }) => _id === date._id) &&
           date[key] !==
-          user.customDates.filter(userDate => userDate._id === date._id)[0][key]
+            user.customDates.find(({ _id }) => _id === date._id)[key]
         );
       });
     });
