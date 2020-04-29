@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#ef5350',
     color: '#fff',
     marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(4),
     padding: theme.spacing(4),
     textAlign: 'center',
     transition: 'margin-left 2s linear'
@@ -44,14 +45,16 @@ const Avatar = props => {
         container
         direction={signedIn ? 'row' : 'row-reverse'}
         justify="center"
-        alignItems="center">
+        alignItems="center"
+      >
         <Zoom in={signedIn} timeout={1000}>
           <Grid item>
             <Paper
               elevation={12}
               className={`${classes.paper} ${
                 !signedIn ? classes.displayNone : ''
-              }`}>
+              }`}
+            >
               <img
                 src={user.imageUrl}
                 alt="profile-img"
@@ -59,7 +62,8 @@ const Avatar = props => {
               />
               <Typography
                 variant="h5"
-                gutterBottom>{`Welcome, ${user.name}`}</Typography>
+                gutterBottom
+              >{`Welcome, ${user.name}`}</Typography>
               <Typography variant="subtitle2">
                 Please click{' '}
                 <Link to="/anniversary" className={classes.link}>
@@ -78,7 +82,8 @@ const Avatar = props => {
               className={`${classes.paper} ${
                 signedIn ? classes.displayNone : ''
               }`}
-              elevation={12}>
+              elevation={12}
+            >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                 alt="profile-img"
