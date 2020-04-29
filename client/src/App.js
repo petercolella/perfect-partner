@@ -106,7 +106,6 @@ const App = () => {
   };
 
   const renderGoogleLoginButton = useCallback(() => {
-    console.log('rendering google signin button');
     window.gapi.signin2.render('my-signin2', {
       scope: 'profile email',
       width: 180,
@@ -120,7 +119,6 @@ const App = () => {
 
   useEffect(() => {
     const loadGoogle = () => {
-      console.log('loadGoogle');
       window.gapi.load('auth2', () => {
         window.gapi.auth2.init({
           client_id:
