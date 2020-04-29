@@ -11,6 +11,11 @@ const useStyles = makeStyles(theme => ({
   container: {
     minHeight: '100vh'
   },
+  homeDescription: {
+    color: '#fff',
+    padding: theme.spacing(4),
+    textShadow: '2px 2px #848484'
+  },
   homeSaying: {
     color: '#fff',
     padding: theme.spacing(4),
@@ -33,19 +38,33 @@ const Landing = props => {
           container
           direction="column"
           justify="space-between"
-          className={classes.container}>
+          className={classes.container}
+        >
           <Grid
             container
             direction="row"
             justify="flex-end"
-            alignItems="flex-start">
+            alignItems="flex-start"
+          >
             <Grid item xs={12} sm={6}>
               <Toolbar />
               <Typography
                 variant="h2"
                 align="left"
-                className={classes.homeSaying}>
+                className={classes.homeSaying}
+              >
                 Planned Spontaneity
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container direction="row" alignItems="center" justify="center">
+            <Grid item xs={12} sm={6}>
+              <Typography
+                align="center"
+                variant="h5"
+                className={classes.homeDescription}
+              >
+                Welcome! This is what this app does.
               </Typography>
             </Grid>
           </Grid>
@@ -53,8 +72,9 @@ const Landing = props => {
             container
             direction="row"
             justify="flex-start"
-            alignItems="flex-end">
-            <Grid item>
+            alignItems="flex-end"
+          >
+            <Grid item xs={12} sm={6}>
               <Avatar signedIn={signedIn} user={user} />
             </Grid>
           </Grid>
