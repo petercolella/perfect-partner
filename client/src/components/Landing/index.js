@@ -64,7 +64,8 @@ const Landing = props => {
                 variant="h5"
                 className={classes.homeDescription}
               >
-                Welcome! This is what this app does.
+                Welcome to Perfect Partner, the app that sends text "Nudges" to
+                help you keep things fresh and remember those important dates.
               </Typography>
             </Grid>
           </Grid>
