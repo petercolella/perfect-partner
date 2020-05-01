@@ -4,6 +4,7 @@
   "description": "A MERN project to help the user be a better partner",
   "main": "server.js",
   "scripts": {
+    "logs": "node scripts/readLog.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test-text-controller": "node scripts/test.js",
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
