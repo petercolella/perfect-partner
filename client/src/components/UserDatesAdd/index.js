@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
-const UserDatesUpdate = props => {
+const UserDatesAdd = props => {
   const classes = useStyles();
   const {
     dialogReminders,
@@ -105,11 +105,13 @@ const UserDatesUpdate = props => {
       open={userDatesAddDialogOpen}
       onClose={() => setUserDatesAddDialogOpen(false)}
       aria-labelledby="form-dialog-title"
-      scroll={'body'}>
+      scroll={'body'}
+    >
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
         <Typography variant="h6">New Date</Typography>
       </DialogTitle>
@@ -162,7 +164,8 @@ const UserDatesUpdate = props => {
           <FormControl
             component="fieldset"
             className={classes.formControl}
-            fullWidth={true}>
+            fullWidth={true}
+          >
             <FormGroup row>
               {reminderArr.map(name => (
                 <FormControlLabel
@@ -187,7 +190,8 @@ const UserDatesUpdate = props => {
       <DialogActions>
         <Button
           onClick={() => setUserDatesAddDialogOpen(false)}
-          color="secondary">
+          color="secondary"
+        >
           Cancel
         </Button>
         <Button onClick={handleNewDateFormSubmit} color="primary">
@@ -198,4 +202,4 @@ const UserDatesUpdate = props => {
   );
 };
 
-export default UserDatesUpdate;
+export default UserDatesAdd;
