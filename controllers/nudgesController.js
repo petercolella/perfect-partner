@@ -1,5 +1,7 @@
 const db = require('../models');
 const textControl = require('./textController');
+const fn = require('../scripts/fn');
+const { DateTime } = require('luxon');
 
 // Defining methods for the nudgesController
 module.exports = {
@@ -58,7 +60,18 @@ module.exports = {
           nudges: { $in: _id }
         }).then(userModel => {
           const { phone } = userModel;
-          textControl.sendText(updateBody, phone);
+          textControl
+            .sendText(updateBody, phone)
+            .then(message => {
+              const data = {
+                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+                body: updateBody,
+                to: message.to,
+                sid: message.sid
+              };
+              fn.logText(data);
+            })
+            .catch(err => console.log('err:', err));
         });
 
         res.json(dbModel);

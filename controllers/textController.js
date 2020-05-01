@@ -60,12 +60,35 @@ const self = (module.exports = {
                   0,
                   nudgeFrequencyUnit.length - 1
                 )} with the message, "${textMessage}"`;
-          self.sendText(activateBody, phone);
+          self
+            .sendText(activateBody, phone)
+            .then(message => {
+              const data = {
+                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+                body: activateBody,
+                to: message.to,
+                sid: message.sid
+              };
+              fn.logText(data);
+            })
+            .catch(err => console.log('err:', err));
           self.setFutureTimestamp(nudge);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
-          self.sendText(deactivateBody, phone);
+
+          self
+            .sendText(deactivateBody, phone)
+            .then(message => {
+              const data = {
+                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+                body: deactivateBody,
+                to: message.to,
+                sid: message.sid
+              };
+              fn.logText(data);
+            })
+            .catch(err => console.log('err:', err));
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
@@ -90,7 +113,21 @@ const self = (module.exports = {
             })
               .then(userModel => {
                 const { phone } = userModel;
-                self.sendText(textMessage, phone);
+
+                self
+                  .sendText(textMessage, phone)
+                  .then(message => {
+                    const data = {
+                      date: DateTime.local().toLocaleString(
+                        DateTime.DATETIME_FULL
+                      ),
+                      body: textMessage,
+                      to: message.to,
+                      sid: message.sid
+                    };
+                    fn.logText(data);
+                  })
+                  .catch(err => console.log('err:', err));
                 self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
@@ -122,12 +159,22 @@ const self = (module.exports = {
           const daysToAnniversary = dateDayOfYear - nowDayOfYear;
 
           if (daysToAnniversary == 0) {
-            self.sendText(
-              `It's your and ${partner}'s ${fn.ordinalNumberGenerator(
-                years
-              )} anniversary today! Make it special!`,
-              phone
-            );
+            const textBody = `It's your and ${partner}'s ${fn.ordinalNumberGenerator(
+              years
+            )} anniversary today! Make it special!`;
+
+            self
+              .sendText(textBody, phone)
+              .then(message => {
+                const data = {
+                  date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+                  body: textBody,
+                  to: message.to,
+                  sid: message.sid
+                };
+                fn.logText(data);
+              })
+              .catch(err => console.log('err:', err));
           }
 
           anniversaryReminders.forEach(rem => {
@@ -137,12 +184,24 @@ const self = (module.exports = {
               daysToAnniversary == reminderDays ||
               daysToAnniversary == reminderDays - numberOfDaysInYear
             ) {
-              self.sendText(
-                `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
-                  years
-                )} anniversary on ${dateString}! Only ${rem} to go!`,
-                phone
-              );
+              const textBody = `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
+                years
+              )} anniversary on ${dateString}! Only ${rem} to go!`;
+
+              self
+                .sendText(textBody, phone)
+                .then(message => {
+                  const data = {
+                    date: DateTime.local().toLocaleString(
+                      DateTime.DATETIME_FULL
+                    ),
+                    body: textBody,
+                    to: message.to,
+                    sid: message.sid
+                  };
+                  fn.logText(data);
+                })
+                .catch(err => console.log('err:', err));
             }
           });
         }
@@ -167,12 +226,22 @@ const self = (module.exports = {
           const daysToBirthday = dateDayOfYear - nowDayOfYear;
 
           if (daysToBirthday == 0) {
-            self.sendText(
-              `It's ${partner}'s ${fn.ordinalNumberGenerator(
-                age
-              )} birthday today! Make it special!`,
-              phone
-            );
+            const textBody = `It's ${partner}'s ${fn.ordinalNumberGenerator(
+              age
+            )} birthday today! Make it special!`;
+
+            self
+              .sendText(textBody, phone)
+              .then(message => {
+                const data = {
+                  date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+                  body: textBody,
+                  to: message.to,
+                  sid: message.sid
+                };
+                fn.logText(data);
+              })
+              .catch(err => console.log('err:', err));
           }
 
           birthdayReminders.forEach(rem => {
@@ -182,12 +251,24 @@ const self = (module.exports = {
               daysToBirthday == reminderDays ||
               daysToBirthday == reminderDays - numberOfDaysInYear
             ) {
-              self.sendText(
-                `Don't forget ${partner}'s ${fn.ordinalNumberGenerator(
-                  age
-                )} birthday on ${dateString}! Only ${rem} to go!`,
-                phone
-              );
+              const textBody = `Don't forget ${partner}'s ${fn.ordinalNumberGenerator(
+                age
+              )} birthday on ${dateString}! Only ${rem} to go!`;
+
+              self
+                .sendText(textBody, phone)
+                .then(message => {
+                  const data = {
+                    date: DateTime.local().toLocaleString(
+                      DateTime.DATETIME_FULL
+                    ),
+                    body: textBody,
+                    to: message.to,
+                    sid: message.sid
+                  };
+                  fn.logText(data);
+                })
+                .catch(err => console.log('err:', err));
             }
           });
         }
@@ -210,10 +291,22 @@ const self = (module.exports = {
               const daysToDate = dateDayOfYear - nowDayOfYear;
 
               if (daysToDate == 0) {
-                self.sendText(
-                  `It's the ${title} (${description}) today!`,
-                  phone
-                );
+                const textBody = `It's the ${title} (${description}) today!`;
+
+                self
+                  .sendText(textBody, phone)
+                  .then(message => {
+                    const data = {
+                      date: DateTime.local().toLocaleString(
+                        DateTime.DATETIME_FULL
+                      ),
+                      body: textBody,
+                      to: message.to,
+                      sid: message.sid
+                    };
+                    fn.logText(data);
+                  })
+                  .catch(err => console.log('err:', err));
               }
 
               reminders.forEach(rem => {
@@ -223,10 +316,22 @@ const self = (module.exports = {
                   daysToDate == reminderDays ||
                   daysToDate == reminderDays - numberOfDaysInYear
                 ) {
-                  self.sendText(
-                    `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`,
-                    phone
-                  );
+                  const textBody = `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`;
+
+                  self
+                    .sendText(textBody, phone)
+                    .then(message => {
+                      const data = {
+                        date: DateTime.local().toLocaleString(
+                          DateTime.DATETIME_FULL
+                        ),
+                        body: textBody,
+                        to: message.to,
+                        sid: message.sid
+                      };
+                      fn.logText(data);
+                    })
+                    .catch(err => console.log('err:', err));
                 }
               });
             });
@@ -263,9 +368,18 @@ const self = (module.exports = {
   send: (req, res) => {
     const { phone, textMessage } = req.body;
 
-    self.sendText(textMessage, phone).then(message => {
-      console.log(message.sid);
-      res.json({ msg: 'Test Text Successfully Sent' });
-    });
+    self
+      .sendText(textMessage, phone)
+      .then(message => {
+        const data = {
+          date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+          body: textMessage,
+          to: message.to,
+          sid: message.sid
+        };
+        fn.logText(data);
+        res.json({ msg: 'Test Text Successfully Sent' });
+      })
+      .catch(err => console.log('err:', err));
   }
 });
