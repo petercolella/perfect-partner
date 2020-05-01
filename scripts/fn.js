@@ -2,6 +2,7 @@ require('dotenv').config();
 const { OAuth2Client } = require('google-auth-library');
 const CLIENT_ID = process.env.CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
+const fs = require('fs');
 
 module.exports = {
   getFutureTimestamp: nudge => {
@@ -39,6 +40,19 @@ module.exports = {
     const futureTimestamp = Date.now() + randomMilliseconds;
 
     return futureTimestamp;
+  },
+  logText: data => {
+    fs.appendFile(
+      __dirname + '/../logs/log.txt',
+      JSON.stringify(data, null, 2) + '\n',
+      err => {
+        if (err) {
+          return console.log(err);
+        }
+
+        console.log(data);
+      }
+    );
   },
   ordinalNumberGenerator: num => {
     const ordinalIndicatorArray = ['th', 'st', 'nd', 'rd'];
