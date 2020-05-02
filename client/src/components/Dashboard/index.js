@@ -523,6 +523,7 @@ const Dashboard = props => {
           'success'
         );
         setNewDate(newDateObj);
+        setNewDateValue(newDateObj.value);
       })
       .catch(err => {
         // captures error message after last colon and space
