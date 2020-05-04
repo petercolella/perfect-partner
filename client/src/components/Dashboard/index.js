@@ -162,8 +162,8 @@ const Dashboard = props => {
   const loadCustomDates = useCallback(() => {
     if (user.customDates) {
       const arr = user.customDates.map(date => {
-        const dt = DateTime.fromISO(date.value);
-        date.value = fn.UTCToLocal(dt);
+        const dt = fn.UTCToLocal(DateTime.fromISO(date.value));
+        date.value = dt;
         return date;
       });
       setDashboardCustomDates([...arr]);
