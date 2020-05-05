@@ -601,7 +601,9 @@ const Dashboard = props => {
           }
         });
         if (changed) {
-          API.updateDate(date._id, date)
+          const tempDate = { ...date };
+          tempDate.value = fn.localToUTC(tempDate.value);
+          API.updateDate(date._id, tempDate)
             .then(res => {
               loadUserInfo();
               renderSnackbarMessage(res.data, true);
