@@ -72,7 +72,6 @@ const App = () => {
         })
         .catch(err => {
           const errStr = err.response ? err.response.data.split(', ')[0] : err;
-          console.log(errStr);
           handleSnackbarOpen(errStr, 'error');
           signOut();
         });
