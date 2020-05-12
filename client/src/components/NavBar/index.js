@@ -13,6 +13,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import './navbar.css';
+import bye from './bye.gif';
+import logo from './logo_p.png';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -88,24 +90,21 @@ const NavBar = props => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            onClick={() => setDrawerOpen(true)}>
+            onClick={() => setDrawerOpen(true)}
+          >
             <MenuIcon />
           </IconButton>
           <Grid container alignItems="center" justify="space-between">
             <Grid item xs={12} sm={3} lg={2} id="logo-grid">
-              <img
-                className={classes.logo}
-                id="logo"
-                alt="logo"
-                src="/img/logo_p.png"
-              />
+              <img className={classes.logo} id="logo" alt="logo" src={logo} />
             </Grid>
             <Grid item xs={12} sm={8} xl={10} id="login-grid">
               <div className={classes.login} id="login">
                 <Fade
                   in={!signedIn}
                   timeout={2500}
-                  style={{ transitionDelay: !signedIn ? '1000ms' : '0ms' }}>
+                  style={{ transitionDelay: !signedIn ? '1000ms' : '0ms' }}
+                >
                   <div
                     className={`${
                       signedIn ? classes.googleHide : classes.googleShow
@@ -118,24 +117,27 @@ const NavBar = props => {
                     className={`${
                       signedIn ? classes.userShow : classes.userHide
                     } ${winWidth < 600 && !signedIn && classes.noWidth}`}
-                    id="user">
+                    id="user"
+                  >
                     <Typography
                       className={`${classes.userName} ${classes.pushRight}`}
                       id="user-name"
                       variant="subtitle1"
-                      noWrap>
+                      noWrap
+                    >
                       {signedIn ? `Hi, ${user.firstName}!` : `Bye!`}
                     </Typography>
                     <img
                       className={classes.img}
                       alt="User"
-                      src={signedIn ? user.imageUrl : '/img/bye.gif'}
+                      src={signedIn ? user.imageUrl : bye}
                     />
                     <Typography className={classes.pushLeft} noWrap>
                       <MuiLink
                         component="button"
                         variant="subtitle1"
-                        onClick={signOut}>
+                        onClick={signOut}
+                      >
                         Sign Out
                       </MuiLink>
                     </Typography>
