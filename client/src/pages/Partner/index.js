@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as Love } from './love.svg';
 
-import QuestionPage from '../QuestionPage';
+import QuestionPage from '../../components/QuestionComponents/QuestionPage';
 
 const question = {
   key: 'partnerName',

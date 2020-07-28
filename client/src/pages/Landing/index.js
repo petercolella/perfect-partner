@@ -5,7 +5,7 @@ import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '../Avatar';
+import Avatar from '../../components/Avatar';
 
 const useStyles = makeStyles(theme => ({
   container: {

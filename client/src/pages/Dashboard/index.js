@@ -11,13 +11,13 @@ import Typography from '@material-ui/core/Typography';
 
 import API from '../../utils/API';
 import fn from '../../utils/fn';
-import NudgeTable from '../NudgeTable';
-import UserDates from '../UserDates';
-import UserDatesAdd from '../UserDatesAdd';
-import UserDatesUpdate from '../UserDatesUpdate';
-import UserProfile from '../UserProfile';
-import UserProfileDelete from '../UserProfileDelete';
-import UserProfileUpdate from '../UserProfileUpdate';
+import NudgeTable from '../../components/NudgeTable';
+import UserDates from '../../components/UserDates';
+import UserDatesAdd from '../../components/UserDatesAdd';
+import UserDatesUpdate from '../../components/UserDatesUpdate';
+import UserProfile from '../../components/UserProfile';
+import UserProfileDelete from '../../components/UserProfileDelete';
+import UserProfileUpdate from '../../components/UserProfileUpdate';
 
 const keyNameObj = {
   imageUrl: 'Image Link',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as Cake } from './cake.svg';
 
-import DateQuestionPage from '../DateQuestionPage';
+import DateQuestionPage from '../../components/QuestionComponents/DateQuestionPage';
 
 const data = {
   dateKey: 'birthDate',

@@ -12,11 +12,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HelpIcon from '@material-ui/icons/Help';
 import HomeIcon from '@material-ui/icons/Home';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import { ReactComponent as Gift } from '../QuestionComponents/Anniversary/gift.svg';
-import { ReactComponent as Cake } from '../QuestionComponents/Birthday/cake.svg';
-import { ReactComponent as Reminder } from '../QuestionComponents/Nudges/reminder.svg';
-import { ReactComponent as Love } from '../QuestionComponents/Partner/love.svg';
-import { ReactComponent as Smartphone } from '../QuestionComponents/Phone/smartphone.svg';
+import { ReactComponent as Gift } from '../../pages/Anniversary/gift.svg';
+import { ReactComponent as Cake } from '../../pages/Birthday/cake.svg';
+import { ReactComponent as Reminder } from '../../pages/Nudges/reminder.svg';
+import { ReactComponent as Love } from '../../pages/Partner/love.svg';
+import { ReactComponent as Smartphone } from '../../pages/Phone/smartphone.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,7 +56,8 @@ const NavMenu = props => {
         <Link
           to="/"
           onClick={() => setDrawerOpen(false)}
-          className={classes.link}>
+          className={classes.link}
+        >
           <ListItem button>
             <ListItemIcon>
               <HomeIcon />
@@ -67,7 +68,8 @@ const NavMenu = props => {
         <Link
           to="/dashboard"
           onClick={() => setDrawerOpen(false)}
-          className={classes.link}>
+          className={classes.link}
+        >
           <ListItem button>
             <ListItemIcon>
               <DashboardIcon />
@@ -90,7 +92,8 @@ const NavMenu = props => {
             <Link
               to="/anniversary"
               onClick={() => setDrawerOpen(false)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
                   <Gift className={classes.svg} />
@@ -104,7 +107,8 @@ const NavMenu = props => {
             <Link
               to="/birthday"
               onClick={() => setDrawerOpen(false)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
                   <Cake className={classes.svg} />
@@ -118,7 +122,8 @@ const NavMenu = props => {
             <Link
               to="/nudges"
               onClick={() => setDrawerOpen(false)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
                   <Reminder className={classes.svg} />
@@ -132,7 +137,8 @@ const NavMenu = props => {
             <Link
               to="/partner"
               onClick={() => setDrawerOpen(false)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
                   <Love className={classes.svg} />
@@ -146,7 +152,8 @@ const NavMenu = props => {
             <Link
               to="/phone"
               onClick={() => setDrawerOpen(false)}
-              className={classes.link}>
+              className={classes.link}
+            >
               <ListItem button className={classes.nested}>
                 <ListItemIcon>
                   <Smartphone className={classes.svg} />

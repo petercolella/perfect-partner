@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NudgeDialog from '../NudgeDialog';
+import NudgeDialog from '../../components/QuestionComponents/NudgeDialog';
 import { ReactComponent as Reminder } from './reminder.svg';
 
 const state = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as Gift } from './gift.svg';
 
-import DateQuestionPage from '../DateQuestionPage';
+import DateQuestionPage from '../../components/QuestionComponents/DateQuestionPage';
 
 const data = {
   dateKey: 'anniversaryDate',

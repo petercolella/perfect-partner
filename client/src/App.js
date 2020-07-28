@@ -4,14 +4,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import API from './utils/API';
-import Anniversary from './components/QuestionComponents/Anniversary';
-import Birthday from './components/QuestionComponents/Birthday';
-import Dashboard from './components/Dashboard';
-import Landing from './components/Landing';
+import Anniversary from './pages/Anniversary';
+import Birthday from './pages/Birthday';
+import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
 import NavBar from './components/NavBar';
-import Nudges from './components/QuestionComponents/Nudges';
-import Partner from './components/QuestionComponents/Partner';
-import Phone from './components/QuestionComponents/Phone';
+import Nudges from './pages/Nudges';
+import Partner from './pages/Partner';
+import Phone from './pages/Phone';
 import SnackbarComponent from './components/SnackbarComponent';
 
 import './styles.css';
