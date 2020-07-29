@@ -10,24 +10,8 @@ const userReducer = (state, action) => {
   }
 };
 
-const loadUserContextInfo = dispatch => () => {
-  const id = sessionStorage.getItem('currentUserId');
-  if (id) {
-    // setSignedIn(true);
-    API.getUser(id)
-      .then(res => {
-        // setUser(user => (res.data ? res.data : user));
-        dispatch({ type: 'set_current_user', payload: res.data });
-      })
-      .catch(err => {
-        const errStr = err.response ? err.response.data.split(', ')[0] : err;
-        // handleSnackbarOpen(errStr, 'error');
-        // signOut();
-        console.log(errStr);
-      });
-  } else {
-    // signOut();
-  }
+const loadUserContextInfo = dispatch => res => {
+  dispatch({ type: 'set_current_user', payload: res.data });
 };
 
 export const { Provider, Context } = createDataContext(
