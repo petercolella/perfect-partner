@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
+
 import NavMenu from '../NavMenu';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -74,12 +76,14 @@ const useStyles = makeStyles(theme => ({
 
 const winWidth = window.innerWidth;
 
-const NavBar = props => {
-  const classes = useStyles();
-
-  const { user, signedIn, signOut } = props;
+const NavBar = ({ signedIn, signOut }) => {
+  const {
+    state: { user }
+  } = useContext(UserContext);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const classes = useStyles();
 
   return (
     <div className={classes.root}>
