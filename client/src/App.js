@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Context as UserContext } from './context/UserContext';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -33,6 +34,7 @@ const noUser = {
 };
 
 const App = () => {
+  const { state, loadUserContextInfo } = useContext(UserContext);
   const [autoHideDuration, setAutoHideDuration] = useState(null);
   const [message, setMessage] = useState(null);
   const [signedIn, setSignedIn] = useState(false);
