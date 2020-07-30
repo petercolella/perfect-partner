@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -76,7 +77,10 @@ const useStyles = makeStyles(theme => ({
 
 const winWidth = window.innerWidth;
 
-const NavBar = ({ signedIn, signOut }) => {
+const NavBar = ({ signOut }) => {
+  const {
+    state: { signedIn }
+  } = useContext(AuthContext);
   const {
     state: { user }
   } = useContext(UserContext);
