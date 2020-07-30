@@ -8,7 +8,7 @@ import DateQuestionDialog from '../DateQuestionDialog';
 import API from '../../../utils/API';
 import fn from '../../../utils/fn';
 
-const DateQuestionPage = ({ Image, data, signedIn }) => {
+const DateQuestionPage = ({ Image, data }) => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
     state: { user },
@@ -97,7 +97,6 @@ const DateQuestionPage = ({ Image, data, signedIn }) => {
       link={nextQuestionLink}
       question={question}
       setParentReminders={setInputReminders}
-      signedIn={signedIn}
       title={title}
       userField={inputValue}
     />
