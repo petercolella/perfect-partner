@@ -12,19 +12,8 @@ const data = {
   title: 'Birthday'
 };
 
-const Birthday = props => {
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
-
-  return (
-    <DateQuestionPage
-      Image={Cake}
-      handleSnackbarOpen={handleSnackbarOpen}
-      loadUserInfo={loadUserInfo}
-      data={data}
-      signedIn={signedIn}
-      user={user}
-    />
-  );
+const Birthday = () => {
+  return <DateQuestionPage Image={Cake} data={data} />;
 };
 
 export default Birthday;

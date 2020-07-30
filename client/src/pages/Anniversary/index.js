@@ -12,19 +12,8 @@ const data = {
   title: 'Anniversary'
 };
 
-const Anniversary = props => {
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
-
-  return (
-    <DateQuestionPage
-      Image={Gift}
-      handleSnackbarOpen={handleSnackbarOpen}
-      loadUserInfo={loadUserInfo}
-      data={data}
-      signedIn={signedIn}
-      user={user}
-    />
-  );
+const Anniversary = () => {
+  return <DateQuestionPage Image={Gift} data={data} />;
 };
 
 export default Anniversary;
