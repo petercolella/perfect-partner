@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -27,7 +28,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = ({ signedIn }) => {
+const Landing = () => {
+  const {
+    state: { signedIn }
+  } = useContext(AuthContext);
   const {
     state: { user }
   } = useContext(UserContext);
