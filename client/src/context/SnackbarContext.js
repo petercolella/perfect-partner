@@ -25,7 +25,7 @@ const handleSnackbarOpen = dispatch => (
 const setSnackbarOpen = dispatch => snackbarOpen => {
   dispatch({
     type: 'set_snackbar_open_state',
-    payload: { snackbarOpen }
+    payload: snackbarOpen
   });
 };
 
