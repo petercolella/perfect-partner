@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { Context as AuthContext } from '../../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -65,28 +66,29 @@ const useStyles = makeStyles(theme => ({
 
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
-const DateQuestionDialog = props => {
-  const classes = useStyles();
-
+const DateQuestionDialog = ({
+  Image,
+  cancel,
+  dialogReminders,
+  firstName,
+  handleDateInputChange,
+  handleFormSubmit,
+  label,
+  link,
+  question,
+  setParentReminders,
+  title,
+  userField
+}) => {
   const {
-    Image,
-    cancel,
-    dialogReminders,
-    firstName,
-    handleDateInputChange,
-    handleFormSubmit,
-    label,
-    link,
-    question,
-    setParentReminders,
-    signedIn,
-    title,
-    userField
-  } = props;
+    state: { signedIn }
+  } = useContext(AuthContext);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reminders, setReminders] = useState([]);
   const [reminderObj, setReminderObj] = useState({});
+
+  const classes = useStyles();
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -161,7 +163,8 @@ const DateQuestionDialog = props => {
       <Fade
         in={!dialogOpen}
         timeout={1000}
-        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}>
+        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}
+      >
         <Typography variant="h2" align="center" className={classes.click}>
           Click to reload dialog.
         </Typography>
@@ -176,17 +179,20 @@ const DateQuestionDialog = props => {
         keepMounted
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
-        scroll={'body'}>
+        scroll={'body'}
+      >
         <DialogTitle
           className={classes.title}
           id="form-dialog-title"
-          disableTypography={true}>
+          disableTypography={true}
+        >
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">{title}</Typography>
           <IconButton
             aria-label="close"
             className={classes.closeButton}
-            onClick={handleDialogClose}>
+            onClick={handleDialogClose}
+          >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -222,7 +228,8 @@ const DateQuestionDialog = props => {
                 <FormControl
                   component="fieldset"
                   className={classes.formControl}
-                  fullWidth={true}>
+                  fullWidth={true}
+                >
                   <FormGroup row>
                     {reminderArr.map(name => (
                       <FormControlLabel
