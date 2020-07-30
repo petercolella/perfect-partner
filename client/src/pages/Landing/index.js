@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
@@ -26,8 +27,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = props => {
-  const { signedIn, user } = props;
+const Landing = ({ signedIn }) => {
+  const {
+    state: { user }
+  } = useContext(UserContext);
 
   const classes = useStyles();
 
