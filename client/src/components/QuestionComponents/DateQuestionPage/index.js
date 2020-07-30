@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useContext, useState, useEffect } from 'react';
+import { Context as UserContext } from '../../../context/UserContext';
+import { Context as SnackbarContext } from '../../../context/SnackbarContext';
 import { DateTime } from 'luxon';
 
 import DateQuestionDialog from '../DateQuestionDialog';
@@ -6,19 +8,15 @@ import DateQuestionDialog from '../DateQuestionDialog';
 import API from '../../../utils/API';
 import fn from '../../../utils/fn';
 
-const DateQuestionPage = props => {
+const DateQuestionPage = ({ Image, data, signedIn }) => {
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
+  const {
+    state: { user },
+    loadCurrentUser
+  } = useContext(UserContext);
   const [inputValue, setInputValue] = useState(null);
   const [inputReminders, setInputReminders] = useState([]);
   const [dialogReminders, setDialogReminders] = useState([]);
-
-  const {
-    Image,
-    handleSnackbarOpen,
-    loadUserInfo,
-    data,
-    signedIn,
-    user
-  } = props;
 
   const {
     dateKey,
@@ -29,12 +27,16 @@ const DateQuestionPage = props => {
     title
   } = data;
 
-  useEffect(() => {
+  const initializeValues = useCallback(() => {
     setInputValue(
       user[dateKey] ? fn.UTCToLocal(DateTime.fromISO(user[dateKey])) : null
     );
     setDialogReminders(user[reminderKey] || []);
   }, [dateKey, reminderKey, user]);
+
+  useEffect(() => {
+    initializeValues();
+  }, [initializeValues]);
 
   const handleDateInputChange = date => {
     const dt = DateTime.fromJSDate(date).set({
@@ -73,20 +75,20 @@ const DateQuestionPage = props => {
           `${title}: ${localeStr} has been submitted.`,
           'success'
         );
-        loadUserInfo();
+        loadCurrentUser(res);
       })
       .catch(err => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
         handleSnackbarOpen(errMsg, 'error');
-        loadUserInfo();
+        initializeValues();
       });
   };
 
   return (
     <DateQuestionDialog
       Image={Image}
-      cancel={loadUserInfo}
+      cancel={initializeValues}
       dialogReminders={dialogReminders}
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
