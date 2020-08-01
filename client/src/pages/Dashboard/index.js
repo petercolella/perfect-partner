@@ -1,4 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as UserContext } from '../../context/UserContext';
+import { Context as SnackbarContext } from '../../context/SnackbarContext';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
@@ -113,6 +122,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Dashboard = props => {
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
+  const {
+    state: { user },
+    loadCurrentUser,
+    reloadCurrentUser
+  } = useContext(UserContext);
+  const {
+    state: { signedIn }
+  } = useContext(AuthContext);
+
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
   const [dateReminders, setDateReminders] = useState([]);
@@ -130,7 +149,7 @@ const Dashboard = props => {
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
 
-  const { handleSnackbarOpen, loadUserInfo, signedIn, signOut, user } = props;
+  const { signOut } = props;
 
   const [dashboardCustomDates, setDashboardCustomDates] = useState([]);
   const [dashboardUser, setDashboardUser] = useState(user);
@@ -243,7 +262,7 @@ const Dashboard = props => {
   const handleNudgeDelete = nudge => {
     API.deleteNudge(nudge._id)
       .then(res => {
-        loadUserInfo();
+        reloadCurrentUser();
         handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
       })
       .catch(err => {
@@ -274,7 +293,7 @@ const Dashboard = props => {
 
     API.saveNudge(body)
       .then(res => {
-        loadUserInfo();
+        reloadCurrentUser();
         closeNudgeAddComp();
         handleSnackbarOpen(
           `${res.data.name} has been successfully added.`,
@@ -305,7 +324,7 @@ const Dashboard = props => {
       ...nudge
     })
       .then(res => {
-        loadUserInfo();
+        reloadCurrentUser();
         handleSnackbarOpen(
           `${res.data.name} has been successfully updated.`,
           'success'
@@ -324,7 +343,7 @@ const Dashboard = props => {
   const handleCustomDateDelete = date => {
     API.deleteDate(date._id)
       .then(res => {
-        loadUserInfo();
+        reloadCurrentUser();
         handleSnackbarOpen(
           `The ${date.title} custom date has been deleted.`,
           'info'
@@ -517,7 +536,7 @@ const Dashboard = props => {
     API.saveDate(newObj)
       .then(res => {
         closeUserDatesAddComp();
-        loadUserInfo();
+        reloadCurrentUser();
         handleSnackbarOpen(
           `The ${res.data.title} custom date has been successfully added.`,
           'success'
@@ -576,7 +595,7 @@ const Dashboard = props => {
     if (testArray.length) {
       API.updateUser(user._id, newUser)
         .then(res => {
-          loadUserInfo();
+          loadCurrentUser(res);
           renderSnackbarMessage(res.data);
           setUserDatesDialogOpen(false);
           setUserProfileDialogOpen(false);
@@ -605,7 +624,7 @@ const Dashboard = props => {
           tempDate.value = fn.localToUTC(tempDate.value);
           API.updateDate(date._id, tempDate)
             .then(res => {
-              loadUserInfo();
+              reloadCurrentUser();
               renderSnackbarMessage(res.data, true);
               setUserDatesDialogOpen(false);
               setUserProfileDialogOpen(false);
