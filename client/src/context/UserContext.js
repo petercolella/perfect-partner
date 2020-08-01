@@ -5,18 +5,36 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case 'set_current_user':
       return { ...state, user: action.payload };
+    case 'set_error_message':
+      return { ...state, errorMessage: action.payload };
     default:
       return state;
   }
 };
 
-const loadUserContextInfo = dispatch => res => {
-  dispatch({ type: 'set_current_user', payload: res.data });
+const loadCurrentUser = dispatch => res => {
+  if (res) {
+    dispatch({ type: 'set_current_user', payload: res.data });
+  }
+};
+
+const reloadCurrentUser = dispatch => () => {
+  const id = sessionStorage.getItem('currentUserId');
+  if (id) {
+    API.getUser(id)
+      .then(res => {
+        dispatch({ type: 'set_current_user', payload: res.data });
+      })
+      .catch(err => {
+        const errStr = err.response ? err.response.data.split(', ')[0] : err;
+        dispatch({ type: 'set_error_message', payload: errStr });
+      });
+  }
 };
 
 export const { Provider, Context } = createDataContext(
   userReducer,
-  { loadUserContextInfo },
+  { loadCurrentUser, reloadCurrentUser },
   {
     user: {
       anniversaryDate: '',
@@ -32,6 +50,7 @@ export const { Provider, Context } = createDataContext(
       nudges: [],
       partnerName: '',
       phone: ''
-    }
+    },
+    errorMessage: ''
   }
 );
