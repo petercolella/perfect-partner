@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as AuthContext } from '../../context/AuthContext';
+import { Context as UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -34,8 +36,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Avatar = props => {
-  const { signedIn, user } = props;
+const Avatar = () => {
+  const {
+    state: { signedIn }
+  } = useContext(AuthContext);
+  const {
+    state: { user }
+  } = useContext(UserContext);
 
   const classes = useStyles();
 

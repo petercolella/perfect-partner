@@ -1,6 +1,4 @@
-import React, { useContext } from 'react';
-import { Context as AuthContext } from '../../context/AuthContext';
-import { Context as UserContext } from '../../context/UserContext';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Fade from '@material-ui/core/Fade';
@@ -29,13 +27,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Landing = () => {
-  const {
-    state: { signedIn }
-  } = useContext(AuthContext);
-  const {
-    state: { user }
-  } = useContext(UserContext);
-
   const classes = useStyles();
 
   return (
@@ -83,7 +74,7 @@ const Landing = () => {
             alignItems="flex-end"
           >
             <Grid item xs={12} sm={6}>
-              <Avatar signedIn={signedIn} user={user} />
+              <Avatar />
             </Grid>
           </Grid>
         </Grid>
