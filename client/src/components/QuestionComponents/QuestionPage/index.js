@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { Context as UserContext } from '../../../context/UserContext';
+import { Context as SnackbarContext } from '../../../context/SnackbarContext';
 
 import QuestionDialog from '../QuestionDialog';
 
 import API from '../../../utils/API';
 
-const QuestionPage = props => {
-  const [inputValue, setInputValue] = useState('');
-
+const QuestionPage = ({ Image, question }) => {
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
-    Image,
-    handleSnackbarOpen,
-    loadUserInfo,
-    question,
-    signedIn,
-    user
-  } = props;
+    state: { user },
+    loadCurrentUser,
+    reloadCurrentUser
+  } = useContext(UserContext);
   const { key } = question;
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     setInputValue(user[key]);
@@ -46,7 +45,7 @@ const QuestionPage = props => {
           `${question.title}: ${res.data[key]} has been submitted.`,
           'success'
         );
-        loadUserInfo();
+        loadCurrentUser(res);
       })
       .catch(err => {
         // captures error message after last colon and space
@@ -62,17 +61,12 @@ const QuestionPage = props => {
 
   return (
     <QuestionDialog
-      cancel={loadUserInfo}
+      cancel={reloadCurrentUser}
       firstName={user.firstName}
       handleFormSubmit={handleFormSubmit}
       handleInputChange={handleInputChange}
       Image={Image}
-      label={question.label}
-      link={question.nextQuestionLink}
-      placeholder={question.placeholder}
-      question={question.question}
-      signedIn={signedIn}
-      title={question.title}
+      question={question}
       userField={inputValue}
     />
   );
