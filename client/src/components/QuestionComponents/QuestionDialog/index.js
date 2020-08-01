@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useContext, useCallback, useEffect, useState } from 'react';
+import { Context as AuthContext } from '../../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,25 +46,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const QuestionDialog = props => {
-  const classes = useStyles();
+const QuestionDialog = ({
+  cancel,
+  firstName,
+  handleFormSubmit,
+  handleInputChange,
+  Image,
+  question,
+  userField
+}) => {
+  const {
+    state: { signedIn }
+  } = useContext(AuthContext);
 
   const {
-    cancel,
-    firstName,
-    handleFormSubmit,
-    handleInputChange,
-    Image,
     label,
-    link,
+    nextQuestionLink,
     placeholder,
-    question,
-    signedIn,
-    title,
-    userField
-  } = props;
+    questionText,
+    title
+  } = question;
 
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const classes = useStyles();
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -92,7 +98,8 @@ const QuestionDialog = props => {
       <Fade
         in={!dialogOpen}
         timeout={1000}
-        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}>
+        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}
+      >
         <Typography variant="h2" align="center" className={classes.click}>
           Click to reload dialog.
         </Typography>
@@ -107,17 +114,20 @@ const QuestionDialog = props => {
         keepMounted
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
-        scroll={'body'}>
+        scroll={'body'}
+      >
         <DialogTitle
           className={classes.title}
           id="form-dialog-title"
-          disableTypography={true}>
+          disableTypography={true}
+        >
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">{title}</Typography>
           <IconButton
             aria-label="close"
             className={classes.closeButton}
-            onClick={handleDialogClose}>
+            onClick={handleDialogClose}
+          >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -125,7 +135,7 @@ const QuestionDialog = props => {
           <>
             <DialogContent>
               <DialogContentText>
-                {firstName}, {question}
+                {firstName}, {questionText}
               </DialogContentText>
               <TextField
                 id="questionDialogTextField"
@@ -146,7 +156,7 @@ const QuestionDialog = props => {
               <Button onClick={handleFormSubmit} color="primary">
                 Submit
               </Button>
-              <Link to={link} className={classes.link}>
+              <Link to={nextQuestionLink} className={classes.link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>
@@ -161,7 +171,7 @@ const QuestionDialog = props => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Link to={link} className={classes.link}>
+              <Link to={nextQuestionLink} className={classes.link}>
                 <Button onClick={() => setDialogOpen(false)} color="primary">
                   Next
                 </Button>
