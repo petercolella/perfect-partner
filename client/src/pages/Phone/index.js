@@ -8,23 +8,12 @@ const question = {
   label: 'Phone',
   nextQuestionLink: '/dashboard',
   placeholder: 'Enter with no dashes or spaces.',
-  question: 'what is your phone number?',
+  questionText: 'what is your phone number?',
   title: 'Phone Number'
 };
 
-const Phone = props => {
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
-
-  return (
-    <QuestionPage
-      Image={Smartphone}
-      handleSnackbarOpen={handleSnackbarOpen}
-      loadUserInfo={loadUserInfo}
-      question={question}
-      signedIn={signedIn}
-      user={user}
-    />
-  );
+const Phone = () => {
+  return <QuestionPage Image={Smartphone} question={question} />;
 };
 
 export default Phone;

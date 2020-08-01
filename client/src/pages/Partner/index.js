@@ -8,23 +8,12 @@ const question = {
   label: "Partner's Name",
   nextQuestionLink: '/phone',
   placeholder: "Enter your partner's name.",
-  question: "what is your partner's name?",
+  questionText: "what is your partner's name?",
   title: 'Partner Name'
 };
 
-const Partner = props => {
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
-
-  return (
-    <QuestionPage
-      Image={Love}
-      handleSnackbarOpen={handleSnackbarOpen}
-      loadUserInfo={loadUserInfo}
-      question={question}
-      signedIn={signedIn}
-      user={user}
-    />
-  );
+const Partner = () => {
+  return <QuestionPage Image={Love} question={question} />;
 };
 
 export default Partner;
