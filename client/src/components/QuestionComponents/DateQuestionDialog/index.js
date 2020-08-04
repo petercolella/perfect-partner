@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { Context as UserContext } from '../../../context/UserContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -82,7 +82,7 @@ const DateQuestionDialog = ({
 }) => {
   const {
     state: { signedIn }
-  } = useContext(AuthContext);
+  } = useContext(UserContext);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reminders, setReminders] = useState([]);

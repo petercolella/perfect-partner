@@ -1,5 +1,5 @@
 import React, { useContext, useCallback, useEffect, useState } from 'react';
-import { Context as AuthContext } from '../../../context/AuthContext';
+import { Context as UserContext } from '../../../context/UserContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -57,7 +57,7 @@ const QuestionDialog = ({
 }) => {
   const {
     state: { signedIn }
-  } = useContext(AuthContext);
+  } = useContext(UserContext);
 
   const {
     label,
