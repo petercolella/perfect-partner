@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import NudgeDialog from '../../components/QuestionComponents/NudgeDialog';
 import { ReactComponent as Reminder } from './reminder.svg';
 
@@ -8,8 +9,10 @@ const state = {
   title: 'Nudges'
 };
 
-const Nudges = props => {
-  const { handleSnackbarOpen, loadUserInfo, signedIn, user } = props;
+const Nudges = () => {
+  const {
+    state: { user }
+  } = useContext(UserContext);
   const [nudges, setNudges] = useState([]);
 
   useEffect(() => {
@@ -19,14 +22,10 @@ const Nudges = props => {
   return (
     <NudgeDialog
       Image={Reminder}
-      handleSnackbarOpen={handleSnackbarOpen}
       link={state.nextQuestionLink}
-      loadUserInfo={loadUserInfo}
       nudges={nudges}
       question={state.question}
-      signedIn={signedIn}
       title={state.title}
-      user={user}
     />
   );
 };
