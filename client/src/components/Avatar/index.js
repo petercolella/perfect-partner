@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,10 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 const Avatar = () => {
   const {
-    state: { signedIn }
-  } = useContext(AuthContext);
-  const {
-    state: { user }
+    state: { signedIn, user }
   } = useContext(UserContext);
 
   const classes = useStyles();

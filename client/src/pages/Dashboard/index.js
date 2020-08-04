@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { Context as AuthContext } from '../../context/AuthContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { Context as SnackbarContext } from '../../context/SnackbarContext';
 import { Redirect } from 'react-router-dom';
@@ -124,13 +123,11 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = props => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
-    state: { user },
+    state: { signedIn, user },
     loadCurrentUser,
-    reloadCurrentUser
+    reloadCurrentUser,
+    signOut
   } = useContext(UserContext);
-  const {
-    state: { signedIn }
-  } = useContext(AuthContext);
 
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
@@ -148,8 +145,6 @@ const Dashboard = props => {
   const [userDatesDialogOpen, setUserDatesDialogOpen] = useState(false);
   const [userDeleteDialogOpen, setUserDeleteDialogOpen] = useState(false);
   const [userProfileDialogOpen, setUserProfileDialogOpen] = useState(false);
-
-  const { signOut } = props;
 
   const [dashboardCustomDates, setDashboardCustomDates] = useState([]);
   const [dashboardUser, setDashboardUser] = useState(user);
