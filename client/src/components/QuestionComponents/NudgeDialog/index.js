@@ -1,4 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback
+} from 'react';
+import { Context as SnackbarContext } from '../../../context/SnackbarContext';
+import { Context as UserContext } from '../../../context/UserContext';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -62,24 +70,18 @@ const useStyles = makeStyles(theme => ({
 
 const nudgeArr = ['Romantic Text', 'Buy Flowers', 'Dinner Reservations'];
 
-const NudgeDialog = props => {
-  const classes = useStyles();
-
+const NudgeDialog = ({ Image, link, nudges, question, title }) => {
   const {
-    Image,
-    handleSnackbarOpen,
-    link,
-    loadUserInfo,
-    nudges,
-    question,
-    signedIn,
-    title,
-    user
-  } = props;
+    state: { signedIn, user },
+    reloadCurrentUser
+  } = useContext(UserContext);
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarNudges, setSnackbarNudges] = useState([]);
   const [nudgeObj, setNudgeObj] = useState({});
+
+  const classes = useStyles();
 
   const loadDialog = useCallback(() => {
     setTimeout(() => {
@@ -188,7 +190,7 @@ const NudgeDialog = props => {
           (arr, result) => [...arr, result.data.name],
           []
         );
-        loadUserInfo();
+        reloadCurrentUser();
         deselectAll();
         handleSnackbarOpen(
           renderNudgeList(snackbarNudges.concat(resultsNameArr)),
@@ -208,7 +210,8 @@ const NudgeDialog = props => {
       <Fade
         in={!dialogOpen}
         timeout={1000}
-        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}>
+        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}
+      >
         <Typography variant="h2" align="center" className={classes.click}>
           Click to reload dialog.
         </Typography>
@@ -223,17 +226,20 @@ const NudgeDialog = props => {
         keepMounted
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
-        scroll={'body'}>
+        scroll={'body'}
+      >
         <DialogTitle
           className={classes.title}
           id="form-dialog-title"
-          disableTypography={true}>
+          disableTypography={true}
+        >
           <Image height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">{title}</Typography>
           <IconButton
             aria-label="close"
             className={classes.closeButton}
-            onClick={handleDialogClose}>
+            onClick={handleDialogClose}
+          >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -247,7 +253,8 @@ const NudgeDialog = props => {
                 <FormControl
                   component="fieldset"
                   className={classes.formControl}
-                  fullWidth={true}>
+                  fullWidth={true}
+                >
                   <FormGroup row>
                     {nudgeArr.map(name => (
                       <FormControlLabel
