@@ -1,18 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Context as SnackbarContext } from '../../context/SnackbarContext';
+import { Context as UserContext } from '../../context/UserContext';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContentWrapper from '../SnackbarContentWrapper';
 
-const Transition = props => {
+const TransitionUp = props => {
   return <Slide {...props} direction="up" />;
+};
+
+const TransitionDown = props => {
+  return <Slide {...props} direction="down" />;
 };
 
 const SnackbarComponent = () => {
   const {
     state: { autoHideDuration, message, snackbarOpen, variant },
+    handleSnackbarOpen,
     setSnackbarOpen
   } = useContext(SnackbarContext);
+  const {
+    state: { errorMessage },
+    setErrorMessage
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    if (errorMessage) {
+      handleSnackbarOpen(errorMessage, 'error');
+      setErrorMessage('');
+    }
+  }, [errorMessage, handleSnackbarOpen, setErrorMessage]);
+
+  const errorBoolean = variant === 'error';
+  const verticalValue = errorBoolean ? 'top' : 'bottom';
+  const horizontalValue = errorBoolean ? 'right' : 'left';
+  const transitionValue = errorBoolean ? TransitionDown : TransitionUp;
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -24,13 +46,13 @@ const SnackbarComponent = () => {
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left'
+        vertical: verticalValue,
+        horizontal: horizontalValue
       }}
       open={snackbarOpen}
       autoHideDuration={autoHideDuration}
       onClose={handleSnackbarClose}
-      TransitionComponent={Transition}
+      TransitionComponent={transitionValue}
       ContentProps={{
         'aria-describedby': 'message-id'
       }}
