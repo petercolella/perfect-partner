@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { Context as AuthContext } from '../../context/AuthContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -77,17 +76,49 @@ const useStyles = makeStyles(theme => ({
 
 const winWidth = window.innerWidth;
 
-const NavBar = ({ signOut }) => {
+const NavBar = () => {
   const {
-    state: { signedIn }
-  } = useContext(AuthContext);
-  const {
-    state: { user }
+    state: { signedIn, user },
+    onFailure,
+    onSuccess,
+    setSignedIn,
+    signOut
   } = useContext(UserContext);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const classes = useStyles();
+
+  useEffect(() => {
+    const renderGoogleLoginButton = () => {
+      window.gapi.signin2.render('my-signin2', {
+        scope: 'profile email',
+        width: 180,
+        height: 30,
+        longtitle: true,
+        theme: 'dark',
+        onsuccess: onSuccess,
+        onfailure: onFailure
+      });
+    };
+
+    const loadGoogle = () => {
+      window.gapi.load('auth2', () => {
+        window.gapi.auth2.init({
+          client_id:
+            '1061415806670-1l8r6vaqn21lc7h45l0ethglqat21kls.apps.googleusercontent.com'
+        });
+
+        const GoogleAuth = window.gapi.auth2.getAuthInstance();
+
+        renderGoogleLoginButton();
+
+        GoogleAuth.isSignedIn.listen(setSignedIn);
+      });
+    };
+
+    window.addEventListener('google-loaded', loadGoogle);
+  }, [onFailure, onSuccess, setSignedIn]);
 
   return (
     <div className={classes.root}>
