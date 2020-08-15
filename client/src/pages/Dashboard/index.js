@@ -67,22 +67,6 @@ const noNudge = {
   activated: false
 };
 
-const noUser = {
-  anniversaryDate: '',
-  anniversaryReminders: [],
-  birthDate: '',
-  birthdayReminders: [],
-  email: '',
-  firstName: '',
-  imageUrl:
-    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-  lastName: '',
-  name: '',
-  nudges: [],
-  partnerName: '',
-  phone: ''
-};
-
 const userKeyArray = [
   'firstName',
   'lastName',
@@ -123,7 +107,7 @@ const useStyles = makeStyles(theme => ({
 const Dashboard = props => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
-    state: { signedIn, user },
+    state: { user },
     loadCurrentUser,
     reloadCurrentUser,
     signOut
@@ -470,7 +454,7 @@ const Dashboard = props => {
         if (Array.isArray(res[key]))
           return res[key].join() !== user[key].join();
 
-        return user[key] ? res[key] !== user[key] : false;
+        return res[key] !== user[key];
       })
       .map(key => {
         return {
@@ -588,10 +572,16 @@ const Dashboard = props => {
     }
 
     if (testArray.length) {
-      API.updateUser(user._id, newUser)
+      let reqBody = newUser;
+      if (!newUser.phone) {
+        const { phone, ...rest } = newUser;
+        reqBody = rest;
+      }
+
+      API.updateUser(user._id, reqBody)
         .then(res => {
-          loadCurrentUser(res);
           renderSnackbarMessage(res.data);
+          loadCurrentUser(res);
           setUserDatesDialogOpen(false);
           setUserProfileDialogOpen(false);
         })
@@ -656,8 +646,6 @@ const Dashboard = props => {
             <UserProfile
               deleted={deleted}
               setUserProfileDialogOpen={setUserProfileDialogOpen}
-              signedIn={signedIn}
-              user={!deleted ? user : noUser}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -667,8 +655,6 @@ const Dashboard = props => {
               deleted={deleted}
               setUserDatesAddDialogOpen={setUserDatesAddDialogOpen}
               setUserDatesDialogOpen={setUserDatesDialogOpen}
-              signedIn={signedIn}
-              user={user}
             />
           </Grid>
           <Grid item xs={12}>
