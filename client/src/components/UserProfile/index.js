@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
@@ -46,9 +47,13 @@ const CustomCardMedia = withStyles(theme => ({
 }))(CardMedia);
 
 const UserProfile = props => {
+  const {
+    state: { signedIn, user }
+  } = useContext(UserContext);
+
   const classes = useStyles();
 
-  const { deleted, setUserProfileDialogOpen, signedIn, user } = props;
+  const { deleted, setUserProfileDialogOpen } = props;
 
   return (
     <Zoom in={!deleted} timeout={{ enter: 0, exit: 2000 }}>
@@ -81,7 +86,8 @@ const UserProfile = props => {
                       <MuiLink
                         href={user.imageUrl}
                         color="inherit"
-                        target="_blank">
+                        target="_blank"
+                      >
                         {user.imageUrl}
                       </MuiLink>
                     }
@@ -151,7 +157,8 @@ const UserProfile = props => {
                   <Button
                     variant="outlined"
                     className={classes.button}
-                    onClick={() => setUserProfileDialogOpen(true)}>
+                    onClick={() => setUserProfileDialogOpen(true)}
+                  >
                     Edit Your Profile
                   </Button>
                 </CardActions>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 
@@ -45,6 +46,10 @@ const StyledIconButton = withStyles(theme => ({
 }))(IconButton);
 
 const UserDates = props => {
+  const {
+    state: { signedIn, user }
+  } = useContext(UserContext);
+
   const classes = useStyles();
 
   const {
@@ -52,16 +57,15 @@ const UserDates = props => {
     birthDate,
     deleted,
     setUserDatesAddDialogOpen,
-    setUserDatesDialogOpen,
-    signedIn,
-    user
+    setUserDatesDialogOpen
   } = props;
 
   return (
     <Zoom
       in={!deleted}
       timeout={{ enter: 0, exit: 2000 }}
-      style={{ transitionDelay: !deleted ? '0ms' : '250ms' }}>
+      style={{ transitionDelay: !deleted ? '0ms' : '250ms' }}
+    >
       <Paper className={classes.root}>
         <Card className={classes.card}>
           <CardHeader
@@ -70,7 +74,8 @@ const UserDates = props => {
               <Tooltip title="Add Date" color="primary">
                 <StyledIconButton
                   aria-label="add a date"
-                  onClick={() => setUserDatesAddDialogOpen(true)}>
+                  onClick={() => setUserDatesAddDialogOpen(true)}
+                >
                   <AddBoxIcon color="primary" />
                 </StyledIconButton>
               </Tooltip>
@@ -144,7 +149,8 @@ const UserDates = props => {
                   <Button
                     variant="outlined"
                     className={classes.button}
-                    onClick={() => setUserDatesDialogOpen(true)}>
+                    onClick={() => setUserDatesDialogOpen(true)}
+                  >
                     Change Your Dates
                   </Button>
                 </CardActions>
