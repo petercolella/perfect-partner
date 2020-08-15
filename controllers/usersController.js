@@ -61,7 +61,7 @@ module.exports = {
         .populate('customDates')
         .populate('nudges')
         .then(dbModel => {
-          if (req.body.hasOwnProperty('phone')) {
+          if (req.body.hasOwnProperty('phone') && req.body.phone !== '') {
             const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
 
             textControl
