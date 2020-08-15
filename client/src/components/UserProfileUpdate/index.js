@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as User } from './user.svg';
 
+import fn from '../../utils/fn';
+
 const useStyles = makeStyles(theme => ({
   buttons: {
     display: 'flex',
@@ -42,11 +44,13 @@ const UserProfileUpdate = props => {
       open={userProfileDialogOpen}
       onClose={closeUserProfileUpdateComp}
       aria-labelledby="form-dialog-title"
-      scroll={'body'}>
+      scroll={'body'}
+    >
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <User height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
         <Typography variant="h6">
           Edit Your Profile, {user.firstName}.
@@ -129,7 +133,7 @@ const UserProfileUpdate = props => {
           type="tel"
           fullWidth
           name="phone"
-          value={user.phone}
+          value={fn.formatPhoneNumber(user.phone)}
           onChange={handleUserInputChange('phone')}
           margin="normal"
           variant="outlined"
@@ -141,7 +145,8 @@ const UserProfileUpdate = props => {
           variant="contained"
           color="secondary"
           className={classes.button}
-          startIcon={<DeleteIcon />}>
+          startIcon={<DeleteIcon />}
+        >
           Delete Your Account
         </Button>
         <div>
