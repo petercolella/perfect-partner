@@ -420,7 +420,9 @@ const Dashboard = props => {
   );
 
   const handleUserInputChange = name => event => {
-    setDashboardUser({ ...dashboardUser, [name]: event.target.value });
+    let { value } = event.target;
+    value = name === 'phone' ? value.replace(/\D/g, '') : value;
+    setDashboardUser({ ...dashboardUser, [name]: value });
   };
 
   const renderSnackbarMessage = (res, isCustomDate = false) => {
@@ -573,7 +575,7 @@ const Dashboard = props => {
 
     if (testArray.length) {
       let reqBody = newUser;
-      if (!newUser.phone) {
+      if (!newUser.phone && newUser.phone === user.phone) {
         const { phone, ...rest } = newUser;
         reqBody = rest;
       }
