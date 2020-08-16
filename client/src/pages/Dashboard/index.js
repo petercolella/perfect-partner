@@ -573,6 +573,11 @@ const Dashboard = props => {
       return;
     }
 
+    if (newUser.phone.length !== 10 && newUser.phone !== '') {
+      handleSnackbarOpen('Phone number must be 10 digits.', 'warning');
+      return;
+    }
+
     if (testArray.length) {
       let reqBody = newUser;
       if (!newUser.phone && newUser.phone === user.phone) {
