@@ -15,7 +15,7 @@ const ActivateNudgeSwitch = props => {
   propsRef.current = props;
 
   const activateNudge = useCallback(checked => {
-    const { nudge, user } = propsRef.current;
+    const { nudge, reloadCurrentUser, user } = propsRef.current;
     nudge.activated = checked;
 
     API.activateNudge(nudge._id, {
@@ -24,7 +24,7 @@ const ActivateNudgeSwitch = props => {
     })
       .then(res => {
         console.log(res.data);
-        propsRef.current.loadUserInfo();
+        reloadCurrentUser();
       })
       .catch(err => {
         console.log(err);
