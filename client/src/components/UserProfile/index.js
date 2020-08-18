@@ -46,14 +46,12 @@ const CustomCardMedia = withStyles(theme => ({
   }
 }))(CardMedia);
 
-const UserProfile = props => {
+const UserProfile = ({ deleted, setUserProfileDialogOpen }) => {
   const {
     state: { signedIn, user }
   } = useContext(UserContext);
 
   const classes = useStyles();
-
-  const { deleted, setUserProfileDialogOpen } = props;
 
   return (
     <Zoom in={!deleted} timeout={{ enter: 0, exit: 2000 }}>

@@ -45,20 +45,18 @@ const StyledIconButton = withStyles(theme => ({
   }
 }))(IconButton);
 
-const UserDates = props => {
+const UserDates = ({
+  anniversaryDate,
+  birthDate,
+  deleted,
+  setUserDatesAddDialogOpen,
+  setUserDatesDialogOpen
+}) => {
   const {
     state: { signedIn, user }
   } = useContext(UserContext);
 
   const classes = useStyles();
-
-  const {
-    anniversaryDate,
-    birthDate,
-    deleted,
-    setUserDatesAddDialogOpen,
-    setUserDatesDialogOpen
-  } = props;
 
   return (
     <Zoom
