@@ -679,7 +679,6 @@ const Dashboard = props => {
               setNudgeAddDialogOpen={setNudgeAddDialogOpen}
               nudgeDialogOpen={nudgeDialogOpen}
               setNudgeDialogOpen={setNudgeDialogOpen}
-              user={user}
             />
           </Grid>
           <UserDatesAdd
