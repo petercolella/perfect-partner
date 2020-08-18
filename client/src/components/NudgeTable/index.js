@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -87,26 +88,27 @@ const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
   );
 };
 
-const NudgeTable = props => {
+const NudgeTable = ({
+  deleted,
+  handleNewNudgeInputChange,
+  handleNudgeAddFormSubmit,
+  handleNudgeDelete,
+  handleNudgeFormSubmit,
+  handleNudgeInputChange,
+  launchNudgeUpdateComp,
+  newNudge,
+  nudge,
+  nudgeAddDialogOpen,
+  nudgeDialogOpen,
+  setNudgeAddDialogOpen,
+  setNudgeDialogOpen
+}) => {
+  const {
+    state: { user },
+    reloadCurrentUser
+  } = useContext(UserContext);
   const matches = useMediaQuery('(max-width:770px)');
   const classes = useStyles();
-
-  const {
-    deleted,
-    handleNewNudgeInputChange,
-    handleNudgeAddFormSubmit,
-    handleNudgeDelete,
-    handleNudgeFormSubmit,
-    handleNudgeInputChange,
-    launchNudgeUpdateComp,
-    newNudge,
-    nudge,
-    nudgeAddDialogOpen,
-    nudgeDialogOpen,
-    setNudgeAddDialogOpen,
-    setNudgeDialogOpen,
-    user
-  } = props;
 
   const [arrowOneFade, setArrowOneFade] = useState(false);
   const [arrowTwoFade, setArrowTwoFade] = useState(false);
@@ -150,7 +152,8 @@ const NudgeTable = props => {
       <Zoom
         in={!deleted}
         timeout={{ enter: 0, exit: 2000 }}
-        style={{ transitionDelay: !deleted ? '0ms' : '500ms' }}>
+        style={{ transitionDelay: !deleted ? '0ms' : '500ms' }}
+      >
         <Paper className={classes.root}>
           <Toolbar className={classes.toolbar}>
             <Typography variant="h5" align="left">
@@ -159,7 +162,8 @@ const NudgeTable = props => {
             <Tooltip title="Add Nudge" color="primary">
               <StyledIconButton
                 aria-label="add a nudge"
-                onClick={() => setNudgeAddDialogOpen(true)}>
+                onClick={() => setNudgeAddDialogOpen(true)}
+              >
                 <AddBoxIcon color="primary" />
               </StyledIconButton>
             </Tooltip>
@@ -193,7 +197,8 @@ const NudgeTable = props => {
                     <Tooltip title="Edit Nudge" color="primary">
                       <IconButton
                         aria-label="edit nudge"
-                        onClick={() => launchNudgeUpdateComp(nudge)}>
+                        onClick={() => launchNudgeUpdateComp(nudge)}
+                      >
                         <EditIcon />
                       </IconButton>
                     </Tooltip>
@@ -202,16 +207,21 @@ const NudgeTable = props => {
                     <Tooltip title="Delete Nudge" color="primary">
                       <IconButton
                         aria-label="delete nudge"
-                        onClick={() => handleNudgeDeleteClick(nudge)}>
+                        onClick={() => handleNudgeDeleteClick(nudge)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center">
-                    <TestTextButton {...props} nudge={nudge} />
+                    <TestTextButton nudge={nudge} user={user} />
                   </TableCell>
                   <TableCell align="center">
-                    <ActivateNudgeSwitch {...props} nudge={nudge} />
+                    <ActivateNudgeSwitch
+                      nudge={nudge}
+                      reloadCurrentUser={reloadCurrentUser}
+                      user={user}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
