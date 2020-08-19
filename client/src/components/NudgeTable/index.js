@@ -1,10 +1,7 @@
 import React, { useContext, useState } from 'react';
-import useArrowFade from '../../hooks/useArrowFade';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import Fade from '@material-ui/core/Fade';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -20,13 +17,13 @@ import Zoom from '@material-ui/core/Zoom';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 
 import ActivateNudgeSwitch from '../ActivateNudgeSwitch';
-import TestTextButton from '../TestTextButton';
+import HorizontalScrollArrows from '../HorizontalScrollArrows';
 import NudgeAdd from '../NudgeAdd';
 import NudgeDelete from '../NudgeDelete';
 import NudgeUpdate from '../NudgeUpdate';
+import TestTextButton from '../TestTextButton';
 import fn from '../../utils/fn';
 
 const useStyles = makeStyles(theme => ({
@@ -64,12 +61,6 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-const StyledKeyboardArrowLeft = withStyles(theme => ({
-  root: {
-    marginLeft: '-0.5em'
-  }
-}))(KeyboardArrowLeft);
-
 const NudgeTable = ({
   deleted,
   handleNewNudgeInputChange,
@@ -91,11 +82,6 @@ const NudgeTable = ({
   } = useContext(UserContext);
   const [nudgeDeleteDialogOpen, setNudgeDeleteDialogOpen] = useState(false);
   const [nudgeToDelete, setNudgeToDelete] = useState({ name: '' });
-  const matches = useMediaQuery('(max-width:770px)');
-  const [arrowOneFade, arrowTwoFade, arrowThreeFade] = useArrowFade(
-    matches,
-    200
-  );
 
   const handleNudgeDeleteClick = nudge => {
     setNudgeDeleteDialogOpen(true);
@@ -212,19 +198,7 @@ const NudgeTable = ({
           />
         </Paper>
       </Zoom>
-      {matches && (
-        <Typography align="right" className={classes.arrows} variant="h4">
-          <Fade in={arrowOneFade} timeout={1000}>
-            <StyledKeyboardArrowLeft fontSize="inherit" />
-          </Fade>
-          <Fade in={arrowTwoFade} timeout={1000}>
-            <StyledKeyboardArrowLeft fontSize="inherit" />
-          </Fade>
-          <Fade in={arrowThreeFade} timeout={1000}>
-            <StyledKeyboardArrowLeft fontSize="inherit" />
-          </Fade>
-        </Typography>
-      )}
+      <HorizontalScrollArrows />
       {/* <div>
         Icons made by{' '}
         <a href="https://www.flaticon.com/authors/freepik" title="Freepik">
