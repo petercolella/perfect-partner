@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import useArrowFade from '../../hooks/useArrowFade';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -69,25 +70,6 @@ const StyledKeyboardArrowLeft = withStyles(theme => ({
   }
 }))(KeyboardArrowLeft);
 
-let timeoutOne;
-let timeoutTwo;
-let timeoutThree;
-
-const fade = (fnOne, fnTwo, fnThree, inBool, msStep) => {
-  timeoutOne = setTimeout(
-    () => {
-      fnOne(inBool);
-      timeoutTwo = setTimeout(() => {
-        fnTwo(inBool);
-      }, msStep);
-      timeoutThree = setTimeout(() => {
-        fnThree(inBool);
-      }, msStep * 2);
-    },
-    inBool ? 0 : msStep * 3
-  );
-};
-
 const NudgeTable = ({
   deleted,
   handleNewNudgeInputChange,
@@ -107,14 +89,13 @@ const NudgeTable = ({
     state: { user },
     reloadCurrentUser
   } = useContext(UserContext);
-  const matches = useMediaQuery('(max-width:770px)');
-  const classes = useStyles();
-
-  const [arrowOneFade, setArrowOneFade] = useState(false);
-  const [arrowTwoFade, setArrowTwoFade] = useState(false);
-  const [arrowThreeFade, setArrowThreeFade] = useState(false);
   const [nudgeDeleteDialogOpen, setNudgeDeleteDialogOpen] = useState(false);
   const [nudgeToDelete, setNudgeToDelete] = useState({ name: '' });
+  const matches = useMediaQuery('(max-width:770px)');
+  const [arrowOneFade, arrowTwoFade, arrowThreeFade] = useArrowFade(
+    matches,
+    200
+  );
 
   const handleNudgeDeleteClick = nudge => {
     setNudgeDeleteDialogOpen(true);
@@ -126,26 +107,7 @@ const NudgeTable = ({
     setNudgeDeleteDialogOpen(false);
   };
 
-  useEffect(() => {
-    fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, true, 200);
-    fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, false, 200);
-
-    const fadeInAndOut = setInterval(() => {
-      if (!matches) clearInterval(fadeInAndOut);
-      fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, true, 200);
-      fade(setArrowThreeFade, setArrowTwoFade, setArrowOneFade, false, 200);
-    }, 2000);
-
-    return () => {
-      clearInterval(fadeInAndOut);
-      clearTimeout(timeoutOne);
-      clearTimeout(timeoutTwo);
-      clearTimeout(timeoutThree);
-      setArrowOneFade(false);
-      setArrowTwoFade(false);
-      setArrowThreeFade(false);
-    };
-  }, [matches]);
+  const classes = useStyles();
 
   return (
     <>
