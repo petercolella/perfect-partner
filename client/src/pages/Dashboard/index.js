@@ -82,6 +82,8 @@ const keyNameAndValue = obj => {
     newObj.name = keyNameObj[key];
     newObj.newValue = Array.isArray(obj[key])
       ? obj[key].join(' \u2022 ')
+      : key === 'phone'
+      ? fn.formatPhoneNumber(obj[key])
       : obj[key];
   }
   return newObj;
