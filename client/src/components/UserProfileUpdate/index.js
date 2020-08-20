@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import InputMask from 'react-input-mask';
 
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -12,8 +13,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as User } from './user.svg';
-
-import fn from '../../utils/fn';
 
 const useStyles = makeStyles(theme => ({
   buttons: {
@@ -127,17 +126,22 @@ const UserProfileUpdate = props => {
           margin="normal"
           variant="outlined"
         />
-        <TextField
-          id="phone"
-          label="Phone"
-          type="tel"
-          fullWidth
-          name="phone"
-          value={fn.formatPhoneNumber(user.phone)}
+        <InputMask
+          mask={`(9\u200A9\u200A9) 9\u200A9\u200A9-9\u200A9\u200A9\u200A9`}
+          maskPlaceholder="_"
           onChange={handleUserInputChange('phone')}
-          margin="normal"
-          variant="outlined"
-        />
+          value={user.phone}
+        >
+          <TextField
+            id="phone"
+            label="Phone"
+            type="tel"
+            fullWidth
+            name="phone"
+            margin="normal"
+            variant="outlined"
+          />
+        </InputMask>
       </DialogContent>
       <DialogActions className={classes.buttons}>
         <Button
