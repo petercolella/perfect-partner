@@ -82,7 +82,7 @@ const UserDatesAdd = props => {
 
   useEffect(() => {
     createReminderObject();
-  }, [createReminderObject, dialogReminders]);
+  }, [createReminderObject, dialogReminders, newDate]);
 
   useEffect(() => {
     const newReminders = Object.keys(reminderObj).filter(
