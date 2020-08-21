@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
 
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -9,20 +14,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import { ReactComponent as Calendar } from './calendar.svg';
-
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -40,21 +38,18 @@ const useStyles = makeStyles(theme => ({
 
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
-const UserDatesAdd = props => {
-  const classes = useStyles();
-  const {
-    dialogReminders,
-    handleDateInputChange,
-    handleNewDateFormSubmit,
-    handleUserDateInputChange,
-    newDate,
-    newDateValue,
-    setParentReminders,
-    setUserDatesAddDialogOpen,
-    user,
-    userDatesAddDialogOpen
-  } = props;
-
+const UserDatesAdd = ({
+  dialogReminders,
+  handleDateInputChange,
+  handleNewDateFormSubmit,
+  handleUserDatePickerChange,
+  newDate,
+  newDateValue,
+  setParentReminders,
+  setUserDatesAddDialogOpen,
+  user,
+  userDatesAddDialogOpen
+}) => {
   const [reminders, setReminders] = useState([]);
   const [reminderObj, setReminderObj] = useState({});
 
@@ -98,6 +93,8 @@ const UserDatesAdd = props => {
   const handleChange = name => event => {
     setReminderObj({ ...reminderObj, [name]: event.target.checked });
   };
+
+  const classes = useStyles();
 
   return (
     <Dialog
@@ -149,7 +146,7 @@ const UserDatesAdd = props => {
             inputVariant="outlined"
             label="Date"
             margin="normal"
-            onChange={handleUserDateInputChange('newDate')}
+            onChange={handleUserDatePickerChange('newDate')}
             placeholder="mm/dd/yyyy"
             value={newDateValue}
             KeyboardButtonProps={{

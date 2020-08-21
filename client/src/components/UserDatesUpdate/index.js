@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from '@material-ui/pickers';
 
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -10,8 +15,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -22,13 +27,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import UserDatesDelete from '../UserDatesDelete';
 
 import { ReactComponent as Calendar } from './calendar.svg';
-
-import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
   deleteButton: {
@@ -54,26 +52,23 @@ const useStyles = makeStyles(theme => ({
 
 const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
 
-const UserDatesUpdate = props => {
-  const classes = useStyles();
-  const {
-    anniversaryDate,
-    anniversaryReminders,
-    birthDate,
-    birthdayReminders,
-    closeUserDatesUpdateComp,
-    dashboardCustomDates,
-    handleCustomDateDelete,
-    handleReminderChange,
-    handleUserCustomDateInputChange,
-    handleUserCustomDateReminderChange,
-    handleUserCustomDatePickerChange,
-    handleUserDateInputChange,
-    handleUserFormSubmit,
-    user,
-    userDatesDialogOpen
-  } = props;
-
+const UserDatesUpdate = ({
+  anniversaryDate,
+  anniversaryReminders,
+  birthDate,
+  birthdayReminders,
+  closeUserDatesUpdateComp,
+  dashboardCustomDates,
+  handleCustomDateDelete,
+  handleReminderChange,
+  handleUserCustomDateInputChange,
+  handleUserCustomDatePickerChange,
+  handleUserCustomDateReminderChange,
+  handleUserDatePickerChange,
+  handleUserFormSubmit,
+  user,
+  userDatesDialogOpen
+}) => {
   const [birthdayUpdateReminders, setBirthdayUpdateReminders] = useState([]);
   const [birthdayReminderObj, setBirthdayReminderObj] = useState({});
   const [anniversaryUpdateReminders, setAnniversaryUpdateReminders] = useState(
@@ -259,6 +254,8 @@ const UserDatesUpdate = props => {
     setCustomDateReminderBooleanObjArray(newCustomDateReminderBooleanObjArray);
   };
 
+  const classes = useStyles();
+
   return (
     <>
       <Dialog
@@ -290,7 +287,7 @@ const UserDatesUpdate = props => {
               inputVariant="outlined"
               label="Anniversary Date"
               margin="normal"
-              onChange={handleUserDateInputChange('anniversaryDate')}
+              onChange={handleUserDatePickerChange('anniversaryDate')}
               placeholder="mm/dd/yyyy"
               value={anniversaryDate}
               KeyboardButtonProps={{
@@ -332,7 +329,7 @@ const UserDatesUpdate = props => {
               inputVariant="outlined"
               label="Partner's Birthday"
               margin="normal"
-              onChange={handleUserDateInputChange('birthDate')}
+              onChange={handleUserDatePickerChange('birthDate')}
               placeholder="mm/dd/yyyy"
               value={birthDate}
               KeyboardButtonProps={{
