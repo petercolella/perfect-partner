@@ -216,6 +216,13 @@ const UserDatesUpdate = props => {
     birthdayUpdateReminders
   ]);
 
+  const handleCancel = () => {
+    closeUserDatesUpdateComp();
+    createBirthdayReminderObject();
+    createAnniversaryReminderObject();
+    createCustomDateReminderArray();
+  };
+
   const handleBirthdayChange = name => event => {
     setBirthdayReminderObj({
       ...birthdayReminderObj,
@@ -259,11 +266,13 @@ const UserDatesUpdate = props => {
         open={userDatesDialogOpen}
         onClose={closeUserDatesUpdateComp}
         aria-labelledby="form-dialog-title"
-        scroll={'body'}>
+        scroll={'body'}
+      >
         <DialogTitle
           className={classes.title}
           id="form-dialog-title"
-          disableTypography={true}>
+          disableTypography={true}
+        >
           <Calendar height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
           <Typography variant="h6">
             Change Your Dates, {user.firstName}.
@@ -293,7 +302,8 @@ const UserDatesUpdate = props => {
             <FormControl
               component="fieldset"
               className={classes.formControl}
-              fullWidth={true}>
+              fullWidth={true}
+            >
               <FormGroup row>
                 {reminderArr.map(name => (
                   <FormControlLabel
@@ -334,7 +344,8 @@ const UserDatesUpdate = props => {
             <FormControl
               component="fieldset"
               className={classes.formControl}
-              fullWidth={true}>
+              fullWidth={true}
+            >
               <FormGroup row>
                 {reminderArr.map(name => (
                   <FormControlLabel
@@ -361,7 +372,8 @@ const UserDatesUpdate = props => {
                     <IconButton
                       className={classes.deleteButton}
                       aria-label="delete date"
-                      onClick={() => handleUserDateDeleteClick(date)}>
+                      onClick={() => handleUserDateDeleteClick(date)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -411,7 +423,8 @@ const UserDatesUpdate = props => {
                   <FormControl
                     component="fieldset"
                     className={classes.formControl}
-                    fullWidth={true}>
+                    fullWidth={true}
+                  >
                     <FormGroup row>
                       {reminderArr.map(name => (
                         <FormControlLabel
@@ -443,7 +456,7 @@ const UserDatesUpdate = props => {
             ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeUserDatesUpdateComp} color="secondary">
+          <Button onClick={handleCancel} color="secondary">
             Cancel
           </Button>
           <Button onClick={handleUserFormSubmit} color="primary">
