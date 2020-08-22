@@ -4,12 +4,23 @@ export default {
   },
   formatPhoneNumber: num => {
     if (num.length) {
+      const first3 = num.substring(0, 3);
+      const second3 = num.substring(3, 6);
+      const last4 = num.substring(6);
+
+      return `(${first3}) ${second3}-${last4}`;
+    }
+
+    return num;
+  },
+  maskPhoneNumber: value => {
+    if (value.length) {
       let chars = '';
       for (let i = 0; i < 10; i++) {
-        if (!num[i]) {
+        if (!value[i]) {
           chars += '\u005F';
         } else {
-          chars += num[i];
+          chars += value[i];
         }
       }
       const first3 = chars.substring(0, 3).split('').join('\u200A');
@@ -19,7 +30,7 @@ export default {
       return `(${first3}) ${second3} - ${last4}`;
     }
 
-    return num;
+    return value;
   },
   localToUTC: date => {
     const newDate = date.setZone('UTC').set({ hour: 0 });
