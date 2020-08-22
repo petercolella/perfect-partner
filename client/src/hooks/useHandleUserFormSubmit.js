@@ -39,15 +39,19 @@ export default (dialogSetter, stateSetter, stateObj) => {
       return testUser[key] !== stateObj.user[key];
     });
 
-    const customDateTestArray = stateObj.dashboardCustomDates.flatMap(date => {
-      return Object.keys(date).filter(key => {
-        return (
-          stateObj.user.customDates.find(({ _id }) => _id === date._id) &&
-          date[key] !==
-            stateObj.user.customDates.find(({ _id }) => _id === date._id)[key]
-        );
-      });
-    });
+    const customDateTestArray = stateObj.dashboardCustomDates
+      ? stateObj.dashboardCustomDates.flatMap(date => {
+          return Object.keys(date).filter(key => {
+            return (
+              stateObj.user.customDates.find(({ _id }) => _id === date._id) &&
+              date[key] !==
+                stateObj.user.customDates.find(({ _id }) => _id === date._id)[
+                  key
+                ]
+            );
+          });
+        })
+      : [];
 
     if (!testArray.length && !customDateTestArray.length) {
       handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
