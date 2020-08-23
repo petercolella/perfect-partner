@@ -26,16 +26,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserProfileUpdate = props => {
+const UserProfileUpdate = ({
+  closeUserProfileUpdateComp,
+  handleUserFormSubmit,
+  handleUserInputChange,
+  setUserDeleteDialogOpen,
+  user,
+  userProfileDialogOpen
+}) => {
   const classes = useStyles();
-  const {
-    closeUserProfileUpdateComp,
-    handleUserFormSubmit,
-    handleUserInputChange,
-    setUserDeleteDialogOpen,
-    user,
-    userProfileDialogOpen
-  } = props;
 
   return (
     <Dialog
