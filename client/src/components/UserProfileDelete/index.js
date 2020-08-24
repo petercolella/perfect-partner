@@ -26,21 +26,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserProfileDelete = props => {
+const UserProfileDelete = ({
+  handleUserAccountDeleteSubmit,
+  setUserDeleteDialogOpen,
+  user,
+  userDeleteDialogOpen
+}) => {
   const classes = useStyles();
-  const {
-    setUserDeleteDialogOpen,
-    handleUserAccountDeleteSubmit,
-    userDeleteDialogOpen,
-    user
-  } = props;
 
   return (
     <Dialog open={userDeleteDialogOpen}>
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <DeleteIcon
           color="error"
           fontSize="large"
@@ -61,14 +61,16 @@ const UserProfileDelete = props => {
           color="secondary"
           startIcon={<DeleteForeverIcon />}
           size="small"
-          variant="contained">
+          variant="contained"
+        >
           Yes, do it.
         </Button>
         <Button
           onClick={() => setUserDeleteDialogOpen(false)}
           size="small"
           variant="contained"
-          autoFocus>
+          autoFocus
+        >
           No, get me out of here!
         </Button>
       </DialogActions>
