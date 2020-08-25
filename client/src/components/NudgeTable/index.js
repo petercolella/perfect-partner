@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Context as SnackbarContext } from '../../context/SnackbarContext';
 import { Context as UserContext } from '../../context/UserContext';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
@@ -24,7 +25,24 @@ import NudgeAdd from '../NudgeAdd';
 import NudgeDelete from '../NudgeDelete';
 import NudgeUpdate from '../NudgeUpdate';
 import TestTextButton from '../TestTextButton';
+
+import API from '../../utils/API';
 import fn from '../../utils/fn';
+
+const newNudgeObj = {
+  name: '',
+  nudgeFrequency: 7,
+  nudgeFrequencyUnit: '',
+  textMessage: ''
+};
+
+const noNudge = {
+  name: '',
+  nudgeFrequency: '',
+  nudgeFrequencyUnit: '',
+  textMessage: '',
+  activated: false
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,27 +79,32 @@ const StyledTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-const NudgeTable = ({
-  deleted,
-  handleNewNudgeInputChange,
-  handleNudgeAddFormSubmit,
-  handleNudgeDelete,
-  handleNudgeFormSubmit,
-  handleNudgeInputChange,
-  launchNudgeUpdateComp,
-  newNudge,
-  nudge,
-  nudgeAddDialogOpen,
-  nudgeDialogOpen,
-  setNudgeAddDialogOpen,
-  setNudgeDialogOpen
-}) => {
+const NudgeTable = ({ deleted }) => {
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
     state: { user },
     reloadCurrentUser
   } = useContext(UserContext);
+
+  const [newNudge, setNewNudge] = useState(newNudgeObj);
+  const [nudge, setNudge] = useState(noNudge);
+  const [nudgeAddDialogOpen, setNudgeAddDialogOpen] = useState(false);
   const [nudgeDeleteDialogOpen, setNudgeDeleteDialogOpen] = useState(false);
+  const [nudgeDialogOpen, setNudgeDialogOpen] = useState(false);
   const [nudgeToDelete, setNudgeToDelete] = useState({ name: '' });
+  const [testNudge, setTestNudge] = useState(null);
+
+  const handleNudgeDelete = nudge => {
+    API.deleteNudge(nudge._id)
+      .then(res => {
+        reloadCurrentUser();
+        handleSnackbarOpen(`The ${nudge.name} nudge has been deleted.`, 'info');
+      })
+      .catch(err => {
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+      });
+  };
 
   const handleNudgeDeleteClick = nudge => {
     setNudgeDeleteDialogOpen(true);
@@ -91,6 +114,73 @@ const NudgeTable = ({
   const handleNudgeDeleteConfirm = nudge => {
     handleNudgeDelete(nudge);
     setNudgeDeleteDialogOpen(false);
+  };
+
+  const handleNewNudgeInputChange = name => event => {
+    setNewNudge({ ...newNudge, [name]: event.target.value });
+  };
+
+  const handleNudgeInputChange = name => event => {
+    setNudge({ ...nudge, [name]: event.target.value });
+  };
+
+  const handleNudgeAddFormSubmit = () => {
+    const body = {
+      userId: user._id,
+      nudge: newNudge
+    };
+
+    API.saveNudge(body)
+      .then(res => {
+        reloadCurrentUser();
+        setNudgeAddDialogOpen(false);
+        handleSnackbarOpen(
+          `${res.data.name} has been successfully added.`,
+          'success'
+        );
+        setNewNudge(newNudgeObj);
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+        return;
+      });
+  };
+
+  const handleNudgeFormSubmit = () => {
+    const testArray = Object.keys(testNudge).filter(
+      key => testNudge[key] !== nudge[key]
+    );
+
+    if (!testArray.length) {
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
+      return;
+    }
+
+    API.updateNudge(nudge._id, {
+      ...nudge
+    })
+      .then(res => {
+        reloadCurrentUser();
+        handleSnackbarOpen(
+          `${res.data.name} has been successfully updated.`,
+          'success'
+        );
+        setNudgeDialogOpen(false);
+      })
+      .catch(err => {
+        // captures error message after last colon and space
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
+        return;
+      });
+  };
+
+  const launchNudgeUpdateComp = nudge => {
+    setNudge(nudge);
+    setTestNudge(nudge);
+    setNudgeDialogOpen(true);
   };
 
   const classes = useStyles();
@@ -176,11 +266,11 @@ const NudgeTable = ({
             </TableBody>
           </Table>
           <NudgeAdd
-            setNudgeAddDialogOpen={setNudgeAddDialogOpen}
             handleNewNudgeInputChange={handleNewNudgeInputChange}
             handleNudgeAddFormSubmit={handleNudgeAddFormSubmit}
             newNudge={newNudge}
             nudgeAddDialogOpen={nudgeAddDialogOpen}
+            setNudgeAddDialogOpen={setNudgeAddDialogOpen}
             user={user}
           />
           <NudgeDelete
@@ -190,11 +280,11 @@ const NudgeTable = ({
             setNudgeDeleteDialogOpen={setNudgeDeleteDialogOpen}
           />
           <NudgeUpdate
-            setNudgeDialogOpen={setNudgeDialogOpen}
-            handleNudgeInputChange={handleNudgeInputChange}
             handleNudgeFormSubmit={handleNudgeFormSubmit}
+            handleNudgeInputChange={handleNudgeInputChange}
             nudge={nudge}
             nudgeDialogOpen={nudgeDialogOpen}
+            setNudgeDialogOpen={setNudgeDialogOpen}
           />
         </Paper>
       </Zoom>
