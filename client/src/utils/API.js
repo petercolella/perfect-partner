@@ -23,9 +23,8 @@ export default {
     };
     xhr.send('idtoken=' + id_token);
   },
-  tokenSignInAxios: id_token => {
-    const tokenStr = 'idtoken=' + id_token;
-    return axios.post('/api/token', tokenStr).then(res => {
+  tokenSignInAxios: (id_token, timeZone) => {
+    return axios.post('/api/token', { id_token, timeZone }).then(res => {
       return res.data;
     });
   },
