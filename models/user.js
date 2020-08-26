@@ -8,6 +8,7 @@ const userSchema = new Schema({
   imageUrl: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String },
+  timeZone: { type: String },
   anniversaryDate: {
     type: Date,
     validate: [
