@@ -5,9 +5,9 @@ const fn = require('../scripts/fn');
 
 module.exports = {
   create: (req, res) => {
-    const token_id = req.body.idtoken;
+    const { id_token, timeZone } = req.body;
 
-    fn.verify(token_id)
+    fn.verify(id_token)
       .then(ticket => {
         const payload = ticket.getPayload();
 
@@ -24,7 +24,8 @@ module.exports = {
           email,
           imageUrl,
           firstName,
-          lastName
+          lastName,
+          timeZone
         };
 
         if (CLIENT_ID === payload['aud']) {
