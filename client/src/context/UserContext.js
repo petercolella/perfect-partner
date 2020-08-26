@@ -46,10 +46,11 @@ const onFailure = dispatch => err => {
 const onSuccess = dispatch => async googleUser => {
   console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
   const id_token = googleUser.getAuthResponse().id_token;
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   sessionStorage.setItem('id_token', id_token);
 
   try {
-    const id = await API.tokenSignInAxios(id_token);
+    const id = await API.tokenSignInAxios(id_token, timeZone);
     if (id) {
       sessionStorage.setItem('currentUserId', id);
       API.getUser(id)
