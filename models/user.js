@@ -9,6 +9,7 @@ const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String },
   timeZone: { type: String },
+  offset: { type: Number },
   anniversaryDate: {
     type: Date,
     validate: [

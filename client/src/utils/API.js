@@ -23,10 +23,12 @@ export default {
     };
     xhr.send('idtoken=' + id_token);
   },
-  tokenSignInAxios: (id_token, timeZone) => {
-    return axios.post('/api/token', { id_token, timeZone }).then(res => {
-      return res.data;
-    });
+  tokenSignInAxios: (id_token, timeZone, offset) => {
+    return axios
+      .post('/api/token', { id_token, timeZone, offset })
+      .then(res => {
+        return res.data;
+      });
   },
   getNudge: id => {
     return axios.get('/api/nudges/' + id);

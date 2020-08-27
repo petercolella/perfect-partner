@@ -5,7 +5,7 @@ const fn = require('../scripts/fn');
 
 module.exports = {
   create: (req, res) => {
-    const { id_token, timeZone } = req.body;
+    const { id_token, timeZone, offset } = req.body;
 
     fn.verify(id_token)
       .then(ticket => {
@@ -25,7 +25,8 @@ module.exports = {
           imageUrl,
           firstName,
           lastName,
-          timeZone
+          timeZone,
+          offset
         };
 
         if (CLIENT_ID === payload['aud']) {
