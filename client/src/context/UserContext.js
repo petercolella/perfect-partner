@@ -1,5 +1,6 @@
 import createDataContext from './createStateContext';
 import API from '../utils/API';
+import { DateTime } from 'luxon';
 
 const noUser = {
   anniversaryDate: '',
@@ -45,12 +46,14 @@ const onFailure = dispatch => err => {
 
 const onSuccess = dispatch => async googleUser => {
   console.log('Signed in as: ' + googleUser.getBasicProfile().getName());
+  console.log('Time Zone:', DateTime.local().zoneName, DateTime.local().offset);
   const id_token = googleUser.getAuthResponse().id_token;
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timeZone = DateTime.local().zoneName;
+  const offset = DateTime.local().offset;
   sessionStorage.setItem('id_token', id_token);
 
   try {
-    const id = await API.tokenSignInAxios(id_token, timeZone);
+    const id = await API.tokenSignInAxios(id_token, timeZone, offset);
     if (id) {
       sessionStorage.setItem('currentUserId', id);
       API.getUser(id)
