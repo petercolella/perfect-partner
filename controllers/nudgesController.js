@@ -60,18 +60,7 @@ module.exports = {
           nudges: { $in: _id }
         }).then(userModel => {
           const { phone } = userModel;
-          textControl
-            .sendText(updateBody, phone)
-            .then(message => {
-              const data = {
-                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                body: updateBody,
-                to: message.to,
-                sid: message.sid
-              };
-              fn.logText(data);
-            })
-            .catch(err => console.log('err:', err));
+          textControl.sendText(updateBody, phone);
         });
 
         res.json(dbModel);

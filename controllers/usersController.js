@@ -64,18 +64,7 @@ module.exports = {
           if (req.body.hasOwnProperty('phone') && req.body.phone !== '') {
             const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
 
-            textControl
-              .sendText(updateBody, dbModel.phone)
-              .then(message => {
-                const data = {
-                  date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                  body: updateBody,
-                  to: message.to,
-                  sid: message.sid
-                };
-                fn.logText(data);
-              })
-              .catch(err => console.log('err:', err));
+            textControl.sendText(updateBody, dbModel.phone);
           }
           const { googleId, ...user } = dbModel._doc;
           res.json(user);
