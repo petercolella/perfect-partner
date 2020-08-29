@@ -10,16 +10,21 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-// const now = DateTime.fromISO('2020-12-20T08:30:00');
-const now = DateTime.utc();
-const currentYear = now.toFormat('yyyy');
-const nowDayOfYear = now.toFormat('o');
-const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
-  'o'
-);
+const getNowData = () => {
+  const now = DateTime.utc();
+  console.log('now:', now.toISO());
+  const currentYear = now.toFormat('yyyy');
+  const nowDayOfYear = now.toFormat('o');
+  const numberOfDaysInYear = DateTime.fromISO(`${currentYear}-12-31`).toFormat(
+    'o'
+  );
+
+  return { currentYear, nowDayOfYear, numberOfDaysInYear };
+};
 
 const formatDate = date => {
   const dt = DateTime.fromJSDate(date).setZone('UTC');
+  const { currentYear } = getNowData();
   const dateObj = {};
 
   dateObj.dateDayOfYear = dt.set({ year: currentYear }).toFormat('o');
@@ -60,35 +65,13 @@ const self = (module.exports = {
                   0,
                   nudgeFrequencyUnit.length - 1
                 )} with the message, "${textMessage}"`;
-          self
-            .sendText(activateBody, phone)
-            .then(message => {
-              const data = {
-                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                body: activateBody,
-                to: message.to,
-                sid: message.sid
-              };
-              fn.logText(data);
-            })
-            .catch(err => console.log('err:', err));
+          self.sendText(activateBody, phone);
           self.setFutureTimestamp(nudge);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
 
-          self
-            .sendText(deactivateBody, phone)
-            .then(message => {
-              const data = {
-                date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                body: deactivateBody,
-                to: message.to,
-                sid: message.sid
-              };
-              fn.logText(data);
-            })
-            .catch(err => console.log('err:', err));
+          self.sendText(deactivateBody, phone);
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
@@ -114,20 +97,7 @@ const self = (module.exports = {
               .then(userModel => {
                 const { phone } = userModel;
 
-                self
-                  .sendText(textMessage, phone)
-                  .then(message => {
-                    const data = {
-                      date: DateTime.local().toLocaleString(
-                        DateTime.DATETIME_FULL
-                      ),
-                      body: textMessage,
-                      to: message.to,
-                      sid: message.sid
-                    };
-                    fn.logText(data);
-                  })
-                  .catch(err => console.log('err:', err));
+                self.sendText(textMessage, phone);
                 self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
@@ -155,6 +125,11 @@ const self = (module.exports = {
           const { dateDayOfYear, dateString, yearOfDate } = formatDate(
             anniversaryDate
           );
+          const {
+            currentYear,
+            nowDayOfYear,
+            numberOfDaysInYear
+          } = getNowData();
           const years = currentYear - yearOfDate;
           const daysToAnniversary = dateDayOfYear - nowDayOfYear;
 
@@ -163,18 +138,7 @@ const self = (module.exports = {
               years
             )} anniversary today! Make it special!`;
 
-            self
-              .sendText(textBody, phone)
-              .then(message => {
-                const data = {
-                  date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                  body: textBody,
-                  to: message.to,
-                  sid: message.sid
-                };
-                fn.logText(data);
-              })
-              .catch(err => console.log('err:', err));
+            self.sendText(textBody, phone);
           }
 
           anniversaryReminders.forEach(rem => {
@@ -188,20 +152,7 @@ const self = (module.exports = {
                 years
               )} anniversary on ${dateString}! Only ${rem} to go!`;
 
-              self
-                .sendText(textBody, phone)
-                .then(message => {
-                  const data = {
-                    date: DateTime.local().toLocaleString(
-                      DateTime.DATETIME_FULL
-                    ),
-                    body: textBody,
-                    to: message.to,
-                    sid: message.sid
-                  };
-                  fn.logText(data);
-                })
-                .catch(err => console.log('err:', err));
+              self.sendText(textBody, phone);
             }
           });
         }
@@ -222,6 +173,11 @@ const self = (module.exports = {
           const { dateDayOfYear, dateString, yearOfDate } = formatDate(
             birthDate
           );
+          const {
+            currentYear,
+            nowDayOfYear,
+            numberOfDaysInYear
+          } = getNowData();
           const age = currentYear - yearOfDate;
           const daysToBirthday = dateDayOfYear - nowDayOfYear;
 
@@ -230,18 +186,7 @@ const self = (module.exports = {
               age
             )} birthday today! Make it special!`;
 
-            self
-              .sendText(textBody, phone)
-              .then(message => {
-                const data = {
-                  date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-                  body: textBody,
-                  to: message.to,
-                  sid: message.sid
-                };
-                fn.logText(data);
-              })
-              .catch(err => console.log('err:', err));
+            fn.createTextCronJob(textBody, phone, user);
           }
 
           birthdayReminders.forEach(rem => {
@@ -255,20 +200,7 @@ const self = (module.exports = {
                 age
               )} birthday on ${dateString}! Only ${rem} to go!`;
 
-              self
-                .sendText(textBody, phone)
-                .then(message => {
-                  const data = {
-                    date: DateTime.local().toLocaleString(
-                      DateTime.DATETIME_FULL
-                    ),
-                    body: textBody,
-                    to: message.to,
-                    sid: message.sid
-                  };
-                  fn.logText(data);
-                })
-                .catch(err => console.log('err:', err));
+              self.sendText(textBody, phone);
             }
           });
         }
@@ -285,28 +217,14 @@ const self = (module.exports = {
           if (customDates.length && phone) {
             customDates.forEach(date => {
               const { title, description, value, reminders } = date;
-              const { dateDayOfYear, dateString, yearOfDate } = formatDate(
-                value
-              );
+              const { dateDayOfYear, dateString } = formatDate(value);
+              const { nowDayOfYear, numberOfDaysInYear } = getNowData();
               const daysToDate = dateDayOfYear - nowDayOfYear;
 
               if (daysToDate == 0) {
                 const textBody = `It's the ${title} (${description}) today!`;
 
-                self
-                  .sendText(textBody, phone)
-                  .then(message => {
-                    const data = {
-                      date: DateTime.local().toLocaleString(
-                        DateTime.DATETIME_FULL
-                      ),
-                      body: textBody,
-                      to: message.to,
-                      sid: message.sid
-                    };
-                    fn.logText(data);
-                  })
-                  .catch(err => console.log('err:', err));
+                self.sendText(textBody, phone);
               }
 
               reminders.forEach(rem => {
@@ -318,20 +236,7 @@ const self = (module.exports = {
                 ) {
                   const textBody = `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`;
 
-                  self
-                    .sendText(textBody, phone)
-                    .then(message => {
-                      const data = {
-                        date: DateTime.local().toLocaleString(
-                          DateTime.DATETIME_FULL
-                        ),
-                        body: textBody,
-                        to: message.to,
-                        sid: message.sid
-                      };
-                      fn.logText(data);
-                    })
-                    .catch(err => console.log('err:', err));
+                  self.sendText(textBody, phone);
                 }
               });
             });
@@ -341,11 +246,22 @@ const self = (module.exports = {
       .catch(err => console.log({ error: err.message }));
   },
   sendText: (body, to) => {
-    return client.messages.create({
-      body: `${body}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: `+1${to}`
-    });
+    client.messages
+      .create({
+        body: `${body}`,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: `+1${to}`
+      })
+      .then(message => {
+        const data = {
+          date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
+          body: body,
+          to: message.to,
+          sid: message.sid
+        };
+        fn.logText(data);
+      })
+      .catch(err => console.log('err:', err));
   },
   setFutureTimestamp: nudge => {
     const futureTimestamp = fn.getFutureTimestamp(nudge);
@@ -368,8 +284,12 @@ const self = (module.exports = {
   send: (req, res) => {
     const { phone, textMessage } = req.body;
 
-    self
-      .sendText(textMessage, phone)
+    client.messages
+      .create({
+        body: `${textMessage}`,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: `+1${phone}`
+      })
       .then(message => {
         const data = {
           date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
