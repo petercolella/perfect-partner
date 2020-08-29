@@ -26,12 +26,17 @@ setInterval(() => {
         return;
       }
       res.on('data', chunk => {
-        console.log(`Received ${chunk.length} bytes of data.`);
+        console.log(
+          `Received ${
+            chunk.length
+          } bytes of data. ${DateTime.local().toLocaleString(
+            DateTime.DATETIME_FULL
+          )}`
+        );
       });
       res.on('end', () => {
         try {
-          console.log(DateTime.local().toLocaleString(DateTime.DATETIME_FULL));
-          console.log('Done.');
+          console.log('Done?', res.complete);
         } catch (e) {
           console.error(e.message);
         }
@@ -42,20 +47,14 @@ setInterval(() => {
     });
 }, 300000);
 
-const job = new CronJob(
-  '0 0 8 * * *',
-  () => {
-    const d = new Date();
-    console.log('run job:', d);
-    textController.runActivatedNudges();
-    textController.runAnniversaryNudges();
-    textController.runBirthdayNudges();
-    textController.runCustomDateNudges();
-  },
-  null,
-  false,
-  'America/New_York'
-);
+const job = new CronJob('0 0 0 * * *', () => {
+  const d = new Date();
+  console.log('run job:', d);
+  textController.runActivatedNudges();
+  textController.runAnniversaryNudges();
+  textController.runBirthdayNudges();
+  textController.runCustomDateNudges();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
