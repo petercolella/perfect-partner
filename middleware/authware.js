@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
       })
       .catch(err => {
         console.log('verify err:', err);
-        res.status(401).json(err.message);
+        res.status(401).json(err.message.split(', ')[0]);
       });
   } catch (err) {
     console.log('authorization err:', err);

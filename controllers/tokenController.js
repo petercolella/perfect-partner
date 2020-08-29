@@ -47,7 +47,7 @@ module.exports = {
       })
       .catch(err => {
         console.log('tokenController err:', err);
-        res.status(401).json(err.message);
+        res.status(401).json(err.message.split(', ')[0]);
       });
   }
 };
