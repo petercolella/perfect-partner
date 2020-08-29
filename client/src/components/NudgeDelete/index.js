@@ -24,21 +24,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NudgeDelete = props => {
+const NudgeDelete = ({
+  setNudgeDeleteDialogOpen,
+  handleNudgeDeleteConfirm,
+  nudge,
+  nudgeDeleteDialogOpen
+}) => {
   const classes = useStyles();
-  const {
-    setNudgeDeleteDialogOpen,
-    handleNudgeDeleteConfirm,
-    nudge,
-    nudgeDeleteDialogOpen
-  } = props;
 
   return (
     <Dialog open={nudgeDeleteDialogOpen}>
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <DeleteIcon
           color="error"
           fontSize="large"
@@ -52,14 +52,16 @@ const NudgeDelete = props => {
           color="secondary"
           startIcon={<DeleteForeverIcon />}
           size="small"
-          variant="contained">
+          variant="contained"
+        >
           Confirm
         </Button>
         <Button
           onClick={() => setNudgeDeleteDialogOpen(false)}
           size="small"
           variant="contained"
-          autoFocus>
+          autoFocus
+        >
           Cancel
         </Button>
       </DialogActions>

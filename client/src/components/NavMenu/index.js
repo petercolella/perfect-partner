@@ -39,16 +39,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NavMenu = props => {
-  const classes = useStyles();
-
-  const { setDrawerOpen } = props;
-
+const NavMenu = ({ setDrawerOpen }) => {
   const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const classes = useStyles();
 
   return (
     <div className={classes.root}>

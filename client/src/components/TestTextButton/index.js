@@ -13,7 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 
-const useStyles1 = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   success: {
     backgroundColor: green[600]
   },
@@ -30,42 +30,44 @@ const useStyles1 = makeStyles(theme => ({
   }
 }));
 
-const MySnackbarContentWrapper = React.forwardRef((props, ref) => {
-  const classes = useStyles1();
-  const { message, onClose, variant, ...other } = props;
+const MySnackbarContentWrapper = React.forwardRef(
+  ({ message, onClose, variant, ...other }, ref) => {
+    const classes = useStyles();
 
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant])}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <CheckCircleIcon
-            className={clsx(classes.icon, classes.iconVariant)}
-          />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton
-          key="close"
-          aria-label="close"
-          color="inherit"
-          onClick={onClose}>
-          <CloseIcon className={classes.icon} />
-        </IconButton>
-      ]}
-      {...other}
-      ref={ref}
-    />
-  );
-});
+    return (
+      <SnackbarContent
+        className={clsx(classes[variant])}
+        aria-describedby="client-snackbar"
+        message={
+          <span id="client-snackbar" className={classes.message}>
+            <CheckCircleIcon
+              className={clsx(classes.icon, classes.iconVariant)}
+            />
+            {message}
+          </span>
+        }
+        action={[
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={onClose}
+          >
+            <CloseIcon className={classes.icon} />
+          </IconButton>
+        ]}
+        {...other}
+        ref={ref}
+      />
+    );
+  }
+);
 
 const Transition = props => {
   return <Slide {...props} direction="up" />;
 };
 
-const TestTextButton = props => {
+const TestTextButton = ({ user, nudge }) => {
   const [toastOpen, setToastOpen] = React.useState(false);
 
   const handleToastClose = (event, reason) => {
@@ -77,8 +79,8 @@ const TestTextButton = props => {
   };
 
   const sendText = () => {
-    const phone = props.user.phone;
-    const textMessage = props.nudge.textMessage;
+    const phone = user.phone;
+    const textMessage = nudge.textMessage;
     API.sendText({ phone, textMessage })
       .then(res => {
         console.log(res.data);
@@ -101,13 +103,14 @@ const TestTextButton = props => {
         TransitionComponent={Transition}
         ContentProps={{
           'aria-describedby': 'message-id'
-        }}>
+        }}
+      >
         <MySnackbarContentWrapper
           onClose={handleToastClose}
           variant="success"
           message={
-            props.user.phone
-              ? `Text Sent to ${fn.formatPhoneNumber(props.user.phone)}.`
+            user.phone
+              ? `Text Sent to ${fn.formatPhoneNumber(user.phone)}.`
               : `Please log in to send a text.`
           }
         />

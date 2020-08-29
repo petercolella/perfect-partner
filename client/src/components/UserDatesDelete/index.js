@@ -25,21 +25,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserDateDelete = props => {
+const UserDateDelete = ({
+  setUserDateDeleteDialogOpen,
+  handleUserDateDeleteConfirm,
+  userDate,
+  userDateDeleteDialogOpen
+}) => {
   const classes = useStyles();
-  const {
-    setUserDateDeleteDialogOpen,
-    handleUserDateDeleteConfirm,
-    userDate,
-    userDateDeleteDialogOpen
-  } = props;
 
   return (
     <Dialog open={userDateDeleteDialogOpen}>
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <DeleteIcon
           color="error"
           fontSize="large"
@@ -57,14 +57,16 @@ const UserDateDelete = props => {
           color="secondary"
           startIcon={<DeleteForeverIcon />}
           size="small"
-          variant="contained">
+          variant="contained"
+        >
           Confirm
         </Button>
         <Button
           onClick={() => setUserDateDeleteDialogOpen(false)}
           size="small"
           variant="contained"
-          autoFocus>
+          autoFocus
+        >
           Cancel
         </Button>
       </DialogActions>

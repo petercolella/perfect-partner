@@ -20,16 +20,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NudgeUpdate = props => {
+const NudgeUpdate = ({
+  setNudgeDialogOpen,
+  nudgeDialogOpen,
+  handleNudgeFormSubmit,
+  handleNudgeInputChange,
+  nudge
+}) => {
   const classes = useStyles();
-
-  const {
-    setNudgeDialogOpen,
-    nudgeDialogOpen,
-    handleNudgeFormSubmit,
-    handleNudgeInputChange,
-    nudge
-  } = props;
 
   return (
     <Dialog
@@ -37,11 +35,13 @@ const NudgeUpdate = props => {
       open={nudgeDialogOpen}
       onClose={() => setNudgeDialogOpen(false)}
       aria-labelledby="form-dialog-title"
-      scroll={'body'}>
+      scroll={'body'}
+    >
       <DialogTitle
         className={classes.title}
         id="form-dialog-title"
-        disableTypography={true}>
+        disableTypography={true}
+      >
         <Pencil height="2.5em" width="2.5em" style={{ marginRight: 16 }} />
         <Typography variant="h6">
           Personalize Your {nudge.name} Nudge
@@ -90,7 +90,8 @@ const NudgeUpdate = props => {
           value={nudge.nudgeFrequencyUnit}
           onChange={handleNudgeInputChange('nudgeFrequencyUnit')}
           margin="normal"
-          variant="outlined">
+          variant="outlined"
+        >
           <MenuItem value="days">days</MenuItem>
           <MenuItem value="weeks">weeks</MenuItem>
           <MenuItem value="months">months</MenuItem>
