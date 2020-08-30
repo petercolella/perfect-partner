@@ -46,7 +46,6 @@ const self = (module.exports = {
   activate: (req, res) => {
     const nudge = req.body.nudge;
     const {
-      _id,
       name,
       nudgeFrequency,
       nudgeFrequencyUnit,
@@ -94,10 +93,8 @@ const self = (module.exports = {
             db.User.findOne({
               nudges: { $in: _id }
             })
-              .then(userModel => {
-                const { phone } = userModel;
-
-                self.sendText(textMessage, phone);
+              .then(user => {
+                fn.createTextCronJob(textMessage, user);
                 self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
@@ -138,7 +135,7 @@ const self = (module.exports = {
               years
             )} anniversary today! Make it special!`;
 
-            self.sendText(textBody, phone);
+            fn.createTextCronJob(textBody, user);
           }
 
           anniversaryReminders.forEach(rem => {
@@ -152,7 +149,7 @@ const self = (module.exports = {
                 years
               )} anniversary on ${dateString}! Only ${rem} to go!`;
 
-              self.sendText(textBody, phone);
+              fn.createTextCronJob(textBody, user);
             }
           });
         }
@@ -186,7 +183,7 @@ const self = (module.exports = {
               age
             )} birthday today! Make it special!`;
 
-            fn.createTextCronJob(textBody, phone, user);
+            fn.createTextCronJob(textBody, user);
           }
 
           birthdayReminders.forEach(rem => {
@@ -200,7 +197,7 @@ const self = (module.exports = {
                 age
               )} birthday on ${dateString}! Only ${rem} to go!`;
 
-              self.sendText(textBody, phone);
+              fn.createTextCronJob(textBody, user);
             }
           });
         }
@@ -224,7 +221,7 @@ const self = (module.exports = {
               if (daysToDate == 0) {
                 const textBody = `It's the ${title} (${description}) today!`;
 
-                self.sendText(textBody, phone);
+                fn.createTextCronJob(textBody, user);
               }
 
               reminders.forEach(rem => {
@@ -236,7 +233,7 @@ const self = (module.exports = {
                 ) {
                   const textBody = `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`;
 
-                  self.sendText(textBody, phone);
+                  fn.createTextCronJob(textBody, user);
                 }
               });
             });
