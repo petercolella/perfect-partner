@@ -13,8 +13,8 @@ const twilioClient = require('twilio')(accountSid, authToken);
 const fs = require('fs');
 
 const self = (module.exports = {
-  createTextCronJob: (body, to, user) => {
-    const { offset, timeZone } = user;
+  createTextCronJob: (body, user) => {
+    const { offset, phone, timeZone } = user;
     const sendTextHour = 8;
 
     let date = new Date();
@@ -34,7 +34,7 @@ const self = (module.exports = {
         () => {
           const d = new Date();
           console.log('run job:', d);
-          self.sendText(body, to);
+          self.sendText(body, phone);
         },
         null,
         true,
