@@ -1,6 +1,12 @@
 require('dotenv').config();
 const db = require('../models');
-const fn = require('../scripts/fn');
+const {
+  createTextCronJob,
+  getFutureTimestamp,
+  logText,
+  ordinalNumberGenerator,
+  sendText
+} = require('../scripts/fn');
 const { DateTime } = require('luxon');
 
 // Download the helper library from https://www.twilio.com/docs/node/install
@@ -64,13 +70,13 @@ const self = (module.exports = {
                   0,
                   nudgeFrequencyUnit.length - 1
                 )} with the message, "${textMessage}"`;
-          self.sendText(activateBody, phone);
+          sendText(activateBody, phone);
           self.setFutureTimestamp(nudge);
           res.json({ msg: `${name} Activated`, activated: dbModel.activated });
         } else {
           const deactivateBody = `You have deactivated your ${name} Nudge. Text reminders will not be sent.`;
 
-          self.sendText(deactivateBody, phone);
+          sendText(deactivateBody, phone);
           res.json({
             msg: `${name} Deactivated`,
             activated: dbModel.activated
@@ -94,7 +100,7 @@ const self = (module.exports = {
               nudges: { $in: _id }
             })
               .then(user => {
-                fn.createTextCronJob(textMessage, user);
+                createTextCronJob(textMessage, user);
                 self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
@@ -131,11 +137,11 @@ const self = (module.exports = {
           const daysToAnniversary = dateDayOfYear - nowDayOfYear;
 
           if (daysToAnniversary == 0) {
-            const textBody = `It's your and ${partner}'s ${fn.ordinalNumberGenerator(
+            const textBody = `It's your and ${partner}'s ${ordinalNumberGenerator(
               years
             )} anniversary today! Make it special!`;
 
-            fn.createTextCronJob(textBody, user);
+            createTextCronJob(textBody, user);
           }
 
           anniversaryReminders.forEach(rem => {
@@ -145,11 +151,11 @@ const self = (module.exports = {
               daysToAnniversary == reminderDays ||
               daysToAnniversary == reminderDays - numberOfDaysInYear
             ) {
-              const textBody = `Don't forget your and ${partnerName}'s ${fn.ordinalNumberGenerator(
+              const textBody = `Don't forget your and ${partnerName}'s ${ordinalNumberGenerator(
                 years
               )} anniversary on ${dateString}! Only ${rem} to go!`;
 
-              fn.createTextCronJob(textBody, user);
+              createTextCronJob(textBody, user);
             }
           });
         }
@@ -179,11 +185,11 @@ const self = (module.exports = {
           const daysToBirthday = dateDayOfYear - nowDayOfYear;
 
           if (daysToBirthday == 0) {
-            const textBody = `It's ${partner}'s ${fn.ordinalNumberGenerator(
+            const textBody = `It's ${partner}'s ${ordinalNumberGenerator(
               age
             )} birthday today! Make it special!`;
 
-            fn.createTextCronJob(textBody, user);
+            createTextCronJob(textBody, user);
           }
 
           birthdayReminders.forEach(rem => {
@@ -193,11 +199,11 @@ const self = (module.exports = {
               daysToBirthday == reminderDays ||
               daysToBirthday == reminderDays - numberOfDaysInYear
             ) {
-              const textBody = `Don't forget ${partner}'s ${fn.ordinalNumberGenerator(
+              const textBody = `Don't forget ${partner}'s ${ordinalNumberGenerator(
                 age
               )} birthday on ${dateString}! Only ${rem} to go!`;
 
-              fn.createTextCronJob(textBody, user);
+              createTextCronJob(textBody, user);
             }
           });
         }
@@ -221,7 +227,7 @@ const self = (module.exports = {
               if (daysToDate == 0) {
                 const textBody = `It's the ${title} (${description}) today!`;
 
-                fn.createTextCronJob(textBody, user);
+                createTextCronJob(textBody, user);
               }
 
               reminders.forEach(rem => {
@@ -233,7 +239,7 @@ const self = (module.exports = {
                 ) {
                   const textBody = `Don't forget the ${title} (${description}) on ${dateString}! Only ${rem} to go!`;
 
-                  fn.createTextCronJob(textBody, user);
+                  createTextCronJob(textBody, user);
                 }
               });
             });
@@ -242,26 +248,8 @@ const self = (module.exports = {
       })
       .catch(err => console.log({ error: err.message }));
   },
-  sendText: (body, to) => {
-    client.messages
-      .create({
-        body: `${body}`,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: `+1${to}`
-      })
-      .then(message => {
-        const data = {
-          date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-          body: body,
-          to: message.to,
-          sid: message.sid
-        };
-        fn.logText(data);
-      })
-      .catch(err => console.log('err:', err));
-  },
   setFutureTimestamp: nudge => {
-    const futureTimestamp = fn.getFutureTimestamp(nudge);
+    const futureTimestamp = getFutureTimestamp(nudge);
 
     db.Nudge.findOneAndUpdate(
       { _id: nudge._id },
@@ -294,7 +282,7 @@ const self = (module.exports = {
           to: message.to,
           sid: message.sid
         };
-        fn.logText(data);
+        logText(data);
         res.json({ msg: 'Test Text Successfully Sent' });
       })
       .catch(err => console.log('err:', err));
