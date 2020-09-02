@@ -104,7 +104,7 @@ const self = (module.exports = {
     if (lastDigit > 3) lastDigit = 0;
     return num + ordinalIndicatorArray[lastDigit];
   },
-  sendText: (body, to) => {
+  sendText: (body, to, res) => {
     twilioClient.messages
       .create({
         body: `${body}`,
@@ -119,6 +119,7 @@ const self = (module.exports = {
           sid: message.sid
         };
         self.logText(data);
+        if (res) res.json({ msg: 'Test Text Successfully Sent' });
       })
       .catch(err => console.log('err:', err));
   },
