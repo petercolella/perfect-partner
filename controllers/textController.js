@@ -269,22 +269,6 @@ const self = (module.exports = {
   send: (req, res) => {
     const { phone, textMessage } = req.body;
 
-    client.messages
-      .create({
-        body: `${textMessage}`,
-        from: process.env.TWILIO_PHONE_NUMBER,
-        to: `+1${phone}`
-      })
-      .then(message => {
-        const data = {
-          date: DateTime.local().toLocaleString(DateTime.DATETIME_FULL),
-          body: textMessage,
-          to: message.to,
-          sid: message.sid
-        };
-        logText(data);
-        res.json({ msg: 'Test Text Successfully Sent' });
-      })
-      .catch(err => console.log('err:', err));
+    sendText(textMessage, phone, res);
   }
 });
