@@ -1,126 +1,44 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import Snackbar from '@material-ui/core/Snackbar';
-import SendIcon from '@material-ui/icons/Send';
+import React, { useContext } from 'react';
+import { Context as SnackbarContext } from '../../context/SnackbarContext';
+
 import IconButton from '@material-ui/core/IconButton';
+import SendIcon from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
+
 import API from '../../utils/API';
 import fn from '../../utils/fn';
 
-const useStyles = makeStyles(theme => ({
-  success: {
-    backgroundColor: green[600]
-  },
-  icon: {
-    fontSize: 20
-  },
-  iconVariant: {
-    opacity: 0.9,
-    marginRight: theme.spacing(1)
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center'
-  }
-}));
-
-const MySnackbarContentWrapper = React.forwardRef(
-  ({ message, onClose, variant, ...other }, ref) => {
-    const classes = useStyles();
-
-    return (
-      <SnackbarContent
-        className={clsx(classes[variant])}
-        aria-describedby="client-snackbar"
-        message={
-          <span id="client-snackbar" className={classes.message}>
-            <CheckCircleIcon
-              className={clsx(classes.icon, classes.iconVariant)}
-            />
-            {message}
-          </span>
-        }
-        action={[
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            onClick={onClose}
-          >
-            <CloseIcon className={classes.icon} />
-          </IconButton>
-        ]}
-        {...other}
-        ref={ref}
-      />
-    );
-  }
-);
-
-const Transition = props => {
-  return <Slide {...props} direction="up" />;
-};
-
 const TestTextButton = ({ user, nudge }) => {
-  const [toastOpen, setToastOpen] = React.useState(false);
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
+  const { phone } = user;
+  const { textMessage } = nudge;
 
-  const handleToastClose = (event, reason) => {
-    if (reason === 'clickaway') {
+  const sendText = () => {
+    if (!phone) {
+      handleSnackbarOpen('A phone number is required!', 'warning');
       return;
     }
 
-    setToastOpen(false);
-  };
-
-  const sendText = () => {
-    const phone = user.phone;
-    const textMessage = nudge.textMessage;
     API.sendText({ phone, textMessage })
       .then(res => {
         console.log(res.data);
-        setToastOpen(true);
+        handleSnackbarOpen(
+          `Text Sent to ${fn.formatPhoneNumber(phone)}.`,
+          'success'
+        );
       })
       .catch(err => {
         console.log(err);
+        const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
+        handleSnackbarOpen(errMsg, 'error');
       });
   };
   return (
-    <>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        open={toastOpen}
-        autoHideDuration={2000}
-        onClose={handleToastClose}
-        TransitionComponent={Transition}
-        ContentProps={{
-          'aria-describedby': 'message-id'
-        }}
-      >
-        <MySnackbarContentWrapper
-          onClose={handleToastClose}
-          variant="success"
-          message={
-            user.phone
-              ? `Text Sent to ${fn.formatPhoneNumber(user.phone)}.`
-              : `Please log in to send a text.`
-          }
-        />
-      </Snackbar>
-      <Tooltip title="Send Text" color="primary">
-        <IconButton aria-label="send text" onClick={sendText}>
-          <SendIcon />
-        </IconButton>
-      </Tooltip>
-    </>
+    <Tooltip title="Send Text" color="primary">
+      <IconButton aria-label="send text" onClick={sendText}>
+        <SendIcon />
+      </IconButton>
+    </Tooltip>
   );
 };
 
