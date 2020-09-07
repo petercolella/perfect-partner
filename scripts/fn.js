@@ -10,6 +10,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = require('twilio')(accountSid, authToken);
 
+const db = require('../models');
 const fs = require('fs');
 
 const self = (module.exports = {
@@ -33,13 +34,16 @@ const self = (module.exports = {
         localTimeZone,
         () => {
           const d = new Date();
-          console.log('run job:', d);
+          console.log('run job (createTextCronJob):', d);
           self.sendText(body, phone);
         },
         null,
         true,
         timeZone
       );
+      db.Job.create({ args: [body, phone], date: job.nextDate() })
+        .then(model => console.log(model))
+        .catch(err => console.log(err));
       console.log(
         `Next job for user ${user.name} (${
           user._id
