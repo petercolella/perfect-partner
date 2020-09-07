@@ -4,6 +4,7 @@ const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
 const routes = require('./routes');
+const jobController = require('./controllers/jobController');
 const textController = require('./controllers/textController');
 
 const app = express();
@@ -75,4 +76,5 @@ mongoose.set('useCreateIndex', true);
 app.listen(PORT, () => {
   console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
   job.start();
+  jobController.findAllTextCronJobs();
 });
