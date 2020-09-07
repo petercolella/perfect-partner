@@ -1,6 +1,5 @@
 const db = require('../models');
-const textControl = require('./textController');
-const fn = require('../scripts/fn');
+const { sendText } = require('../scripts/fn');
 const { DateTime } = require('luxon');
 
 // Defining methods for the usersController
@@ -64,7 +63,7 @@ module.exports = {
           if (req.body.hasOwnProperty('phone') && req.body.phone !== '') {
             const updateBody = `Welcome to Perfect Partner, ${dbModel.firstName}!`;
 
-            textControl.sendText(updateBody, dbModel.phone);
+            sendText(updateBody, dbModel.phone);
           }
           const { googleId, ...user } = dbModel._doc;
           res.json(user);
