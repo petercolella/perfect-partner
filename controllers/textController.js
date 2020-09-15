@@ -3,7 +3,6 @@ const db = require('../models');
 const {
   createTextCronJob,
   getFutureTimestamp,
-  logText,
   ordinalNumberGenerator,
   sendText
 } = require('../scripts/fn');
@@ -93,7 +92,7 @@ const self = (module.exports = {
               nudges: { $in: _id }
             })
               .then(user => {
-                createTextCronJob(textMessage, user);
+                createTextCronJob(textMessage, user, true);
                 self.setFutureTimestamp(nudge);
               })
               .catch(err => console.log('Error: ', err.message));
