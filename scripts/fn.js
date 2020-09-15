@@ -14,9 +14,19 @@ const db = require('../models');
 const fs = require('fs');
 
 const self = (module.exports = {
-  createTextCronJob: (body, user) => {
+  createTextCronJob: (
+    body,
+    user,
+    randomHour = false,
+    fromHour = 8,
+    toHour = 20
+  ) => {
     const { offset, phone, timeZone } = user;
-    const sendTextHour = 8;
+    let sendTextHour = 8;
+
+    if (randomHour) {
+      sendTextHour = Math.floor(Math.random() * (toHour - fromHour)) + fromHour;
+    }
 
     let date = new Date();
     date.setHours(0, 0, 0, 0);
