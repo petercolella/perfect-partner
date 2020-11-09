@@ -7,7 +7,7 @@ const textController = require("../controllers/textController");
 const now = DateTime.utc();
 const nowDayOfYear = now.toFormat("o");
 
-mongoose.connect(process.env.DB_URI || "mongodb://localhost/pp", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/pp", {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,

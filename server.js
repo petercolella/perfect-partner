@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(routes);
 
-mongoose.connect(process.env.DB_URI || "mongodb://localhost/pp", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/pp", {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,
