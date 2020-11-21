@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import { Context as SnackbarContext } from '../context/SnackbarContext';
-import { Context as UserContext } from '../context/UserContext';
-import useRenderSnackbarMessage from '../hooks/useRenderSnackbarMessage';
+import { useContext } from "react";
+import { Context as SnackbarContext } from "../context/SnackbarContext";
+import { Context as UserContext } from "../context/UserContext";
+import useRenderSnackbarMessage from "../hooks/useRenderSnackbarMessage";
 
-import API from '../utils/API';
-import fn from '../utils/fn';
+import API from "../utils/API";
+import fn from "../utils/fn";
 
 export default (dialogSetter, stateSetter, stateObj) => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
@@ -12,6 +12,11 @@ export default (dialogSetter, stateSetter, stateObj) => {
   const [renderSnackbarMessage] = useRenderSnackbarMessage();
 
   const handleUserFormSubmit = () => {
+    if (!stateObj.anniversaryDate.isValid || !stateObj.birthDate.isValid) {
+      handleSnackbarOpen(`Oops! That's not valid date.`, "warning");
+      return;
+    }
+
     const newUser = {
       ...stateObj.dashboardUser,
       anniversaryDate: stateObj.anniversaryDate
@@ -19,7 +24,7 @@ export default (dialogSetter, stateSetter, stateObj) => {
         : undefined,
       birthDate: stateObj.birthDate
         ? fn.localToUTC(stateObj.birthDate)
-        : undefined
+        : undefined,
     };
 
     const testUser = {
@@ -29,10 +34,10 @@ export default (dialogSetter, stateSetter, stateObj) => {
         : undefined,
       birthDate: stateObj.birthDate
         ? fn.localToUTC(stateObj.birthDate).toISO()
-        : undefined
+        : undefined,
     };
 
-    const testArray = Object.keys(testUser).filter(key => {
+    const testArray = Object.keys(testUser).filter((key) => {
       if (Array.isArray(testUser[key])) {
         return testUser[key].join() !== stateObj.user[key].join();
       }
@@ -40,8 +45,8 @@ export default (dialogSetter, stateSetter, stateObj) => {
     });
 
     const customDateTestArray = stateObj.dashboardCustomDates
-      ? stateObj.dashboardCustomDates.flatMap(date => {
-          return Object.keys(date).filter(key => {
+      ? stateObj.dashboardCustomDates.flatMap((date) => {
+          return Object.keys(date).filter((key) => {
             return (
               stateObj.user.customDates.find(({ _id }) => _id === date._id) &&
               date[key] !==
@@ -54,12 +59,12 @@ export default (dialogSetter, stateSetter, stateObj) => {
       : [];
 
     if (!testArray.length && !customDateTestArray.length) {
-      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, "warning");
       return;
     }
 
-    if (newUser.phone.length !== 10 && newUser.phone !== '') {
-      handleSnackbarOpen('Phone number must be 10 digits.', 'warning');
+    if (newUser.phone.length !== 10 && newUser.phone !== "") {
+      handleSnackbarOpen("Phone number must be 10 digits.", "warning");
       return;
     }
 
@@ -71,17 +76,17 @@ export default (dialogSetter, stateSetter, stateObj) => {
       }
 
       API.updateUser(stateObj.user._id, reqBody)
-        .then(res => {
+        .then((res) => {
           renderSnackbarMessage(res.data);
           loadCurrentUser(res);
           dialogSetter(false);
         })
-        .catch(err => {
+        .catch((err) => {
           // captures error message after last colon and space
           const [errMsg] = err.response
             ? err.response.data.match(/(?! )[^:]+$/)
-            : 'Error!';
-          handleSnackbarOpen(errMsg, 'error');
+            : "Error!";
+          handleSnackbarOpen(errMsg, "error");
           stateSetter();
           return;
         });
@@ -90,7 +95,7 @@ export default (dialogSetter, stateSetter, stateObj) => {
     if (customDateTestArray.length) {
       stateObj.dashboardCustomDates.forEach((date, i) => {
         let changed = false;
-        Object.keys(date).forEach(key => {
+        Object.keys(date).forEach((key) => {
           if (date[key] !== stateObj.user.customDates[i][key]) {
             changed = true;
           }
@@ -99,17 +104,17 @@ export default (dialogSetter, stateSetter, stateObj) => {
           const tempDate = { ...date };
           tempDate.value = fn.localToUTC(tempDate.value);
           API.updateDate(date._id, tempDate)
-            .then(res => {
+            .then((res) => {
               renderSnackbarMessage(res.data, true);
               reloadCurrentUser();
               dialogSetter(false);
             })
-            .catch(err => {
+            .catch((err) => {
               // captures error message after last colon and space
               const [errMsg] = err.response
                 ? err.response.data.match(/(?! )[^:]+$/)
                 : err.message;
-              handleSnackbarOpen(errMsg, 'error');
+              handleSnackbarOpen(errMsg, "error");
               stateSetter();
               return;
             });
