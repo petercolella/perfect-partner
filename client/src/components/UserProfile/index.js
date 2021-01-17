@@ -3,75 +3,75 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState
-} from 'react';
-import useHandleUserFormSubmit from '../../hooks/useHandleUserFormSubmit';
-import { Context as SnackbarContext } from '../../context/SnackbarContext';
-import { Context as UserContext } from '../../context/UserContext';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+  useState,
+} from "react";
+import useHandleUserFormSubmit from "../../hooks/useHandleUserFormSubmit";
+import { Context as SnackbarContext } from "../../context/SnackbarContext";
+import { Context as UserContext } from "../../context/UserContext";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MuiLink from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Zoom from '@material-ui/core/Zoom';
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import MuiLink from "@material-ui/core/Link";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Zoom from "@material-ui/core/Zoom";
 
-import UserProfileDelete from '../../components/UserProfileDelete';
-import UserProfileUpdate from '../../components/UserProfileUpdate';
+import UserProfileDelete from "../../components/UserProfileDelete";
+import UserProfileUpdate from "../../components/UserProfileUpdate";
 
-import API from '../../utils/API';
-import fn from '../../utils/fn';
+import API from "../../utils/API";
+import fn from "../../utils/fn";
 
 const userKeyArray = [
-  'firstName',
-  'lastName',
-  'name',
-  'email',
-  'partnerName',
-  'phone'
+  "firstName",
+  "lastName",
+  "name",
+  "email",
+  "partnerName",
+  "phone",
 ];
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    overflowX: 'auto'
+    width: "100%",
+    overflowX: "auto",
   },
   button: {
-    borderColor: '#22b5e0',
-    color: '#22b5e0',
-    margin: theme.spacing(1)
+    borderColor: "#22b5e0",
+    color: "#22b5e0",
+    margin: theme.spacing(1),
   },
   buttonContainer: {
-    display: 'flex',
-    justifyContent: 'space-around'
+    display: "flex",
+    justifyContent: "space-around",
   },
   multiline: {
-    margin: 0
-  }
+    margin: 0,
+  },
 }));
 
-const CustomCardMedia = withStyles(theme => ({
+const CustomCardMedia = withStyles((theme) => ({
   root: {
-    backgroundPositionX: 'left',
+    backgroundPositionX: "left",
     maxWidth: 96,
-    objectFit: 'contain'
-  }
+    objectFit: "contain",
+  },
 }))(CardMedia);
 
 const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
     state: { signedIn, user },
-    signOut
+    signOut,
   } = useContext(UserContext);
 
   const [dashboardUser, setDashboardUser] = useState(user);
@@ -91,7 +91,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
     loadDashboardUser,
     {
       dashboardUser,
-      user
+      user,
     }
   );
 
@@ -104,17 +104,17 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
   timeTotalRef.current = 0;
 
   const eraseUser = () => {
-    Object.keys(dashboardUser).forEach(key => {
+    Object.keys(dashboardUser).forEach((key) => {
       if (
-        typeof dashboardUser[key] === 'string' &&
+        typeof dashboardUser[key] === "string" &&
         userKeyArray.includes(key)
       ) {
         for (let i = dashboardUser[key].length - 1; i >= 0; i--) {
           setTimeout(() => {
-            setDashboardUser(dashboardUser => {
+            setDashboardUser((dashboardUser) => {
               return {
                 ...dashboardUser,
-                [key]: dashboardUser[key].substring(0, i)
+                [key]: dashboardUser[key].substring(0, i),
               };
             });
           }, (timeTotalRef.current += 75));
@@ -131,24 +131,24 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
     }, (timeTotalRef.current += 100));
     setTimeout(() => {
       API.deleteUser(user._id)
-        .then(res => {
-          handleSnackbarOpen('See ya!!!', 'info', 1000);
+        .then((res) => {
+          handleSnackbarOpen("See ya!!!", "info", 1000);
           setTimeout(() => {
             setRedirect(true);
             signOut();
           }, 1250);
         })
-        .catch(err => {
+        .catch((err) => {
           const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-          handleSnackbarOpen(errMsg, 'error');
+          handleSnackbarOpen(errMsg, "error");
         });
     }, (timeTotalRef.current += 1250));
     setUserDeleteDialogOpen(false);
   };
 
-  const handleUserInputChange = name => event => {
+  const handleUserInputChange = (name) => (event) => {
     let { value } = event.target;
-    value = name === 'phone' ? value.replace(/\D/g, '') : value;
+    value = name === "phone" ? value.replace(/\D/g, "") : value;
     setDashboardUser({ ...dashboardUser, [name]: value });
   };
 
@@ -179,7 +179,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Image Link:"
                       secondary={
@@ -197,7 +197,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="First Name:"
                       secondary={user.firstName}
@@ -206,7 +206,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Last Name:"
                       secondary={user.lastName}
@@ -215,7 +215,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Full Name:"
                       secondary={user.name}
@@ -224,7 +224,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Email:"
                       secondary={user.email}
@@ -233,7 +233,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Partner's Name:"
                       secondary={user.partnerName}
@@ -242,7 +242,7 @@ const UserProfile = ({ deleted, setDeleted, setRedirect }) => {
                   <ListItem>
                     <ListItemText
                       classes={{
-                        multiline: classes.multiline
+                        multiline: classes.multiline,
                       }}
                       primary="Phone Number:"
                       secondary={

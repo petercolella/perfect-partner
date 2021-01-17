@@ -12,7 +12,11 @@ export default (dialogSetter, stateSetter, stateObj) => {
   const [renderSnackbarMessage] = useRenderSnackbarMessage();
 
   const handleUserFormSubmit = () => {
-    if (!stateObj.anniversaryDate.isValid || !stateObj.birthDate.isValid) {
+    if (
+      (stateObj.hasOwnProperty("anniversaryDate") &&
+        !stateObj.anniversaryDate.isValid) ||
+      (stateObj.hasOwnProperty("birthDate") && !stateObj.birthDate.isValid)
+    ) {
       handleSnackbarOpen(`Oops! That's not valid date.`, "warning");
       return;
     }
@@ -31,10 +35,10 @@ export default (dialogSetter, stateSetter, stateObj) => {
       ...stateObj.dashboardUser,
       anniversaryDate: stateObj.anniversaryDate
         ? fn.localToUTC(stateObj.anniversaryDate).toISO()
-        : undefined,
+        : stateObj.dashboardUser.anniversaryDate,
       birthDate: stateObj.birthDate
         ? fn.localToUTC(stateObj.birthDate).toISO()
-        : undefined,
+        : stateObj.dashboardUser.birthDate,
     };
 
     const testArray = Object.keys(testUser).filter((key) => {
