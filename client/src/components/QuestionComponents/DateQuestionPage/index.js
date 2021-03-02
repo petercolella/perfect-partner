@@ -1,18 +1,18 @@
-import React, { useCallback, useContext, useState, useEffect } from 'react';
-import { Context as UserContext } from '../../../context/UserContext';
-import { Context as SnackbarContext } from '../../../context/SnackbarContext';
-import { DateTime } from 'luxon';
+import React, { useCallback, useContext, useState, useEffect } from "react";
+import { Context as UserContext } from "../../../context/UserContext";
+import { Context as SnackbarContext } from "../../../context/SnackbarContext";
+import { DateTime } from "luxon";
 
-import DateQuestionDialog from '../DateQuestionDialog';
+import DateQuestionDialog from "../DateQuestionDialog";
 
-import API from '../../../utils/API';
-import fn from '../../../utils/fn';
+import API from "../../../utils/API";
+import fn from "../../../utils/fn";
 
 const DateQuestionPage = ({ Image, data }) => {
   const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
     state: { user },
-    loadCurrentUser
+    loadCurrentUser,
   } = useContext(UserContext);
   const [inputValue, setInputValue] = useState(null);
   const [inputReminders, setInputReminders] = useState([]);
@@ -24,7 +24,7 @@ const DateQuestionPage = ({ Image, data }) => {
     nextQuestionLink,
     question,
     reminderKey,
-    title
+    title,
   } = data;
 
   const initializeValues = useCallback(() => {
@@ -38,49 +38,50 @@ const DateQuestionPage = ({ Image, data }) => {
     initializeValues();
   }, [initializeValues]);
 
-  const handleDateInputChange = date => {
+  const handleDateInputChange = (date) => {
     const dt = DateTime.fromJSDate(date).set({
       hour: 0,
       minute: 0,
       second: 0,
-      millisecond: 0
+      millisecond: 0,
     });
 
     setInputValue(dt);
   };
 
+  const inputValueHasNotChanged = () =>
+    fn.localToUTC(inputValue).toISO() === user[dateKey] &&
+    JSON.stringify(inputReminders) === JSON.stringify(user[reminderKey]);
+
   const handleFormSubmit = () => {
     if (!inputValue || !inputValue.isValid) {
-      handleSnackbarOpen(`Oops! That's not valid date.`, 'warning');
+      handleSnackbarOpen(`Oops! That's not valid date.`, "warning");
       return;
     }
 
-    if (
-      fn.localToUTC(inputValue).toISO() === user[dateKey] &&
-      JSON.stringify(inputReminders) === JSON.stringify(user[reminderKey])
-    ) {
-      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, 'warning');
+    if (inputValueHasNotChanged()) {
+      handleSnackbarOpen(`Oops! You haven't changed anything yet.`, "warning");
       return;
     }
 
     API.updateUser(user._id, {
       [dateKey]: fn.localToUTC(inputValue),
-      [reminderKey]: inputReminders
+      [reminderKey]: inputReminders,
     })
-      .then(res => {
+      .then((res) => {
         const dt = DateTime.fromISO(res.data[dateKey]);
-        const localeStr = dt.setZone('UTC').toLocaleString();
+        const localeStr = dt.setZone("UTC").toLocaleString();
 
         handleSnackbarOpen(
           `${title}: ${localeStr} has been submitted.`,
-          'success'
+          "success"
         );
         loadCurrentUser(res);
       })
-      .catch(err => {
+      .catch((err) => {
         // captures error message after last colon and space
         const [errMsg] = err.response.data.match(/(?! )[^:]+$/);
-        handleSnackbarOpen(errMsg, 'error');
+        handleSnackbarOpen(errMsg, "error");
         initializeValues();
       });
   };
