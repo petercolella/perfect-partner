@@ -1,69 +1,70 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { Context as UserContext } from '../../../context/UserContext';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import { Context as UserContext } from "../../../context/UserContext";
+import { Context as SnackbarContext } from "../../../context/SnackbarContext";
+import { Link, useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
 
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Fade from '@material-ui/core/Fade';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Grow from '@material-ui/core/Grow';
-import Typography from '@material-ui/core/Typography';
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import IconButton from "@material-ui/core/IconButton";
+import Fade from "@material-ui/core/Fade";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Grow from "@material-ui/core/Grow";
+import Typography from "@material-ui/core/Typography";
 
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from '@material-ui/pickers';
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   click: {
-    color: '#fff',
+    color: "#fff",
     padding: theme.spacing(4),
-    textShadow: '2px 2px #848484',
-    margin: 'auto'
+    textShadow: "2px 2px #848484",
+    margin: "auto",
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
+    color: theme.palette.grey[500],
   },
   dialogBackground: {
-    display: 'flex',
-    justifyContent: 'center',
-    height: '100vh',
-    width: '100vw'
+    display: "flex",
+    justifyContent: "center",
+    height: "100vh",
+    width: "100vw",
   },
   formControl: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
   link: {
     color: theme.palette.text.primary,
-    textDecoration: 'none'
+    textDecoration: "none",
   },
   root: {
     marginBottom: 0,
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   title: {
-    display: 'flex',
-    alignItems: 'center'
-  }
+    display: "flex",
+    alignItems: "center",
+  },
 }));
 
-const reminderArr = ['1 Week', '2 Weeks', '30 Days', '60 Days', '90 Days'];
+const reminderArr = ["1 Week", "2 Weeks", "30 Days", "60 Days", "90 Days"];
 
 const DateQuestionDialog = ({
   Image,
@@ -72,16 +73,20 @@ const DateQuestionDialog = ({
   firstName,
   handleDateInputChange,
   handleFormSubmit,
+  inputValueHasNotChanged,
   label,
   link,
   question,
   setParentReminders,
   title,
-  userField
+  userField,
 }) => {
+  const { handleSnackbarOpen } = useContext(SnackbarContext);
   const {
-    state: { signedIn }
+    state: { signedIn },
   } = useContext(UserContext);
+
+  const history = useHistory();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reminders, setReminders] = useState([]);
@@ -100,7 +105,7 @@ const DateQuestionDialog = ({
   }, [loadDialog, signedIn]);
 
   const isChecked = useCallback(
-    name => {
+    (name) => {
       for (let reminder of dialogReminders) {
         if (reminder === name) {
           return true;
@@ -115,7 +120,7 @@ const DateQuestionDialog = ({
     const newReminderObj = reminderArr.reduce((reminderObj, reminder) => {
       return {
         ...reminderObj,
-        [reminder]: isChecked(reminder)
+        [reminder]: isChecked(reminder),
       };
     }, {});
     setReminderObj(newReminderObj);
@@ -127,7 +132,7 @@ const DateQuestionDialog = ({
 
   useEffect(() => {
     const newReminders = Object.keys(reminderObj).filter(
-      reminder => reminderObj[reminder]
+      (reminder) => reminderObj[reminder]
     );
     setReminders(newReminders);
   }, [reminderObj]);
@@ -136,16 +141,28 @@ const DateQuestionDialog = ({
     setParentReminders(reminders);
   }, [reminders, setParentReminders]);
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     setReminderObj({ ...reminderObj, [name]: event.target.checked });
   };
 
   const handleDialogClose = (event, reason) => {
-    if (reason === 'clickaway' || reason === 'backdropClick') {
+    if (reason === "clickaway" || reason === "backdropClick") {
       return;
     }
 
     setDialogOpen(false);
+  };
+
+  const handleNextClick = () => {
+    if (!inputValueHasNotChanged()) {
+      handleSnackbarOpen(
+        `Please submit your changes or click cancel before proceeding`,
+        "warning"
+      );
+      return;
+    }
+    setDialogOpen(false);
+    history.push(link);
   };
 
   const reloadDialog = () => {
@@ -162,7 +179,7 @@ const DateQuestionDialog = ({
       <Fade
         in={!dialogOpen}
         timeout={1000}
-        style={{ transitionDelay: !dialogOpen ? '500ms' : '0ms' }}
+        style={{ transitionDelay: !dialogOpen ? "500ms" : "0ms" }}
       >
         <Typography variant="h2" align="center" className={classes.click}>
           Click to reload dialog.
@@ -173,12 +190,12 @@ const DateQuestionDialog = ({
         open={dialogOpen}
         TransitionComponent={Grow}
         TransitionProps={{
-          ...(dialogOpen ? { timeout: 1000 } : {})
+          ...(dialogOpen ? { timeout: 1000 } : {}),
         }}
         keepMounted
         onClose={handleDialogClose}
         aria-labelledby="form-dialog-title"
-        scroll={'body'}
+        scroll={"body"}
       >
         <DialogTitle
           className={classes.title}
@@ -215,7 +232,7 @@ const DateQuestionDialog = ({
                   placeholder="mm/dd/yyyy"
                   value={userField}
                   KeyboardButtonProps={{
-                    'aria-label': 'change date'
+                    "aria-label": "change date",
                   }}
                 />
               </MuiPickersUtilsProvider>
@@ -230,7 +247,7 @@ const DateQuestionDialog = ({
                   fullWidth={true}
                 >
                   <FormGroup row>
-                    {reminderArr.map(name => (
+                    {reminderArr.map((name) => (
                       <FormControlLabel
                         key={name}
                         control={
@@ -257,11 +274,9 @@ const DateQuestionDialog = ({
               <Button onClick={handleFormSubmit} color="primary">
                 Submit
               </Button>
-              <Link to={link} className={classes.link}>
-                <Button onClick={() => setDialogOpen(false)} color="primary">
-                  Next
-                </Button>
-              </Link>
+              <Button onClick={handleNextClick} color="primary">
+                Next
+              </Button>
             </DialogActions>
           </>
         ) : (
@@ -273,7 +288,7 @@ const DateQuestionDialog = ({
             </DialogContent>
             <DialogActions>
               <Link to={link} className={classes.link}>
-                <Button onClick={() => setDialogOpen(false)} color="primary">
+                <Button onClick={handleNextClick} color="primary">
                   Next
                 </Button>
               </Link>
