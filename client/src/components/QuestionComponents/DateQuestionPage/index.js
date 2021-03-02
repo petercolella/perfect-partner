@@ -49,9 +49,16 @@ const DateQuestionPage = ({ Image, data }) => {
     setInputValue(dt);
   };
 
-  const inputValueHasNotChanged = () =>
-    fn.localToUTC(inputValue).toISO() === user[dateKey] &&
-    JSON.stringify(inputReminders) === JSON.stringify(user[reminderKey]);
+  const inputValueHasNotChanged = () => {
+    const testInputValue = inputValue
+      ? fn.localToUTC(inputValue).toISO()
+      : undefined;
+
+    return (
+      testInputValue === user[dateKey] &&
+      JSON.stringify(inputReminders) === JSON.stringify(user[reminderKey])
+    );
+  };
 
   const handleFormSubmit = () => {
     if (!inputValue || !inputValue.isValid) {
@@ -94,6 +101,7 @@ const DateQuestionPage = ({ Image, data }) => {
       firstName={user.firstName}
       handleDateInputChange={handleDateInputChange}
       handleFormSubmit={handleFormSubmit}
+      inputValueHasNotChanged={inputValueHasNotChanged}
       label={label}
       link={nextQuestionLink}
       question={question}
