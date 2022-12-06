@@ -22,10 +22,10 @@
     "concurrently": "^5.3.0"
   },
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.20.1",
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
-    "express": "^4.15.4",
+    "express": "^4.18.2",
     "google-auth-library": "^6.0.6",
     "if-env": "^1.0.4",
     "luxon": "^1.25.0",
